@@ -104,6 +104,10 @@ def main():
         report_to="none",
         gradient_checkpointing=True,
         gradient_checkpointing_kwargs={"use_reentrant": False},
+        push_to_hub=cfg.get("push_to_hub", False),
+        hub_model_id=cfg.get("hub_model_id"),
+        hub_strategy=cfg.get("hub_strategy", "end"),
+        hub_private_repo=cfg.get("hub_private_repo", False),
     )
 
     # TRL ≥ 0.16: tokenizer → processing_class
@@ -120,6 +124,10 @@ def main():
     trainer.save_model(cfg["output_dir"])
     tokenizer.save_pretrained(cfg["output_dir"])
     print(f"Saved LoRA adapter to {cfg['output_dir']}")
+
+    if cfg.get("push_to_hub"):
+        trainer.push_to_hub(commit_message="End of training")
+        print(f"Pushed adapter to https://huggingface.co/{cfg['hub_model_id']}")
 
 
 if __name__ == "__main__":
