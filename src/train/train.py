@@ -102,10 +102,10 @@ def main():
         gradient_checkpointing_kwargs={"use_reentrant": False},
     )
 
-    # max_seq_length and packing moved from SFTConfig to SFTTrainer in TRL ≥ 0.16
+    # TRL ≥ 0.16: tokenizer → processing_class; max_seq_length/packing live here, not in SFTConfig
     trainer = SFTTrainer(
         model=model,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         args=sft_config,
         train_dataset=dataset["train"],
         eval_dataset=dataset["validation"],
