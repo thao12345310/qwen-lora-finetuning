@@ -1,0 +1,28 @@
+{
+  "intents": [
+    "turn_on_ac",
+    "turn_off_ac",
+    "set_ac_temperature",
+    "increase_temperature",
+    "decrease_temperature",
+    "play_music",
+    "pause_music",
+    "next_song",
+    "navigate_to_location",
+    "find_charging_station",
+    "call_contact",
+    "send_message",
+    "cancel_action",
+    "confirm_action"
+  ],
+  "domains": ["ac", "music", "navigation", "calling"],
+  "scenario_groups": [
+    "complete_utterance",
+    "missing_intent",
+    "pronoun_resolution",
+    "confirmation",
+    "cancellation",
+    "parameter_adjustment",
+    "irrelevant_context"
+  ]
+}

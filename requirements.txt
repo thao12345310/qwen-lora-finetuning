@@ -1,0 +1,17 @@
+# Core ML
+torch>=2.1.0
+transformers>=4.44.0
+peft>=0.12.0
+trl>=0.10.0
+accelerate>=0.33.0
+datasets>=2.20.0
+bitsandbytes>=0.43.0  # required for QLoRA 4-bit; CUDA-only
+
+# Serving
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.6.0
+
+# Utilities
+PyYAML>=6.0
+tqdm>=4.66.0

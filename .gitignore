@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# Generated data
+data/raw/dialogues.jsonl
+data/processed/*.jsonl
+
+# Model outputs
+outputs/
+
+# OS
+.DS_Store

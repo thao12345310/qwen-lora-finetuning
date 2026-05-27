@@ -1,0 +1,13 @@
+model_name_or_path: Qwen/Qwen2.5-1.5B-Instruct
+adapter_path: outputs/qwen-dialogue-rewriter-lora
+load_in_4bit: true
+
+# Generation
+max_new_tokens: 96
+temperature: 0.1
+top_p: 0.9
+do_sample: false
+repetition_penalty: 1.05
+
+system_prompt: |
+  Bạn là model rewrite hội thoại. Nhiệm vụ của bạn là biến câu nói cuối của user thành một yêu cầu độc lập, rõ ràng, giữ nguyên ý định, không thêm thông tin không chắc chắn. Chỉ trả về câu rewrite.
