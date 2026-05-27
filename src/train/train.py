@@ -43,7 +43,7 @@ def build_model_and_tokenizer(cfg: dict):
         bnb = BitsAndBytesConfig(
             load_in_4bit=True,
             bnb_4bit_quant_type="nf4",
-            bnb_4bit_compute_dtype=torch.float16,
+            bnb_4bit_compute_dtype=torch.bfloat16,  # Qwen2.5 native dtype; avoids fp16 GradScaler conflict
             bnb_4bit_use_double_quant=True,
         )
         model_kwargs["quantization_config"] = bnb
@@ -98,7 +98,8 @@ def main():
         eval_steps=cfg["eval_steps"],
         save_total_limit=cfg["save_total_limit"],
         eval_strategy="steps",
-        fp16=cfg["fp16"],
+        bf16=cfg.get("bf16", False),
+        fp16=cfg.get("fp16", False),
         seed=cfg["seed"],
         report_to="none",
         gradient_checkpointing=True,
