@@ -81,7 +81,14 @@ def main():
     load_model.cache_clear()
     torch.cuda.empty_cache() if torch.cuda.is_available() else None
 
-    lora_outputs = run_split(samples, cfg, adapter_path=cfg["adapter_path"])
+    adapter_path = cfg["adapter_path"]
+    if not Path(adapter_path).exists():
+        raise FileNotFoundError(
+            f"LoRA adapter not found at '{adapter_path}'.\n"
+            "Please run training first:\n"
+            "  python src/train/train.py --config configs/qwen_lora_sft.yaml"
+        )
+    lora_outputs = run_split(samples, cfg, adapter_path=adapter_path)
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8") as f:

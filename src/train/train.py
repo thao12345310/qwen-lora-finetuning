@@ -97,19 +97,20 @@ def main():
         eval_strategy="steps",
         fp16=cfg["fp16"],
         seed=cfg["seed"],
-        max_seq_length=cfg["cutoff_len"],
-        packing=False,
         report_to="none",
         gradient_checkpointing=True,
         gradient_checkpointing_kwargs={"use_reentrant": False},
     )
 
+    # max_seq_length and packing moved from SFTConfig to SFTTrainer in TRL ≥ 0.16
     trainer = SFTTrainer(
         model=model,
         tokenizer=tokenizer,
         args=sft_config,
         train_dataset=dataset["train"],
         eval_dataset=dataset["validation"],
+        max_seq_length=cfg["cutoff_len"],
+        packing=False,
     )
 
     trainer.train()
