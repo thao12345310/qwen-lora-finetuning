@@ -1,6 +1,6 @@
 model_name_or_path: Qwen/Qwen2.5-1.5B-Instruct
 adapter_path: outputs/qwen-dialogue-rewriter-lora
-load_in_4bit: true
+load_in_4bit: false  # CUDA-only; keep false on Apple Silicon / CPU
 
 # Generation
 max_new_tokens: 96

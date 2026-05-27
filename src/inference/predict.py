@@ -30,14 +30,24 @@ def format_conversation(turns: list[dict]) -> str:
     return "\n".join(f"{t['role']}: {t['content']}" for t in turns)
 
 
+def _pick_device() -> str:
+    if torch.cuda.is_available():
+        return "cuda"
+    if torch.backends.mps.is_available():
+        return "mps"
+    return "cpu"
+
+
 @lru_cache(maxsize=2)
 def load_model(model_path: str, adapter_path: str | None, load_in_4bit: bool):
     tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
+    device = _pick_device()
     model_kwargs = {"trust_remote_code": True}
-    if load_in_4bit:
+
+    if load_in_4bit and device == "cuda":
         from transformers import BitsAndBytesConfig
 
         bnb = BitsAndBytesConfig(
@@ -48,10 +58,13 @@ def load_model(model_path: str, adapter_path: str | None, load_in_4bit: bool):
         )
         model_kwargs["quantization_config"] = bnb
         model_kwargs["device_map"] = "auto"
+    elif device == "cuda":
+        model_kwargs["torch_dtype"] = torch.float16
+        model_kwargs["device_map"] = "auto"
+    elif device == "mps":
+        model_kwargs["torch_dtype"] = torch.float16
     else:
-        model_kwargs["torch_dtype"] = torch.float16 if torch.cuda.is_available() else torch.float32
-        if torch.cuda.is_available():
-            model_kwargs["device_map"] = "auto"
+        model_kwargs["torch_dtype"] = torch.float32
 
     model = AutoModelForCausalLM.from_pretrained(model_path, **model_kwargs)
 
@@ -59,6 +72,10 @@ def load_model(model_path: str, adapter_path: str | None, load_in_4bit: bool):
         from peft import PeftModel
 
         model = PeftModel.from_pretrained(model, adapter_path)
+
+    # CUDA path is already placed via device_map; MPS/CPU need an explicit move.
+    if device == "mps":
+        model = model.to("mps")
 
     model.eval()
     return model, tokenizer
