@@ -6,6 +6,7 @@ trl>=0.16.0
 accelerate>=0.33.0
 datasets>=2.20.0
 bitsandbytes>=0.43.0  # required for QLoRA 4-bit; CUDA-only
+torchao>=0.16.0  # Colab preinstalls 0.10.0; peft's LoRA dispatcher errors below 0.16
 
 # Serving
 fastapi>=0.110.0
