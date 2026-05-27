@@ -30,6 +30,9 @@ def build_model_and_tokenizer(cfg: dict):
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
+    # TRL ≥ 0.17 dropped max_seq_length from SFTTrainer; set it on the tokenizer instead
+    # so truncation still applies during internal collation.
+    tokenizer.model_max_length = cfg["cutoff_len"]
 
     load_in_4bit = cfg.get("load_in_4bit", True)
     model_kwargs = {"trust_remote_code": True}
@@ -102,15 +105,14 @@ def main():
         gradient_checkpointing_kwargs={"use_reentrant": False},
     )
 
-    # TRL ≥ 0.16: tokenizer → processing_class; max_seq_length/packing live here, not in SFTConfig
+    # TRL ≥ 0.16: tokenizer → processing_class
+    # TRL ≥ 0.17: max_seq_length removed from SFTTrainer entirely; truncation via tokenizer.model_max_length
     trainer = SFTTrainer(
         model=model,
         processing_class=tokenizer,
         args=sft_config,
         train_dataset=dataset["train"],
         eval_dataset=dataset["validation"],
-        max_seq_length=cfg["cutoff_len"],
-        packing=False,
     )
 
     trainer.train()
