@@ -40,6 +40,18 @@ PLACES = [
     "VinFast Times City", "Aeon Mall Long Biên", "sân bay Nội Bài",
     "bệnh viện Bạch Mai", "trạm sạc gần nhất", "Hồ Gươm",
 ]
+NAV_REWRITE_OPENINGS = [
+    "Tôi muốn điều hướng đến",
+    "Tôi muốn đi đến",
+    "Tôi muốn đi tới",
+    "Hãy chỉ đường đến",
+    "Dẫn tôi đến",
+    "Đưa tôi tới",
+]
+
+
+def nav_rewrite(place: str) -> str:
+    return f"{random.choice(NAV_REWRITE_OPENINGS)} {place}."
 
 CALL_VERBS = ["gọi", "gọi điện", "gọi cho", "liên lạc"]
 CONTACTS = ["Mẹ", "Bố", "anh Nam", "chị Lan", "sếp", "vợ", "chồng"]
@@ -122,7 +134,7 @@ def gen_complete_nav():
     samples = []
     for verb, place in itertools.product(NAV_VERBS, PLACES):
         turns = [("user", f"{verb} đến {place}")]
-        rewrite = f"Tôi muốn điều hướng đến {place}."
+        rewrite = nav_rewrite(place)
         samples.append(make_sample(turns, rewrite, "navigate_to_location", "complete_utterance", "navigation"))
     return samples
 
@@ -187,7 +199,7 @@ def gen_pronoun_nav():
                 ("bot", bot_msg),
                 ("user", f"dẫn đường tới {pn}"),
             ]
-            rewrite = f"Tôi muốn điều hướng đến {place}."
+            rewrite = nav_rewrite(place)
             samples.append(make_sample(turns, rewrite, "navigate_to_location", "pronoun_resolution", "navigation"))
     return samples
 

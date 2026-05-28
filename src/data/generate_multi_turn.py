@@ -61,6 +61,16 @@ PLACES = [
 POI_CATEGORIES = ["quán cafe", "trạm xăng", "trạm sạc", "nhà hàng", "bãi đỗ xe", "ATM", "siêu thị"]
 ROUTE_PREFS = ["tránh đường thu phí", "tránh cao tốc", "đi đường nhanh nhất", "tránh tắc đường", "đi đường ngắn nhất"]
 DISTANCES = [0.8, 1.2, 2.5, 3.0, 4.5, 7.0]
+NAV_REWRITE_OPENINGS = [
+    "Tôi muốn điều hướng đến",
+    "Tôi muốn đi đến",
+    "Tôi muốn đi tới",
+    "Hãy chỉ đường đến",
+    "Dẫn tôi đến",
+    "Đưa tôi tới",
+]
+# Verb chunks usable inside a chained "Tôi muốn … và …" sentence (no "Tôi muốn" prefix).
+CHAINED_NAV_VERBS = ["điều hướng đến", "đi tới", "đi đến", "ghé qua"]
 
 # --- Calling / Messaging ---------------------------------------------------
 CONTACTS = ["Mẹ", "Bố", "anh Nam", "chị Lan", "sếp", "vợ", "chồng", "em Mai", "anh Tuấn"]
@@ -126,6 +136,15 @@ def make_sample(turns, rewrite, intent, pattern, domain):
 
 def pick(seq):
     return random.choice(seq)
+
+
+def nav_rewrite(place: str, *, pref: str | None = None, depart: str | None = None) -> str:
+    s = f"{random.choice(NAV_REWRITE_OPENINGS)} {place}"
+    if pref:
+        s += f", ưu tiên {pref}"
+    if depart:
+        s += f" và khởi hành {depart}"
+    return s + "."
 
 
 # ===========================================================================
@@ -236,7 +255,7 @@ def gen_2t_slot_nav_place():
             ("bot", "bạn muốn đi đâu?"),
             ("user", place),
         ]
-        rw = f"Tôi muốn điều hướng đến {place}."
+        rw = nav_rewrite(place)
         out.append(make_sample(turns, rw, "navigate_to_location", "slot_filling", "navigation"))
     return out
 
@@ -350,7 +369,7 @@ def gen_2t_reference_nav():
             ("bot", f"Tôi thấy {place}, cách đây {km}km."),
             ("user", pick(["dẫn tới đó đi", "đi đến đó", "chỉ đường tới đấy", "đến chỗ đó"])),
         ]
-        rw = f"Tôi muốn điều hướng đến {place}."
+        rw = nav_rewrite(place)
         out.append(make_sample(turns, rw, "navigate_to_location", "reference_resolution", "navigation"))
     return out
 
@@ -395,7 +414,7 @@ def gen_2t_disambig_nav():
         ]
         # When user says "cái thứ nhất" the model must resolve from bot's listing order.
         chosen = p1
-        rw = f"Tôi muốn điều hướng đến {chosen}."
+        rw = nav_rewrite(chosen)
         out.append(make_sample(turns, rw, "navigate_to_location", "disambiguation", "navigation"))
     return out
 
@@ -461,7 +480,7 @@ def gen_3t_multi_slot_nav():
             ("bot", f"Sẽ dẫn đến {place} với tuỳ chọn {pref}, đúng chưa?"),
             ("user", pick(USER_CONFIRM)),
         ]
-        rw = f"Tôi muốn điều hướng đến {place}, ưu tiên {pref}."
+        rw = nav_rewrite(place, pref=pref)
         out.append(make_sample(turns, rw, "navigate_with_preference", "multi_slot", "navigation"))
     return out
 
@@ -563,7 +582,7 @@ def gen_3t_compare_then_pick():
             ("bot", f"{p2} gần hơn, cách {d1}km."),
             ("user", "đến đó đi"),
         ]
-        rw = f"Tôi muốn điều hướng đến {p2}."
+        rw = nav_rewrite(p2)
         out.append(make_sample(turns, rw, "navigate_to_location", "comparison", "navigation"))
     return out
 
@@ -666,7 +685,7 @@ def gen_4t_full_nav_dialog():
             ("bot", "bạn ưu tiên lộ trình thế nào?"),
             ("user", pref),
         ]
-        rw = f"Tôi muốn điều hướng đến {place}, ưu tiên {pref}."
+        rw = nav_rewrite(place, pref=pref)
         out.append(make_sample(turns, rw, "navigate_with_preference", "multi_slot", "navigation"))
     return out
 
@@ -764,7 +783,7 @@ def gen_4t_correction_then_chain():
             ("user", f"và gọi {name} qua loa ngoài"),
         ]
         rw = (
-            f"Tôi muốn điều hướng đến {place}, phát bài {new_song}, "
+            f"Tôi muốn {pick(CHAINED_NAV_VERBS)} {place}, phát bài {new_song}, "
             f"và gọi {name} qua loa ngoài."
         )
         out.append(make_sample(turns, rw, "chained_nav_music_call", "correction", "multi"))
@@ -789,7 +808,7 @@ def gen_4t_calendar_then_nav():
             ("bot", "bạn muốn rời đi khi nào?"),
             ("user", leave),
         ]
-        rw = f"Tôi muốn điều hướng đến {loc} và khởi hành {leave}."
+        rw = nav_rewrite(loc, depart=leave)
         out.append(make_sample(turns, rw, "navigate_scheduled", "multi_slot", "navigation"))
     return out
 
