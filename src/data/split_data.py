@@ -20,17 +20,31 @@ def main():
     random.seed(args.seed)
     samples = [json.loads(line) for line in args.input.open(encoding="utf-8")]
 
-    # Stratify by group so each split has balanced coverage.
+    # Stratify by domain × context_required so every split keeps the domain mix
+    # AND the context / no-context ratio balanced. Falls back gracefully if a
+    # sample is missing either key.
+    def strat_key(s: dict) -> str:
+        meta = s.get("meta", {})
+        domain = meta.get("domain", "unknown")
+        ctx = meta.get("context_required")
+        ctx = "na" if ctx is None else str(ctx).lower()
+        return f"{domain}|{ctx}"
+
     buckets: dict[str, list[dict]] = defaultdict(list)
     for s in samples:
-        buckets[s["meta"]["group"]].append(s)
+        buckets[strat_key(s)].append(s)
 
     train, valid, test = [], [], []
     for group, items in buckets.items():
         random.shuffle(items)
         n = len(items)
-        n_train = int(n * args.train_ratio)
-        n_valid = int(n * args.valid_ratio)
+        # round() instead of floor() so a 0.1 valid ratio on small strata does not
+        # collapse to 0; guarantee at least 1 valid item per non-trivial bucket so
+        # the eval set is never starved.
+        n_valid = round(n * args.valid_ratio)
+        if n_valid == 0 and n >= 3:
+            n_valid = 1
+        n_train = min(round(n * args.train_ratio), n - n_valid)
         train.extend(items[:n_train])
         valid.extend(items[n_train : n_train + n_valid])
         test.extend(items[n_train + n_valid :])
