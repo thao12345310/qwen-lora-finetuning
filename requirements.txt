@@ -16,3 +16,7 @@ pydantic>=2.6.0
 # Utilities
 PyYAML>=6.0
 tqdm>=4.66.0
+
+# Benchmark generation (frontier LLM)
+openai>=1.40.0
+python-dotenv>=1.0.0
