@@ -17,6 +17,7 @@ import yaml
 from datasets import load_dataset
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers.trainer_utils import get_last_checkpoint
 from trl import SFTConfig, SFTTrainer
 
 
@@ -73,9 +74,26 @@ def build_model_and_tokenizer(cfg: dict):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, default=Path("configs/qwen_lora_sft.yaml"))
+    parser.add_argument(
+        "--no-resume",
+        action="store_true",
+        help="Train from scratch even if a checkpoint exists in output_dir (default: auto-resume).",
+    )
+    parser.add_argument(
+        "--push-to-hub",
+        action="store_true",
+        help="Override config to push the adapter to HuggingFace Hub (needs HF_TOKEN with write).",
+    )
+    parser.add_argument("--hub-model-id", default=None, help="Override hub_model_id from config.")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
+
+    # CLI overrides — let the Kaggle/Colab notebook toggle Hub push without editing the yaml.
+    if args.push_to_hub:
+        cfg["push_to_hub"] = True
+    if args.hub_model_id:
+        cfg["hub_model_id"] = args.hub_model_id
 
     data_files = {"train": cfg["train_file"], "validation": cfg["valid_file"]}
     dataset = load_dataset("json", data_files=data_files)
@@ -138,7 +156,16 @@ def main():
         eval_dataset=dataset["validation"],
     )
 
-    trainer.train()
+    # Auto-resume from the latest checkpoint so a killed Kaggle session (9–12h cap,
+    # idle timeout) continues instead of restarting from step 0.
+    resume_from = None
+    out_dir = Path(cfg["output_dir"])
+    if not args.no_resume and out_dir.is_dir():
+        resume_from = get_last_checkpoint(str(out_dir))
+        if resume_from:
+            print(f"Resuming from checkpoint: {resume_from}")
+
+    trainer.train(resume_from_checkpoint=resume_from)
     trainer.save_model(cfg["output_dir"])
     tokenizer.save_pretrained(cfg["output_dir"])
     print(f"Saved LoRA adapter to {cfg['output_dir']}")
