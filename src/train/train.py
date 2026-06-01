@@ -10,6 +10,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
 import torch
@@ -48,7 +49,11 @@ def build_model_and_tokenizer(cfg: dict):
             bnb_4bit_use_double_quant=True,
         )
         model_kwargs["quantization_config"] = bnb
-        model_kwargs["device_map"] = "auto"
+        # Under DDP (torchrun sets LOCAL_RANK) each process must load the full model
+        # onto its OWN gpu so the 2× T4 run is data-parallel. "auto" would spread one
+        # copy across both gpus (model-parallel) and leave the 2nd gpu idle for a 1.5B.
+        local_rank = int(os.environ.get("LOCAL_RANK", -1))
+        model_kwargs["device_map"] = {"": local_rank} if local_rank != -1 else "auto"
     else:
         model_kwargs["torch_dtype"] = torch.float16 if torch.cuda.is_available() else torch.float32
 
@@ -140,6 +145,9 @@ def main():
         report_to="none",
         gradient_checkpointing=True,
         gradient_checkpointing_kwargs={"use_reentrant": False},
+        # DDP: only LoRA params have requires_grad, so there are no unused params to
+        # search for — disabling the search avoids the extra all-reduce overhead.
+        ddp_find_unused_parameters=False,
         push_to_hub=cfg.get("push_to_hub", False),
         hub_model_id=cfg.get("hub_model_id"),
         hub_strategy=cfg.get("hub_strategy", "end"),
