@@ -1,0 +1,57 @@
+# Llama Factory config — QLoRA fine-tune Qwen2.5-1.5B cho task rewrite hội thoại.
+# Chạy:  llamafactory-cli train configs/qwen_lora_sft_llamafactory.yaml
+# Đa GPU (2×T4): FORCE_TORCHRUN=1 llamafactory-cli train <config>  (notebook tự bật).
+
+### model
+model_name_or_path: Qwen/Qwen2.5-1.5B-Instruct
+trust_remote_code: true
+quantization_bit: 4          # QLoRA 4-bit
+quantization_method: bnb     # bitsandbytes NF4
+
+### method
+stage: sft
+do_train: true
+finetuning_type: lora
+lora_rank: 8
+lora_alpha: 16
+lora_dropout: 0.05
+lora_target: all             # tất cả lớp linear (q,k,v,o,gate,up,down)
+
+### dataset (đọc qua data/processed/dataset_info.json — sharegpt `conversations`)
+dataset_dir: data/processed
+dataset: train
+eval_dataset: valid
+template: qwen
+cutoff_len: 1024
+overwrite_cache: true
+preprocessing_num_workers: 8
+dataloader_num_workers: 2
+
+### output
+output_dir: outputs/qwen-dialogue-rewriter-lora
+overwrite_output_dir: false  # false -> tự resume từ checkpoint mới nhất nếu phiên bị ngắt
+logging_steps: 10
+save_steps: 200
+save_total_limit: 2
+plot_loss: true
+report_to: none
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+learning_rate: 2.0e-4
+num_train_epochs: 3.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+fp16: true                   # T4 (Turing) KHÔNG hỗ trợ bf16 -> dùng fp16
+ddp_timeout: 180000000
+
+### eval
+do_eval: true
+per_device_eval_batch_size: 1
+eval_strategy: steps
+eval_steps: 200
+
+### hub — notebook bật khi PUSH_TO_HUB=True
+push_to_hub: false
+hub_strategy: end
