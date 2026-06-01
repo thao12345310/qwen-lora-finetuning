@@ -1,0 +1,134 @@
+{
+    "samples": [
+      {
+        "pattern": "negation",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có thể bật đèn pha không?"},
+          {"role":"bot","content":"Đèn pha đã bật."},
+          {"role":"user","content":"Không, đừng bật đèn pha."}
+        ],
+        "rewrite": "Không bật đèn pha",
+        "rationale": "Câu cuối phủ định rõ ràng, không cần thông tin khác."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết hôm nay trời mưa không?"},
+          {"role":"bot","content":"Có mưa nhẹ, nhiệt độ 28°C."},
+          {"role":"user","content":"Phát bài \"Nơi Này\" của Hoài Lâm trên Spotify."}
+        ],
+        "rewrite": "Phát bài \"Nơi Này\" của Hoài Lâm trên Spotify",
+        "rationale": "Thông tin thời tiết không liên quan, câu cuối đã cung cấp đủ slot."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Call my colleague via Skype: 987654321."},
+          {"role":"bot","content":"Calling via Skype now."},
+          {"role":"user","content":"Set volume to 40."}
+        ],
+        "rewrite": "Đặt âm lượng cuộc gọi Skype 40",
+        "rationale": "Giữ token tiếng Anh “Skype” và thực hiện yêu cầu âm lượng."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật đèn phòng khách và giảm độ sáng TV xuống 30%."},
+          {"role":"bot","content":"Đèn phòng khách đã bật, độ sáng TV giảm còn 30%."},
+          {"role":"user","content":"Xong."}
+        ],
+        "rewrite": "Bật đèn phòng khách và giảm độ sáng TV xuống 30%",
+        "rationale": "Một lượt cuối chứa hai intent, cần giữ cả hai trong câu lệnh."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết địa chỉ dự án của công ty tôi không?"},
+          {"role":"bot","content":"Dự án nằm ở khu Công Nghệ, Quận 9."},
+          {"role":"user","content":"Gửi tin cho người ấy: \"Hẹn gặp lúc 5h\"."}
+        ],
+        "rewrite": "Gửi tin đến người ấy nội dung \"Hẹn gặp lúc 5h\"",
+        "rationale": "Giữ nguyên cụm “người ấy” vì không có đủ thông tin xác định người nhận."
+      },
+      {
+        "pattern": "negation",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật lane assist."},
+          {"role":"bot","content":"Lane Assist đã bật."},
+          {"role":"user","content":"Đừng bật lane assist nữa."}
+        ],
+        "rewrite": "Không bật lane assist",
+        "rationale": "Câu cuối phủ định việc bật lane assist, không cần thông tin bổ sung."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết giá cổ phiếu VN‑Index hôm nay không?"},
+          {"role":"bot","content":"VN‑Index hiện tại 1,172.3 điểm."},
+          {"role":"user","content":"Tìm trạm sạc nhanh gần tôi."}
+        ],
+        "rewrite": "Tìm trạm sạc nhanh gần tôi",
+        "rationale": "Thông tin cổ phiếu không ảnh hưởng đến yêu cầu tìm trạm sạc."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play file \"Bài Cũ\".mp3."},
+          {"role":"bot","content":"File \"Bài Cũ\".mp3 đã sẵn sàng."},
+          {"role":"user","content":"Set volume to 45."}
+        ],
+        "rewrite": "Phát file \"Bài Cũ\".mp3 và đặt âm lượng 45",
+        "rationale": "Giữ nguyên token \".mp3\" và mức âm lượng được yêu cầu."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ phía sau và bật đèn hazard."},
+          {"role":"bot","content":"Cửa sổ phía sau đã mở, đèn hazard bật."},
+          {"role":"user","content":"Xong."}
+        ],
+        "rewrite": "Mở cửa sổ phía sau và bật đèn hazard",
+        "rationale": "Lượt cuối chỉ chứa hai hành động, cần giải quyết đồng thời."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết mức tiêu thụ điện nhà tôi hiện tại không?"},
+          {"role":"bot","content":"Bạn đang tiêu thụ 4.2 kW."},
+          {"role":"user","content":"Bật đèn ở phòng tôi."}
+        ],
+        "rewrite": "Bật đèn ở phòng tôi",
+        "rationale": "Cụm “phòng tôi” không được định danh, nên giữ nguyên."
+      }
+    ]
+  }

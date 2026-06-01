@@ -1,0 +1,247 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm số hỗ trợ bảo hiểm ô tô của PVI và Bảo Việt."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy tổng đài PVI và tổng đài Bảo Việt; Bảo Việt đang quản lý hợp đồng vật chất xe của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Gọi bên quản lý hợp đồng xe giúp tôi."
+    }
+    ],
+    "rewrite": "Gọi tổng đài Bảo Việt về hợp đồng vật chất xe của tôi.",
+    "rationale": "Lượt cuối xác định nơi cần gọi qua vai trò quản lý hợp đồng thay vì nêu trực tiếp tên đơn vị."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lập hành trình đi chơi khu phố cổ chiều nay."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn tới điểm nào đầu tiên?"
+    },
+    {
+    "role": "user",
+    "content": "Nhà hát Múa rối nước Thăng Long trước."
+    },
+    {
+    "role": "bot",
+    "content": "Sau đó bạn muốn ghé đâu và cần tới trước mấy giờ?"
+    },
+    {
+    "role": "user",
+    "content": "Phố sách Hà Nội 19 tháng 12, trước 16 giờ 45."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có yêu cầu tránh tuyến đường nào không?"
+    },
+    {
+    "role": "user",
+    "content": "Tránh phố Hàng Bông nhé."
+    }
+    ],
+    "rewrite": "Dẫn đường tới Nhà hát Múa rối nước Thăng Long trước, sau đó tới Phố sách Hà Nội 19 tháng 12 trước 16 giờ 45 và tránh phố Hàng Bông.",
+    "rationale": "Hai điểm đến, thứ tự, thời hạn đến và đường cần tránh được cung cấp rải rác qua nhiều lượt."
+    },
+    {
+    "pattern": "correction",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi xe vào hầm AEON Mall Hà Đông, tự gập gương."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị tự gập gương khi xe vào hầm AEON Mall Hà Đông."
+    },
+    {
+    "role": "user",
+    "content": "Đổi lại, ở hầm đó chỉ bật camera 360, không tự gập gương."
+    }
+    ],
+    "rewrite": "Khi xe vào hầm AEON Mall Hà Đông, chỉ bật camera 360 và không tự gập gương.",
+    "rationale": "Lượt cuối thay thế hành động ban đầu, đồng thời dùng “hầm đó” để tham chiếu địa điểm đã nêu trước."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "smart_home",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo nhanh tình trạng xe trước khi tôi về nhà."
+    },
+    {
+    "role": "bot",
+    "content": "Nhiệt độ khoang xe hiện là 24°C và pin điện thoại đang sạc được 63%."
+    },
+    {
+    "role": "user",
+    "content": "Đóng van nước bếp ở căn hộ D'Capitale."
+    }
+    ],
+    "rewrite": "Đóng van nước bếp ở căn hộ D'Capitale.",
+    "rationale": "Nhiệt độ và phần trăm pin chỉ là dữ kiện nhiễu, không liên quan đến lệnh đóng van nước."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm nhạc có giọng AMEE để nghe lúc lái xe."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy “Sao Anh Chưa Về Nhà” của AMEE và Ricky Star, cùng “Anh Nhà Ở Đâu Thế” của AMEE và B Ray."
+    },
+    {
+    "role": "user",
+    "content": "Play bài hợp tác với Ricky Star trên YouTube Music."
+    }
+    ],
+    "rewrite": "Play bài “Sao Anh Chưa Về Nhà” của AMEE và Ricky Star trên YouTube Music.",
+    "rationale": "Model phải chọn đúng bài qua tên nghệ sĩ hợp tác và giữ nguyên các token tiếng Anh ở lượt cuối."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đã lưu ổ sạc ở nhà nghỉ dưỡng của tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có ổ sạc nào được lưu với nhãn nhà nghỉ dưỡng của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Hẹn sạc ở nhà nghỉ dưỡng của tôi lúc 20 giờ 30."
+    }
+    ],
+    "rewrite": "Hẹn sạc ở nhà nghỉ dưỡng của tôi lúc 20 giờ 30.",
+    "rationale": "Không có địa chỉ hoặc ổ sạc cụ thể trong lịch sử nên phải giữ nguyên cụm tham chiếu ngầm."
+    },
+    {
+    "pattern": "negation",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe có thể hỗ trợ gì nếu tôi vô tình lệch làn?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật cảnh báo âm thanh khi lệch làn hoặc can thiệp vô lăng để đưa xe về làn."
+    },
+    {
+    "role": "user",
+    "content": "Bật cảnh báo âm thanh thôi, đừng can thiệp vô lăng."
+    }
+    ],
+    "rewrite": "Bật cảnh báo âm thanh khi xe lệch làn và đừng can thiệp vô lăng.",
+    "rationale": "Lượt cuối chọn một hình thức hỗ trợ và phủ định rõ hình thức can thiệp còn lại."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đọc tin nhắn mới liên quan tới bến du thuyền."
+    },
+    {
+    "role": "bot",
+    "content": "Chị Thu Trang hỏi bạn đã tới Bến du thuyền Vinhomes Central Park chưa."
+    },
+    {
+    "role": "user",
+    "content": "Trả lời là tôi còn 5 phút rồi gọi cho chị ấy."
+    }
+    ],
+    "rewrite": "Nhắn cho chị Thu Trang với nội dung “Tôi còn 5 phút tới Bến du thuyền Vinhomes Central Park” rồi gọi cho chị Thu Trang.",
+    "rationale": "Lượt cuối vừa yêu cầu trả lời vừa gọi điện, đồng thời “chị ấy” phải được resolve thành đúng người nhắn."
+    },
+    {
+    "pattern": "correction",
+    "domain": "music",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Phát “Có Hẹn Với Thanh Xuân” của MONSTAR."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị phát “Có Hẹn Với Thanh Xuân” của MONSTAR."
+    },
+    {
+    "role": "user",
+    "content": "Không phát bài đó; mở FM 90.0 để nghe VOV Giao thông."
+    }
+    ],
+    "rewrite": "Không phát “Có Hẹn Với Thanh Xuân” của MONSTAR; hãy mở FM 90.0 để nghe VOV Giao thông.",
+    "rationale": "Lượt cuối tự đủ nghĩa, hủy bài hát trước đó và chuyển hẳn sang nghe radio ở tần số cụ thể."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chuẩn bị cà phê trước khi tôi về căn hộ The Matrix One."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn điều khiển thiết bị nào?"
+    },
+    {
+    "role": "user",
+    "content": "Máy pha cà phê trong bếp."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn pha loại gì và vào thời điểm nào?"
+    },
+    {
+    "role": "user",
+    "content": "Americano lúc 7 giờ 10 sáng mai."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có muốn thêm sữa tự động không?"
+    },
+    {
+    "role": "user",
+    "content": "Không thêm sữa, lưu lịch đi."
+    }
+    ],
+    "rewrite": "Lưu lịch pha Americano bằng máy pha cà phê trong bếp tại căn hộ The Matrix One lúc 7 giờ 10 sáng mai và không thêm sữa.",
+    "rationale": "Thiết bị, địa điểm, loại đồ uống, thời gian và tùy chọn không thêm sữa nằm ở nhiều lượt khác nhau."
+    }
+    ]
+    }
+    

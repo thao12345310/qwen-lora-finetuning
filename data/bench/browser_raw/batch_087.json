@@ -1,0 +1,136 @@
+{
+  "samples": [
+    {
+      "pattern": "correction",
+      "domain": "climate",
+      "intent": "set_climate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật quạt gió mạnh"},
+        {"role": "bot", "content": "Quạt gió đang mức cao nhất"},
+        {"role": "user", "content": "Không phải, chuyển sang làm ấm 28 độ"}
+      ],
+      "rewrite": "Chuyển sang làm ấm 28 độ",
+      "rationale": "User thay đổi từ làm mát sang chế độ sưởi ấm"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "calling",
+      "intent": "call",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Gọi cho thầy giáo"},
+        {"role": "bot", "content": "Đang gọi thầy giáo con"},
+        {"role": "user", "content": "Thầy Hùng dạy Toán"},
+        {"role": "user", "content": "Hỏi về lịch thi giữa kỳ"}
+      ],
+      "rewrite": "Gọi cho thầy Hùng dạy Toán hỏi lịch thi giữa kỳ",
+      "rationale": "Thông tin người nhận và nội dung được gom từ nhiều lượt"
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Đi nhà hàng Hải Sản"},
+        {"role": "bot", "content": "Đang dẫn đến nhà hàng Hải Sản Biển Đông"},
+        {"role": "user", "content": "Chỗ rẻ hơn đi"}
+      ],
+      "rewrite": "Dẫn đường đến chỗ rẻ hơn thay vì nhà hàng Hải Sản Biển Đông",
+      "rationale": "Đại từ 'chỗ rẻ hơn' cần resolve từ địa điểm bot đang dẫn"
+    },
+    {
+      "pattern": "code_switching",
+      "domain": "music",
+      "intent": "play_music_online",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Nghe gì đó thư giãn"},
+        {"role": "bot", "content": "Bạn thích playlist nào?"},
+        {"role": "user", "content": "Play Spotify Daily Mix 3"}
+      ],
+      "rewrite": "Play Spotify Daily Mix 3",
+      "rationale": "Lượt cuối đã tự đầy đủ với code-switching Spotify"
+    },
+    {
+      "pattern": "negation",
+      "domain": "vehicle",
+      "intent": "toggle_light",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật đèn nội thất"},
+        {"role": "bot", "content": "Đèn nội thất đã bật màu xanh"},
+        {"role": "user", "content": "Đừng bật màu xanh, chuyển sang trắng"}
+      ],
+      "rewrite": "Chuyển đèn nội thất sang trắng đừng bật màu xanh",
+      "rationale": "Phủ định màu đèn cụ thể cần giữ nguyên"
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Nhiệt độ phòng ngủ bao nhiêu"},
+        {"role": "bot", "content": "Phòng ngủ 29 độ, độ ẩm 72%"},
+        {"role": "user", "content": "Bật máy lọc không khí"}
+      ],
+      "rewrite": "Bật máy lọc không khí",
+      "rationale": "Thông tin nhiệt độ và ẩm nhiễu không được kéo vào"
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "driver_assist",
+      "intent": "lane_assist",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật tự lái"},
+        {"role": "bot", "content": "Auto pilot đã hoạt động"},
+        {"role": "user", "content": "Bật cảnh báo mệt mỏi và giảm tốc"}
+      ],
+      "rewrite": "Bật cảnh báo mệt mỏi và giảm tốc độ",
+      "rationale": "Hai tính năng driver assist kết hợp"
+    },
+    {
+      "pattern": "implicit_reference",
+      "domain": "messaging",
+      "intent": "send_message",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Nhắn cho gia đình"},
+        {"role": "bot", "content": "Đã gửi cho gia đình"},
+        {"role": "user", "content": "Nhắn thêm cho công ty"}
+      ],
+      "rewrite": "Nhắn thêm cho công ty",
+      "rationale": "Implicit 'công ty' giữ nguyên không bịa nội dung"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "charging",
+      "intent": "find_charging",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Xe sắp hết điện"},
+        {"role": "bot", "content": "Pin còn 9%"},
+        {"role": "user", "content": "Tìm trạm sạc"},
+        {"role": "user", "content": "Gần đường Hoàng Quốc Việt"}
+      ],
+      "rewrite": "Tìm trạm sạc gần đường Hoàng Quốc Việt",
+      "rationale": "Slot vị trí được bổ sung sau khi biết pin thấp"
+    },
+    {
+      "pattern": "correction",
+      "domain": "music",
+      "intent": "play_music_offline",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Phát nhạc trẻ"},
+        {"role": "bot", "content": "Đang phát nhạc trẻ"},
+        {"role": "user", "content": "Đổi sang ballad acoustic"}
+      ],
+      "rewrite": "Đổi sang ballad acoustic",
+      "rationale": "Lượt cuối tự đầy đủ sau khi sửa thể loại nhạc"
+    }
+  ]
+}

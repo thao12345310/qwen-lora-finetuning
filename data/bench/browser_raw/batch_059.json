@@ -1,0 +1,255 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Ở căn hộ The Zei Mỹ Đình, tôi điều khiển được đèn nào từ xe?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật đèn lối vào hoặc đèn ban công."
+    },
+    {
+    "role": "user",
+    "content": "Khi tôi vào hầm, bật đèn thứ hai."
+    }
+    ],
+    "rewrite": "Khi tôi vào hầm, bật đèn ban công tại căn hộ The Zei Mỹ Đình.",
+    "rationale": "Lượt cuối chỉ dùng “đèn thứ hai”, nên model phải chọn đúng thiết bị thứ hai trong danh sách đã nêu."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Soạn tin báo điểm đón cho Trần Gia Hân."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi qua kênh nào?"
+    },
+    {
+    "role": "user",
+    "content": "Qua SMS."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn nhắn nội dung gì?"
+    },
+    {
+    "role": "user",
+    "content": "Mình đang chờ ở sảnh Tây của Lotte Mall West Lake Hanoi."
+    },
+    {
+    "role": "bot",
+    "content": "Gửi ngay hay hẹn thời gian?"
+    },
+    {
+    "role": "user",
+    "content": "Hẹn gửi lúc 19 giờ 05."
+    }
+    ],
+    "rewrite": "Hẹn gửi SMS cho Trần Gia Hân lúc 19 giờ 05 với nội dung “Mình đang chờ ở sảnh Tây của Lotte Mall West Lake Hanoi”.",
+    "rationale": "Người nhận, kênh gửi, nội dung và giờ gửi được cung cấp qua bốn lượt user riêng biệt."
+    },
+    {
+    "pattern": "correction",
+    "domain": "vehicle",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Hạ cửa kính sau bên trái một chút."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn hạ cửa kính sau bên trái bao nhiêu?"
+    },
+    {
+    "role": "user",
+    "content": "Không hạ kính nữa; kéo rèm che nắng cửa sau bên trái."
+    }
+    ],
+    "rewrite": "Không hạ cửa kính; hãy kéo rèm che nắng cửa sau bên trái.",
+    "rationale": "Lượt cuối tự thay đổi hoàn toàn thao tác ban đầu, nên không được giữ ý định hạ kính."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "driver_assist",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo tình trạng xe khi đang đi đường."
+    },
+    {
+    "role": "bot",
+    "content": "Nhiệt độ ngoài trời là 29°C và pin xe còn 68%."
+    },
+    {
+    "role": "user",
+    "content": "Bật cảnh báo xe phía trước khởi hành."
+    }
+    ],
+    "rewrite": "Bật cảnh báo xe phía trước khởi hành.",
+    "rationale": "Nhiệt độ và mức pin là dữ kiện gây nhiễu, không thuộc lệnh kích hoạt cảnh báo hỗ trợ lái."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chiếc Tesla Model X có chế độ lọc khí nào mạnh khi ngoài trời ô nhiễm?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể dùng lọc HEPA thông thường hoặc Bioweapon Defense Mode."
+    },
+    {
+    "role": "user",
+    "content": "Bật mode thứ hai trước khi tôi lên xe."
+    }
+    ],
+    "rewrite": "Bật Bioweapon Defense Mode trên Tesla Model X trước khi tôi lên xe.",
+    "rationale": "Model phải resolve “mode thứ hai” và giữ nguyên tên tính năng tiếng Anh của xe."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Trong xe đã lưu bộ sạc ở nhà chị gái tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có bộ sạc nào được lưu với nhãn nhà chị gái của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Đặt lịch sạc ở nhà chị gái tôi lúc 21 giờ."
+    }
+    ],
+    "rewrite": "Đặt lịch sạc ở nhà chị gái tôi lúc 21 giờ.",
+    "rationale": "Không có địa chỉ hoặc bộ sạc cụ thể trong lịch sử, nên không được tự bịa thông tin cho “nhà chị gái tôi”."
+    },
+    {
+    "pattern": "negation",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm liên hệ của Quang Duy trong danh bạ."
+    },
+    {
+    "role": "bot",
+    "content": "Có Nguyễn Quang Duy - kỹ thuật viên VinFast và Phạm Quang Duy - môi giới bảo hiểm."
+    },
+    {
+    "role": "user",
+    "content": "Gọi kỹ thuật viên, đừng gọi người bên bảo hiểm."
+    }
+    ],
+    "rewrite": "Gọi cho Nguyễn Quang Duy - kỹ thuật viên VinFast và đừng gọi Phạm Quang Duy - môi giới bảo hiểm.",
+    "rationale": "Lượt cuối phân biệt hai người trùng tên bằng nghề nghiệp và chứa ràng buộc phủ định bắt buộc giữ lại."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chiếc VinFast VF 7 đang sạc ở đâu?"
+    },
+    {
+    "role": "bot",
+    "content": "Xe đang sạc tại trạm V-GREEN ở Vincom Mega Mall Smart City, pin hiện đạt 72%."
+    },
+    {
+    "role": "user",
+    "content": "Dừng khi đạt 85% rồi mở điều hòa trước khi tôi quay lại."
+    }
+    ],
+    "rewrite": "Đặt chiếc VinFast VF 7 dừng sạc tại trạm V-GREEN ở Vincom Mega Mall Smart City khi pin đạt 85% rồi mở điều hòa trước khi tôi quay lại.",
+    "rationale": "Lượt cuối có hai hành động và phải gắn đúng xe cùng trạm sạc đã được nêu trước đó."
+    },
+    {
+    "pattern": "correction",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Dẫn tôi đến Nhà thờ Đức Bà Sài Gòn."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị tuyến đường tới Nhà thờ Đức Bà Sài Gòn."
+    },
+    {
+    "role": "user",
+    "content": "Trước tiên ghé Chợ Bến Thành mua đồ."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn thêm Chợ Bến Thành làm điểm dừng hay đổi điểm đến?"
+    },
+    {
+    "role": "user",
+    "content": "Chỉ đi tới chợ thôi, bỏ điểm cũ."
+    }
+    ],
+    "rewrite": "Đổi điểm đến sang Chợ Bến Thành và bỏ tuyến tới Nhà thờ Đức Bà Sài Gòn.",
+    "rationale": "Lượt cuối hủy điểm đến ban đầu bằng tham chiếu “điểm cũ” và chỉ giữ mục tiêu mới."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chuẩn bị phòng khách trước khi tôi về căn hộ Lumière Riverside."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn điều khiển thiết bị nào?"
+    },
+    {
+    "role": "user",
+    "content": "Máy khuếch tán tinh dầu phòng khách."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn bật lúc nào và dùng chế độ nào?"
+    },
+    {
+    "role": "user",
+    "content": "Lúc 18 giờ 25, chế độ nhẹ."
+    },
+    {
+    "role": "bot",
+    "content": "Thiết bị sẽ chạy trong bao lâu?"
+    },
+    {
+    "role": "user",
+    "content": "Trong 30 phút, lưu lịch nhé."
+    }
+    ],
+    "rewrite": "Lưu lịch bật máy khuếch tán tinh dầu phòng khách tại căn hộ Lumière Riverside lúc 18 giờ 25 ở chế độ nhẹ trong 30 phút.",
+    "rationale": "Thiết bị, địa điểm, thời gian, chế độ và thời lượng đều phải được tổng hợp từ nhiều lượt trước."
+    }
+    ]
+    }
+    

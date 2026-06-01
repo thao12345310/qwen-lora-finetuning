@@ -1,0 +1,255 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Ga Hà Nội có những cổng đón khách nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể đón khách ở cổng Lê Duẩn hoặc cổng Trần Quý Cáp."
+    },
+    {
+    "role": "user",
+    "content": "Bạn tôi xuống tàu ở phía đường Trần Quý Cáp."
+    },
+    {
+    "role": "bot",
+    "content": "Vậy cổng Trần Quý Cáp sẽ thuận tiện hơn."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tôi tới cổng tiện hơn."
+    }
+    ],
+    "rewrite": "Dẫn tôi tới cổng Trần Quý Cáp của Ga Hà Nội.",
+    "rationale": "Lượt cuối chỉ dùng mô tả “cổng tiện hơn”, cần truy xuất cổng đã được xác định theo vị trí xuống tàu."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Thiết lập camera theo dõi lúc tôi đi vắng."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn điều khiển camera ở địa điểm nào?"
+    },
+    {
+    "role": "user",
+    "content": "Camera cửa chính căn hộ Vinhomes Symphony."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn bật vào thời gian nào và ghi hình theo điều kiện gì?"
+    },
+    {
+    "role": "user",
+    "content": "Từ 21 giờ 15, chỉ ghi khi phát hiện chuyển động."
+    },
+    {
+    "role": "bot",
+    "content": "Có bật còi cảnh báo tại nhà không?"
+    },
+    {
+    "role": "user",
+    "content": "Không bật còi, lưu thiết lập."
+    }
+    ],
+    "rewrite": "Lưu thiết lập bật camera cửa chính tại căn hộ Vinhomes Symphony từ 21 giờ 15, chỉ ghi hình khi phát hiện chuyển động và không bật còi cảnh báo.",
+    "rationale": "Camera, địa điểm, giờ kích hoạt, điều kiện ghi hình và phủ định còi cảnh báo nằm rải rác qua nhiều lượt."
+    },
+    {
+    "pattern": "correction",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật nhận diện biển báo khi chạy cao tốc Pháp Vân - Cầu Giẽ."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị bật nhận diện biển báo trên cao tốc Pháp Vân - Cầu Giẽ."
+    },
+    {
+    "role": "user",
+    "content": "Đổi lại, chỉ cảnh báo khi vượt 90 km/h trên tuyến đó."
+    }
+    ],
+    "rewrite": "Trên cao tốc Pháp Vân - Cầu Giẽ, chỉ cảnh báo khi xe vượt 90 km/h.",
+    "rationale": "Lượt cuối thay tính năng ban đầu bằng cảnh báo tốc độ và dùng “tuyến đó” để giữ đúng phạm vi áp dụng."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "vehicle",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo nhanh tình trạng trước khi đón trẻ."
+    },
+    {
+    "role": "bot",
+    "content": "Pin xe còn 71% và ngoài trời hiện là 30°C."
+    },
+    {
+    "role": "user",
+    "content": "Khóa trẻ em cửa sau bên phải."
+    }
+    ],
+    "rewrite": "Khóa trẻ em cửa sau bên phải.",
+    "rationale": "Phần trăm pin và nhiệt độ ngoài trời là nhiễu, không được kéo vào thao tác khóa cửa trẻ em."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm nhạc của Hòa Minzy và Tăng Duy Tân."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy “Bật Tình Yêu Lên” của Hòa Minzy và Tăng Duy Tân, cùng “Thị Mầu” của Hòa Minzy."
+    },
+    {
+    "role": "user",
+    "content": "Queue bài có cả hai ca sĩ trên Apple Music."
+    }
+    ],
+    "rewrite": "Queue bài “Bật Tình Yêu Lên” của Hòa Minzy và Tăng Duy Tân trên Apple Music.",
+    "rationale": "Model phải chọn bài có cả hai nghệ sĩ và giữ nguyên các token tiếng Anh “Queue” và “Apple Music”."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đã lưu trụ sạc ở văn phòng tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có trụ sạc nào được lưu với nhãn văn phòng của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Bắt đầu sạc ở trụ sạc văn phòng tôi."
+    }
+    ],
+    "rewrite": "Bắt đầu sạc ở trụ sạc văn phòng tôi.",
+    "rationale": "Không có vị trí hay mã trụ cụ thể trong lịch sử nên phải giữ nguyên tham chiếu ngầm, không được tự bịa."
+    },
+    {
+    "pattern": "negation",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Ngoài đường đang nhiều khói, xe có chế độ gió nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chọn lấy gió ngoài hoặc lấy gió trong."
+    },
+    {
+    "role": "user",
+    "content": "Bật chế độ thứ hai, không mở cửa sổ nhé."
+    }
+    ],
+    "rewrite": "Bật chế độ lấy gió trong và không mở cửa sổ.",
+    "rationale": "Lượt cuối cần resolve lựa chọn thứ hai thành lấy gió trong đồng thời giữ rõ yêu cầu phủ định mở cửa sổ."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Camera sân sau nhà tôi có thấy chú chó không?"
+    },
+    {
+    "role": "bot",
+    "content": "Camera tại căn nhà Ecopark phát hiện chú chó đang đứng trước cửa sân sau."
+    },
+    {
+    "role": "user",
+    "content": "Mở cửa chỗ nó đứng rồi bật đèn sân sau."
+    }
+    ],
+    "rewrite": "Mở cửa sân sau tại căn nhà Ecopark rồi bật đèn sân sau.",
+    "rationale": "Cụm “chỗ nó đứng” phải được ánh xạ thành cửa sân sau và câu cuối chứa hai thao tác liên tiếp."
+    },
+    {
+    "pattern": "correction",
+    "domain": "charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bắt đầu sạc nhanh tại trạm VinFast ở Vincom Plaza Ngô Quyền."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã sẵn sàng bắt đầu phiên sạc nhanh tại trạm VinFast ở Vincom Plaza Ngô Quyền."
+    },
+    {
+    "role": "user",
+    "content": "Không sạc nhanh; dùng sạc thường tại trạm VinFast ở Vincom Plaza Ngô Quyền."
+    }
+    ],
+    "rewrite": "Không dùng sạc nhanh; hãy dùng sạc thường tại trạm VinFast ở Vincom Plaza Ngô Quyền.",
+    "rationale": "Lượt cuối đã tự nêu đầy đủ việc hủy loại sạc ban đầu và thay bằng loại sạc mới tại cùng địa điểm."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chuẩn bị xe trước khi vào máy rửa tự động."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn đang chuẩn bị chiếc xe nào?"
+    },
+    {
+    "role": "user",
+    "content": "Chiếc Tesla Model 3."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn điều chỉnh những bộ phận nào trước khi rửa xe?"
+    },
+    {
+    "role": "user",
+    "content": "Gập gương và tắt gạt mưa tự động."
+    },
+    {
+    "role": "bot",
+    "content": "Có cần đóng cửa sổ trời không?"
+    },
+    {
+    "role": "user",
+    "content": "Có, đóng luôn rồi kích hoạt Car Wash Mode."
+    }
+    ],
+    "rewrite": "Trên Tesla Model 3, gập gương, tắt gạt mưa tự động, đóng cửa sổ trời rồi kích hoạt Car Wash Mode.",
+    "rationale": "Mẫu yêu cầu tổng hợp đúng xe và ba thao tác chuẩn bị trước khi kích hoạt tính năng mang tên tiếng Anh."
+    }
+    ]
+    }
+    

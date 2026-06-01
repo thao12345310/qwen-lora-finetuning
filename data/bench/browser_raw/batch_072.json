@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn tới nhà bà Tâm ở số 23 Đường Hoàng Quốc Việt, Hà Nội."},
+          {"role":"bot","content":"Địa chỉ đã lưu, cách bạn 2.1 km."},
+          {"role":"user","content":"Đi đến chỗ ấy ngay."}
+        ],
+        "rewrite": "Điều hướng tới nhà bà Tâm, số 23 Đường Hoàng Quốc Việt, Hà Nội",
+        "rationale": "Câu cuối dùng đại từ “chỗ ấy” nên dựa vào địa chỉ đã được lưu để xác định điểm đến."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn biết thời tiết hôm nay ở Đà Nẵng không?"},
+          {"role":"bot","content":"Nhiệt độ hiện tại 29°C, trời có nắng nhẹ."},
+          {"role":"user","content":"Bật đèn hậu."}
+        ],
+        "rewrite": "Bật đèn hậu",
+        "rationale": "Thông tin thời tiết không liên quan, câu cuối đã bao đủ slot để bật đèn."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cần tìm trạm sạc nhanh gần khu vực phố Lê Duẩn."},
+          {"role":"bot","content":"Có trạm SuperCharge ở ngã 3, cách 1.5 km, công suất 120 kW."},
+          {"role":"user","content":"Muốn dùng cấp 3, không trả phí phụ."},
+          {"role":"bot","content":"Đã bật cấp 3, không thu phí phụ."},
+          {"role":"user","content":"Đi tới đó đi."}
+        ],
+        "rewrite": "Điều hướng tới trạm SuperCharge ở ngã 3, cách 1.5 km, công suất 120 kW, cấp 3, không thu phí phụ",
+        "rationale": "Các slot vị trí, công suất, cấp và phí được cung cấp qua nhiều lượt, cần tổng hợp trong một lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho anh Lộc số 0916 777 888."},
+          {"role":"bot","content":"Đang gọi anh Lộc."},
+          {"role":"user","content":"Không, gọi cho chị Lệ số 0916 777 889."}
+        ],
+        "rewrite": "Gọi chị Lệ số 0916 777 889",
+        "rationale": "Người dùng sửa lại người nhận và số điện thoại, cần phản ánh thông tin mới."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play \"Levitating\" by Dua Lipa on Spotify."},
+          {"role":"bot","content":"\"Levitating\" đang phát trên Spotify."},
+          {"role":"user","content":"Set volume to 60."}
+        ],
+        "rewrite": "Đặt âm lượng 60 cho \"Levitating\" trên Spotify",
+        "rationale": "Câu cuối giữ token tiếng Anh “Spotify” và yêu cầu mức âm lượng, không cần ngữ cảnh trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa trong phòng bếp."},
+          {"role":"bot","content":"Điều hòa phòng bếp đã bật."},
+          {"role":"user","content":"Giảm nhiệt độ của nó xuống 21 độ."}
+        ],
+        "rewrite": "Đặt nhiệt độ điều hòa phòng bếp 21°C",
+        "rationale": "Đại từ “nó” tham chiếu tới điều hòa phòng bếp đã bật, cần chuyển thành câu lệnh đầy đủ."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 24 độ."},
+          {"role":"bot","content":"Điều hòa đã bật 24°C."},
+          {"role":"user","content":"Không, tắt điều hòa ngay."}
+        ],
+        "rewrite": "Tắt điều hòa ngay",
+        "rationale": "Câu cuối phủ định hành động bật, không cần bổ sung thông tin."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho anh Long: \"Hẹn hò tối nay\" và nhắc tôi 30 phút trước."},
+          {"role":"bot","content":"Tin nhắn và nhắc đã được lập."},
+          {"role":"user","content":"Thực hiện."}
+        ],
+        "rewrite": "Gửi tin đến anh Long nội dung \"Hẹn hò tối nay\" và đặt nhắc 30 phút trước",
+        "rationale": "Lượt cuối cần gộp hai intent (gửi tin và nhắc) vào một câu duy nhất."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật cruise control."},
+          {"role":"bot","content":"Cruise control đã bật, tốc độ mặc định 90km/h."},
+          {"role":"user","content":"Thay tốc độ thành 80km/h."},
+          {"role":"bot","content":"Tốc độ đã đổi 80km/h."},
+          {"role":"user","content":"Bây giờ bật giữ khoảng cách 25m."}
+        ],
+        "rewrite": "Đặt khoảng cách giữ 25m cho cruise control",
+        "rationale": "Các slot tốc độ đã được thiết lập trước, lượt cuối chỉ yêu cầu giữ khoảng cách, cần dựa trên lịch sử."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Phát playlist \"Nhạc Vui Tết\" trong bộ nhớ."},
+          {"role":"bot","content":"Playlist \"Nhạc Vui Tết\" đã sẵn sàng."},
+          {"role":"user","content":"Phát nó ngay."}
+        ],
+        "rewrite": "Phát playlist \"Nhạc Vui Tết\" từ bộ nhớ",
+        "rationale": "Đại từ “nó” ám chỉ playlist vừa được xác nhận, cần chuyển thành câu lệnh độc lập."
+      }
+    ]
+  }

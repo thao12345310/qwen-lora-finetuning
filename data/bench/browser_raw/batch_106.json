@@ -1,0 +1,118 @@
+{
+    "samples": [
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Phát nhạc Vpop trên Apple Music nhưng đừng phát nhạc của Sơn Tùng M-TP"}
+        ],
+        "rewrite": "Phát nhạc Vpop trên Apple Music, không phát bài của Sơn Tùng M-TP.",
+        "rationale": "Lượt đơn đủ slot nền tảng và điều kiện loại trừ; từ 'không' bắt buộc giữ nguyên trong rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tăng nhiệt độ điều hoà lên 26 độ và bật sưởi ghế lái mức 3 luôn"}
+        ],
+        "rewrite": "Tăng điều hoà lên 26°C và bật sưởi ghế lái mức 3.",
+        "rationale": "Lượt đơn chứa hai intent climate song song với số liệu cụ thể, không cần lịch sử."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Kết nối Bluetooth với điện thoại rồi cast nhạc lên loa xe đi"}
+        ],
+        "rewrite": "Kết nối Bluetooth với điện thoại và cast nhạc lên loa xe.",
+        "rationale": "Token 'Bluetooth' và 'cast' giữ nguyên tiếng Anh; lượt đơn đã đủ thông tin không cần lịch sử."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Dẫn đường đến chỗ làm giúp tôi, đi tuyến ít đèn đỏ nhất"}
+        ],
+        "rewrite": "Chỉ đường đến chỗ làm theo tuyến ít đèn đỏ nhất.",
+        "rationale": "'Chỗ làm' là implicit reference không có địa chỉ trong hội thoại, giữ nguyên cụm không bịa địa điểm."
+      },
+      {
+        "pattern": "negation",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật cruise control 100km/h nhưng không bật Auto Emergency Braking nhé"}
+        ],
+        "rewrite": "Bật cruise control 100km/h, không bật Auto Emergency Braking.",
+        "rationale": "Lượt đơn đủ tốc độ và điều kiện loại trừ; 'không' và token 'Auto Emergency Braking' đều phải giữ nguyên."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Báo tôi biết thông tin chuyến bay VJ134 hôm nay"},
+          {"role":"bot","content":"VJ134 Hà Nội – Đà Nẵng: cất cánh 16:20 đúng giờ, máy bay Airbus A320, cổng B4, terminal 1, ghế còn trống hàng 12 và 24."},
+          {"role":"user","content":"Nhắn Zalo cho chị Hà Linh báo đón ở sân bay Đà Nẵng lúc 17 giờ 30 nhé"}
+        ],
+        "rewrite": "Nhắn Zalo cho chị Hà Linh báo đón ở sân bay Đà Nẵng lúc 17h30.",
+        "rationale": "Bot trả 5 thông số chuyến bay đều là nhiễu; chỉ điểm đến Đà Nẵng và giờ 17h30 từ lượt user là slot cần thiết, con số 17h30 có trong hội thoại."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Hạ kính lái xuống hết rồi gập gương chiếu hậu trái lại đi"}
+        ],
+        "rewrite": "Hạ kính cửa lái hoàn toàn và gập gương chiếu hậu bên trái.",
+        "rationale": "Lượt đơn hai intent thiết bị xe độc lập, không cần lịch sử."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật Google Home chế độ Away, kích hoạt motion sensor toàn nhà luôn"}
+        ],
+        "rewrite": "Bật Google Home chế độ Away và kích hoạt motion sensor toàn nhà.",
+        "rationale": "Token 'Google Home', 'Away', 'motion sensor' giữ nguyên tiếng Anh; lượt đơn đủ slot không cần lịch sử."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi hay đặt đồ ở tiệm tạp hoá đầu hẻm nhà"},
+          {"role":"bot","content":"Đã lưu tiệm tạp hoá đầu hẻm vào danh bạ, số 0938 441 772, tên liên hệ là cô Nguyệt."},
+          {"role":"user","content":"Gọi hỏi cô ấy còn trứng gà ta không, mua một chục"}
+        ],
+        "rewrite": "Gọi cho cô Nguyệt số 0938 441 772 hỏi còn trứng gà ta không, đặt mua một chục.",
+        "rationale": "'Cô ấy' resolve về cô Nguyệt và số 0938 441 772 từ lượt bot; giữ nguyên số điện thoại có trong hội thoại, không bịa."
+      },
+      {
+        "pattern": "negation",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật chế độ ngủ cho nhà nhưng đừng tắt đèn cầu thang, tối ngã"}
+        ],
+        "rewrite": "Bật chế độ ngủ cho nhà, đừng tắt đèn cầu thang.",
+        "rationale": "Lượt đơn đủ yêu cầu và ngoại lệ; từ 'đừng' bắt buộc giữ nguyên trong rewrite."
+      }
+    ]
+  }

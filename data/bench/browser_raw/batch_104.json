@@ -1,0 +1,118 @@
+{
+    "samples": [
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật điều hoà 23 độ nhưng đừng bật sưởi ghế, nóng lắm rồi"}
+        ],
+        "rewrite": "Bật điều hoà 23°C, không bật sưởi ghế.",
+        "rationale": "Lượt đơn đủ slot; từ 'không' chỉ thiết bị bị loại trừ bắt buộc giữ nguyên trong rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật đèn pha rồi bật gạt mưa tốc độ thấp luôn, trời lất phất"}
+        ],
+        "rewrite": "Bật đèn pha và bật gạt mưa tốc độ thấp.",
+        "rationale": "Lượt đơn chứa hai intent thiết bị xe song song, không cần lịch sử."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật Lane Keeping Assist và Blind Spot Warning lên đi, vào cao tốc rồi"}
+        ],
+        "rewrite": "Bật Lane Keeping Assist và Blind Spot Warning.",
+        "rationale": "Token 'Lane Keeping Assist' và 'Blind Spot Warning' giữ nguyên tiếng Anh; lượt đơn đủ slot không cần lịch sử."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Chỉ đường đến nhà bố mẹ tôi nhanh nhất đi"}
+        ],
+        "rewrite": "Chỉ đường đến nhà bố mẹ theo tuyến nhanh nhất.",
+        "rationale": "'Nhà bố mẹ' là implicit reference không có thông tin địa chỉ trong hội thoại, giữ nguyên cụm không bịa địa chỉ."
+      },
+      {
+        "pattern": "negation",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tìm trạm sạc trong 5km nhưng tránh trạm VinFast, thẻ tôi hết hạn rồi"}
+        ],
+        "rewrite": "Tìm trạm sạc trong bán kính 5km, tránh trạm VinFast.",
+        "rationale": "Lượt đơn đủ thông tin; từ 'tránh' chỉ thương hiệu bị loại bắt buộc giữ nguyên, con số 5km có trong hội thoại."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe tôi đang ở trạng thái gì vậy?"},
+          {"role":"bot","content":"Tốc độ 0km/h đang đỗ, pin 88%, áp suất lốp trước trái 35 PSI, trước phải 34 PSI, sau đều 36 PSI, cửa sổ trời mở 15%."},
+          {"role":"user","content":"Cài cảnh báo khi áp suất lốp nào xuống dưới 30 PSI nhé"}
+        ],
+        "rewrite": "Cài cảnh báo khi áp suất bất kỳ lốp nào xuống dưới 30 PSI.",
+        "rationale": "Bot trả 6 thông số trạng thái xe; chỉ ngưỡng 30 PSI từ lượt user là slot của rewrite, các số 35/34/36 PSI, 88%, 15% đều là nhiễu không đưa vào."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tắt bài đang phát rồi bật radio VOV1 lên thay đi"}
+        ],
+        "rewrite": "Tắt nhạc đang phát và bật radio VOV1.",
+        "rationale": "Lượt đơn chứa hai intent âm nhạc liên tiếp, không cần ngữ cảnh bổ sung."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật Xiaomi Gateway chế độ Night Mode, tắt hết đèn trừ đèn hành lang"}
+        ],
+        "rewrite": "Bật Xiaomi Gateway chế độ Night Mode, tắt toàn bộ đèn trừ đèn hành lang.",
+        "rationale": "Token 'Xiaomi Gateway' và 'Night Mode' giữ nguyên; lượt đơn chứa cả compound intent và negation, đủ slot không cần lịch sử."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi thường báo cáo tuần cho sếp Minh Quân vào thứ Sáu"},
+          {"role":"bot","content":"Đã ghi nhận lịch báo cáo tuần cho sếp Minh Quân vào thứ Sáu hằng tuần."},
+          {"role":"user","content":"Tuần này trễ, nhắn Zalo xin lỗi và bảo sẽ gửi trước 6 giờ tối nay"}
+        ],
+        "rewrite": "Nhắn Zalo cho sếp Minh Quân xin lỗi báo cáo tuần trễ và sẽ gửi trước 18h hôm nay.",
+        "rationale": "'Sếp' resolve về Minh Quân từ thông tin user khai báo lượt đầu; con số 6 giờ tối có trong hội thoại, không bịa thêm."
+      },
+      {
+        "pattern": "negation",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Dẫn đường đến Hồ Hoàn Kiếm, đừng đi qua phố cổ giờ này đông lắm"}
+        ],
+        "rewrite": "Chỉ đường đến Hồ Hoàn Kiếm, không đi qua phố cổ.",
+        "rationale": "Lượt đơn đủ điểm đến và điều kiện tránh; từ 'không' giữ nguyên bắt buộc trong rewrite."
+      }
+    ]
+  }

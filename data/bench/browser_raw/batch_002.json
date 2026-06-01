@@ -1,0 +1,136 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở Spotify cho tôi nghe playlist 'Chill Vpop'"},
+          {"role":"bot","content":"Đã mở playlist 'Chill Vpop' trên Spotify."},
+          {"role":"user","content":"Bài đầu tiên trong đó là bài gì vậy?"},
+          {"role":"bot","content":"Bài đầu tiên là 'Có Chắc Yêu Là Đây' của Sơn Tùng M-TP."},
+          {"role":"user","content":"Bỏ qua bài đó đi, phát bài tiếp theo"}
+        ],
+        "rewrite": "Bỏ qua bài 'Có Chắc Yêu Là Đây' của Sơn Tùng M-TP, phát bài tiếp theo trong playlist 'Chill Vpop' trên Spotify.",
+        "rationale": "Đại từ 'bài đó' phải resolve từ lượt bot trước về tên bài cụ thể."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Ngoài trời bao nhiêu độ vậy?"},
+          {"role":"bot","content":"Nhiệt độ ngoài trời hiện tại là 37°C, độ ẩm 82%, pin xe còn 61%."},
+          {"role":"user","content":"Ừ nóng thế thì bật điều hoà trong xe xuống 22 độ đi"}
+        ],
+        "rewrite": "Bật điều hoà trong xe, đặt nhiệt độ 22°C.",
+        "rationale": "Bot nêu nhiều số (37°C, 82%, 61%) nhưng rewrite chỉ lấy đúng 22°C từ yêu cầu user, không kéo nhầm số nhiễu."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn đi ăn bún bò"},
+          {"role":"bot","content":"Khu vực nào bạn muốn tìm ạ?"},
+          {"role":"user","content":"Gần Hồ Tây, tránh đường Võ Chí Công"},
+          {"role":"bot","content":"Có 3 quán bún bò gần Hồ Tây. Quán gần nhất là Bún Bò Huế Bà Tuyết ở Xuân Diệu, cách 1.2km."},
+          {"role":"user","content":"Được, chỉ đường đến đó đi"}
+        ],
+        "rewrite": "Chỉ đường đến quán Bún Bò Huế Bà Tuyết ở Xuân Diệu, gần Hồ Tây, tránh đường Võ Chí Công.",
+        "rationale": "Slot tên quán, địa chỉ, điều kiện tránh đường rải qua 3 lượt user và bot, lượt cuối chỉ là 'đến đó'."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho anh Minh Tuấn đi"},
+          {"role":"bot","content":"Đang gọi cho anh Minh Tuấn..."},
+          {"role":"user","content":"Thôi huỷ đi, gọi cho chị Lan Anh mới đúng"}
+        ],
+        "rewrite": "Huỷ cuộc gọi đến anh Minh Tuấn và gọi cho chị Lan Anh.",
+        "rationale": "User đính chính người nhận, rewrite phải giữ cả hành động huỷ và yêu cầu mới."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Kết nối Bluetooth với điện thoại rồi phát FM 99.9 qua loa xe đi"}
+        ],
+        "rewrite": "Kết nối Bluetooth với điện thoại và phát FM 99.9 qua loa xe.",
+        "rationale": "Lượt cuối đã đủ thông tin, rewrite giữ nguyên token Bluetooth và FM 99.9 không dịch."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cho tôi biết mấy giờ tới nơi nếu đi Vinhomes Smart City"},
+          {"role":"bot","content":"Với lộ trình hiện tại qua đường Trần Duy Hưng, bạn đến Vinhomes Smart City lúc khoảng 18:45."},
+          {"role":"user","content":"Muộn quá, thử đường khác xem có nhanh hơn không"}
+        ],
+        "rewrite": "Tìm tuyến đường khác đến Vinhomes Smart City, không đi qua đường Trần Duy Hưng, xem có về trước 18:45 không.",
+        "rationale": "Rewrite phải resolve 'đường khác' ngầm ý tránh Trần Duy Hưng và gắn mốc giờ từ lượt bot."
+      },
+      {
+        "pattern": "negation",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật cruise control giữ 90km/h nhưng đừng bật lane assist nhé"}
+        ],
+        "rewrite": "Bật cruise control, giữ tốc độ 90km/h, không bật lane assist.",
+        "rationale": "Lượt cuối tự đủ nghĩa; rewrite phải giữ rõ phủ định lane assist."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mình sắp về đến nhà rồi"},
+          {"role":"bot","content":"Bạn cách nhà khoảng 5 phút. Bạn muốn chuẩn bị gì không?"},
+          {"role":"user","content":"Bật điều hoà phòng khách 26 độ và mở cổng tự động luôn"}
+        ],
+        "rewrite": "Bật điều hoà phòng khách đặt 26°C và mở cổng tự động.",
+        "rationale": "Hai intent song song (set_climate + smart_home_control) phải giữ đủ cả hai trong một câu rewrite."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Pin xe còn 18%, tìm trạm sạc gần đây đi"},
+          {"role":"bot","content":"Có trạm sạc VinFast tại Vincom Phạm Ngọc Thạch cách 3.1km và trạm EVgo tại AEON Mall Hà Đông cách 7.8km."},
+          {"role":"user","content":"Trạm nào hỗ trợ sạc nhanh DC?"},
+          {"role":"bot","content":"Trạm VinFast tại Vincom Phạm Ngọc Thạch có cổng sạc nhanh DC 150kW."},
+          {"role":"user","content":"Chỉ đường đến đó luôn đi, nhanh lên"}
+        ],
+        "rewrite": "Chỉ đường đến trạm sạc nhanh DC VinFast tại Vincom Phạm Ngọc Thạch.",
+        "rationale": "Slot tên trạm, vị trí, loại sạc trải qua 4 lượt; 'đó' phải resolve về đúng trạm VinFast DC."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Nhắn tin cho Hà Phương bảo mình đang trên đường"},
+          {"role":"bot","content":"Đã gửi tin nhắn cho Hà Phương: 'Mình đang trên đường nhé'."},
+          {"role":"user","content":"Giờ nhắn thêm cho cô ấy là tới khoảng 7 rưỡi tối"}
+        ],
+        "rewrite": "Nhắn thêm cho Hà Phương: 'Mình tới khoảng 7 rưỡi tối nhé'.",
+        "rationale": "'Cô ấy' phải resolve về Hà Phương từ lượt user đầu; bot đã gửi tin trước nên rewrite chỉ chứa nội dung mới."
+      }
+    ]
+  }

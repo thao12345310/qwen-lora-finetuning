@@ -1,0 +1,140 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài chế độ welcome cho khách VIP tối nay"},
+          {"role":"bot","content":"Khách đến lúc mấy giờ và cần chuẩn bị gì ạ?"},
+          {"role":"user","content":"8 giờ tối, cần đèn phòng khách ấm áp và nhạc nền nhẹ"},
+          {"role":"bot","content":"Đèn màu nào và nhạc thể loại gì ạ?"},
+          {"role":"user","content":"Đèn vàng 60% độ sáng, nhạc Jazz acoustic volume 30%, thêm bật máy khuếch tán tinh dầu oải hương luôn"}
+        ],
+        "rewrite": "Cài lịch 20h tối nay: bật đèn phòng khách màu vàng 60% độ sáng, phát nhạc Jazz acoustic volume 30% và bật máy khuếch tán tinh dầu oải hương.",
+        "rationale": "Giờ kích hoạt, ba thông số thiết bị rải qua 5 lượt; máy khuếch tán tinh dầu là thiết bị thứ ba bổ sung ở lượt cuối cần giữ đủ."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem trạng thái khoá cửa toàn xe"},
+          {"role":"bot","content":"Cửa lái: khoá. Cửa phụ: khoá. Cửa sau trái: mở khoá. Cửa sau phải: khoá. Cốp: khoá."},
+          {"role":"user","content":"Cái chưa khoá thì khoá lại đi"}
+        ],
+        "rewrite": "Khoá cửa sau bên trái.",
+        "rationale": "'Cái chưa khoá' resolve về đúng một mục duy nhất trong danh sách trạng thái là cửa sau trái đang mở khoá."
+      },
+      {
+        "pattern": "negation",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật chế độ không làm phiền đi"},
+          {"role":"bot","content":"Đã bật DND, tất cả cuộc gọi và tin nhắn sẽ bị chặn."},
+          {"role":"user","content":"Khoan, cho phép cuộc gọi từ danh bạ gia đình vẫn qua được, chặn người lạ thôi"}
+        ],
+        "rewrite": "Bật chế độ không làm phiền, chỉ cho phép cuộc gọi từ danh bạ gia đình, chặn tất cả cuộc gọi và tin nhắn từ số lạ.",
+        "rationale": "Phủ định có ngoại lệ; rewrite phân biệt rõ đối tượng được phép và bị chặn, không dùng 'DND thuần' vì có điều kiện phức tạp hơn."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"App bản đồ xe đang dùng gì?"},
+          {"role":"bot","content":"Đang dùng HERE Maps tích hợp, có thể kết nối Android Auto hoặc CarPlay nếu bạn muốn."},
+          {"role":"user","content":"Đổi sang Android Auto với Google Maps đi, tìm đường đến Lăng Chủ tịch Hồ Chí Minh"}
+        ],
+        "rewrite": "Kết nối Android Auto, dùng Google Maps chỉ đường đến Lăng Chủ tịch Hồ Chí Minh.",
+        "rationale": "Token 'Android Auto', 'CarPlay', 'Google Maps', 'HERE Maps' giữ nguyên; điểm đến cụ thể từ lượt cuối sau khi chọn nền tảng."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Sắp đến Huế rồi, pin còn 27%"},
+          {"role":"bot","content":"Trạm sạc gần trung tâm Huế nhất là VinFast Vincom Huế, đường Hùng Vương, cách 3.2km, còn 4 cổng DC 150kW."},
+          {"role":"user","content":"Sạc ở đó đến 70% rồi tìm chỗ ăn bún bò Huế gần đó luôn"}
+        ],
+        "rewrite": "Sạc tại VinFast Vincom Huế đường Hùng Vương đến 70% pin và tìm quán bún bò Huế gần Vincom Huế.",
+        "rationale": "Hai intent song song khác domain: sạc xe và tìm ăn uống; 'đó' trong yêu cầu tìm quán resolve về khu vực Vincom Huế."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Con tôi thi đại học tuần sau"},
+          {"role":"bot","content":"Chúc bé thi tốt! Bạn cần hỗ trợ gì không?"},
+          {"role":"user","content":"Nhắn tin động viên cháu qua Zalo, bảo bố tin cháu sẽ làm được"}
+        ],
+        "rewrite": "Nhắn Zalo động viên con: bố tin con sẽ làm được trong kỳ thi đại học tuần sau.",
+        "rationale": "'Cháu' ngầm chỉ con của user từ lượt khai báo đầu; không có tên cụ thể nên giữ nguyên 'con', không bịa tên."
+      },
+      {
+        "pattern": "correction",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đặt hẹn giờ tắt điều hoà sau 30 phút"},
+          {"role":"bot","content":"Đã đặt tắt điều hoà sau 30 phút."},
+          {"role":"user","content":"Thôi đổi lại 45 phút đi, còn đường dài"},
+          {"role":"bot","content":"Đã cập nhật tắt điều hoà sau 45 phút."},
+          {"role":"user","content":"Tắt hẹn giờ đi hẳn, tôi tự tắt sau"}
+        ],
+        "rewrite": "Huỷ hẹn giờ tắt điều hoà.",
+        "rationale": "User thay đổi quyết định hai lần rồi cuối cùng huỷ hoàn toàn; rewrite chỉ giữ intent cuối là cancel, không nhắc 30 hay 45 phút."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem xe tôi đã chạy bao nhiêu km tổng cộng"},
+          {"role":"bot","content":"Odometer tổng 47.832km, tháng này 1.243km, tuần này 287km, hôm nay 64km, lần sạc gần nhất cách đây 2 ngày."},
+          {"role":"user","content":"Xe cũ rồi, phát nhạc hoài niệm thập niên 90 trên Spotify đi"}
+        ],
+        "rewrite": "Phát nhạc hoài niệm thập niên 90 trên Spotify.",
+        "rationale": "Bot trả 5 chỉ số odometer đều là nhiễu; liên kết cảm xúc 'xe cũ' với nhạc hoài niệm là của user chứ không phải slot cần đưa vào rewrite."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài hành trình cho đoạn đường dài sắp tới"},
+          {"role":"bot","content":"Tốc độ mục tiêu bao nhiêu ạ?"},
+          {"role":"user","content":"100km/h"},
+          {"role":"bot","content":"Khoảng cách theo xe trước mức mấy và có cần bật lane centering không?"},
+          {"role":"user","content":"Khoảng cách mức 3, bật lane centering, thêm speed limit warning nếu vượt 110 luôn"}
+        ],
+        "rewrite": "Bật adaptive cruise control 100km/h khoảng cách mức 3, lane centering và cảnh báo vượt tốc khi quá 110km/h.",
+        "rationale": "Tốc độ, khoảng cách, lane centering và ngưỡng cảnh báo rải qua 5 lượt; token 'speed limit warning' giữ tinh thần tiếng Anh; lượt cuối bổ sung hai tính năng cùng lúc."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm điểm chụp ảnh đẹp ven hồ ở Hà Nội"},
+          {"role":"bot","content":"Gợi ý: Cầu Nhật Tân góc hồ Tây, Đường Thanh Niên giữa hai hồ, Công viên Thống Nhất bờ hồ và Bãi Đá Sông Hồng gần cầu Long Biên."},
+          {"role":"user","content":"Chỗ nào ở giữa hai hồ nghe lạ nhất thì dẫn vào đó chụp hoàng hôn"}
+        ],
+        "rewrite": "Chỉ đường đến Đường Thanh Niên nằm giữa hồ Tây và hồ Trúc Bạch để chụp ảnh hoàng hôn.",
+        "rationale": "'Chỗ nào ở giữa hai hồ' resolve về Đường Thanh Niên từ mô tả bot; 'chụp hoàng hôn' là mục đích bổ sung context nhưng không thay đổi điểm đến."
+      }
+    ]
+  }

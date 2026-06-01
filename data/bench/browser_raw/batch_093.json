@@ -1,0 +1,263 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đọc hai tin nhắn Zalo mới nhất giúp tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Anh Bảo Long hỏi mã vé gửi xe, còn chị Yến Nhi hỏi bạn đang đón ở tầng nào."
+    },
+    {
+    "role": "user",
+    "content": "Trả lời người hỏi tầng là tôi đang chờ ở tầng B1."
+    }
+    ],
+    "rewrite": "Gửi Zalo cho chị Yến Nhi với nội dung “Tôi đang chờ ở tầng B1”.",
+    "rationale": "Lượt cuối xác định người nhận bằng nội dung câu hỏi, nên phải chọn đúng chị Yến Nhi."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đặt nhắc kiểm tra giấy tờ cho chiếc VinFast VF 6."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn kiểm tra những giấy tờ nào?"
+    },
+    {
+    "role": "user",
+    "content": "Đăng kiểm và bảo hiểm bắt buộc."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn được nhắc khi nào?"
+    },
+    {
+    "role": "user",
+    "content": "9 giờ sáng ngày 12 tháng 6."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn ghi thêm địa điểm xử lý không?"
+    },
+    {
+    "role": "user",
+    "content": "Ghi Trung tâm Đăng kiểm 29-03V."
+    }
+    ],
+    "rewrite": "Đặt nhắc kiểm tra đăng kiểm và bảo hiểm bắt buộc cho VinFast VF 6 lúc 9 giờ sáng ngày 12 tháng 6 tại Trung tâm Đăng kiểm 29-03V.",
+    "rationale": "Mẫu xe, loại giấy tờ, thời gian và địa điểm được cung cấp qua bốn lượt user riêng biệt."
+    },
+    {
+    "pattern": "correction",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm tổng đài hai hãng hàng không để hỏi chuyến đi Đà Nẵng."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy tổng đài Vietnam Airlines và tổng đài Vietjet Air."
+    },
+    {
+    "role": "user",
+    "content": "Gọi Vietnam Airlines trước."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị gọi tổng đài Vietnam Airlines."
+    },
+    {
+    "role": "user",
+    "content": "Thôi đổi sang hãng còn lại để hỏi chuyến Đà Nẵng."
+    }
+    ],
+    "rewrite": "Gọi tổng đài Vietjet Air để hỏi chuyến đi Đà Nẵng.",
+    "rationale": "Lượt cuối hủy lựa chọn đầu tiên và dùng “hãng còn lại” để chỉ đúng Vietjet Air."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo nhanh tình trạng lúc xe đang cắm sạc."
+    },
+    {
+    "role": "bot",
+    "content": "Pin hiện đạt 48% và nhiệt độ ngoài trời là 33°C."
+    },
+    {
+    "role": "user",
+    "content": "Bật khóa bảo vệ cáp sạc."
+    }
+    ],
+    "rewrite": "Bật khóa bảo vệ cáp sạc.",
+    "rationale": "Phần trăm pin và nhiệt độ ngoài trời là nhiễu, không thuộc yêu cầu bảo vệ cáp sạc."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Sân bay Nội Bài có những nhà ga hành khách nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Nhà ga T1 phục vụ chuyến nội địa, còn nhà ga T2 phục vụ chuyến quốc tế."
+    },
+    {
+    "role": "user",
+    "content": "Tôi đón người bay từ Tokyo về."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn nên tới nhà ga T2 để đón chuyến bay quốc tế."
+    },
+    {
+    "role": "user",
+    "content": "Navigate tới terminal đó bằng Waze."
+    }
+    ],
+    "rewrite": "Navigate tới nhà ga T2 của Sân bay Nội Bài bằng Waze.",
+    "rationale": "Model phải resolve “terminal đó” thành nhà ga quốc tế T2 và giữ nguyên các token tiếng Anh."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "music",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe có lưu playlist chạy đêm của tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có playlist nào được lưu với nhãn chạy đêm của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Phát playlist chạy đêm của tôi."
+    }
+    ],
+    "rewrite": "Phát playlist chạy đêm của tôi.",
+    "rationale": "Không có tên playlist hay bài hát cụ thể trong lịch sử nên phải giữ nguyên tham chiếu ngầm."
+    },
+    {
+    "pattern": "negation",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi tôi tiến lại gần xe, có thể mở khóa theo cách nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chỉ mở khóa cửa lái hoặc mở khóa toàn bộ cửa và cốp."
+    },
+    {
+    "role": "user",
+    "content": "Chọn cách đầu, đừng mở các cửa còn lại."
+    }
+    ],
+    "rewrite": "Chỉ mở khóa cửa lái và đừng mở khóa các cửa còn lại.",
+    "rationale": "Lượt cuối chọn phương án đầu bằng tham chiếu và giữ rõ giới hạn không mở các cửa khác."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đoạn nào gần hầm Kim Liên cần chú ý vạch làn?"
+    },
+    {
+    "role": "bot",
+    "content": "Đoạn trước lối vào hầm Kim Liên có vạch làn khó quan sát khi trời tối."
+    },
+    {
+    "role": "user",
+    "content": "Qua đoạn đó, bật cảnh báo lệch làn rồi giới hạn 35 km/h."
+    }
+    ],
+    "rewrite": "Khi qua đoạn trước lối vào hầm Kim Liên, bật cảnh báo lệch làn rồi giới hạn tốc độ ở 35 km/h.",
+    "rationale": "Lượt cuối có hai hành động và dùng “đoạn đó” để tham chiếu vị trí cảnh báo cụ thể."
+    },
+    {
+    "pattern": "correction",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật sưởi hàng ghế sau."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã sẵn sàng bật sưởi cho hàng ghế sau."
+    },
+    {
+    "role": "user",
+    "content": "Không bật sưởi; bật thông gió ghế lái mức 2."
+    }
+    ],
+    "rewrite": "Không bật sưởi hàng ghế sau; hãy bật thông gió ghế lái ở mức 2.",
+    "rationale": "Lượt cuối tự đủ thông tin để hủy chức năng cũ và chuyển sang thông gió ở vị trí khác."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chuẩn bị cơm tối trước khi tôi về căn hộ Masteri An Phú."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn điều khiển thiết bị nào trong bếp?"
+    },
+    {
+    "role": "user",
+    "content": "Nồi cơm điện thông minh."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn nấu loại gạo nào và bắt đầu lúc mấy giờ?"
+    },
+    {
+    "role": "user",
+    "content": "Gạo lứt, bắt đầu lúc 17 giờ 55."
+    },
+    {
+    "role": "bot",
+    "content": "Sau khi nấu xong, bạn muốn giữ ấm trong bao lâu?"
+    },
+    {
+    "role": "user",
+    "content": "Giữ ấm 30 phút, lưu lịch đi."
+    }
+    ],
+    "rewrite": "Lưu lịch nấu gạo lứt bằng nồi cơm điện thông minh tại căn hộ Masteri An Phú lúc 17 giờ 55 và giữ ấm trong 30 phút.",
+    "rationale": "Thiết bị, địa điểm, loại gạo, thời gian bắt đầu và thời lượng giữ ấm được rải qua nhiều lượt."
+    }
+    ]
+    }
+    

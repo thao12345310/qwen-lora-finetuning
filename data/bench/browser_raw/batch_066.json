@@ -1,0 +1,239 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm liên hệ cứu hộ lốp xe và cứu hộ ắc quy trong danh bạ."
+    },
+    {
+    "role": "bot",
+    "content": "Có Minh Long - cứu hộ lốp xe và Hoàng Phúc - cứu hộ ắc quy."
+    },
+    {
+    "role": "user",
+    "content": "Xe tôi bị xẹp lốp, gọi người phù hợp hơn."
+    }
+    ],
+    "rewrite": "Gọi cho Minh Long - cứu hộ lốp xe.",
+    "rationale": "Lượt cuối không nêu tên liên hệ mà yêu cầu chọn đúng người dựa trên sự cố xẹp lốp."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tạo mã mở xe tạm thời cho chiếc Tesla Model X."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn cấp quyền cho ai?"
+    },
+    {
+    "role": "user",
+    "content": "Anh Duy Khánh."
+    },
+    {
+    "role": "bot",
+    "content": "Mã có hiệu lực vào thời gian nào và cho phép mở cửa nào?"
+    },
+    {
+    "role": "user",
+    "content": "Từ 14 giờ đến 16 giờ ngày 4 tháng 6, chỉ cửa ghế phụ trước."
+    },
+    {
+    "role": "bot",
+    "content": "Có cho phép khởi động xe không?"
+    },
+    {
+    "role": "user",
+    "content": "Không cho khởi động, tạo mã đi."
+    }
+    ],
+    "rewrite": "Tạo mã mở xe tạm thời cho anh Duy Khánh trên Tesla Model X từ 14 giờ đến 16 giờ ngày 4 tháng 6, chỉ cho phép mở cửa ghế phụ trước và không cho khởi động xe.",
+    "rationale": "Người dùng, mẫu xe, thời gian, cửa được phép mở và giới hạn khởi động nằm rải rác qua nhiều lượt."
+    },
+    {
+    "pattern": "correction",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi xe tới Vinhomes West Point, bật đèn phòng ăn."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị bật đèn phòng ăn khi xe tới Vinhomes West Point."
+    },
+    {
+    "role": "user",
+    "content": "Đổi sang bật quạt trần phòng khách ở đó thôi."
+    }
+    ],
+    "rewrite": "Khi xe tới Vinhomes West Point, chỉ bật quạt trần phòng khách.",
+    "rationale": "Lượt cuối thay cả thiết bị lẫn căn phòng, đồng thời dùng “ở đó” để giữ đúng địa điểm kích hoạt."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "music",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Cho tôi biết thông tin xe lúc này."
+    },
+    {
+    "role": "bot",
+    "content": "Pin xe còn 81% và nhiệt độ ngoài trời hiện là 35°C."
+    },
+    {
+    "role": "user",
+    "content": "Phát “Ngày Mai Người Ta Lấy Chồng” của Thành Đạt."
+    }
+    ],
+    "rewrite": "Phát bài “Ngày Mai Người Ta Lấy Chồng” của Thành Đạt.",
+    "rationale": "Hai con số về xe và thời tiết là nhiễu, không được đưa vào yêu cầu phát nhạc tự đủ nghĩa."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe hỗ trợ quan sát khi đổi làn bằng những tính năng nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể dùng cảnh báo điểm mù hoặc Lane Change Assist."
+    },
+    {
+    "role": "user",
+    "content": "Bật option tiếng Anh khi chạy trên cầu Nhật Tân."
+    }
+    ],
+    "rewrite": "Bật Lane Change Assist khi chạy trên cầu Nhật Tân.",
+    "rationale": "Model phải chọn tính năng được mô tả bằng tiếng Anh và giữ nguyên token Lane Change Assist."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "messaging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Hệ thống đã lưu nhóm cư dân tòa nhà tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có nhóm trò chuyện nào được lưu với nhãn cư dân tòa nhà của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Nhắn nhóm cư dân tòa nhà tôi là xe đang chắn lối xuống hầm."
+    }
+    ],
+    "rewrite": "Nhắn nhóm cư dân tòa nhà tôi với nội dung “Xe đang chắn lối xuống hầm”.",
+    "rationale": "Không có tên nhóm cụ thể trong lịch sử nên gold phải giữ nguyên cụm tham chiếu, không bịa người nhận."
+    },
+    {
+    "pattern": "negation",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm trạm sạc trên đường tới Bảo tàng Gốm Bát Tràng."
+    },
+    {
+    "role": "bot",
+    "content": "Có trạm V-GREEN tại Vincom Mega Mall Ocean City và trạm VinFast tại AEON Mall Long Biên."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tới trạm ở Ocean City, nhưng đừng đặt lịch sạc trước."
+    }
+    ],
+    "rewrite": "Dẫn đường tới trạm V-GREEN tại Vincom Mega Mall Ocean City nhưng đừng đặt lịch sạc trước.",
+    "rationale": "Lượt cuối xác định trạm bằng địa điểm rút gọn và chứa phủ định phải được giữ nguyên."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chị tôi đang ngồi ghế nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Chị bạn đang ngồi ở ghế sau bên phải."
+    },
+    {
+    "role": "user",
+    "content": "Tăng nhiệt chỗ chị lên 24°C rồi bật thông gió mức 1."
+    }
+    ],
+    "rewrite": "Đặt nhiệt độ ghế sau bên phải ở 24°C rồi bật thông gió tại vị trí đó ở mức 1.",
+    "rationale": "Hai hành động cùng phụ thuộc vào việc resolve “chỗ chị” thành vị trí ghế cụ thể."
+    },
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm hai lối vào Công viên Thống Nhất."
+    },
+    {
+    "role": "bot",
+    "content": "Có cổng Trần Nhân Tông và cổng Lê Duẩn."
+    },
+    {
+    "role": "user",
+    "content": "Tôi đón bạn ở phía đường Lê Duẩn."
+    },
+    {
+    "role": "bot",
+    "content": "Cổng Lê Duẩn sẽ thuận tiện hơn để đón bạn."
+    },
+    {
+    "role": "user",
+    "content": "Chỉ đường tới cổng đó."
+    }
+    ],
+    "rewrite": "Chỉ đường tới cổng Lê Duẩn của Công viên Thống Nhất.",
+    "rationale": "Lượt cuối dùng “cổng đó”, cần liên kết đúng lối vào đã được chọn dựa trên phía đường đón khách."
+    },
+    {
+    "pattern": "correction",
+    "domain": "vehicle",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật chế độ khóa cửa tự động khi xe chạy."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã sẵn sàng bật khóa cửa tự động khi xe bắt đầu di chuyển."
+    },
+    {
+    "role": "user",
+    "content": "Không bật tự khóa; chỉ khóa cửa sau bên trái ngay bây giờ."
+    }
+    ],
+    "rewrite": "Không bật khóa cửa tự động; chỉ khóa cửa sau bên trái ngay bây giờ.",
+    "rationale": "Lượt cuối tự đủ thông tin, hủy thiết lập tự động và thay bằng thao tác khóa một cửa cụ thể."
+    }
+    ]
+    }
+    

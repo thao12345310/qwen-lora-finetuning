@@ -1,0 +1,255 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm liên hệ của hai cơ sở Vinmec ở Hà Nội."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy Bệnh viện Đa khoa Quốc tế Vinmec Times City và Phòng khám Quốc tế Vinmec Royal City."
+    },
+    {
+    "role": "user",
+    "content": "Tôi cần tới khám ở Times City."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gọi cơ sở tại Times City để hỏi lịch khám không?"
+    },
+    {
+    "role": "user",
+    "content": "Gọi cơ sở đầu tiên giúp tôi."
+    }
+    ],
+    "rewrite": "Gọi Bệnh viện Đa khoa Quốc tế Vinmec Times City để hỏi lịch khám.",
+    "rationale": "Lượt cuối dùng thứ tự trong danh sách, model phải chọn đúng cơ sở Vinmec tại Times City."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Soạn tin báo tôi đã lấy được vé cho Minh Anh."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi qua ứng dụng nào?"
+    },
+    {
+    "role": "user",
+    "content": "Qua Telegram."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn nhắn nội dung cụ thể gì?"
+    },
+    {
+    "role": "user",
+    "content": "Tớ lấy vé rồi, đón cậu ở cổng chính Nhà hát Lớn Hà Nội."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi ngay hay hẹn giờ?"
+    },
+    {
+    "role": "user",
+    "content": "Hẹn 19 giờ 20 tối nay."
+    }
+    ],
+    "rewrite": "Hẹn gửi Telegram cho Minh Anh lúc 19 giờ 20 tối nay với nội dung “Tớ lấy vé rồi, đón cậu ở cổng chính Nhà hát Lớn Hà Nội”.",
+    "rationale": "Người nhận, kênh gửi, nội dung và thời gian gửi được cung cấp ở bốn lượt user khác nhau."
+    },
+    {
+    "pattern": "correction",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi xe tới căn hộ Empire City, bật máy lọc không khí phòng khách."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị bật máy lọc không khí phòng khách khi xe tới Empire City."
+    },
+    {
+    "role": "user",
+    "content": "Thay bằng bật máy hút ẩm phòng thay đồ ở căn đó."
+    }
+    ],
+    "rewrite": "Khi xe tới căn hộ Empire City, bật máy hút ẩm phòng thay đồ.",
+    "rationale": "Lượt cuối thay đổi cả thiết bị lẫn căn phòng và dùng “căn đó” để tham chiếu đúng địa điểm ban đầu."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo tình trạng pin và thời tiết giúp tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Pin xe còn 59% và nhiệt độ ngoài trời là 36°C."
+    },
+    {
+    "role": "user",
+    "content": "Bật sưởi tựa lưng ghế lái mức 1."
+    }
+    ],
+    "rewrite": "Bật sưởi tựa lưng ghế lái ở mức 1.",
+    "rationale": "Các con số về pin và nhiệt độ là nhiễu, không được trộn vào lệnh điều khiển ghế."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm hai bài của Bích Phương để nghe trên đường."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy “Đi Đu Đưa Đi” và “Bùa Yêu” của Bích Phương."
+    },
+    {
+    "role": "user",
+    "content": "Add bài nói về đi đu đưa vào queue trên Spotify."
+    }
+    ],
+    "rewrite": "Add bài “Đi Đu Đưa Đi” của Bích Phương vào queue trên Spotify.",
+    "rationale": "Model phải xác định bài hát qua mô tả gián tiếp và giữ nguyên các token tiếng Anh Add, queue và Spotify."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "vehicle",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe có lưu cấu hình ghế cho người thường ngồi cạnh tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có cấu hình nào được lưu cho người thường ngồi cạnh bạn."
+    },
+    {
+    "role": "user",
+    "content": "Chỉnh ghế phụ theo cấu hình của người thường ngồi cạnh tôi."
+    }
+    ],
+    "rewrite": "Chỉnh ghế phụ theo cấu hình của người thường ngồi cạnh tôi.",
+    "rationale": "Lịch sử không cung cấp danh tính hoặc thông số ghế cụ thể, nên phải giữ nguyên tham chiếu ngầm."
+    },
+    {
+    "pattern": "negation",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm đường từ Cầu Rồng tới Bãi biển Mỹ Khê."
+    },
+    {
+    "role": "bot",
+    "content": "Có tuyến đi qua đường Võ Văn Kiệt và tuyến đi qua đường Phạm Văn Đồng."
+    },
+    {
+    "role": "user",
+    "content": "Đi tuyến Phạm Văn Đồng, đừng qua Võ Văn Kiệt."
+    }
+    ],
+    "rewrite": "Dẫn đường từ Cầu Rồng tới Bãi biển Mỹ Khê qua đường Phạm Văn Đồng và tránh đường Võ Văn Kiệt.",
+    "rationale": "Lượt cuối chọn một tuyến đã nêu và phủ định rõ tuyến còn lại không được sử dụng."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Cảm biến đang báo cửa nào chưa khóa?"
+    },
+    {
+    "role": "bot",
+    "content": "Cửa sau bên phải đang chưa khóa, còn các cửa khác đã an toàn."
+    },
+    {
+    "role": "user",
+    "content": "Khóa cửa đang hở rồi bật khóa trẻ em cho bên đó."
+    }
+    ],
+    "rewrite": "Khóa cửa sau bên phải rồi bật khóa trẻ em cho cửa sau bên phải.",
+    "rationale": "Hai thao tác ở lượt cuối đều phụ thuộc vào việc resolve “cửa đang hở” và “bên đó” thành cùng một cửa."
+    },
+    {
+    "pattern": "correction",
+    "domain": "charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Hẹn sạc tại bộ sạc gia đình lúc 21 giờ."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị lịch sạc tại bộ sạc gia đình lúc 21 giờ."
+    },
+    {
+    "role": "user",
+    "content": "Hủy lịch ở nhà; sạc tại trạm V-GREEN ở Vincom Center Landmark 81 lúc 22 giờ."
+    }
+    ],
+    "rewrite": "Hủy lịch sạc tại bộ sạc gia đình lúc 21 giờ và đặt sạc tại trạm V-GREEN ở Vincom Center Landmark 81 lúc 22 giờ.",
+    "rationale": "Lượt cuối tự đầy đủ, vừa hủy lịch sạc cũ vừa tạo yêu cầu sạc mới tại trạm công cộng."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Thiết lập cảnh báo khi đi qua khu vực trường học."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn áp dụng gần trường nào?"
+    },
+    {
+    "role": "user",
+    "content": "Trường THPT Chu Văn An, Hà Nội."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn cảnh báo ở ngưỡng tốc độ nào và bằng hình thức gì?"
+    },
+    {
+    "role": "user",
+    "content": "Từ 30 km/h, bằng âm báo."
+    },
+    {
+    "role": "bot",
+    "content": "Có cho phép xe tự giảm tốc không?"
+    },
+    {
+    "role": "user",
+    "content": "Không tự giảm tốc, lưu thiết lập."
+    }
+    ],
+    "rewrite": "Lưu thiết lập cảnh báo bằng âm báo khi xe đạt 30 km/h gần Trường THPT Chu Văn An, Hà Nội và không tự giảm tốc.",
+    "rationale": "Địa điểm áp dụng, ngưỡng tốc độ, hình thức cảnh báo và giới hạn không tự can thiệp được cung cấp qua nhiều lượt."
+    }
+    ]
+    }
+    

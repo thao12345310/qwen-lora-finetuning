@@ -1,0 +1,240 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "vehicle",
+        "intent": "control_seat",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Chế độ massage của xe này có những kiểu nào?"
+          },
+          {
+            "role": "bot",
+            "content": "Xe hỗ trợ massage đấm lưng, xoa bóp và miết huyệt cho hàng ghế trước."
+          },
+          {
+            "role": "user",
+            "content": "Kiểu xoa bóp ấy."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn chỉnh cho ghế tài xế hay ghế phụ?"
+          },
+          {
+            "role": "user",
+            "content": "Chỉnh cả hai ghế đi, để mức nhẹ thôi."
+          }
+        ],
+        "rewrite": "Bật chế độ massage xoa bóp ở mức nhẹ cho cả ghế tài xế và ghế phụ đi.",
+        "rationale": "Thông tin thiết lập ghế massage bị phân mảnh qua 3 lượt thoại của user: chế độ (xoa bóp), vị trí (cả hai ghế trước), và mức độ (mức nhẹ). Rewrite phải thu thập toàn bộ các slot này."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Tốc độ sạc nãy giờ bao nhiêu kW rồi?"
+          },
+          {
+            "role": "bot",
+            "content": "Công suất sạc hiện tại đang ổn định ở mức 150 kW."
+          },
+          {
+            "role": "user",
+            "content": "Search cho mình mấy cái Supercharger của VinFast trên tuyến cao tốc Pháp Vân nhé."
+          }
+        ],
+        "rewrite": "Search cho mình các trạm sạc Supercharger của VinFast trên tuyến cao tốc Pháp Vân nhé.",
+        "rationale": "Câu lệnh ở lượt cuối tự độc lập về nghĩa, chứa các thuật ngữ tiếng Anh ('Search', 'Supercharger'). Model phải giữ nguyên token, không dịch thuật và không lôi công suất 150kW vào."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Con trai anh đi học bơi ở bể bơi Vincom về chưa?"
+          },
+          {
+            "role": "bot",
+            "content": "Lúc 17h cháu đã quẹt thẻ từ mở cửa chính vào nhà rồi ạ."
+          },
+          {
+            "role": "user",
+            "content": "Phát thông báo qua loa trung tâm nhắc nó nhớ bật bình nóng lạnh để tắm đi."
+          }
+        ],
+        "rewrite": "Phát thông báo qua loa trung tâm ở nhà nhắc con trai anh nhớ bật bình nóng lạnh để tắm đi.",
+        "rationale": "Đại từ 'nó' ngầm chỉ 'con trai anh' vừa đi bơi về ở lượt đầu tiên, cần kết nối lịch sử để điền rõ danh tính người cần nhắc nhở vào câu lệnh điều khiển loa smarthome."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "driver_assist",
+        "intent": "toggle_feature",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Kiểm tra độ mòn của má phanh xe."
+          },
+          {
+            "role": "bot",
+            "content": "Má phanh trước còn 60%, má phanh sau còn 70%. Áp suất dầu phanh ở mức an toàn. Nhiệt độ đĩa phanh là 40 độ C."
+          },
+          {
+            "role": "user",
+            "content": "Kích hoạt hệ thống phanh khẩn cấp tự động của xe lên giúp anh."
+          }
+        ],
+        "rewrite": "Kích hoạt hệ thống phanh khẩn cấp tự động của xe lên giúp anh.",
+        "rationale": "Bot cung cấp hàng loạt dữ liệu kỹ thuật thừa thãi gây nhiễu (60%, 70%, 40 độ C). Người dùng chỉ yêu cầu kích hoạt tính năng an toàn chủ động, model phải gạt bỏ hoàn toàn mớ số liệu này."
+      },
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Nhạc trên cổng USB đã nhận chưa?"
+          },
+          {
+            "role": "bot",
+            "content": "Đã quét thấy 150 bài hát định dạng lossless trên USB."
+          },
+          {
+            "role": "user",
+            "content": "Phát nhạc bolero từ USB nhưng cấm mở mấy bản remix xập xình nha."
+          }
+        ],
+        "rewrite": "Phát nhạc bolero từ USB nhưng cấm mở mấy bản remix xập xình nha.",
+        "rationale": "Lượt user cuối tự mang đầy đủ ngữ nghĩa (nhạc bolero, nguồn USB) và chứa intent phủ định ('cấm mở... remix'). Câu đứng độc lập hoàn toàn, không cần nối thêm bối cảnh 150 bài hát từ bot."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Khử mùi trong xe cho thơm tho chút đi."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn bật chức năng khuếch tán nước hoa hay bật lọc ion âm?"
+          },
+          {
+            "role": "user",
+            "content": "Kích hoạt cái đầu tiên đi, chọn mùi gỗ sồi ấy."
+          }
+        ],
+        "rewrite": "Kích hoạt chức năng khuếch tán nước hoa với mùi gỗ sồi đi.",
+        "rationale": "Cụm 'cái đầu tiên' yêu cầu model phải nhìn lại danh sách tùy chọn bot vừa đưa ra để ánh xạ đúng vào chức năng 'khuếch tán nước hoa'."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Chỉ đường đến bệnh viện Việt Đức."
+          },
+          {
+            "role": "bot",
+            "content": "Đang dẫn đường đến bệnh viện Hữu Nghị Việt Đức qua hướng Tràng Thi."
+          },
+          {
+            "role": "user",
+            "content": "Chết nhầm rồi, dẫn qua bệnh viện Đại học Y Hà Nội mới đúng."
+          }
+        ],
+        "rewrite": "Hủy tuyến đường cũ và dẫn đường qua bệnh viện Đại học Y Hà Nội mới đúng.",
+        "rationale": "Người dùng nhận ra mình nhầm lẫn điểm đến (Việt Đức) nên đã đính chính lại (Đại học Y Hà Nội) khi bot đang thực thi. Rewrite cần nắm bắt intent đổi lộ trình này."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Em gái anh có nhắn tin gì không?"
+          },
+          {
+            "role": "bot",
+            "content": "Em gái gửi 1 tin SMS: 'Anh qua đón em ở cổng trường đại học Kinh tế Quốc dân chưa?'"
+          },
+          {
+            "role": "user",
+            "content": "Trả lời nó là anh kẹt xe 15 phút nữa mới tới, và chốt luôn toàn bộ cửa kính bên ghế phụ lại."
+          }
+        ],
+        "rewrite": "Trả lời tin nhắn SMS của em gái là anh kẹt xe 15 phút nữa mới tới, và chốt luôn toàn bộ cửa kính bên ghế phụ lại.",
+        "rationale": "Lượt thoại kết hợp giữa việc trả lời tin nhắn (cần context người gửi SMS là 'em gái' từ lượt bot) và điều khiển xe (khóa cửa kính). Rewrite phải giữ trọn vẹn cả hai mệnh lệnh."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Micro trên xe thu âm tốt không em?"
+          },
+          {
+            "role": "bot",
+            "content": "Micro định hướng của xe đang hoạt động rất tốt, đã bật tính năng lọc gió và giảm tiếng ồn."
+          },
+          {
+            "role": "user",
+            "content": "Gọi điện thoại cho công an phường sở tại báo có tai nạn, đồng thời lưu lại video từ camera hành trình ngay."
+          }
+        ],
+        "rewrite": "Gọi điện thoại cho công an phường sở tại báo có tai nạn, đồng thời lưu lại video từ camera hành trình ngay.",
+        "rationale": "Chứa 2 intent hoàn toàn độc lập (thực hiện cuộc gọi và điều khiển camera hành trình), có đầy đủ đối tượng để thực thi. Câu tự đủ nghĩa nên không lấy thông tin micro từ bot."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Em ơi chỉnh sưởi vô lăng đi."
+          },
+          {
+            "role": "bot",
+            "content": "Hệ thống sưởi vô lăng đang tắt. Bạn muốn bật lên mức nào?"
+          },
+          {
+            "role": "user",
+            "content": "Bật lên đi."
+          },
+          {
+            "role": "bot",
+            "content": "Có 3 mức: thấp, trung bình và cao. Bạn chọn mức nào?"
+          },
+          {
+            "role": "user",
+            "content": "Mức trung bình thôi cho đỡ bỏng tay."
+          }
+        ],
+        "rewrite": "Bật sưởi vô lăng ở mức trung bình thôi cho đỡ bỏng tay.",
+        "rationale": "Quá trình bật sưởi vô lăng bị kéo dài qua 5 lượt thoại. Lượt cuối chỉ nói 'Mức trung bình thôi', model bắt buộc phải lấy tên bộ phận 'sưởi vô lăng' từ lượt đầu tiên để ghép thành lệnh."
+      }
+    ]
+  }

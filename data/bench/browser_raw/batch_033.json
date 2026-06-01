@@ -1,0 +1,240 @@
+{
+    "samples": [
+      {
+        "pattern": "implicit_reference",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Cuối tuần này mình dự định qua khu công nghệ cao Hòa Lạc chạy thử xe."
+          },
+          {
+            "role": "bot",
+            "content": "Vâng, khu công nghệ cao Hòa Lạc cách đây khoảng 30km, đường đi hiện tại khá thông thoáng."
+          },
+          {
+            "role": "user",
+            "content": "Tìm xem quanh đó có trạm sạc DC nào của VinFast không."
+          }
+        ],
+        "rewrite": "Tìm xem quanh khu công nghệ cao Hòa Lạc có trạm sạc nhanh DC nào của VinFast không.",
+        "rationale": "Cụm 'quanh đó' ngầm chỉ địa danh 'khu công nghệ cao Hòa Lạc' vừa nhắc ở lượt trước. Model cần truy xuất lịch sử để điền chính xác địa điểm vào câu truy vấn trạm sạc."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Bài hát này tên gì vậy cậu?"
+          },
+          {
+            "role": "bot",
+            "content": "Đây là bài 'Đừng Làm Trái Tim Anh Đau' của Sơn Tùng M-TP."
+          },
+          {
+            "role": "user",
+            "content": "Chuyển sang playlist Top 50 Global trên Spotify rồi bật shuffle lên nhé."
+          }
+        ],
+        "rewrite": "Chuyển sang playlist Top 50 Global trên Spotify rồi bật chế độ shuffle lên nhé.",
+        "rationale": "Lượt user mang intent mới hoàn toàn và tự đủ nghĩa. Có chứa nhiều từ tiếng Anh (playlist, Top 50 Global, Spotify, shuffle). Model phải giữ nguyên các token này thay vì cố dịch sang tiếng Việt."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Anh muốn đổi màu đèn viền nội thất."
+          },
+          {
+            "role": "bot",
+            "content": "Hệ thống Ambient Light đang để màu xanh dương. Bạn muốn đổi sang màu gì?"
+          },
+          {
+            "role": "user",
+            "content": "Chuyển sang màu tím mộng mơ đi."
+          },
+          {
+            "role": "bot",
+            "content": "Vâng, bạn muốn đổi màu ở khu vực bảng điều khiển trung tâm hay tất cả các vị trí?"
+          },
+          {
+            "role": "user",
+            "content": "Đổi hết toàn bộ xe luôn."
+          }
+        ],
+        "rewrite": "Chuyển màu đèn viền nội thất Ambient Light của toàn bộ xe sang màu tím mộng mơ đi.",
+        "rationale": "Intent đổi đèn nội thất bị rải rác: hành động (đổi màu), thông số màu (tím mộng mơ), vị trí (toàn bộ xe). Lượt cuối quá ngắn, bắt buộc gom cả 5 lượt thoại để thành câu lệnh chuẩn."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Tốc độ tối đa ở đoạn này là bao nhiêu?"
+          },
+          {
+            "role": "bot",
+            "content": "Biển báo cho phép chạy tối đa 90 km/h trên tuyến đường này. Hệ thống Cruise Control hiện đang tắt."
+          },
+          {
+            "role": "user",
+            "content": "Bật lên và set đúng mức đó luôn giúp anh."
+          }
+        ],
+        "rewrite": "Bật hệ thống Cruise Control và cài đặt tốc độ ở mức 90 km/h giúp anh.",
+        "rationale": "User dùng 'Bật lên' để chỉ Cruise Control và 'mức đó' để chỉ con số 90 km/h mà bot vừa thông báo. Model phải ánh xạ chính xác để ra câu lệnh mang thông số thực tế."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Kết nối camera ở nhà đang ổn chứ?"
+          },
+          {
+            "role": "bot",
+            "content": "Mạng wifi nhà bạn đang có ping 12ms. Có 4 thiết bị smarthome đang online. Dung lượng lưu trữ cloud còn trống 150GB. Camera trước cổng vẫn hoạt động bình thường."
+          },
+          {
+            "role": "user",
+            "content": "Mở luồng trực tiếp của nó lên màn hình giữa đi."
+          }
+        ],
+        "rewrite": "Mở luồng trực tiếp của camera trước cổng ở nhà lên màn hình giữa xe đi.",
+        "rationale": "Bot cung cấp một loạt số liệu kỹ thuật thừa thãi (12ms, 4 thiết bị, 150GB). User chỉ quan tâm đến 'nó' (camera trước cổng). Model phải loại bỏ nhiễu và nối đúng thiết bị vào lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Gọi điện thoại cho anh Tuấn giám đốc đi."
+          },
+          {
+            "role": "bot",
+            "content": "Đang kết nối cuộc gọi tới anh Tuấn giám đốc qua hệ thống Bluetooth."
+          },
+          {
+            "role": "user",
+            "content": "Khoan tắt đi, gọi cho chị Phương thư ký trước đã, anh quên gửi báo cáo."
+          }
+        ],
+        "rewrite": "Hủy cuộc gọi hiện hành và gọi điện thoại cho chị Phương thư ký.",
+        "rationale": "User tự sửa sai (correction) ngay khi lệnh cũ đang được bot thực thi. Rewrite cần phản ánh intent hủy hành động trước ('Khoan tắt đi') và thực hiện gọi cho người mới ('chị Phương')."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Trong xe có vẻ có mùi ẩm mốc."
+          },
+          {
+            "role": "bot",
+            "content": "Cảm biến chất lượng không khí PM2.5 đang báo mức 45, ở ngưỡng bình thường."
+          },
+          {
+            "role": "user",
+            "content": "Bật lọc không khí ion âm lên nhưng cấm tuyệt đối không được lấy gió ngoài vào nhé."
+          }
+        ],
+        "rewrite": "Bật lọc không khí ion âm lên nhưng cấm tuyệt đối không được lấy gió ngoài vào.",
+        "rationale": "Lượt user tự mang đầy đủ thông tin (bật lọc ion) và một ràng buộc phủ định gay gắt (cấm lấy gió ngoài). Lệnh hoàn toàn độc lập nên không cần lôi số liệu cảm biến của bot vào."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "control_seat",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Ghế phụ nãy giờ sấy nóng chưa em?"
+          },
+          {
+            "role": "bot",
+            "content": "Tính năng sưởi ghế phụ đang được bật ở mức 3 (cao nhất) được 10 phút rồi."
+          },
+          {
+            "role": "user",
+            "content": "Tắt nó đi, tiện thể bật rèm che nắng kính sau lên cho đỡ chói nắng."
+          }
+        ],
+        "rewrite": "Tắt sưởi ghế phụ đi, tiện thể bật rèm che nắng kính sau lên cho đỡ chói nắng.",
+        "rationale": "Lượt thoại chứa 2 intent: tắt sưởi ghế (cần resolve 'nó' từ lịch sử) và kéo rèm cửa (intent mới hoàn toàn). Model phải xử lý trọn vẹn cả hai mệnh lệnh này trong một câu."
+      },
+      {
+        "pattern": "negation",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Khởi động bản đồ định vị lên."
+          },
+          {
+            "role": "bot",
+            "content": "Bản đồ đã sẵn sàng. Bạn có muốn sử dụng tuyến đường nhanh nhất qua cao tốc không?"
+          },
+          {
+            "role": "user",
+            "content": "Dẫn đường về thành phố Hạ Long theo quốc lộ 18 cũ, tuyệt đối không đi lên cao tốc đâu."
+          }
+        ],
+        "rewrite": "Dẫn đường về thành phố Hạ Long theo quốc lộ 18 cũ, tuyệt đối không đi lên cao tốc.",
+        "rationale": "Dù bot có hỏi, câu trả lời của user đã chứa toàn bộ slot cần thiết (đích đến Hạ Long, đường đi QL18) và intent phủ định (không đi cao tốc). Đây là một câu lệnh độc lập hoàn toàn."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Gửi vị trí hiện tại của xe đi."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn gửi định vị này qua ứng dụng Zalo hay tin nhắn SMS thông thường?"
+          },
+          {
+            "role": "user",
+            "content": "Gửi qua nhóm Zalo Gia Đình nhé."
+          },
+          {
+            "role": "bot",
+            "content": "Đã chọn nhóm Zalo Gia Đình. Bạn có muốn nhắn thêm gì kèm vị trí không?"
+          },
+          {
+            "role": "user",
+            "content": "Bảo là tầm 20 phút nữa bố về tới nhà."
+          }
+        ],
+        "rewrite": "Gửi vị trí hiện tại của xe kèm lời nhắn là tầm 20 phút nữa bố về tới nhà vào nhóm Zalo Gia Đình.",
+        "rationale": "Intent chia sẻ vị trí bị cắt vụn thành nhiều slot qua 5 lượt hội thoại: hành động (gửi vị trí), nền tảng/người nhận (nhóm Zalo Gia Đình), và nội dung đính kèm. Rewrite phải thu gom đủ 3 yếu tố này."
+      }
+    ]
+  }

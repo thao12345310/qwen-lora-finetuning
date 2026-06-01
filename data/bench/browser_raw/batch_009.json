@@ -1,0 +1,240 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Xe báo sắp hết pin rồi à?"
+          },
+          {
+            "role": "bot",
+            "content": "Vâng, dung lượng pin hiện tại chỉ còn 18%. Bạn có muốn tôi tìm trạm sạc quanh đây không?"
+          },
+          {
+            "role": "user",
+            "content": "Tìm trạm sạc nhanh của Eboost nhé."
+          },
+          {
+            "role": "bot",
+            "content": "Tôi tìm thấy 2 trạm Eboost gần nhất: tại chung cư Masteri Thảo Điền và Estella Heights."
+          },
+          {
+            "role": "user",
+            "content": "Dẫn đường ra chỗ Estella đi."
+          }
+        ],
+        "rewrite": "Hãy dẫn đường ra trạm sạc nhanh Eboost ở chung cư Estella Heights.",
+        "rationale": "Lượt cuối rất ngắn, người dùng nói 'chỗ Estella', bắt buộc phải dùng lịch sử gồm cả 4 lượt trước để xác định rõ đây là trạm sạc nhanh Eboost và hành động là dẫn đường."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Tắt tính năng lấy gió trong đi."
+          },
+          {
+            "role": "bot",
+            "content": "Hệ thống đã chuyển sang chế độ lấy gió ngoài."
+          },
+          {
+            "role": "user",
+            "content": "Bật quạt gió lên mức 3 nhưng tuyệt đối không bật điều hoà AC nhé."
+          }
+        ],
+        "rewrite": "Bật quạt gió lên mức 3 nhưng tuyệt đối không bật điều hoà AC.",
+        "rationale": "Câu lệnh tự mang đầy đủ ngữ nghĩa và rõ ràng ý định phủ định (không bật AC), model phải giữ nguyên sự phủ định này mà không cần truy xuất thông tin hệ thống lấy gió từ lượt trước."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Mở nhạc của Sơn Tùng M-TP đi."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn nghe album 'm-tp M-TP' hay playlist 'Sơn Tùng M-TP Những Bài Hát Hay Nhất' trên Spotify?"
+          },
+          {
+            "role": "user",
+            "content": "Mở cái thứ hai cho mình."
+          }
+        ],
+        "rewrite": "Mở playlist Sơn Tùng M-TP Những Bài Hát Hay Nhất trên Spotify cho mình.",
+        "rationale": "Sử dụng đại từ 'cái thứ hai', yêu cầu model phải đếm và đối chiếu đúng danh sách các tuỳ chọn bot vừa đưa ra để ánh xạ vào tên playlist cụ thể."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Bố mẹ mới lên Hà Nội chơi, đang đứng đợi ở cổng Vincom Bà Triệu."
+          },
+          {
+            "role": "bot",
+            "content": "Vâng, khoảng cách từ vị trí hiện tại đến Vincom Bà Triệu là 3km, thời gian di chuyển dự kiến 10 phút."
+          },
+          {
+            "role": "user",
+            "content": "Gọi điện báo hai cụ là con đang chạy qua đón."
+          }
+        ],
+        "rewrite": "Gọi điện thoại báo cho bố mẹ là con đang chạy qua Vincom Bà Triệu đón.",
+        "rationale": "Từ lóng 'hai cụ' ám chỉ 'bố mẹ' và 'chạy qua' ngầm định vị trí 'Vincom Bà Triệu', phải kết nối lịch sử để câu lệnh gọi điện được cụ thể hoá hoàn toàn."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "driver_assist",
+        "intent": "toggle_feature",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Camera hành trình có đang quay không?"
+          },
+          {
+            "role": "bot",
+            "content": "Camera hành trình đang ghi hình và lưu vào thẻ nhớ SD."
+          },
+          {
+            "role": "user",
+            "content": "Kích hoạt hệ thống Auto Parking để ghép xe ngang giúp tôi."
+          }
+        ],
+        "rewrite": "Kích hoạt hệ thống Auto Parking để ghép xe ngang giúp tôi.",
+        "rationale": "Lượt user cuối chứa token chuyên ngành tiếng Anh 'Auto Parking', đã độc lập về nghĩa nên model chỉ việc giữ nguyên token mà không phụ thuộc vào context phía trên."
+      },
+      {
+        "pattern": "correction",
+        "domain": "vehicle",
+        "intent": "cancel_action",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Mở cốp sau lên để anh lấy đồ."
+          },
+          {
+            "role": "bot",
+            "content": "Hệ thống đang mở cốp xe phía sau."
+          },
+          {
+            "role": "user",
+            "content": "À thôi đóng lại đi, nhầm."
+          }
+        ],
+        "rewrite": "Đóng cốp sau lại đi.",
+        "rationale": "Lượt cuối user đổi ý huỷ hành động trước đó ('thôi đóng lại đi'), rewrite cần lấy được đối tượng 'cốp sau' từ lịch sử để phản ánh đúng intent can thiệp xe lúc này."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Có tin nhắn nào mới không?"
+          },
+          {
+            "role": "bot",
+            "content": "Sếp Dũng vừa nhắn trên Telegram: 'Sáng nay em có qua văn phòng quận 1 họp không?'."
+          },
+          {
+            "role": "user",
+            "content": "Reply là em đang chạy qua rồi, và chia sẻ luôn vị trí hiện tại của xe cho sếp nhé."
+          }
+        ],
+        "rewrite": "Trả lời tin nhắn Telegram của sếp Dũng là em đang chạy qua rồi, đồng thời chia sẻ vị trí hiện tại của xe cho sếp.",
+        "rationale": "User ra 2 lệnh cùng lúc: phản hồi tin nhắn (cần context ứng dụng và tên người gửi) và chia sẻ định vị, rewrite phải xử lý trọn vẹn cả hai intent mà không rơi rụng thông tin."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Xe mình nãy giờ chạy tốn bao nhiêu lít xăng rồi?"
+          },
+          {
+            "role": "bot",
+            "content": "Mức tiêu thụ trung bình là 7.5L/100km. Xe còn 40% pin hybrid, áp suất lốp 4 bánh đạt 2.3 bar, nhiệt độ động cơ bình thường."
+          },
+          {
+            "role": "user",
+            "content": "Tìm trạm xăng Petrolimex gần đây nhất đi."
+          }
+        ],
+        "rewrite": "Tìm trạm xăng Petrolimex gần vị trí hiện tại nhất.",
+        "rationale": "Bot cung cấp một loạt các con số nhiễu không liên quan về kỹ thuật xe, lượt cuối user yêu cầu tìm vị trí, model phải gạt bỏ hoàn toàn mớ data thừa thãi đó để tập trung vào địa điểm."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Sưởi ghế sau tắt chưa cậu?"
+          },
+          {
+            "role": "bot",
+            "content": "Hệ thống sưởi cho hàng ghế sau hiện đang được tắt."
+          },
+          {
+            "role": "user",
+            "content": "Làm mát hai ghế trước ở mức 2 và giảm âm lượng nhạc xuống một chút."
+          }
+        ],
+        "rewrite": "Bật làm mát hai ghế trước ở mức 2 và giảm âm lượng nhạc xuống một chút.",
+        "rationale": "Câu lệnh bao gồm việc điều khiển khí hậu ghế ngồi và điều chỉnh media, đã tự định nghĩa đủ slot và tham số, không cần lấy thêm thông tin sưởi ghế sau từ bot."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Ra lệnh cho robot hút bụi làm việc đi."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn dọn dẹp toàn bộ nhà hay chỉ phòng cụ thể?"
+          },
+          {
+            "role": "user",
+            "content": "Chỉ quét phòng ngủ thôi nhé."
+          },
+          {
+            "role": "bot",
+            "content": "Robot Roborock của bạn có cả chức năng lau. Bạn có muốn kích hoạt lau nhà luôn không?"
+          },
+          {
+            "role": "user",
+            "content": "Có, lau ở chế độ ướt luôn."
+          }
+        ],
+        "rewrite": "Ra lệnh cho robot hút bụi Roborock quét và lau ở chế độ ướt tại phòng ngủ.",
+        "rationale": "Slot cho lệnh smarthome bị xé lẻ qua nhiều lượt: thiết bị (Roborock), vị trí (phòng ngủ), chế độ làm việc (quét, lau ướt), rewrite phải gom đủ mọi chi tiết lại."
+      }
+    ]
+  }

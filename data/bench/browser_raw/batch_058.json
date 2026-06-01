@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài chế độ tiết kiệm điện cho nhà khi tôi đi vắng"},
+          {"role":"bot","content":"Bạn đi vắng từ mấy giờ đến mấy giờ ạ?"},
+          {"role":"user","content":"Từ bây giờ đến 9 giờ tối"},
+          {"role":"bot","content":"Tắt những thiết bị nào ạ?"},
+          {"role":"user","content":"Tắt hết trừ tủ lạnh và camera an ninh, hạ điều hoà còn 30 độ chờ"}
+        ],
+        "rewrite": "Kích hoạt chế độ tiết kiệm điện từ bây giờ đến 21h: tắt tất cả thiết bị trừ tủ lạnh và camera an ninh, đặt điều hoà ở chế độ chờ 30°C.",
+        "rationale": "Khung giờ, danh sách ngoại lệ và chế độ điều hoà rải qua 5 lượt; lượt cuối bổ sung hai ngoại lệ và thông số điều hoà cùng lúc."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm số trung tâm bảo hành Samsung gần nhất"},
+          {"role":"bot","content":"Trung tâm Samsung Service Plaza gần nhất tại 41 Láng Hạ, số 1800 588 889, mở đến 20h."},
+          {"role":"user","content":"Gọi vào đó hỏi sửa màn hình Galaxy S24 Ultra mất bao lâu"}
+        ],
+        "rewrite": "Gọi đến Samsung Service Plaza 41 Láng Hạ số 1800 588 889, hỏi thời gian sửa màn hình Galaxy S24 Ultra.",
+        "rationale": "'Đó' resolve về địa điểm và số điện thoại cụ thể từ lượt bot; mục đích cuộc gọi từ lượt cuối bổ sung ngữ cảnh."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật chế độ lọc không khí tối đa đi, đường đang nhiều khói"},
+          {"role":"bot","content":"Đã bật lọc không khí mức tối đa, tốc độ quạt 5, tuần hoàn nội thất, ion hoá không khí và thêm lọc PM2.5."},
+          {"role":"user","content":"Giữ nguyên hết nhưng tắt ion hoá đi, tôi hay bị dị ứng"}
+        ],
+        "rewrite": "Tắt ion hoá không khí, giữ nguyên lọc mức tối đa, tốc độ quạt 5, tuần hoàn nội thất và lọc PM2.5.",
+        "rationale": "Phủ định loại trừ một tính năng trong cụm bốn tính năng đang bật; rewrite xác nhận rõ cái tắt và liệt kê đủ những cái giữ."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Chỉnh lighting interior xe theo mood tôi muốn"},
+          {"role":"bot","content":"Bạn muốn màu gì và vùng nào sáng ạ? Có footwell, dashboard, door panel và roof."},
+          {"role":"user","content":"Màu tím lavender, footwell và door panel thôi, brightness 40%, mode breathing"}
+        ],
+        "rewrite": "Đặt ambient light vùng footwell và door panel màu tím lavender, độ sáng 40%, chế độ breathing.",
+        "rationale": "Token 'footwell', 'door panel', 'brightness', 'mode breathing' giữ nguyên; màu sắc và vùng từ lượt chọn sau khi bot liệt kê options."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi vừa bị nổ lốp trên đường"},
+          {"role":"bot","content":"Bạn đang ở gần khu vực nào?"},
+          {"role":"user","content":"Gần ngã tư Khuất Duy Tiến và Nguyễn Tuân, tìm tiệm vá lốp gần nhất rồi gọi luôn cho họ"}
+        ],
+        "rewrite": "Tìm tiệm vá lốp gần nhất khu vực ngã tư Khuất Duy Tiến – Nguyễn Tuân và gọi điện đến tiệm đó.",
+        "rationale": "Hai intent khẩn cấp: tìm địa điểm và gọi điện; vị trí từ lượt cuối, rewrite gộp thành một lệnh xử lý sự cố liền mạch."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Hôm nay kỷ niệm ngày cưới của tôi và vợ"},
+          {"role":"bot","content":"Chúc mừng! Bạn muốn làm gì đặc biệt không?"},
+          {"role":"user","content":"Phát bài hát đám cưới của tụi tôi trên Spotify, bài 'Tháng Năm' của Vũ"}
+        ],
+        "rewrite": "Phát bài 'Tháng Năm' của Vũ trên Spotify.",
+        "rationale": "Lượt cuối đã đủ slot tên bài, nghệ sĩ và nền tảng; ngữ cảnh kỷ niệm từ lượt đầu không thêm slot nhưng xác nhận tính phù hợp."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài hành trình tự động thông minh cho đoạn cao tốc này"},
+          {"role":"bot","content":"Tốc độ mục tiêu và khoảng cách theo xe trước ạ?"},
+          {"role":"user","content":"110km/h, khoảng cách mức 3"},
+          {"role":"bot","content":"Đã bật adaptive cruise 110km/h khoảng cách mức 3. Bật lane centering không ạ?"},
+          {"role":"user","content":"Bật luôn, thêm cả tính năng tự vượt xe chậm nếu có"}
+        ],
+        "rewrite": "Bật lane centering và tính năng tự động vượt xe chậm, giữ adaptive cruise 110km/h khoảng cách mức 3.",
+        "rationale": "Tốc độ và khoảng cách đã xác nhận ở lượt trước; lượt cuối bổ sung hai tính năng mới, rewrite không nhắc lại quá trình cài đặt ban đầu."
+      },
+      {
+        "pattern": "correction",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Nhắn Telegram cho nhóm Ban điều hành báo họp khẩn lúc 16h"},
+          {"role":"bot","content":"Đã gửi vào nhóm Ban điều hành trên Telegram: 'Họp khẩn lúc 16h hôm nay'."},
+          {"role":"user","content":"Quên mất, đổi lại 16h30 và thêm địa điểm phòng họp A3 tầng 8"}
+        ],
+        "rewrite": "Sửa và gửi lại tin nhắn Telegram cho nhóm Ban điều hành: họp khẩn lúc 16h30 tại phòng họp A3 tầng 8.",
+        "rationale": "Cả giờ và địa điểm đều được đính chính cùng lúc; rewrite chỉ giữ thông tin cuối, bỏ 16h cũ và không có địa điểm."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe tôi sạc được từ 10% lên 80% mất bao lâu?"},
+          {"role":"bot","content":"Với DC 150kW, BMW iX của bạn sạc từ 10% lên 80% mất khoảng 35 phút, chi phí ước tính 180.000đ, nhiệt độ pin hiện 28°C, hiệu suất sạc 94%."},
+          {"role":"user","content":"Ổn, tìm trạm DC 150kW còn trống trong 5km đi"}
+        ],
+        "rewrite": "Tìm trạm sạc DC 150kW còn cổng trống trong bán kính 5km cho xe BMW iX.",
+        "rationale": "Bot trả 4 thông số sạc nhưng chỉ chuẩn DC 150kW là slot liên quan; chi phí, nhiệt độ pin và hiệu suất đều là nhiễu."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem camera phòng ngủ và camera phòng trẻ em"},
+          {"role":"bot","content":"Camera phòng ngủ: không có gì bất thường. Camera phòng trẻ em: bé đang ngủ, nhiệt độ phòng 29°C."},
+          {"role":"user","content":"Phòng bé nóng vậy, bật điều hoà chỗ đó xuống 26 độ đi"}
+        ],
+        "rewrite": "Bật điều hoà phòng trẻ em, đặt nhiệt độ 26°C.",
+        "rationale": "'Chỗ đó' và 'phòng bé' resolve về phòng trẻ em từ thông tin camera; nhiệt độ 29°C xác nhận lý do nhưng không phải slot của rewrite."
+      }
+    ]
+  }

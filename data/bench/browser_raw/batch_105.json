@@ -1,0 +1,225 @@
+{
+    "samples": [
+    {
+    "pattern": "negation",
+    "domain": "driver_assist",
+    "intent": "lane_assist",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe có hỗ trợ gì khi chạy qua đoạn đang thi công?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật các cảnh báo hỗ trợ lái phù hợp với điều kiện đường."
+    },
+    {
+    "role": "user",
+    "content": "Bật cảnh báo lệch làn, nhưng đừng tự can thiệp vô lăng."
+    }
+    ],
+    "rewrite": "Bật cảnh báo lệch làn nhưng đừng tự can thiệp vô lăng.",
+    "rationale": "Lượt cuối tự đủ nghĩa nhưng gold bắt buộc giữ nguyên điều kiện phủ định về can thiệp vô lăng."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "messaging",
+    "intent": "send_message",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kiểm tra xe trước khi tôi báo bạn bè."
+    },
+    {
+    "role": "bot",
+    "content": "Pin xe còn 57% và nhiệt độ ngoài trời là 32°C."
+    },
+    {
+    "role": "user",
+    "content": "Gửi Zalo cho Phương Uyên: Mình đợi ở cổng Đông."
+    }
+    ],
+    "rewrite": "Gửi Zalo cho Phương Uyên với nội dung “Mình đợi ở cổng Đông”.",
+    "rationale": "Các con số về pin và nhiệt độ chỉ là nhiễu, không được đưa vào tin nhắn đã đầy đủ slot."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "smart_home",
+    "intent": "smart_home_control",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi sắp về căn hộ sau chuyến đi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể điều khiển thiết bị trong nhà ngay từ xe."
+    },
+    {
+    "role": "user",
+    "content": "Bật đèn bếp ở căn hộ Park 6 Times City rồi mở máy lọc không khí phòng khách."
+    }
+    ],
+    "rewrite": "Bật đèn bếp ở căn hộ Park 6 Times City rồi mở máy lọc không khí phòng khách.",
+    "rationale": "Lượt cuối đã chứa đầy đủ địa điểm và hai hành động độc lập cần được giữ nguyên."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "vehicle",
+    "intent": "toggle_light",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Buổi tối tôi muốn xe dễ tìm hơn trong bãi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể điều khiển đèn hoặc âm thanh nhận diện của xe."
+    },
+    {
+    "role": "user",
+    "content": "Bật Light Show trên Tesla Model Y trong 2 phút."
+    }
+    ],
+    "rewrite": "Bật Light Show trên Tesla Model Y trong 2 phút.",
+    "rationale": "Lượt cuối tự đủ mẫu xe, tính năng và thời lượng, đồng thời token Light Show phải được giữ nguyên."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "calling",
+    "intent": "call",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Danh bạ xe đã lưu số giáo viên chủ nhiệm của con tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có liên hệ nào được lưu với nhãn giáo viên chủ nhiệm của con bạn."
+    },
+    {
+    "role": "user",
+    "content": "Gọi giáo viên chủ nhiệm của con tôi để báo tôi đến muộn."
+    }
+    ],
+    "rewrite": "Gọi giáo viên chủ nhiệm của con tôi để báo rằng tôi đến muộn.",
+    "rationale": "Không có tên hoặc số điện thoại cụ thể nên phải giữ nguyên cụm tham chiếu, không được bịa liên hệ."
+    },
+    {
+    "pattern": "negation",
+    "domain": "music",
+    "intent": "play_music_online",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi muốn nghe nhạc nhẹ lúc kẹt xe."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể yêu cầu playlist và loại trừ bài không muốn nghe."
+    },
+    {
+    "role": "user",
+    "content": "Phát playlist Acoustic Việt trên Spotify, trừ bài “Bước Qua Nhau” của Vũ."
+    }
+    ],
+    "rewrite": "Phát playlist Acoustic Việt trên Spotify, trừ bài “Bước Qua Nhau” của Vũ.",
+    "rationale": "Lượt cuối đã đầy đủ yêu cầu và ngoại lệ “trừ” bắt buộc phải xuất hiện trong rewrite."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "charging",
+    "intent": "set_charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tình trạng xe khi đang đỗ thế nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Nhiệt độ pin là 27°C và quãng đường còn lại 241 km."
+    },
+    {
+    "role": "user",
+    "content": "Đặt giới hạn sạc 85% tại trạm V-GREEN ở Vincom Center Đồng Khởi."
+    }
+    ],
+    "rewrite": "Đặt giới hạn sạc 85% tại trạm V-GREEN ở Vincom Center Đồng Khởi.",
+    "rationale": "Nhiệt độ pin và quãng đường là thông tin gây nhiễu, không thuộc giới hạn sạc được yêu cầu."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "charging",
+    "intent": "set_charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chiếc VinFast VF 9 của tôi đang cắm ở đâu?"
+    },
+    {
+    "role": "bot",
+    "content": "VinFast VF 9 đang cắm sạc tại trạm V-GREEN ở Vincom Mega Mall Thảo Điền."
+    },
+    {
+    "role": "user",
+    "content": "Dừng sạc khi đạt 78% rồi bật điều hòa khoang xe ở 23°C."
+    }
+    ],
+    "rewrite": "Đặt VinFast VF 9 tại trạm V-GREEN ở Vincom Mega Mall Thảo Điền dừng sạc khi đạt 78% rồi bật điều hòa khoang xe ở 23°C.",
+    "rationale": "Lượt cuối có hai hành động nhưng xe và trạm sạc chỉ xuất hiện trong lịch sử hội thoại."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "climate",
+    "intent": "set_climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khoang xe có mùi thức ăn, xử lý sao nhanh?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể điều chỉnh lưu thông không khí hoặc bật chế độ lọc phù hợp."
+    },
+    {
+    "role": "user",
+    "content": "Bật Clean Air Mode và quạt mức 3 cho toàn bộ khoang xe."
+    }
+    ],
+    "rewrite": "Bật Clean Air Mode và đặt quạt mức 3 cho toàn bộ khoang xe.",
+    "rationale": "Lượt cuối đã tự đủ tính năng, mức quạt và vùng áp dụng, đồng thời phải giữ nguyên Clean Air Mode."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "navigation",
+    "intent": "navigate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lưu giúp tôi địa điểm studio là Complex 01, 29 ngách 31 ngõ 167 Tây Sơn."
+    },
+    {
+    "role": "bot",
+    "content": "Đã lưu studio của bạn tại Complex 01, 29 ngách 31 ngõ 167 Tây Sơn."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tôi tới studio, tránh đường Nguyễn Lương Bằng."
+    }
+    ],
+    "rewrite": "Dẫn tôi tới Complex 01, 29 ngách 31 ngõ 167 Tây Sơn và tránh đường Nguyễn Lương Bằng.",
+    "rationale": "Lượt cuối dùng nhãn “studio”, cần resolve về địa điểm đã lưu và vẫn giữ nguyên yêu cầu tránh đường."
+    }
+    ]
+    }
+    

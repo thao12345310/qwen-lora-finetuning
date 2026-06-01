@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn ghé mua cà phê trước khi đến văn phòng"},
+          {"role":"bot","content":"Bạn thường đến văn phòng nào ạ?"},
+          {"role":"user","content":"Tòa nhà Keangnam, Phạm Hùng"},
+          {"role":"bot","content":"Trên đường đến Keangnam có The Coffee House Cầu Giấy cách 600m và Highlands Coffee Mễ Trì cách 1.4km."},
+          {"role":"user","content":"Ghé The Coffee House rồi đi Keangnam luôn"}
+        ],
+        "rewrite": "Chỉ đường ghé The Coffee House Cầu Giấy rồi tiếp tục đến tòa nhà Keangnam, Phạm Hùng.",
+        "rationale": "Điểm dừng trung gian và điểm đến cuối rải qua 4 lượt; 'The Coffee House' cần gắn địa điểm Cầu Giấy từ danh sách bot."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đọc tin nhắn cuối của Minh Khoa cho tôi nghe"},
+          {"role":"bot","content":"Minh Khoa nhắn lúc 14:22: 'Chiều nay họp bị dời sang 4 giờ, anh nhớ nhé'."},
+          {"role":"user","content":"Nhắn lại bảo tôi biết rồi và hỏi họp ở phòng nào"}
+        ],
+        "rewrite": "Nhắn tin lại cho Minh Khoa: 'OK anh biết rồi, họp ở phòng nào vậy?'.",
+        "rationale": "'Nhắn lại' resolve về Minh Khoa từ lượt đọc tin; nội dung gồm xác nhận và câu hỏi phòng họp cần gộp thành một tin."
+      },
+      {
+        "pattern": "negation",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm trạm sạc trong bán kính 5km"},
+          {"role":"bot","content":"Có 3 trạm: EVgo Cầu Giấy 2.1km, VinFast Trung Hòa 3.4km và Eboost Dịch Vọng 4.8km."},
+          {"role":"user","content":"Loại trạm nào không phải VinFast ra, chỉ cho tôi trạm khác thôi"}
+        ],
+        "rewrite": "Hiển thị các trạm sạc trong bán kính 5km, không bao gồm trạm VinFast, gồm EVgo Cầu Giấy 2.1km và Eboost Dịch Vọng 4.8km.",
+        "rationale": "Phủ định loại trừ thương hiệu cụ thể; rewrite giữ rõ điều kiện lọc và liệt kê đúng các trạm còn lại."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Kiểm tra home hub xem có thiết bị nào offline không"},
+          {"role":"bot","content":"Toàn bộ thiết bị online trừ smart lock cửa sau đang mất kết nối từ 13:05."},
+          {"role":"user","content":"Reset smart lock đó rồi ping lại xem có lên không"}
+        ],
+        "rewrite": "Reset smart lock cửa sau rồi kiểm tra lại kết nối.",
+        "rationale": "Token 'smart lock', 'reset', 'ping' giữ nguyên; 'đó' resolve về smart lock cửa sau đang offline từ lượt bot."
+      },
+      {
+        "pattern": "correction",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đặt nhắc đổ xăng khi xe còn 10% nhiên liệu"},
+          {"role":"bot","content":"Đã đặt cảnh báo nhiên liệu ở mức 10%."},
+          {"role":"user","content":"Thôi chỉnh lên 20% đi, 10% dễ kẹt giữa đường lắm"}
+        ],
+        "rewrite": "Chỉnh ngưỡng cảnh báo nhiên liệu từ 10% lên 20%.",
+        "rationale": "User đính chính ngưỡng cảnh báo; rewrite dùng cả hai con số để rõ hành động chỉnh sửa, không bịa thêm."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe tôi đang có vấn đề gì không?"},
+          {"role":"bot","content":"Lốp sau bên phải áp suất thấp còn 28 PSI, dầu máy cần thay sau 1.200km nữa, đèn phanh sau trái đứt bóng."},
+          {"role":"user","content":"Gọi cho cứu hộ 24h gần nhất đi"}
+        ],
+        "rewrite": "Gọi cho dịch vụ cứu hộ xe ô tô 24h gần nhất.",
+        "rationale": "Bot liệt kê 3 vấn đề kỹ thuật nhưng không cái nào là slot của rewrite; yêu cầu gọi cứu hộ độc lập hoàn toàn với dữ liệu chẩn đoán."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mình hay nghe nhạc của Trung Quân Idol trên đường đi làm"},
+          {"role":"bot","content":"Đã ghi nhớ sở thích. Bạn muốn phát ngay không?"},
+          {"role":"user","content":"Ừ phát đi nhưng chọn bài buồn buồn một chút"},
+          {"role":"bot","content":"Gợi ý: '方向' cover Trung Quân, 'Chỉ Là Không Cùng Nhau' và 'Có Ai Thương Em Như Anh'."},
+          {"role":"user","content":"Phát cái thứ hai đi"}
+        ],
+        "rewrite": "Phát bài 'Chỉ Là Không Cùng Nhau' của Trung Quân Idol trên Spotify.",
+        "rationale": "'Cái thứ hai' resolve về tên bài cụ thể trong danh sách bot; nghệ sĩ lấy từ sở thích user khai báo lượt đầu."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Hạ kính lái xuống hết rồi bật quạt thông gió mức 2 luôn nhé"}
+        ],
+        "rewrite": "Hạ kính cửa ghế lái xuống hoàn toàn và bật quạt thông gió mức 2.",
+        "rationale": "Lượt đơn đã đủ thông tin, hai intent độc lập cần giữ nguyên không rút gọn."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Khoảng cách an toàn với xe trước đang ở mức mấy?"},
+          {"role":"bot","content":"Khoảng cách đang ở mức 2 trên thang 4, tương đương khoảng 1.5 giây."},
+          {"role":"user","content":"Tăng lên mức cao nhất đi, đường đang trơn"},
+          {"role":"bot","content":"Đã tăng khoảng cách an toàn lên mức 4, tương đương khoảng 3 giây."},
+          {"role":"user","content":"Và giảm tốc độ cruise xuống còn 80 luôn"}
+        ],
+        "rewrite": "Giảm tốc độ cruise control xuống 80km/h.",
+        "rationale": "Bot đã xử lý xong việc tăng khoảng cách; rewrite chỉ chứa hành động mới là chỉnh tốc độ, không nhắc khoảng cách."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem nhiệt độ các vùng điều hoà đang thế nào"},
+          {"role":"bot","content":"Vùng lái 23°C, vùng phụ 25°C, hàng sau trái 24°C, hàng sau phải chưa bật."},
+          {"role":"user","content":"Bật vùng chưa bật lên, đặt cùng nhiệt độ với hàng sau trái"}
+        ],
+        "rewrite": "Bật điều hoà hàng sau bên phải, đặt nhiệt độ 24°C.",
+        "rationale": "'Vùng chưa bật' resolve về hàng sau phải; 'cùng nhiệt độ hàng sau trái' resolve về 24°C từ dữ liệu bot."
+      }
+    ]
+  }

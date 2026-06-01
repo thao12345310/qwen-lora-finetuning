@@ -1,0 +1,141 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn đến nhà chị Mai ở số 12 Đường Lê Trắc, Hà Nội."},
+          {"role":"bot","content":"Đã lưu địa chỉ."},
+          {"role":"user","content":"Đi tới chỗ ấy ngay."}
+        ],
+        "rewrite": "Điều hướng tới nhà chị Mai, số 12 Đường Lê Trắc, Hà Nội",
+        "rationale": "Câu cuối dùng đại từ “chỗ ấy” nên phải dựa trên địa chỉ đã cung cấp trước để xác định điểm đến."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "smart_home",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết nhiệt độ hôm nay không?"},
+          {"role":"bot","content":"Nhiệt độ hiện tại 30°C."},
+          {"role":"user","content":"Bật đèn phòng ngủ."}
+        ],
+        "rewrite": "Bật đèn phòng ngủ",
+        "rationale": "Thông tin nhiệt độ không liên quan tới yêu cầu bật đèn; câu cuối đã chứa đủ slot."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho anh Dũng: \"Dự án đã hoàn thành\"."},
+          {"role":"bot","content":"Bạn muốn gửi ngay hay lên lịch?"},
+          {"role":"user","content":"Lên lịch cho ngày 20/09."},
+          {"role":"bot","content":"Giờ nào?"},
+          {"role":"user","content":"08:30 sáng."},
+          {"role":"bot","content":"Đã ghi lịch."},
+          {"role":"user","content":"Thêm nội dung: \"Vui lòng kiểm tra\"."},
+          {"role":"user","content":"Thực hiện."}
+        ],
+        "rewrite": "Gửi tin đến anh Dũng vào 20/09 08:30 nội dung \"Dự án đã hoàn thành. Vui lòng kiểm tra\"",
+        "rationale": "Thông tin người nhận, thời gian và nội dung được phân tán qua nhiều lượt, cần tổng hợp đầy đủ."
+      },
+      {
+        "pattern": "correction",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật đèn pha."},
+          {"role":"bot","content":"Đèn pha đã bật."},
+          {"role":"user","content":"Không, tắt đèn pha và bật đèn không pha."}
+        ],
+        "rewrite": "Tắt đèn pha và bật đèn không pha",
+        "rationale": "Người dùng sửa lại hành động ban đầu, cần phản ánh intent cuối cùng mà không nhắc lại hành động đã thực hiện."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Find a Tesla Supercharger near my location."},
+          {"role":"bot","content":"Nearest Supercharger is at 1500 Main St, 2.1 km away."},
+          {"role":"user","content":"Navigate to the Supercharger at 1500 Main St."}
+        ],
+        "rewrite": "Điều hướng tới 1500 Main St, vị trí Supercharger Tesla",
+        "rationale": "Câu cuối chứa token tiếng Anh “Tesla” và địa chỉ đầy đủ, không cần dựa vào ngữ cảnh trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn sử dụng Lane Assist."},
+          {"role":"bot","content":"Bạn muốn bật Lane Assist ngay?"},
+          {"role":"user","content":"Bật nó."}
+        ],
+        "rewrite": "Bật Lane Assist",
+        "rationale": "Đại từ “nó” cần được giải quyết dựa trên tính năng Lane Assist đã đề cập."
+      },
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "cancel_action",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play 'Señorita' on Spotify."},
+          {"role":"bot","content":"Playing 'Señorita' on Spotify."},
+          {"role":"user","content":"Don't play it."}
+        ],
+        "rewrite": "Không chơi bài 'Señorita' trên Spotify",
+        "rationale": "Câu cuối phủ định việc phát nhạc, cần giữ lại phủ định và token tiếng Anh."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 22 độ, giảm gió mức 1 và bật chế độ ngủ."},
+          {"role":"bot","content":"Điều hòa 22°C, gió mức 1, chế độ ngủ đã bật."},
+          {"role":"user","content":"Thay nhiệt độ 24 và tắt chế độ ngủ."}
+        ],
+        "rewrite": "Đặt nhiệt độ 24°C và tắt chế độ ngủ",
+        "rationale": "Lượt cuối có hai intent (thay nhiệt độ và tắt chế độ ngủ) cần được gộp trong một câu."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn tới nhà bố tại số 5 Đường Trần Hưng Đạo, Quận 1, TP.HCM."},
+          {"role":"bot","content":"Đã lưu địa chỉ."},
+          {"role":"user","content":"Tránh cầu."},
+          {"role":"bot","content":"Đang tính lộ trình tránh cầu."},
+          {"role":"user","content":"Đi nhanh nhất."}
+        ],
+        "rewrite": "Điều hướng tới nhà bố, số 5 Đường Trần Hưng Đạo, Quận 1, TP.HCM, tránh cầu, ưu tiên tốc độ nhanh nhất",
+        "rationale": "Địa điểm, yêu cầu tránh cầu và tốc độ nhanh nhất được đưa ra qua nhiều lượt, cần tổng hợp đầy đủ."
+      },
+      {
+        "pattern": "correction",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn sạc xe chuẩn."},
+          {"role":"bot","content":"Có trạm NormalCharge ở ngã 3, cách 1.2 km."},
+          {"role":"user","content":"Không, muốn trạm nhanh."}
+        ],
+        "rewrite": "Tìm trạm sạc nhanh ở ngã 3, cách 1.2 km",
+        "rationale": "Người dùng sửa lại yêu cầu loại trạm, cần cập nhật thông tin mới mà không giữ lại loại chuẩn."
+      }
+    ]
+  }

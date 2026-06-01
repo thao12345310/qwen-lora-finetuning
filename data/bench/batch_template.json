@@ -1,0 +1,41 @@
+{
+  "samples": [
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "music",
+      "intent": "play_music_online",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Cho mình nghe nhạc mới của Sơn Tùng M-TP."},
+        {"role": "bot", "content": "Bài Nơi Này Có Anh vừa phát hành."},
+        {"role": "user", "content": "Bật bài đó đi."}
+      ],
+      "rewrite": "Phát bài Nơi Này Có Anh của Sơn Tùng M-TP.",
+      "rationale": "User dùng đại từ 'bài đó', phải resolve về tên bài bot vừa nêu."
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "climate",
+      "intent": "set_climate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Ngoài trời bao nhiêu độ vậy?"},
+        {"role": "bot", "content": "Hiện ngoài trời 38 độ C."},
+        {"role": "user", "content": "Bật điều hoà 22 độ giúp tôi."}
+      ],
+      "rewrite": "Bật điều hoà ở 22 độ C.",
+      "rationale": "Số 38 độ của bot là nhiễu, rewrite chỉ được dùng 22 độ user nêu."
+    },
+    {
+      "pattern": "negation",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Dẫn tới sân bay Nội Bài, đừng đi cao tốc."}
+      ],
+      "rewrite": "Dẫn đường tới sân bay Nội Bài, tránh đường cao tốc.",
+      "rationale": "Lượt cuối đã tự đủ thông tin; phải giữ rõ phủ định 'đừng/tránh'."
+    }
+  ]
+}

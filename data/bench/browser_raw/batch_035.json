@@ -1,0 +1,136 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi đang lái trên đường cao tốc, muốn bật tính năng hỗ trợ làn đường."},
+          {"role":"bot","content":"Bạn muốn bật Lane Assist ngay bây giờ?"},
+          {"role":"user","content":"Bật nó đi."}
+        ],
+        "rewrite": "Bật Lane Assist",
+        "rationale": "Câu cuối dùng đại từ \"nó\" để chỉ tính năng Lane Assist, cần dựa vào lịch sử để giải quyết."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có thể cho tôi biết hôm nay nhiệt độ trung tâm là bao nhiêu?"},
+          {"role":"bot","content":"Nhiệt độ trung tâm hiện tại 31°C, cảm giác 34°C."},
+          {"role":"user","content":"Phát bài \"Sóng Gió\" của Jack trên Spotify."}
+        ],
+        "rewrite": "Phát bài \"Sóng Gió\" của Jack trên Spotify",
+        "rationale": "Thông tin thời tiết không liên quan, câu cuối tự cung cấp đủ slot để phát bài."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi cần sạc xe ngay bây giờ."},
+          {"role":"bot","content":"Có trạm SuperCharge ở ngã 4, cách 1.3 km. Muốn dùng trạm này?"},
+          {"role":"user","content":"Đúng, muốn sạc nhanh."},
+          {"role":"bot","content":"SuperCharge hỗ trợ sạc nhanh 120 kW."},
+          {"role":"user","content":"Đi tới nó luôn."}
+        ],
+        "rewrite": "Điều hướng tới trạm SuperCharge ở ngã 4, cách 1.3 km, hỗ trợ sạc nhanh 120 kW",
+        "rationale": "Slot vị trí và loại sạc được đưa ra qua nhiều lượt, cần tổng hợp thành một lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Hướng tôi tới Thảo Cầm Viên."},
+          {"role":"bot","content":"Thảo Cầm Viên cách 8 km, thời gian dự kiến 12 phút."},
+          {"role":"user","content":"Không, tới Hồ Hoàn Kiếm nhé."}
+        ],
+        "rewrite": "Điều hướng tới Hồ Hoàn Kiếm, tránh cao tốc nếu có",
+        "rationale": "Người dùng sửa lại điểm đến, cần cập nhật route mới."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Hey Alexa, turn off the kitchen lights."},
+          {"role":"bot","content":"Kitchen lights are now off."},
+          {"role":"user","content":"Raise the thermostat to 23°C."}
+        ],
+        "rewrite": "Đặt thermostat lên 23°C",
+        "rationale": "Câu cuối chỉ yêu cầu điều chỉnh nhiệt độ, không cần dẫn chứng từ lịch sử."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho anh Quang: \"Đến sân bay rồi nhé\"."},
+          {"role":"bot","content":"Tin nhắn đã sẵn sàng."},
+          {"role":"user","content":"Gửi nội dung này tới người ấy ngay."}
+        ],
+        "rewrite": "Gửi tin nhắn đến anh Quang nội dung \"Đến sân bay rồi nhé\" ngay lập tức",
+        "rationale": "Đại từ \"người ấy\" cần tham chiếu tới người nhận đã nêu trước."
+      },
+      {
+        "pattern": "negation",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ phía sau bên phải."},
+          {"role":"bot","content":"Cửa sổ phía sau bên phải đã mở."},
+          {"role":"user","content":"Không, không mở cửa sổ đâu."}
+        ],
+        "rewrite": "Không mở cửa sổ phía sau bên phải",
+        "rationale": "Câu cuối phủ định hành động mở, giữ lại thông tin vị trí nhưng không thực hiện mở."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 24 độ, gió mức 2 và bật chế độ eco."},
+          {"role":"bot","content":"Điều hòa đã bật 24°C, gió mức 2, chế độ eco đã bật."},
+          {"role":"user","content":"Giờ giảm nhiệt độ xuống 22 và tắt chế độ eco."}
+        ],
+        "rewrite": "Đặt nhiệt độ 22°C, gió mức 2 và tắt chế độ eco",
+        "rationale": "Lượt cuối chứa hai thay đổi (nhiệt độ, chế độ eco) cần đưa cả hai intent vào câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho bác sĩ Minh số 0909 777 888."},
+          {"role":"bot","content":"Đang gọi bác sĩ Minh."},
+          {"role":"user","content":"Không, gọi cho bác sĩ Linh số 0909 777 889."}
+        ],
+        "rewrite": "Gọi bác sĩ Linh số 0909 777 889",
+        "rationale": "Người dùng sửa lại người nhận và số điện thoại, cần cập nhật đúng thông tin mới."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở nhạc trong bộ nhớ, bài \"Người Lạ Ơi\" của Karik."},
+          {"role":"bot","content":"Bài \"Người Lạ Ơi\" đã sẵn sàng phát."},
+          {"role":"user","content":"Phát nó ngay."}
+        ],
+        "rewrite": "Phát bài \"Người Lạ Ơi\" của Karik từ bộ nhớ",
+        "rationale": "Câu cuối dùng đại từ \"nó\" để chỉ bài nhạc vừa được đề cập, cần dựa vào lịch sử để xác định."
+      }
+    ]
+  }

@@ -1,0 +1,140 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role": "user", "content": "Trên phố Nhân Hòa, tôi muốn bật hỗ trợ giữ làn đường."},
+          {"role": "bot", "content": "Bạn muốn bật Lane Assist ngay bây giờ?"},
+          {"role": "user", "content": "Vâng, bật nó ngay."}
+        ],
+        "rewrite": "Bật Lane Assist",
+        "rationale": "Câu cuối dùng đại từ “nó” để chỉ tính năng Lane Assist đã được đề cập, cần dựa vào lịch sử để xác định intent."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role": "user", "content": "Bạn có thể cho tôi biết thời gian giao thông hiện tại không?"},
+          {"role": "bot", "content": "Tốc độ trung bình trên đường Nguyễn Văn Linh là 45km/h."},
+          {"role": "user", "content": "Phát bài \"Em Đã Quên Tên\" của Hoài Lâm trên Spotify."}
+        ],
+        "rewrite": "Phát bài \"Em Đã Quên Tên\" của Hoài Lâm trên Spotify",
+        "rationale": "Thông tin giao thông không liên quan tới yêu cầu âm nhạc; câu cuối tự chứa đủ slot để thực hiện phát bài."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role": "user", "content": "Tôi cần sạc tới 80% trong khu vực quận 2."},
+          {"role": "bot", "content": "Có trạm FastCharge ở ngã 6, cách 2.3 km, công suất 150 kW."},
+          {"role": "user", "content": "Mình muốn cấp 2, không muốn trả phí phụ."},
+          {"role": "bot", "content": "Đã bật cấp 2, không thu phụ phí."},
+          {"role": "user", "content": "Đi tới trạm đó."}
+        ],
+        "rewrite": "Điều hướng tới trạm FastCharge ở ngã 6, cách 2.3 km, công suất 150 kW, cấp 2, không thu phụ phí",
+        "rationale": "Địa điểm, công suất, mức sạc và phí được cung cấp rải rác qua các lượt, cần tổng hợp trong một câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role": "user", "content": "Đi đến nhà cho mẹ tại số 16 Đường Trường Chinh, Hà Nội."},
+          {"role": "bot", "content": "Đã lưu địa chỉ."},
+          {"role": "user", "content": "Không, mình muốn tới nhà cô Tâm ở số 20 Đường Trường Chinh."}
+        ],
+        "rewrite": "Điều hướng tới nhà cô Tâm, số 20 Đường Trường Chinh, Hà Nội",
+        "rationale": "Người dùng sửa lại địa chỉ đích, câu cuối cần phản ánh thay đổi mới."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role": "user", "content": "Hey Google Home, turn off the kitchen lights."},
+          {"role": "bot", "content": "Kitchen lights are now off."},
+          {"role": "user", "content": "Also set the thermostat to 23 degrees."}
+        ],
+        "rewrite": "Đặt thermostat lên 23°C",
+        "rationale": "Câu cuối giữ token tiếng Anh “thermostat” và yêu cầu mức nhiệt độ, không cần ngữ cảnh trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role": "user", "content": "Mở cửa sổ phía sau bên phải."},
+          {"role": "bot", "content": "Cửa sổ phía sau bên phải đã mở."},
+          {"role": "user", "content": "Đóng cái đó."}
+        ],
+        "rewrite": "Đóng cửa sổ phía sau bên phải",
+        "rationale": "Đại từ “cái đó” ám chỉ cửa sổ vừa mở, cần giải quyết để tạo câu lệnh độc lập."
+      },
+      {
+        "pattern": "negation",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": false,
+        "turns": [
+          {"role": "user", "content": "Gọi cho bác sĩ Thanh số 0907 123 456."},
+          {"role": "bot", "content": "Đang gọi bác sĩ Thanh."},
+          {"role": "user", "content": "Đừng gọi nữa."}
+        ],
+        "rewrite": "Hủy cuộc gọi tới bác sĩ Thanh",
+        "rationale": "Câu cuối phủ định hành động gọi, không cần kéo thông tin nào từ lịch sử."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role": "user", "content": "Gửi tin cho anh Khoa: \"Báo cáo đã sẵn sàng\" và nhắc tôi 20 phút trước."},
+          {"role": "bot", "content": "Tin nhắn và nhắc đã được lập."},
+          {"role": "user", "content": "Thực hiện."}
+        ],
+        "rewrite": "Gửi tin đến anh Khoa nội dung \"Báo cáo đã sẵn sàng\" và đặt nhắc 20 phút trước",
+        "rationale": "Lượt cuối cần gộp cả hai intent (gửi tin và đặt nhắc) trong một câu duy nhất."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role": "user", "content": "Bật điều hòa ở chế độ làm mát."},
+          {"role": "bot", "content": "Điều hòa đã bật chế độ làm mát."},
+          {"role": "user", "content": "Đặt nhiệt độ 22 độ."},
+          {"role": "bot", "content": "Nhiệt độ đã đặt 22°C."},
+          {"role": "user", "content": "Giảm gió mức 1."},
+          {"role": "bot", "content": "Gió đã giảm mức 1."},
+          {"role": "user", "content": "Xong."}
+        ],
+        "rewrite": "Bật điều hòa chế độ làm mát, đặt nhiệt độ 22°C và giảm gió mức 1",
+        "rationale": "Các slot nhiệt độ, gió và chế độ được đưa ra rải rác qua các lượt, cần tổng hợp trong một câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": true,
+        "turns": [
+          {"role": "user", "content": "Phát bài \"Một Cú Lừa\" của Đông Nhi từ bộ nhớ."},
+          {"role": "bot", "content": "Bài \"Một Cú Lừa\" đã sẵn sàng."},
+          {"role": "user", "content": "Không, phát \"Cứ Để Nó Đi\" của Hải Triều."}
+        ],
+        "rewrite": "Phát bài \"Cứ Để Nó Đi\" của Hải Triều từ bộ nhớ",
+        "rationale": "Người dùng sửa lại bài hát, cần phản ánh bài mới mà không giữ lại bài cũ."
+      }
+    ]
+  }

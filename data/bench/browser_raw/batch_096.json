@@ -1,0 +1,141 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ phía trước bên phải."},
+          {"role":"bot","content":"Cửa sổ phía trước bên phải đã mở."},
+          {"role":"user","content":"Đóng nó luôn."}
+        ],
+        "rewrite": "Đóng cửa sổ phía trước bên phải",
+        "rationale": "Câu cuối dùng đại từ “nó” để chỉ cửa sổ vừa mở, cần dựa vào lịch sử để xác định đối tượng."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "smart_home",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết pin xe còn bao nhiêu không?"},
+          {"role":"bot","content":"Pin hiện tại còn 78%."},
+          {"role":"user","content":"Bật đèn nội thất trong xe."}
+        ],
+        "rewrite": "Bật đèn nội thất",
+        "rationale": "Thông tin pin không liên quan tới yêu cầu bật đèn nội thất, vì vậy rewrite chỉ chứa hành động mới."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn sạc tới 90% ở khu vực Trung Văn."},
+          {"role":"bot","content":"Có trạm SuperCharge tại ngã 5, cách 1.8 km, công suất 100 kW."},
+          {"role":"user","content":"Hãy dùng cấp 3, không trả phí."},
+          {"role":"bot","content":"Đã bật cấp 3, không thu phí phụ."},
+          {"role":"user","content":"Đi tới đó."}
+        ],
+        "rewrite": "Điều hướng tới trạm SuperCharge ở ngã 5, cách 1.8 km, công suất 100 kW, cấp 3, không thu phí phụ",
+        "rationale": "Địa điểm, công suất, cấp và phí được đưa ra rải rác qua các lượt, cần gộp lại trong một câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Hãy dẫn tôi tới chợ Lê Văn Duyệt, tránh đường cao tốc."},
+          {"role":"bot","content":"Đã tính lộ trình, tránh cao tốc."},
+          {"role":"user","content":"Không, tôi muốn đường nhanh nhất, không cần tránh cao tốc."}
+        ],
+        "rewrite": "Điều hướng tới chợ Lê Văn Duyệt, ưu tiên đường nhanh nhất, không tránh cao tốc",
+        "rationale": "Người dùng sửa lại yêu cầu tránh cao tốc, cần cập nhật trong câu lệnh cuối."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play file \"Về Nhà\".mp3."},
+          {"role":"bot","content":"File \"Về Nhà\".mp3 đã sẵn sàng."},
+          {"role":"user","content":"Set volume to 50."}
+        ],
+        "rewrite": "Phát file \"Về Nhà\".mp3 và đặt âm lượng 50",
+        "rationale": "Câu cuối giữ token tiếng Anh .mp3 và mức âm lượng, không cần ngữ cảnh trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho chị Hồng: \"Đến bến sông lúc 6h\"."},
+          {"role":"bot","content":"Tin nhắn đã chuẩn bị."},
+          {"role":"user","content":"Gửi điều đó ngay."}
+        ],
+        "rewrite": "Gửi tin đến chị Hồng nội dung \"Đến bến sông lúc 6h\" ngay lập tức",
+        "rationale": "Đại từ “điều đó” tham chiếu tới nội dung tin nhắn đã chuẩn bị, cần giải quyết để tạo câu lệnh."
+      },
+      {
+        "pattern": "negation",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn bật Lane Assist khi lái trên quốc lộ."},
+          {"role":"bot","content":"Bạn muốn bật Lane Assist ngay?"},
+          {"role":"user","content":"Đừng bật nó."}
+        ],
+        "rewrite": "Không bật Lane Assist",
+        "rationale": "Câu cuối phủ định việc bật lane assist, cần giữ lại phủ định."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 21 độ, giảm gió mức 1 và bật chế độ eco."},
+          {"role":"bot","content":"Điều hòa 21°C, gió mức 1, chế độ eco đã bật."},
+          {"role":"user","content":"Xong."}
+        ],
+        "rewrite": "Đặt nhiệt độ 21°C, gió mức 1 và bật chế độ eco",
+        "rationale": "Lượt cuối đồng thời yêu cầu hai (thậm chí ba) thiết lập, cần giữ cả các intent trong một câu."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn đi tới nhà anh Nam ở số 18 Đường Lê Thị Hồng, Hà Nội."},
+          {"role":"bot","content":"Địa chỉ đã lưu."},
+          {"role":"user","content":"Đi tới chỗ ấy ngay."}
+        ],
+        "rewrite": "Điều hướng tới nhà anh Nam, số 18 Đường Lê Thị Hồng, Hà Nội",
+        "rationale": "Đại từ “chỗ ấy” cần tham chiếu tới địa chỉ đã lưu trong lịch sử."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở Spotify."},
+          {"role":"bot","content":"Bạn muốn nghe playlist nào?"},
+          {"role":"user","content":"Playlist \"Nhạc Vui Nhộn\"."},
+          {"role":"bot","content":"Playlist đã chọn."},
+          {"role":"user","content":"Đặt âm lượng 45."},
+          {"role":"bot","content":"Âm lượng đã đặt 45."},
+          {"role":"user","content":"Bật chế độ shuffle."},
+          {"role":"user","content":"Bắt đầu."}
+        ],
+        "rewrite": "Phát playlist \"Nhạc Vui Nhộn\" trên Spotify với âm lượng 45 và bật chế độ shuffle",
+        "rationale": "Tên playlist, âm lượng và chế độ shuffle được đưa ra rải rác, cần tổng hợp đầy đủ trong câu lệnh."
+      }
+    ]
+  }

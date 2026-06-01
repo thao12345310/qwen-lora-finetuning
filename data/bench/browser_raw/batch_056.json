@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn ăn bánh mì kẹp, cho biết McDonald's gần nhất."},
+          {"role":"bot","content":"McDonald's số 1 ở số 45 Phạm Hùng, Quận 3, cách bạn 1.9 km."},
+          {"role":"user","content":"Đi tới chỗ đó."}
+        ],
+        "rewrite": "Điều hướng tới McDonald’s số 1, số 45 Phạm Hùng, Quận 3, TP.HCM",
+        "rationale": "Câu cuối chỉ dùng đại từ “chỗ đó” nên phải dựa vào địa chỉ được cung cấp trước để xác định điểm đến."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn cho tôi biết giá xăng hôm nay."},
+          {"role":"bot","content":"Giá xăng RON 95 hiện tại 23,500 VND/lít."},
+          {"role":"user","content":"Mở bài \"Ngày Đó\" của cô Tạ Thanh trên Spotify."}
+        ],
+        "rewrite": "Phát bài \"Ngày Đó\" của cô Tạ Thanh trên Spotify",
+        "rationale": "Thông tin giá xăng không liên quan, câu cuối tự chứa đủ slot để phát bài."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cần sạc xe ngay tại khu vực phố Điện Biên."},
+          {"role":"bot","content":"Có trạm FastCharge ở ngã 4, cách 1.3 km, công suất 120 kW."},
+          {"role":"user","content":"Tôi muốn sạc cấp 2, không muốn trả phí phụ."},
+          {"role":"bot","content":"Đã bật cấp 2, không thu phụ phí."},
+          {"role":"user","content":"Đi tới đó ngay."}
+        ],
+        "rewrite": "Điều hướng tới trạm FastCharge ở ngã 4, cách 1.3 km, công suất 120 kW, cấp 2, không thu phụ phí",
+        "rationale": "Vị trí, công suất, mức sạc và phí được đưa ra rải rác, cần gộp lại trong một câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho cô Bảo số 0911 222 333."},
+          {"role":"bot","content":"Đang gọi cô Bảo."},
+          {"role":"user","content":"Không, gọi cho cô Lan số 0911 222 334."}
+        ],
+        "rewrite": "Gọi cô Lan số 0911 222 334",
+        "rationale": "Người dùng sửa lại người nhận và số điện thoại, cần phản ánh thông tin mới cuối cùng."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Alexa, turn off the kitchen lights."},
+          {"role":"bot","content":"Kitchen lights are now off."},
+          {"role":"user","content":"Bật thermostat lên 22 độ."}
+        ],
+        "rewrite": "Đặt thermostat lên 22°C",
+        "rationale": "Câu cuối giữ token tiếng Anh “thermostat” và yêu cầu mức nhiệt độ, không cần dựa vào ngữ cảnh trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở kính sàn."},
+          {"role":"bot","content":"Kính sàn đã mở."},
+          {"role":"user","content":"Đóng chúng lại."}
+        ],
+        "rewrite": "Đóng kính sàn",
+        "rationale": "Đại từ “chúng” ám chỉ kính sàn vừa mở, cần được giải quyết thành câu lệnh riêng."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 24 độ."},
+          {"role":"bot","content":"Điều hòa đã bật 24°C."},
+          {"role":"user","content":"Không, tắt điều hòa."}
+        ],
+        "rewrite": "Tắt điều hòa",
+        "rationale": "Câu cuối phủ định hành động bật, không cần thêm thông tin nào."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho anh Hải: \"Buổi họp đã dời 10h\" và nhắc tôi 15 phút trước."},
+          {"role":"bot","content":"Tin nhắn và nhắc đã được lập."},
+          {"role":"user","content":"Thực hiện."}
+        ],
+        "rewrite": "Gửi tin đến anh Hải nội dung \"Buổi họp đã dời 10h\" và đặt nhắc 15 phút trước",
+        "rationale": "Lượt cuối ngắn nhưng cần gộp cả hai intent (gửi tin + nhắc) vào một câu duy nhất."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn bật hỗ trợ làn đường."},
+          {"role":"bot","content":"Bạn có muốn bật Lane Assist ngay?"},
+          {"role":"user","content":"Có, bật luôn."},
+          {"role":"bot","content":"Lane Assist đã bật."},
+          {"role":"user","content":"Bật chế độ auto brake nữa."}
+        ],
+        "rewrite": "Bật Lane Assist và chế độ auto brake",
+        "rationale": "Sau khi Lane Assist đã được bật, người dùng bổ sung yêu cầu auto brake; cần tổng hợp cả hai hành động."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở playlist \"Thắng Hạng\" trong bộ nhớ."},
+          {"role":"bot","content":"Playlist \"Thắng Hạng\" đã sẵn sàng."},
+          {"role":"user","content":"Phát nó ngay."}
+        ],
+        "rewrite": "Phát playlist \"Thắng Hạng\" từ bộ nhớ",
+        "rationale": "Đại từ “nó” ám chỉ playlist đã được bot xác nhận, cần giải quyết để tạo câu lệnh độc lập."
+      }
+    ]
+  }

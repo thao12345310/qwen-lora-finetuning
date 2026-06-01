@@ -1,0 +1,279 @@
+{
+    "samples": [
+    {
+    "pattern": "code_switching",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm chỗ đón khách ở sân bay Tân Sơn Nhất."
+    },
+    {
+    "role": "bot",
+    "content": "Có điểm đón tại sảnh A ga quốc nội và điểm đón tại làn D1 ga quốc tế."
+    },
+    {
+    "role": "user",
+    "content": "Bạn tôi bay từ Singapore về."
+    },
+    {
+    "role": "bot",
+    "content": "Chuyến bay quốc tế sẽ đón tại làn D1 ga quốc tế."
+    },
+    {
+    "role": "user",
+    "content": "Navigate tới điểm đó bằng Google Maps."
+    }
+    ],
+    "rewrite": "Navigate tới làn D1 ga quốc tế sân bay Tân Sơn Nhất bằng Google Maps.",
+    "rationale": "Lượt cuối chứa token tiếng Anh và tham chiếu “điểm đó”, cần khôi phục đúng điểm đón quốc tế đã được xác định."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Nhà nghỉ cuối tuần của tôi là căn ở Flamingo Đại Lải."
+    },
+    {
+    "role": "bot",
+    "content": "Đã lưu nhà nghỉ cuối tuần của bạn tại Flamingo Đại Lải."
+    },
+    {
+    "role": "user",
+    "content": "Từ xe tôi điều khiển được gì ở đó?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật bình nóng lạnh, mở điều hòa phòng ngủ hoặc nâng rèm phòng khách."
+    },
+    {
+    "role": "user",
+    "content": "Bật bình nóng lạnh rồi nâng rèm phòng khách ở đó."
+    }
+    ],
+    "rewrite": "Bật bình nóng lạnh rồi nâng rèm phòng khách tại căn nhà nghỉ cuối tuần ở Flamingo Đại Lải.",
+    "rationale": "Lượt cuối gồm hai thao tác và cụm “ở đó” phải được gắn với căn nhà đã lưu trong lịch sử."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo tình trạng pin trước khi dừng xe."
+    },
+    {
+    "role": "bot",
+    "content": "Pin hiện còn 43% và trạm gần nhất cách 6 km."
+    },
+    {
+    "role": "user",
+    "content": "Mở nắp cổng sạc bên trái."
+    }
+    ],
+    "rewrite": "Mở nắp cổng sạc bên trái.",
+    "rationale": "Các số liệu pin và khoảng cách là nhiễu, không liên quan đến thao tác mở nắp cổng sạc."
+    },
+    {
+    "pattern": "negation",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm cuộc trò chuyện Telegram với Hoàng Nam."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy Hoàng Nam - đội kỹ thuật và Hoàng Nam - câu lạc bộ xe."
+    },
+    {
+    "role": "user",
+    "content": "Người ở đội kỹ thuật."
+    },
+    {
+    "role": "bot",
+    "content": "Đã chọn cuộc trò chuyện Telegram với Hoàng Nam - đội kỹ thuật."
+    },
+    {
+    "role": "user",
+    "content": "Nhắn là tôi tới muộn, nhưng đừng gửi vị trí xe."
+    }
+    ],
+    "rewrite": "Gửi Telegram cho Hoàng Nam - đội kỹ thuật với nội dung “Tôi tới muộn” nhưng đừng gửi vị trí xe.",
+    "rationale": "Người nhận phải được phân giải từ danh sách trước đó và điều kiện phủ định về vị trí xe bắt buộc được giữ lại."
+    },
+    {
+    "pattern": "correction",
+    "domain": "driver_assist",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật hỗ trợ chuyển làn khi lên vành đai."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị bật hỗ trợ chuyển làn khi xe vào tuyến vành đai."
+    },
+    {
+    "role": "user",
+    "content": "Không bật chuyển làn; chỉ bật cảnh báo va chạm phía trước."
+    }
+    ],
+    "rewrite": "Không bật hỗ trợ chuyển làn; chỉ bật cảnh báo va chạm phía trước.",
+    "rationale": "Lượt cuối đã thay thế hoàn toàn tính năng ban đầu bằng một tính năng an toàn khác."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chỉnh không khí cho hàng ghế thứ ba."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn điều chỉnh nhiệt độ, tốc độ quạt hay chất lượng không khí?"
+    },
+    {
+    "role": "user",
+    "content": "Nhiệt độ 22°C."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn quạt ở mức nào?"
+    },
+    {
+    "role": "user",
+    "content": "Mức 2, bật thêm lọc không khí."
+    },
+    {
+    "role": "bot",
+    "content": "Có sử dụng chế độ lấy gió trong không?"
+    },
+    {
+    "role": "user",
+    "content": "Có, dùng luôn."
+    }
+    ],
+    "rewrite": "Đặt hàng ghế thứ ba ở 22°C, quạt mức 2, bật lọc không khí và sử dụng chế độ lấy gió trong.",
+    "rationale": "Khu vực, nhiệt độ, mức quạt, lọc không khí và chế độ gió được thu thập qua nhiều lượt riêng biệt."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Huấn luyện viên tennis của tôi là chị Diệu Linh."
+    },
+    {
+    "role": "bot",
+    "content": "Đã ghi nhận chị Diệu Linh là huấn luyện viên tennis của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Chiều nay tôi có thể đến muộn buổi tập."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có muốn liên hệ để báo trước không?"
+    },
+    {
+    "role": "user",
+    "content": "Gọi cho huấn luyện viên của tôi."
+    }
+    ],
+    "rewrite": "Gọi cho chị Diệu Linh, huấn luyện viên tennis của tôi.",
+    "rationale": "Cụm “huấn luyện viên của tôi” chỉ có thể được resolve thành đúng liên hệ nhờ thông tin đã khai báo trước đó."
+    },
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm các bản live của Hà Anh Tuấn."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi tìm thấy “Tháng Tư Là Lời Nói Dối Của Em” live và “Người Tình Mùa Đông” live của Hà Anh Tuấn."
+    },
+    {
+    "role": "user",
+    "content": "Bản nào đứng sau trong danh sách?"
+    },
+    {
+    "role": "bot",
+    "content": "Bản đứng sau là “Người Tình Mùa Đông” live."
+    },
+    {
+    "role": "user",
+    "content": "Thêm bản đó vào hàng chờ phát."
+    }
+    ],
+    "rewrite": "Thêm bài “Người Tình Mùa Đông” live của Hà Anh Tuấn vào hàng chờ phát.",
+    "rationale": "Lượt cuối chỉ nói “bản đó”, yêu cầu model lấy đúng bài đã được bot xác định ở lượt ngay trước."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi sắp giao xe cho nhân viên khách sạn."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật chế độ Valet Mode để giới hạn quyền truy cập khi giao xe."
+    },
+    {
+    "role": "user",
+    "content": "Xe Tesla Model 3 đang có hồ sơ khách sạn nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Có hồ sơ Sofitel Legend Metropole Hanoi với giới hạn tốc độ 40 km/h."
+    },
+    {
+    "role": "user",
+    "content": "Dùng hồ sơ đó rồi khóa cốp trước."
+    }
+    ],
+    "rewrite": "Bật Valet Mode cho Tesla Model 3 theo hồ sơ Sofitel Legend Metropole Hanoi với giới hạn tốc độ 40 km/h rồi khóa cốp trước.",
+    "rationale": "Lượt cuối vừa chọn hồ sơ đã nêu vừa thêm thao tác khóa cốp, cần giữ đúng mẫu xe và giới hạn tốc độ."
+    },
+    {
+    "pattern": "negation",
+    "domain": "navigation",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Có tuyến nào từ Hồ Tây sang Aeon Mall Hà Đông không?"
+    },
+    {
+    "role": "bot",
+    "content": "Tôi có thể đề xuất tuyến nhanh hoặc tuyến hạn chế đường thu phí."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tôi từ Hồ Tây tới AEON Mall Hà Đông, tránh đường thu phí."
+    }
+    ],
+    "rewrite": "Dẫn tôi từ Hồ Tây tới AEON Mall Hà Đông và tránh đường thu phí.",
+    "rationale": "Lượt cuối đã nêu đầy đủ điểm đi, điểm đến và ràng buộc tránh đường thu phí nên không cần lấy thêm slot lịch sử."
+    }
+    ]
+    }
+    

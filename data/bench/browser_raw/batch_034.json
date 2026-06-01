@@ -1,0 +1,134 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đi tới quán ăn Gánh Đá."},
+          {"role":"bot","content":"Quán Gánh Đá ở số 12 Đường Lê Thánh Tôn, cách 3.2 km."},
+          {"role":"user","content":"Đi đến chỗ ấy ngay."}
+        ],
+        "rewrite": "Điều hướng tới quán Gánh Đá, số 12 Đường Lê Thánh Tôn, Hà Nội",
+        "rationale": "Câu cuối dùng đại từ \"đó\" nên dựa vào địa chỉ đã cung cấp trước để xác định điểm đến."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "smart_home",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Cân nặng hiện tại của tôi là 68kg."},
+          {"role":"bot","content":"Bạn nặng 68 kg."},
+          {"role":"user","content":"Bật đèn LED phòng ngủ."}
+        ],
+        "rewrite": "Bật đèn LED phòng ngủ",
+        "rationale": "Thông tin cân nặng không liên quan tới yêu cầu bật đèn, nên rewrite chỉ chứa hành động mới."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật cruise control."},
+          {"role":"bot","content":"Cruise control đã bật ở 100km/h."},
+          {"role":"user","content":"Thay tốc độ xuống 80km/h."},
+          {"role":"bot","content":"Đã cập nhật tốc độ cruise control 80km/h."},
+          {"role":"user","content":"Giờ bật lane assist."}
+        ],
+        "rewrite": "Bật Lane Assist và đặt cruise control tốc độ 80km/h",
+        "rationale": "Lượt cuối chỉ yêu cầu lane assist, nhưng tốc độ cruise đã được xác định qua các lượt trước, vì vậy rewrite phải gộp cả hai."
+      },
+      {
+        "pattern": "correction",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở Spotify và phát bài \"Nơi Này Có Anh\" của Sơn Tùng M-TP."},
+          {"role":"bot","content":"Đang phát \"Nơi Này Có Anh\" trên Spotify."},
+          {"role":"user","content":"Không, phát \"Muộn Rồi Mà Sao Còn\" của Sơn Tùng."}
+        ],
+        "rewrite": "Phát bài \"Muộn Rồi Mà Sao Còn\" của Sơn Tùng M-TP trên Spotify",
+        "rationale": "Người dùng sửa lại bài hát, cần thay đổi slot bài mà không giữ lại bài cũ."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Hey, turn on the hazard lights."},
+          {"role":"bot","content":"Hazard lights are now on."},
+          {"role":"user","content":"Also turn off the high beam."}
+        ],
+        "rewrite": "Tắt đèn cao chiếu",
+        "rationale": "Câu cuối chỉ yêu cầu tắt đèn cao chiếu, không cần dựa vào ngữ cảnh trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi cần sạc ở khu vực phố Điện Biên."},
+          {"role":"bot","content":"Có trạm FastCharge ở số 22 phố Điện Biên, cách 1.9 km."},
+          {"role":"user","content":"Đi tới nó ngay."}
+        ],
+        "rewrite": "Điều hướng tới trạm FastCharge số 22 phố Điện Biên, cách 1.9 km",
+        "rationale": "Đại từ \"nó\" được giải quyết dựa trên trạm sạc đã được đề cập ở bot."
+      },
+      {
+        "pattern": "negation",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho bác sĩ Nguyễn Thanh số 0999 123 456."},
+          {"role":"bot","content":"Đang gọi bác sĩ Nguyễn Thanh."},
+          {"role":"user","content":"Đừng gọi nữa."}
+        ],
+        "rewrite": "Hủy cuộc gọi đến bác sĩ Nguyễn Thanh",
+        "rationale": "Câu cuối phủ định hành động gọi, cần giữ lại thông tin người được gọi để hủy."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 22 độ, giảm gió mức 2 và bật chế độ ngủ."}
+        ],
+        "rewrite": "Đặt nhiệt độ 22°C, gió ở mức 2 và bật chế độ ngủ",
+        "rationale": "Lượt cuối chứa ba intent đồng thời; không cần ngữ cảnh trước."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin nhắn cho chị Hạnh: \"Mua đồ ăn đi nhé\"."},
+          {"role":"bot","content":"Tin nhắn đã sẵn sàng gửi."},
+          {"role":"user","content":"Gửi nó ngay bây giờ."}
+        ],
+        "rewrite": "Gửi tin nhắn đến chị Hạnh nội dung \"Mua đồ ăn đi nhé\" ngay lập tức",
+        "rationale": "Đại từ \"nó\" đề cập tới tin nhắn đã chuẩn bị, cần giải quyết để tạo lệnh đầy đủ."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn tới bãi biển Đình Vũ."},
+          {"role":"bot","content":"Bãi biển Đình Vũ ở tỉnh Quảng Ninh, cách 4.5 km."},
+          {"role":"user","content":"Lấy đường ngắn nhất."}
+        ],
+        "rewrite": "Điều hướng tới bãi biển Đình Vũ, tỉnh Quảng Ninh, theo đường ngắn nhất",
+        "rationale": "Câu cuối yêu cầu đường ngắn nhất, cần dựa vào địa điểm đã được cung cấp trong lịch sử."
+      }
+    ]
+  }

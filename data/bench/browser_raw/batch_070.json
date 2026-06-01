@@ -1,0 +1,247 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kính xe đang hấp hơi, có thể xử lý những vùng nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật sấy kính trước hoặc sấy kính sau."
+    },
+    {
+    "role": "user",
+    "content": "Bật loại dành cho phía trước ngay đi."
+    }
+    ],
+    "rewrite": "Bật sấy kính trước ngay bây giờ.",
+    "rationale": "Lượt cuối mô tả chức năng theo vị trí thay vì gọi tên trực tiếp, nên phải phân giải đúng từ hai lựa chọn trước đó."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi cần báo thay đổi giờ đón cho anh Mạnh Hùng."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi qua ứng dụng nào?"
+    },
+    {
+    "role": "user",
+    "content": "Qua WhatsApp."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi nội dung gì và vào lúc nào?"
+    },
+    {
+    "role": "user",
+    "content": "Nhắn “Tôi sẽ đón anh lúc 20 giờ tại cổng chính Vincom Center Đồng Khởi”, gửi lúc 19 giờ 30."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có muốn chia sẻ vị trí xe kèm theo không?"
+    },
+    {
+    "role": "user",
+    "content": "Không chia sẻ vị trí, gửi theo lịch đó."
+    }
+    ],
+    "rewrite": "Hẹn gửi WhatsApp cho anh Mạnh Hùng lúc 19 giờ 30 với nội dung “Tôi sẽ đón anh lúc 20 giờ tại cổng chính Vincom Center Đồng Khởi” và không chia sẻ vị trí xe.",
+    "rationale": "Người nhận, kênh, nội dung, giờ gửi và ràng buộc không chia sẻ vị trí được cung cấp qua nhiều lượt."
+    },
+    {
+    "pattern": "correction",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật hỗ trợ đổ đèo khi chạy qua đèo Hải Vân."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị bật hỗ trợ đổ đèo khi xe đi qua đèo Hải Vân."
+    },
+    {
+    "role": "user",
+    "content": "Đổi lại, ở đoạn đó chỉ bật cảnh báo khúc cua."
+    }
+    ],
+    "rewrite": "Khi đi qua đèo Hải Vân, chỉ bật cảnh báo khúc cua.",
+    "rationale": "Lượt cuối thay thế tính năng ban đầu và dùng “đoạn đó” để giữ đúng phạm vi địa điểm."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Trước khi rời trạm, báo trạng thái xe."
+    },
+    {
+    "role": "bot",
+    "content": "Pin hiện đạt 92% và nhiệt độ ngoài trời là 28°C."
+    },
+    {
+    "role": "user",
+    "content": "Mở khóa cáp sạc giúp tôi."
+    }
+    ],
+    "rewrite": "Mở khóa cáp sạc giúp tôi.",
+    "rationale": "Phần trăm pin và nhiệt độ là dữ kiện nhiễu, không được kéo vào thao tác mở khóa cáp sạc."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chiếc Tesla Model Y có chế độ nào khi tôi nghỉ trong xe?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể dùng Camp Mode để duy trì tiện nghi khi nghỉ trong xe hoặc Dog Mode khi để thú cưng lại."
+    },
+    {
+    "role": "user",
+    "content": "Bật chế độ để tôi ngủ lại tối nay."
+    }
+    ],
+    "rewrite": "Bật Camp Mode trên Tesla Model Y để tôi nghỉ trong xe tối nay.",
+    "rationale": "Model phải suy ra chế độ phù hợp với việc người dùng nghỉ trong xe và giữ nguyên tên tính năng tiếng Anh."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "calling",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Danh bạ xe đã lưu thợ sửa điều hòa ô tô quen của tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có liên hệ nào được lưu với nhãn thợ sửa điều hòa ô tô quen của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Gọi thợ sửa điều hòa ô tô quen của tôi."
+    }
+    ],
+    "rewrite": "Gọi thợ sửa điều hòa ô tô quen của tôi.",
+    "rationale": "Không có tên hay số điện thoại cụ thể trong lịch sử nên phải giữ nguyên cụm tham chiếu, không được bịa liên hệ."
+    },
+    {
+    "pattern": "negation",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm vài bài của Noo Phước Thịnh cho chuyến đi."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy “Chạm Khẽ Tim Anh Một Chút Thôi” và “Cause I Love You” của Noo Phước Thịnh."
+    },
+    {
+    "role": "user",
+    "content": "Thêm cả hai vào playlist, trừ bài tiếng Anh."
+    }
+    ],
+    "rewrite": "Thêm bài “Chạm Khẽ Tim Anh Một Chút Thôi” của Noo Phước Thịnh vào playlist và không thêm bài “Cause I Love You”.",
+    "rationale": "Lượt cuối nói gộp rồi loại trừ bằng đặc điểm tên bài, yêu cầu model giữ đúng ngoại lệ."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi muốn ghé mua bánh trước khi ra sân bay Đà Nẵng."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể ghé tiệm Bánh mì Bà Lan trên đường Trưng Nữ Vương trước khi tới Sân bay Quốc tế Đà Nẵng."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tới tiệm đó trước rồi tiếp tục ra sân bay."
+    }
+    ],
+    "rewrite": "Dẫn đường tới Bánh mì Bà Lan trên đường Trưng Nữ Vương trước rồi tiếp tục tới Sân bay Quốc tế Đà Nẵng.",
+    "rationale": "Lượt cuối gồm hai chặng liên tiếp và dùng “tiệm đó” để tham chiếu đúng điểm dừng được bot đề xuất."
+    },
+    {
+    "pattern": "correction",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật chế độ lấy gió ngoài."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị bật chế độ lấy gió ngoài."
+    },
+    {
+    "role": "user",
+    "content": "Không lấy gió ngoài; chuyển sang lấy gió trong và bật lọc bụi mịn."
+    }
+    ],
+    "rewrite": "Không bật chế độ lấy gió ngoài; hãy chuyển sang lấy gió trong và bật lọc bụi mịn.",
+    "rationale": "Lượt cuối tự đầy đủ, phủ định chế độ cũ và yêu cầu hai thiết lập thay thế cụ thể."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chuẩn bị lịch sạc cho chiếc VinFast VF 8 trước chuyến đi Đà Lạt."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn sạc bằng thiết bị nào?"
+    },
+    {
+    "role": "user",
+    "content": "Bộ sạc tại gara nhà tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn sạc vào thời gian nào và đến mức pin bao nhiêu?"
+    },
+    {
+    "role": "user",
+    "content": "Bắt đầu lúc 4 giờ 45 sáng mai, đến 95%."
+    },
+    {
+    "role": "bot",
+    "content": "Có cần làm ấm pin trước khi khởi hành không?"
+    },
+    {
+    "role": "user",
+    "content": "Có, bật chuẩn bị pin trước chuyến đi."
+    }
+    ],
+    "rewrite": "Lên lịch sạc VinFast VF 8 bằng bộ sạc tại gara nhà tôi lúc 4 giờ 45 sáng mai đến 95% và bật chuẩn bị pin trước chuyến đi Đà Lạt.",
+    "rationale": "Mẫu xe, bộ sạc, thời gian, ngưỡng pin và tùy chọn chuẩn bị pin nằm rải rác qua bốn lượt user."
+    }
+    ]
+    }
+    

@@ -1,0 +1,139 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn bật hỗ trợ làn đường ngay."},
+          {"role":"bot","content":"Bạn có muốn bật Lane Assist không?"},
+          {"role":"user","content":"Bật nó ngay."}
+        ],
+        "rewrite": "Bật Lane Assist",
+        "rationale": "Câu cuối chỉ dùng đại từ \"nó\" để chỉ tính năng Lane Assist đã được đề cập, cần dựa vào lịch sử để xác định intent."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết giá xăng hôm nay không?"},
+          {"role":"bot","content":"Giá xăng RON95 hiện tại 23,800 VND/lít."},
+          {"role":"user","content":"Bật đèn hazard."}
+        ],
+        "rewrite": "Bật đèn hazard",
+        "rationale": "Thông tin về giá xăng không liên quan tới yêu cầu bật đèn hazard, câu cuối tự đủ nghĩa."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho anh Huy: \"Dự án đã hoàn thành\"."},
+          {"role":"bot","content":"Bạn muốn gửi ngay hay lên lịch?"},
+          {"role":"user","content":"Lên lịch vào ngày 22/09."},
+          {"role":"bot","content":"Bạn muốn gửi vào giờ nào?"},
+          {"role":"user","content":"09:15 sáng."},
+          {"role":"bot","content":"Đã ghi lịch."},
+          {"role":"user","content":"Thêm nội dung: \"Vui lòng kiểm tra file đính kèm\"."},
+          {"role":"user","content":"Thực hiện."}
+        ],
+        "rewrite": "Gửi tin đến anh Huy vào 22/09 09:15 nội dung \"Dự án đã hoàn thành. Vui lòng kiểm tra file đính kèm\"",
+        "rationale": "Thông tin người nhận, thời gian và nội dung được cung cấp rải rác qua nhiều lượt, cần tổng hợp đầy đủ."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đi tới nhà ông Nam, số 5 Đường Lê Duẩn, Hà Nội."},
+          {"role":"bot","content":"Đã lưu địa chỉ."},
+          {"role":"user","content":"Không, mình muốn tới nhà ông Nam, số 7 Đường Lê Duẩn, Hà Nội."}
+        ],
+        "rewrite": "Điều hướng tới nhà ông Nam, số 7 Đường Lê Duẩn, Hà Nội",
+        "rationale": "Người dùng sửa lại địa chỉ đích, câu cuối cần phản ánh thay đổi mới."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play \"Blinding Lights\" by The Weeknd on Spotify."},
+          {"role":"bot","content":"\"Blinding Lights\" đang phát trên Spotify."},
+          {"role":"user","content":"Set volume to 55."}
+        ],
+        "rewrite": "Đặt âm lượng 55 cho \"Blinding Lights\" trên Spotify",
+        "rationale": "Câu cuối giữ nguyên token tiếng Anh \"Spotify\" và yêu cầu mức âm lượng, không cần ngữ cảnh trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở rèm phòng ngủ."},
+          {"role":"bot","content":"Rèm phòng ngủ đã mở."},
+          {"role":"user","content":"Đóng chúng và bật đèn phòng ngủ."}
+        ],
+        "rewrite": "Đóng rèm phòng ngủ và bật đèn phòng ngủ",
+        "rationale": "Đại từ \"chúng\" ám chỉ rèm vừa mở; cần giải quyết để tạo câu lệnh đầy đủ."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 25 độ."},
+          {"role":"bot","content":"Điều hòa đã bật 25°C."},
+          {"role":"user","content":"Không, tắt điều hòa."}
+        ],
+        "rewrite": "Tắt điều hòa",
+        "rationale": "Câu cuối phủ định hành động bật điều hòa, không cần kéo thông tin nào từ lịch sử."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật lane assist và cruise control ở 90km/h."}
+        ],
+        "rewrite": "Bật Lane Assist và kích hoạt cruise control tốc độ 90km/h",
+        "rationale": "Lượt cuối chứa hai intent liên tiếp (lane assist + cruise control), cần giữ cả hai trong một câu."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ phía trước bên trái."},
+          {"role":"bot","content":"Cửa sổ phía trước bên trái đã mở."},
+          {"role":"user","content":"Giảm gió mức 2."},
+          {"role":"bot","content":"Gió đã giảm mức 2."},
+          {"role":"user","content":"Đóng cửa sổ đó."}
+        ],
+        "rewrite": "Đóng cửa sổ phía trước bên trái và giảm gió mức 2",
+        "rationale": "Slot vị trí, mức gió và hành động đóng được đưa ra qua các lượt, cần tổng hợp trong một câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "smart_home",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật đèn trần phòng khách."},
+          {"role":"bot","content":"Đèn trần phòng khách đã bật."},
+          {"role":"user","content":"Không, tắt đèn trần và bật đèn sàn phòng khách."}
+        ],
+        "rewrite": "Tắt đèn trần phòng khách và bật đèn sàn phòng khách",
+        "rationale": "Người dùng sửa lại yêu cầu ánh sáng, cần phản ánh intent cuối cùng mà không lặp lại hành động đã thực hiện."
+      }
+    ]
+  }

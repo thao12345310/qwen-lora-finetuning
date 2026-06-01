@@ -1,0 +1,225 @@
+{
+    "samples": [
+    {
+    "pattern": "negation",
+    "domain": "climate",
+    "intent": "set_climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Sáng nay lạnh tay quá."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật các tính năng sưởi phù hợp trong khoang lái."
+    },
+    {
+    "role": "user",
+    "content": "Bật sưởi vô lăng mức 2, nhưng không bật sưởi ghế lái."
+    }
+    ],
+    "rewrite": "Bật sưởi vô lăng ở mức 2 nhưng không bật sưởi ghế lái.",
+    "rationale": "Lượt cuối tự đủ slot và gold bắt buộc giữ nguyên phủ định không bật sưởi ghế lái."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "messaging",
+    "intent": "send_message",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xem nhanh trạng thái xe trước khi tôi nhắn."
+    },
+    {
+    "role": "bot",
+    "content": "Pin xe còn 42% và nhiệt độ ngoài trời hiện là 30°C."
+    },
+    {
+    "role": "user",
+    "content": "Gửi Signal cho Bảo Ngọc: Mình đang chờ ở sảnh G."
+    }
+    ],
+    "rewrite": "Gửi Signal cho Bảo Ngọc với nội dung “Mình đang chờ ở sảnh G”.",
+    "rationale": "Hai con số trạng thái là nhiễu và không được kéo vào tin nhắn đã tự đầy đủ thông tin."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "charging",
+    "intent": "set_charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi vừa tới trạm sạc rồi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể mở cổng sạc hoặc bắt đầu phiên sạc từ hệ thống xe."
+    },
+    {
+    "role": "user",
+    "content": "Mở nắp cổng sạc rồi bắt đầu Plug & Charge tại trạm V-GREEN ở Vincom Center Bà Triệu."
+    }
+    ],
+    "rewrite": "Mở nắp cổng sạc rồi bắt đầu Plug & Charge tại trạm V-GREEN ở Vincom Center Bà Triệu.",
+    "rationale": "Lượt cuối chứa đầy đủ hai thao tác nối tiếp, phương thức sạc và địa điểm thực hiện."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "vehicle",
+    "intent": "device_connect",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi muốn dùng điện thoại để nghe chỉ đường."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể kết nối điện thoại với hệ thống giải trí của xe."
+    },
+    {
+    "role": "user",
+    "content": "Kết nối iPhone 15 của Thảo qua Bluetooth rồi mở Apple CarPlay."
+    }
+    ],
+    "rewrite": "Kết nối iPhone 15 của Thảo qua Bluetooth rồi mở Apple CarPlay.",
+    "rationale": "Lượt cuối đã đủ thiết bị và thao tác, đồng thời các token iPhone 15, Bluetooth và Apple CarPlay phải được giữ nguyên."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "navigation",
+    "intent": "navigate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe có lưu địa chỉ trung tâm ngoại ngữ của em tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có địa điểm nào được lưu với nhãn trung tâm ngoại ngữ của em bạn."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tôi tới trung tâm ngoại ngữ của em tôi."
+    }
+    ],
+    "rewrite": "Dẫn tôi tới trung tâm ngoại ngữ của em tôi.",
+    "rationale": "Không có địa chỉ cụ thể trong lịch sử nên phải giữ nguyên cụm tham chiếu ngầm, không tự bịa điểm đến."
+    },
+    {
+    "pattern": "negation",
+    "domain": "music",
+    "intent": "play_music_online",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Mở nhạc nghe lúc lái xe đêm đi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể yêu cầu nghệ sĩ hoặc bài hát không muốn phát."
+    },
+    {
+    "role": "user",
+    "content": "Phát các bài của Đức Phúc trên Spotify, trừ bài “Ngày Đầu Tiên”."
+    }
+    ],
+    "rewrite": "Phát các bài của Đức Phúc trên Spotify, trừ bài “Ngày Đầu Tiên”.",
+    "rationale": "Lượt cuối đã tự đủ nghĩa và ngoại lệ “trừ bài” bắt buộc phải được bảo toàn trong rewrite."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "driver_assist",
+    "intent": "lane_assist",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo thông tin hành trình hiện tại."
+    },
+    {
+    "role": "bot",
+    "content": "Xe còn 126 km phạm vi hoạt động và mức tiêu thụ trung bình là 15 kWh/100 km."
+    },
+    {
+    "role": "user",
+    "content": "Bật cảnh báo lệch làn khi chạy trên đường Mai Chí Thọ."
+    }
+    ],
+    "rewrite": "Bật cảnh báo lệch làn khi chạy trên đường Mai Chí Thọ.",
+    "rationale": "Các số liệu về phạm vi hoạt động và mức tiêu thụ là nhiễu, không thuộc tính năng hỗ trợ lái được yêu cầu."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "calling",
+    "intent": "call",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bác sĩ thú y của tôi là chị Lê Minh Anh."
+    },
+    {
+    "role": "bot",
+    "content": "Đã lưu chị Lê Minh Anh là bác sĩ thú y của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Gọi bác sĩ thú y của tôi để hỏi lịch khám cho mèo."
+    }
+    ],
+    "rewrite": "Gọi chị Lê Minh Anh để hỏi lịch khám cho mèo.",
+    "rationale": "Cụm “bác sĩ thú y của tôi” phải được resolve thành đúng liên hệ đã lưu trong lịch sử."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "driver_assist",
+    "intent": "driver_assist_control",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đoạn nào gần Chợ Bến Thành hay có người băng qua đường?"
+    },
+    {
+    "role": "bot",
+    "content": "Đoạn trước cổng chính Chợ Bến Thành thường có nhiều người đi bộ băng qua."
+    },
+    {
+    "role": "user",
+    "content": "Tới đoạn đó, bật cảnh báo người đi bộ rồi giới hạn 25 km/h."
+    }
+    ],
+    "rewrite": "Khi tới đoạn trước cổng chính Chợ Bến Thành, bật cảnh báo người đi bộ rồi giới hạn tốc độ ở 25 km/h.",
+    "rationale": "Lượt cuối có hai hành động và cần lấy đúng vị trí áp dụng từ lượt bot trước đó."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "messaging",
+    "intent": "send_message",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Nhóm điều phối roadshow của tôi trên Microsoft Teams tên là EV Showcase Miền Nam."
+    },
+    {
+    "role": "bot",
+    "content": "Đã lưu nhóm điều phối roadshow của bạn là EV Showcase Miền Nam trên Microsoft Teams."
+    },
+    {
+    "role": "user",
+    "content": "Nhắn nhóm điều phối qua Microsoft Teams: ETA 9 phút."
+    }
+    ],
+    "rewrite": "Gửi Microsoft Teams vào nhóm EV Showcase Miền Nam với nội dung “ETA 9 phút”.",
+    "rationale": "Model phải resolve nhóm điều phối thành tên nhóm cụ thể và giữ nguyên các token Microsoft Teams cùng ETA."
+    }
+    ]
+    }
+    

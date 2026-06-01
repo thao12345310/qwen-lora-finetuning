@@ -1,0 +1,118 @@
+{
+    "samples": [
+      {
+        "pattern": "negation",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Chỉ đường đến Vincom Center Bà Triệu, tránh đường Hai Bà Trưng giờ này"}
+        ],
+        "rewrite": "Chỉ đường đến Vincom Center Bà Triệu, tránh đường Hai Bà Trưng.",
+        "rationale": "Lượt đơn đủ điểm đến và điều kiện tránh; từ 'tránh' bắt buộc giữ nguyên trong rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tìm trạm sạc DC gần nhất rồi bật chế độ tiết kiệm pin tối đa luôn"}
+        ],
+        "rewrite": "Tìm trạm sạc DC gần nhất và bật chế độ tiết kiệm pin tối đa.",
+        "rationale": "Lượt đơn chứa hai intent song song khác hệ thống, không cần lịch sử."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật Autopilot rồi set speed limit 110km/h, đường cao tốc rồi"}
+        ],
+        "rewrite": "Bật Autopilot và set speed limit 110km/h.",
+        "rationale": "Token 'Autopilot' và 'speed limit' giữ nguyên tiếng Anh; lượt đơn đủ slot, con số 110km/h có trong hội thoại."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Nhắn tin cho vợ báo về muộn khoảng 30 phút, kẹt xe"}
+        ],
+        "rewrite": "Nhắn tin cho vợ báo về muộn khoảng 30 phút vì kẹt xe.",
+        "rationale": "'Vợ' là implicit reference không có thông tin liên hệ trong hội thoại, giữ nguyên cụm không bịa số điện thoại; 30 phút có trong hội thoại."
+      },
+      {
+        "pattern": "negation",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật toàn bộ đèn ngoài sân nhưng đừng bật đèn hồ bơi, đang vệ sinh"}
+        ],
+        "rewrite": "Bật toàn bộ đèn ngoài sân, đừng bật đèn hồ bơi.",
+        "rationale": "Lượt đơn đủ yêu cầu và ngoại lệ cụ thể; từ 'đừng' bắt buộc giữ nguyên trong rewrite."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cho tôi biết thông số môi trường trong xe hiện tại"},
+          {"role":"bot","content":"Nhiệt độ trong xe 31°C, độ ẩm 68%, CO₂ 890ppm, bụi PM2.5 chỉ số 12, tốc độ quạt đang ở mức 2."},
+          {"role":"user","content":"Ngột quá, bật lọc không khí mức cao nhất và hạ nhiệt xuống 24 độ đi"}
+        ],
+        "rewrite": "Bật lọc không khí mức cao nhất và đặt nhiệt độ điều hoà 24°C.",
+        "rationale": "Bot trả 5 thông số môi trường; chỉ 24°C từ lượt user là slot cần thiết, các số 31°C, 68%, 890ppm, 12, mức 2 đều là nhiễu không đưa vào rewrite."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Gửi voice note qua WhatsApp cho anh Tuấn Khải bảo họp dời sang chiều"}
+        ],
+        "rewrite": "Gửi voice note qua WhatsApp cho anh Tuấn Khải thông báo họp dời sang chiều.",
+        "rationale": "Token 'voice note' và 'WhatsApp' giữ nguyên tiếng Anh; lượt đơn đủ slot người nhận, kênh và nội dung."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tắt đèn nội thất hết rồi khoá cửa toàn xe trước khi tôi ra ngoài"}
+        ],
+        "rewrite": "Tắt toàn bộ đèn nội thất và khoá cửa toàn xe.",
+        "rationale": "Lượt đơn chứa hai intent chuẩn bị rời xe song song, không cần lịch sử."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cái máy lọc không khí phòng ngủ hay để chế độ Auto"},
+          {"role":"bot","content":"Đã ghi nhận, máy lọc Dyson TP07 phòng ngủ thường chạy chế độ Auto."},
+          {"role":"user","content":"Hôm nay ngoài trời nhiều khói, chuyển sang Turbo luôn đi"}
+        ],
+        "rewrite": "Chuyển máy lọc Dyson TP07 phòng ngủ sang chế độ Turbo.",
+        "rationale": "'Nó' ngầm chỉ máy lọc Dyson TP07 phòng ngủ từ lượt bot; token 'Turbo' giữ nguyên, không dùng từ đã bịa thêm."
+      },
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Shuffle nhạc trong thư viện offline đi, trừ album Mơ của Hoàng Dũng"}
+        ],
+        "rewrite": "Shuffle toàn bộ nhạc offline trong thư viện, trừ album Mơ của Hoàng Dũng.",
+        "rationale": "Lượt đơn đủ nguồn phát và điều kiện loại trừ cụ thể; từ 'trừ' bắt buộc giữ nguyên trong rewrite."
+      }
+    ]
+  }

@@ -1,0 +1,136 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cho tôi biết nhà thuốc gần nhất ở quận 5."},
+          {"role":"bot","content":"Nhà thuốc Pharmacity tại số 23 Đường Lê Văn Lương, Quận 5, cách bạn 1.7 km."},
+          {"role":"user","content":"Đi tới chỗ đó."}
+        ],
+        "rewrite": "Điều hướng tới nhà thuốc Pharmacity, số 23 Đường Lê Văn Lương, Quận 5, Hà Nội",
+        "rationale": "Câu cuối dùng đại từ “chỗ đó” để chỉ địa điểm đã được bot cung cấp, cần dựa vào lịch sử để xác định điểm đến."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết mức tiêu thụ nhiên liệu hiện tại không?"},
+          {"role":"bot","content":"Bạn đang tiêu thụ 7.9 L/100km."},
+          {"role":"user","content":"Bật đèn hậu."}
+        ],
+        "rewrite": "Bật đèn hậu",
+        "rationale": "Thông tin tiêu thụ nhiên liệu không liên quan tới yêu cầu bật đèn hậu, câu cuối tự đủ nghĩa."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi cần sạc nhanh ở khu vực Định Công."},
+          {"role":"bot","content":"Có trạm FastCharge ở ngã 4, cách 1.9 km, công suất 120 kW."},
+          {"role":"user","content":"Muốn cấp 3, không thu phí phụ."},
+          {"role":"bot","content":"Đã bật cấp 3, không tính phí phụ."},
+          {"role":"user","content":"Đi tới trạm đó."}
+        ],
+        "rewrite": "Điều hướng tới trạm FastCharge ở ngã 4, cách 1.9 km, công suất 120 kW, cấp 3, không thu phí phụ",
+        "rationale": "Địa điểm, công suất, cấp và phí được đưa ra qua nhiều lượt, cần tổng hợp đầy đủ trong một câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho anh Tuấn số 0908 123 456."},
+          {"role":"bot","content":"Đang gọi anh Tuấn."},
+          {"role":"user","content":"Không, gọi cho chị Linh số 0909 777 889."}
+        ],
+        "rewrite": "Gọi chị Linh số 0909 777 889",
+        "rationale": "Người dùng sửa lại người nhận và số điện thoại, cần phản ánh thông tin mới trong câu lệnh."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play \"Blinding Lights\" by The Weeknd on Spotify."},
+          {"role":"bot","content":"\"Blinding Lights\" is now playing on Spotify."},
+          {"role":"user","content":"Set volume to 70."}
+        ],
+        "rewrite": "Đặt âm lượng 70 cho \"Blinding Lights\" trên Spotify",
+        "rationale": "Câu cuối giữ nguyên token tiếng Anh “Spotify” và yêu cầu mức âm lượng, không cần tham chiếu tới ngữ cảnh trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở rèm phòng khách."},
+          {"role":"bot","content":"Rèm phòng khách đã mở."},
+          {"role":"user","content":"Đóng chúng và bật đèn bàn ăn."}
+        ],
+        "rewrite": "Đóng rèm phòng khách và bật đèn bàn ăn",
+        "rationale": "Đại từ “chúng” ám chỉ rèm vừa mở, cần giải quyết để tạo câu lệnh đầy đủ."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 23 độ."},
+          {"role":"bot","content":"Điều hòa đã bật 23°C."},
+          {"role":"user","content":"Không, tắt điều hòa ngay."}
+        ],
+        "rewrite": "Tắt điều hòa ngay",
+        "rationale": "Câu cuối phủ định hành động bật, không cần giữ lại thông tin nào từ lịch sử."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn bật hỗ trợ làn đường."},
+          {"role":"bot","content":"Bạn muốn bật Lane Assist ngay?"},
+          {"role":"user","content":"Bật lane assist và bật cruise control ở 100km/h."}
+        ],
+        "rewrite": "Bật Lane Assist và kích hoạt cruise control tốc độ 100km/h",
+        "rationale": "Lượt cuối chứa hai intent (lane assist, cruise control) cần giữ cả hai trong một câu lệnh."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho anh Minh: \"Hẹn gặp lúc 14h\"."},
+          {"role":"bot","content":"Tin nhắn đã sẵn sàng."},
+          {"role":"user","content":"Gửi nó ngay."}
+        ],
+        "rewrite": "Gửi tin đến anh Minh nội dung \"Hẹn gặp lúc 14h\" ngay lập tức",
+        "rationale": "Đại từ “nó” có thể chỉ tin nhắn vừa chuẩn bị, cần giải quyết để tạo câu lệnh duy nhất."
+      },
+      {
+        "pattern": "correction",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Phát bài \"Ngày Đầu Tiên\" của Sơn Tùng trên Spotify."},
+          {"role":"bot","content":"\"Ngày Đầu Tiên\" đang phát trên Spotify."},
+          {"role":"user","content":"Không, phát \"Thời Gian\" của Đạt G."}
+        ],
+        "rewrite": "Phát bài \"Thời Gian\" của Đạt G trên Spotify",
+        "rationale": "Người dùng thay đổi bài hát, cần phản ánh bài mới mà không giữ lại bài cũ."
+      }
+    ]
+  }

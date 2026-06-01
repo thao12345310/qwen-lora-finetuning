@@ -1,0 +1,118 @@
+{
+    "samples": [
+      {
+        "pattern": "negation",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tìm đường ra sân bay Tân Sơn Nhất, đừng đi qua ngã tư Bảy Hiền"}
+        ],
+        "rewrite": "Chỉ đường đến sân bay Tân Sơn Nhất, đừng đi qua ngã tư Bảy Hiền.",
+        "rationale": "Lượt đơn đủ điểm đến và điều kiện tránh; từ 'đừng' bắt buộc giữ nguyên trong rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật điều hoà phòng ngủ 26 độ và kéo rèm cửa sổ lại hết đi"}
+        ],
+        "rewrite": "Bật điều hoà phòng ngủ 26°C và kéo rèm cửa sổ xuống hoàn toàn.",
+        "rationale": "Lượt đơn hai intent smart home song song với thông số cụ thể, không cần lịch sử; 26 có trong hội thoại."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Mở YouTube Music phát Daily Mix của tôi, equalizer để Bass Boost"}
+        ],
+        "rewrite": "Phát Daily Mix trên YouTube Music, đặt equalizer Bass Boost.",
+        "rationale": "Token 'YouTube Music', 'Daily Mix', 'equalizer', 'Bass Boost' giữ nguyên tiếng Anh; lượt đơn đủ slot."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Dẫn đường đến phòng khám bác sĩ quen của tôi, nhanh lên"}
+        ],
+        "rewrite": "Chỉ đường đến phòng khám bác sĩ quen theo tuyến nhanh nhất.",
+        "rationale": "'Phòng khám bác sĩ quen' là implicit reference không có địa chỉ trong hội thoại, giữ nguyên cụm không bịa địa điểm."
+      },
+      {
+        "pattern": "negation",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật đèn sương mù trước thôi, không bật đèn sương mù sau nhé"}
+        ],
+        "rewrite": "Bật đèn sương mù trước, không bật đèn sương mù sau.",
+        "rationale": "Lượt đơn phân biệt rõ hai đèn cùng loại; từ 'không' bắt buộc giữ nguyên để rewrite không mơ hồ."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem email công việc chưa đọc hôm nay"},
+          {"role":"bot","content":"Có 4 email chưa đọc: sếp Hùng Anh 08:03 về ngân sách, đối tác Minh Châu 09:17 về hợp đồng, HR nhắc nộp timesheet, newsletter IT lúc 10:45."},
+          {"role":"user","content":"Nhắn Zalo cho đối tác Minh Châu hỏi chiều nay có rảnh meet không"}
+        ],
+        "rewrite": "Nhắn Zalo cho Minh Châu hỏi chiều nay có rảnh gặp mặt không.",
+        "rationale": "Bot liệt kê 4 email; chỉ tên Minh Châu là slot liên quan, các email sếp Hùng Anh, HR, newsletter đều là nhiễu không đưa vào rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Gọi anh Quang Vinh rồi bật loa ngoài luôn, hai tay đang bận"}
+        ],
+        "rewrite": "Gọi cho anh Quang Vinh và bật loa ngoài.",
+        "rationale": "Lượt đơn hai intent liên tiếp trên cùng cuộc gọi; tên người nhận và thiết bị âm thanh đều có trong lượt user."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật Valet Mode rồi set PIN 1234 để bảo vệ xe khi gửi xe"}
+        ],
+        "rewrite": "Bật Valet Mode và đặt PIN 1234.",
+        "rationale": "Token 'Valet Mode' và 'PIN' giữ nguyên tiếng Anh; lượt đơn đủ slot, 1234 có trong hội thoại không bịa số."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Con chó nhà tôi thường được cho ăn lúc mấy giờ?"},
+          {"role":"bot","content":"Theo lịch đã cài, máy cho ăn tự động Petnet bật lúc 7h và 18h hằng ngày, mỗi lần 80g."},
+          {"role":"user","content":"Hôm nay cho ăn thêm bữa trưa 12h luôn, cùng lượng đó"}
+        ],
+        "rewrite": "Thêm lịch cho máy Petnet cho ăn lúc 12h hôm nay, lượng 80g.",
+        "rationale": "Tên máy Petnet và lượng 80g resolve từ lượt bot; 12h và 80g đều có trong hội thoại, không bịa thêm số."
+      },
+      {
+        "pattern": "negation",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tìm trạm sạc gần nhất nhưng không lấy trạm AC, cần DC tốc độ cao"}
+        ],
+        "rewrite": "Tìm trạm sạc DC tốc độ cao gần nhất, không lấy trạm AC.",
+        "rationale": "Lượt đơn đủ loại sạc ưu tiên và điều kiện loại trừ; từ 'không' bắt buộc giữ nguyên trong rewrite."
+      }
+    ]
+  }

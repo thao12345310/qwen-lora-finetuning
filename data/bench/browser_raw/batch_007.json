@@ -1,0 +1,136 @@
+{
+    "samples": [
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Trời lạnh quá, bật sưởi lên đi"},
+          {"role":"bot","content":"Bật sưởi ở mức nào ạ? Hiện tại điều hoà đang tắt."},
+          {"role":"user","content":"Đặt 27 độ rồi bật thêm sưởi ghế hành khách mức 2 luôn"}
+        ],
+        "rewrite": "Đặt nhiệt độ điều hoà 27°C và bật sưởi ghế hành khách mức 2.",
+        "rationale": "Hai intent climate song song phát sinh từ một lượt ngắn, cần gộp đủ cả nhiệt độ lẫn mức sưởi ghế."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Chỉ đường từ đây đến bệnh viện Bạch Mai nhanh nhất đi"}
+        ],
+        "rewrite": "Chỉ đường đến bệnh viện Bạch Mai theo tuyến nhanh nhất.",
+        "rationale": "Lượt duy nhất đã đủ slot đích và điều kiện, không cần lịch sử; 'từ đây' là vị trí hiện tại mặc định."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Hạ kính cửa ghế sau bên phải xuống một nửa"},
+          {"role":"bot","content":"Đã hạ kính ghế sau bên phải xuống 50%."},
+          {"role":"user","content":"Cái bên đối diện hạ xuống luôn, cùng mức đó"}
+        ],
+        "rewrite": "Hạ kính ghế sau bên trái xuống 50%.",
+        "rationale": "'Bên đối diện' và 'cùng mức đó' cần resolve về ghế sau bên trái và tỷ lệ 50% từ lượt bot."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi sắp về, bật điện phòng ngủ lên"},
+          {"role":"bot","content":"Đã bật đèn phòng ngủ."},
+          {"role":"user","content":"Đặt máy lọc không khí Xiaomi chạy mức turbo"},
+          {"role":"bot","content":"Đã bật máy lọc không khí Xiaomi chế độ turbo trong phòng ngủ."},
+          {"role":"user","content":"Và kéo rèm cửa sổ xuống hết luôn nhé"}
+        ],
+        "rewrite": "Kéo rèm cửa sổ phòng ngủ xuống hoàn toàn.",
+        "rationale": "Bot đã hoàn thành đèn và máy lọc; rewrite chỉ chứa hành động mới là kéo rèm, không nhắc lại hai việc trước."
+      },
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật nhạc Spotify playlist 'Buổi Sáng' đi"},
+          {"role":"bot","content":"Đang phát playlist 'Buổi Sáng' trên Spotify. Bài đầu: 'Nắng Ấm Xa Dần' - Vũ."},
+          {"role":"user","content":"Phát tiếp nhưng bỏ qua mấy bài của Vũ, tôi không thích"}
+        ],
+        "rewrite": "Tiếp tục phát playlist 'Buổi Sáng' trên Spotify, bỏ qua tất cả bài của Vũ.",
+        "rationale": "Phủ định nhắm vào nghệ sĩ cụ thể phải giữ rõ trong rewrite, không rút gọn thành 'bỏ bài'."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đường cao tốc rồi, bật mấy cái hỗ trợ lái lên"},
+          {"role":"bot","content":"Bạn muốn bật lane assist, adaptive cruise control hay cả hai ạ?"},
+          {"role":"user","content":"Cả hai, adaptive cruise control giữ 100km/h nhé"}
+        ],
+        "rewrite": "Bật lane assist và adaptive cruise control, giữ tốc độ 100km/h.",
+        "rationale": "Token 'lane assist' và 'adaptive cruise control' giữ nguyên tiếng Anh; slot tốc độ lấy từ lượt user cuối."
+      },
+      {
+        "pattern": "correction",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Nhắn Zalo cho Phương Linh bảo mình trễ 15 phút"},
+          {"role":"bot","content":"Tin nhắn Zalo: 'Linh ơi, mình trễ 15 phút nhé'. Gửi chưa?"},
+          {"role":"user","content":"Sửa lại thành trễ 30 phút rồi gửi đi"}
+        ],
+        "rewrite": "Sửa và gửi tin nhắn Zalo cho Phương Linh: 'Linh ơi, mình trễ 30 phút nhé'.",
+        "rationale": "User đính chính con số từ 15 lên 30 phút; rewrite chỉ giữ số cuối, không nhắc 15 phút cũ."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe tôi còn chạy được bao xa nữa?"},
+          {"role":"bot","content":"Pin còn 34%, quãng đường ước tính 187km, nhiệt độ pin 31°C, công suất động cơ 95%."},
+          {"role":"user","content":"Ổn rồi, nhưng tìm trạm sạc Tesla gần nhất trên đường đến Đà Lạt cho tôi"}
+        ],
+        "rewrite": "Tìm trạm sạc Tesla gần nhất trên tuyến đường đến Đà Lạt.",
+        "rationale": "Bot trả 4 thông số kỹ thuật nhưng chỉ hành trình đến Đà Lạt mới liên quan; rewrite không kéo pin 34% hay 187km vào."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đặt báo thức trong xe cho tôi"},
+          {"role":"bot","content":"Mấy giờ ạ?"},
+          {"role":"user","content":"6 giờ 15 sáng"},
+          {"role":"bot","content":"Đặt báo thức 6:15 sáng. Đặt lặp lại không ạ?"},
+          {"role":"user","content":"Chỉ thứ Hai đến thứ Sáu thôi"}
+        ],
+        "rewrite": "Đặt báo thức 6:15 sáng, lặp lại các ngày thứ Hai đến thứ Sáu.",
+        "rationale": "Giờ và ngày lặp rải qua 3 lượt user; lượt cuối rất ngắn nhưng mang slot ngày quan trọng."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem tôi có cuộc gọi nhỡ nào không"},
+          {"role":"bot","content":"Bạn có 2 cuộc gọi nhỡ: anh Đức Anh lúc 10:23 và chị Minh Châu lúc 11:47."},
+          {"role":"user","content":"Gọi lại cho người gọi sau đi"}
+        ],
+        "rewrite": "Gọi lại cho chị Minh Châu.",
+        "rationale": "'Người gọi sau' cần resolve về chị Minh Châu dựa vào thứ tự thời gian 11:47 trong lượt bot."
+      }
+    ]
+  }

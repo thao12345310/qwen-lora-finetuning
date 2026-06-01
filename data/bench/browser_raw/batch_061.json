@@ -1,0 +1,140 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn ghé mua thuốc trước khi về"},
+          {"role":"bot","content":"Loại thuốc gì và cần nhà thuốc mở cửa muộn không?"},
+          {"role":"user","content":"Thuốc hạ sốt cho trẻ em, cần chỗ mở đến 22h"},
+          {"role":"bot","content":"Nhà thuốc Long Châu Nguyễn Trãi mở đến 22h30, cách 2.1km. Pharmacity Lê Văn Lương mở đến 22h, cách 3.4km."},
+          {"role":"user","content":"Chỗ mở muộn hơn và gần hơn thì dẫn vào đó"}
+        ],
+        "rewrite": "Chỉ đường đến nhà thuốc Long Châu Nguyễn Trãi mở đến 22h30, cách 2.1km.",
+        "rationale": "'Chỗ mở muộn hơn và gần hơn' phải so sánh đồng thời cả hai tiêu chí từ danh sách bot rồi resolve về Long Châu Nguyễn Trãi."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Liệt kê trạng thái tất cả cửa sổ và cửa xe"},
+          {"role":"bot","content":"Cửa lái: đóng. Cửa phụ: đóng. Cửa sau trái: hé 3cm. Cửa sau phải: đóng. Cốp: đóng. Cửa sổ trời: mở 20%."},
+          {"role":"user","content":"Đóng hết cái đang mở hoặc hé lại"}
+        ],
+        "rewrite": "Đóng cửa sau bên trái và đóng cửa sổ trời.",
+        "rationale": "'Cái đang mở hoặc hé' resolve về đúng hai mục chưa đóng hoàn toàn từ danh sách trạng thái bot cung cấp."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Hệ thống smarthome đang chạy scene nào?"},
+          {"role":"bot","content":"Đang chạy scene 'Away Mode': tắt đèn, điều hoà standby 30°C, camera record 24h, cổng khoá."},
+          {"role":"user","content":"Chuyển sang scene 'Cinema Mode' đi, cả nhà sắp xem phim"}
+        ],
+        "rewrite": "Chuyển scene smarthome từ Away Mode sang Cinema Mode.",
+        "rationale": "Token 'Away Mode' và 'Cinema Mode' giữ nguyên; scene hiện tại từ lượt bot xác nhận điểm xuất phát của hành động chuyển đổi."
+      },
+      {
+        "pattern": "negation",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi hội nghị cho cả nhóm dự án Bắc Sông Hồng"},
+          {"role":"bot","content":"Nhóm có 5 người: anh Minh Đức, chị Phương Thảo, anh Quang Huy, chị Bích Ngọc và anh Trường Giang."},
+          {"role":"user","content":"Gọi hết trừ anh Trường Giang, ông ấy đang ở nước ngoài"}
+        ],
+        "rewrite": "Gọi hội nghị cho nhóm dự án Bắc Sông Hồng gồm anh Minh Đức, chị Phương Thảo, anh Quang Huy và chị Bích Ngọc, không gọi anh Trường Giang.",
+        "rationale": "Phủ định loại trừ một thành viên khỏi danh sách 5 người; rewrite liệt kê đủ 4 người còn lại và nêu rõ người bị loại."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Pin còn 12% rồi, lo quá"},
+          {"role":"bot","content":"Trạm sạc Eboost Nguyễn Văn Cừ cách 1.7km, còn 5 cổng DC 120kW trống."},
+          {"role":"user","content":"Dẫn đường vào đó gấp, bật hazard luôn và bật chế độ tiết kiệm pin tối đa"}
+        ],
+        "rewrite": "Chỉ đường khẩn cấp đến trạm Eboost Nguyễn Văn Cừ, bật đèn hazard và kích hoạt chế độ tiết kiệm pin tối đa.",
+        "rationale": "Ba intent song song trong tình huống khẩn; 'đó' resolve về trạm Eboost từ lượt bot, ba hành động giữ nguyên không rút gọn."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đêm nay chạy xe từ Hà Nội vào Vinh một mình, hơi lo"},
+          {"role":"bot","content":"Quãng đường 295km, ước tính 4 tiếng. Bạn muốn bật hỗ trợ lái đêm không?"},
+          {"role":"user","content":"Ừ bật hết đi, đặc biệt cái cảnh báo buồn ngủ và giữ làn"}
+        ],
+        "rewrite": "Bật toàn bộ hỗ trợ lái đêm, ưu tiên Drowsiness Detection và Lane Keeping Assist cho hành trình Hà Nội – Vinh.",
+        "rationale": "'Cái cảnh báo buồn ngủ và giữ làn' dùng tên tiếng Anh chuẩn; ngữ cảnh chạy đêm một mình từ lượt đầu xác nhận mức độ ưu tiên."
+      },
+      {
+        "pattern": "correction",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật chế độ thông gió tự nhiên, tắt điều hoà đi"},
+          {"role":"bot","content":"Đã tắt điều hoà, mở cửa sổ tự động 30% để thông gió tự nhiên."},
+          {"role":"user","content":"Thôi mưa rồi, đóng cửa sổ lại bật điều hoà 24 độ"}
+        ],
+        "rewrite": "Đóng tất cả cửa sổ và bật điều hoà 24°C.",
+        "rationale": "User đảo ngược hoàn toàn quyết định ở lượt đầu do thời tiết thay đổi; rewrite phản ánh intent cuối, không nhắc chế độ thông gió cũ."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Hôm nay ngày mấy và thứ mấy?"},
+          {"role":"bot","content":"Hôm nay thứ Tư ngày 11 tháng 6, giờ địa phương 17:28, múi giờ GMT+7."},
+          {"role":"user","content":"Thứ Tư buồn nhỉ, phát playlist nhạc vui vẻ cuối tuần trên Spotify đi"}
+        ],
+        "rewrite": "Phát playlist nhạc vui vẻ cuối tuần trên Spotify.",
+        "rationale": "Bot trả ngày, thứ, giờ và múi giờ; chỉ 'thứ Tư' xác nhận cảm xúc user nhưng không phải slot cần thiết trong rewrite."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Nhắn tin cho trường mầm non của con"},
+          {"role":"bot","content":"Liên hệ nào trong danh bạ ạ? Có cô Hiệu trưởng Lan Anh và nhóm Zalo lớp Hoa Hồng."},
+          {"role":"user","content":"Nhóm Zalo lớp Hoa Hồng, báo con nghỉ ốm"},
+          {"role":"bot","content":"Nghỉ mấy ngày và lý do cụ thể ạ?"},
+          {"role":"user","content":"Nghỉ 2 ngày thứ Năm và thứ Sáu này, bị sốt cao 39 độ, có giấy bác sĩ"}
+        ],
+        "rewrite": "Nhắn vào nhóm Zalo lớp Hoa Hồng: xin phép cho con nghỉ học thứ Năm và thứ Sáu tuần này do sốt cao 39°C, có giấy xác nhận của bác sĩ.",
+        "rationale": "Nhóm nhận, lý do, số ngày và bằng chứng y tế rải qua 5 lượt; lượt cuối bổ sung ba chi tiết quan trọng cùng một lúc."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gần đây có siêu thị nào không?"},
+          {"role":"bot","content":"Có WinMart Nguyễn Chí Thanh cách 900m, Coopmart Đống Đa cách 1.8km và BigC Thăng Long cách 4.2km."},
+          {"role":"user","content":"Chỗ nào gần nhất mà có chỗ đậu xe rộng thì dẫn vào"},
+          {"role":"bot","content":"WinMart Nguyễn Chí Thanh có bãi đỗ 50 xe, còn trống. Coopmart Đống Đa bãi nhỏ, thường kín."},
+          {"role":"user","content":"Vậy thì rõ rồi, cái có bãi rộng đi"}
+        ],
+        "rewrite": "Chỉ đường đến WinMart Nguyễn Chí Thanh.",
+        "rationale": "'Cái có bãi rộng' resolve về WinMart Nguyễn Chí Thanh qua hai lượt so sánh điều kiện đậu xe; rewrite gọn nhất vì ngữ cảnh đã đủ rõ."
+      }
+    ]
+  }

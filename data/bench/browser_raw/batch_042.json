@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn đến quán cà phê Cộng Cư."},
+          {"role":"bot","content":"Quán Cộng Cư ở số 7 Đường Lê Duẩn, Quận Hoàn Kiếm, Hà Nội, cách 3.4 km."},
+          {"role":"user","content":"Đi tới chỗ ấy."}
+        ],
+        "rewrite": "Điều hướng tới quán Cộng Cư, số 7 Đường Lê Duẩn, Quận Hoàn Kiếm, Hà Nội",
+        "rationale": "Câu cuối dùng đại từ \"chỗ ấy\" để chỉ địa điểm đã được bot cung cấp, cần giải quyết để tạo lệnh đầy đủ."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết tỷ giá USD hôm nay là bao nhiêu?"},
+          {"role":"bot","content":"USD 1 = 23,500 VND."},
+          {"role":"user","content":"Bây giờ bật bài \"Tháng Năm Rực Rỡ\" của Bảo Thy trên Spotify."}
+        ],
+        "rewrite": "Phát bài \"Tháng Năm Rực Rỡ\" của Bảo Thy trên Spotify",
+        "rationale": "Thông tin tỷ giá không liên quan tới yêu cầu phát nhạc, rewrite chỉ chứa hành động âm nhạc."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi cần sạc nhanh ngay."},
+          {"role":"bot","content":"Có trạm SuperCharge ở ngã 5, cách 2.0 km, công suất 150 kW. Bạn muốn dùng?"},
+          {"role":"user","content":"Đúng, cấp 3 nhé."},
+          {"role":"bot","content":"Đã bật cấp 3."},
+          {"role":"user","content":"Đi tới đó đi."}
+        ],
+        "rewrite": "Điều hướng tới trạm SuperCharge ở ngã 5, cách 2.0 km, với công suất 150 kW, cấp 3",
+        "rationale": "Thông tin vị trí, công suất và cấp sạc rải rác qua nhiều lượt, phải gộp đầy đủ trong một câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật cruise control ở 100km/h."},
+          {"role":"bot","content":"Cruise control đã bật 100km/h."},
+          {"role":"user","content":"Không, giảm xuống 80km/h."}
+        ],
+        "rewrite": "Đặt cruise control tốc độ 80km/h",
+        "rationale": "Người dùng sửa lại tốc độ, rewrite phản ánh giá trị mới mà không giữ lại giá trị cũ."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Hey Google Home, turn off the living room lights."},
+          {"role":"bot","content":"Living room lights are now off."},
+          {"role":"user","content":"Also set thermostat to 21°C."}
+        ],
+        "rewrite": "Đặt thermostat lên 21°C",
+        "rationale": "Câu cuối vẫn giữ token tiếng Anh \"Google Home\" trong ngữ cảnh trước đó, nhưng hành động chỉ cần thay đổi nhiệt độ."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin nhắn cho cô Lan: \"Hẹn chiều 5h tại quán Gióng\"."},
+          {"role":"bot","content":"Tin nhắn đã sẵn sàng."},
+          {"role":"user","content":"Gửi cho người này ngay."}
+        ],
+        "rewrite": "Gửi tin nhắn đến cô Lan nội dung \"Hẹn chiều 5h tại quán Gióng\" ngay lập tức",
+        "rationale": "Đại từ \"người này\" tham chiếu tới cô Lan đã được nêu trước, cần giải quyết để tạo lệnh đầy đủ."
+      },
+      {
+        "pattern": "negation",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ bên phải."},
+          {"role":"bot","content":"Cửa sổ bên phải đã mở."},
+          {"role":"user","content":"Không, đừng mở."}
+        ],
+        "rewrite": "Không mở cửa sổ bên phải",
+        "rationale": "Câu cuối phủ định hành động mở, giữ lại vị trí cửa sổ nhưng không thực hiện mở."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 23 độ, gió mức 3 và chế độ eco."},
+          {"role":"bot","content":"Điều hòa đã bật 23°C, gió mức 3, chế độ eco bật."},
+          {"role":"user","content":"Giờ tắt chế độ eco và giảm nhiệt độ còn 21."}
+        ],
+        "rewrite": "Đặt nhiệt độ 21°C và tắt chế độ eco",
+        "rationale": "Lượt cuối chứa hai intent (tắt eco, giảm nhiệt độ) cần được hợp nhất trong một câu."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn đến trung tâm Expo."},
+          {"role":"bot","content":"Expo gần nhất cách 6.5 km, thời gian 15 phút qua đường cao tốc."},
+          {"role":"user","content":"Tránh cao tốc."},
+          {"role":"bot","content":"Đã bật tránh cao tốc."},
+          {"role":"user","content":"Đưa tôi tới nhanh nhất."}
+        ],
+        "rewrite": "Điều hướng tới trung tâm Expo, tránh cao tốc, ưu tiên tốc độ nhanh nhất",
+        "rationale": "Địa điểm, yêu cầu tránh cao tốc và tốc độ nhanh nhất được đưa ra qua nhiều lượt, cần tổng hợp."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho bác sĩ Hân số 0911 222 333."},
+          {"role":"bot","content":"Đang gọi bác sĩ Hân."},
+          {"role":"user","content":"Không, gọi cho bác sĩ Hùng số 0911 222 334."}
+        ],
+        "rewrite": "Gọi bác sĩ Hùng số 0911 222 334",
+        "rationale": "Người dùng sửa lại người nhận và số điện thoại, rewrite phản ánh thông tin mới."
+      }
+    ]
+  }

@@ -1,0 +1,118 @@
+{
+    "samples": [
+      {
+        "pattern": "negation",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật đèn nội thất hết nhưng đừng bật đèn trần, chói mắt lái lắm"}
+        ],
+        "rewrite": "Bật đèn nội thất, đừng bật đèn trần.",
+        "rationale": "Lượt đơn đủ yêu cầu và ngoại lệ cụ thể; từ 'đừng' bắt buộc giữ nguyên, không rút gọn thành câu khẳng định."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật Lane Centering rồi giảm tốc độ cruise xuống 90km/h luôn"}
+        ],
+        "rewrite": "Bật Lane Centering và giảm tốc độ cruise control xuống 90km/h.",
+        "rationale": "Lượt đơn hai intent driver assist song song; token 'Lane Centering' và 'cruise' giữ nguyên, 90km/h có trong hội thoại."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Post lên Facebook Story báo mình đang trên đường về quê ăn Tết"}
+        ],
+        "rewrite": "Post lên Facebook Story thông báo đang trên đường về quê ăn Tết.",
+        "rationale": "Token 'Facebook Story' và 'post' giữ nguyên tiếng Anh; lượt đơn đủ kênh và nội dung đăng."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Gọi cho thầy giáo dạy con tôi hỏi kết quả thi học kỳ"}
+        ],
+        "rewrite": "Gọi cho thầy giáo dạy con hỏi kết quả thi học kỳ.",
+        "rationale": "'Thầy giáo dạy con' là implicit reference không có tên hay số điện thoại trong hội thoại, giữ nguyên cụm không bịa thông tin."
+      },
+      {
+        "pattern": "negation",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Chạy scene Buổi Sáng nhưng không pha cà phê, máy đang bảo trì"}
+        ],
+        "rewrite": "Chạy scene Buổi Sáng, không bật máy pha cà phê.",
+        "rationale": "Lượt đơn đủ tên scene và thiết bị cần loại trừ; từ 'không' bắt buộc giữ nguyên trong rewrite."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cho tôi xem lịch bảo dưỡng xe"},
+          {"role":"bot","content":"Xe đã chạy 47.500km, bảo dưỡng gần nhất cách đây 8.200km, dầu máy thay lần cuối tháng 3, lốp xe tuổi thọ còn khoảng 15.000km, hạn đăng kiểm tháng 11 năm nay."},
+          {"role":"user","content":"Đặt nhắc đăng kiểm xe trước 2 tuần cho tôi nhé"}
+        ],
+        "rewrite": "Đặt nhắc nhở đăng kiểm xe trước 2 tuần so với hạn tháng 11.",
+        "rationale": "Bot trả 5 chỉ số bảo dưỡng; chỉ hạn đăng kiểm tháng 11 là liên quan, khoảng nhắc 2 tuần từ lượt user; không kéo km hay tháng 3 vào rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tìm trạm sạc VinFast gần nhất rồi bật chế độ One Pedal Drive tiết kiệm pin"}
+        ],
+        "rewrite": "Tìm trạm sạc VinFast gần nhất và bật chế độ One Pedal Drive.",
+        "rationale": "Lượt đơn hai intent song song khác hệ thống; token 'One Pedal Drive' giữ nguyên tiếng Anh."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật Nest Thermostat đặt 24 độ, chế độ Heat pump đi"}
+        ],
+        "rewrite": "Bật Nest Thermostat 24°C chế độ Heat pump.",
+        "rationale": "Token 'Nest Thermostat' và 'Heat pump' giữ nguyên tiếng Anh; lượt đơn đủ slot, 24 có trong hội thoại."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Công ty tôi hay họp giao ban lúc 8h thứ Hai hằng tuần"},
+          {"role":"bot","content":"Đã ghi nhận lịch họp giao ban 8h thứ Hai hằng tuần tại công ty."},
+          {"role":"user","content":"Tuần này họp hoãn, nhắn nhóm Teams báo dời sang 10h cùng ngày"}
+        ],
+        "rewrite": "Nhắn nhóm Teams thông báo họp giao ban thứ Hai tuần này dời từ 8h sang 10h.",
+        "rationale": "'Cùng ngày' resolve về thứ Hai; giờ 8h và 10h đều có trong hội thoại, token 'Teams' giữ nguyên tiếng Anh."
+      },
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Phát radio trên Spotify nhưng không phát thể loại rap, không hợp"}
+        ],
+        "rewrite": "Phát radio trên Spotify, không phát thể loại rap.",
+        "rationale": "Lượt đơn đủ nền tảng và điều kiện loại trừ thể loại; từ 'không' bắt buộc giữ nguyên trong rewrite."
+      }
+    ]
+  }

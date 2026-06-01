@@ -1,0 +1,142 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài nhắc tôi gia hạn bảo hiểm xe"},
+          {"role":"bot","content":"Bảo hiểm của bạn hết hạn ngày nào ạ?"},
+          {"role":"user","content":"Hết hạn 30 tháng 7"},
+          {"role":"bot","content":"Nhắc trước mấy ngày và lúc mấy giờ ạ?"},
+          {"role":"user","content":"Nhắc trước 10 ngày lúc 10 giờ sáng, gửi kèm link gia hạn online của Bảo Minh luôn"}
+        ],
+        "rewrite": "Đặt nhắc gia hạn bảo hiểm xe Bảo Minh vào 10 giờ sáng ngày 20 tháng 7, kèm link gia hạn online của Bảo Minh.",
+        "rationale": "Ngày hết hạn, khoảng nhắc sớm và giờ rải qua 5 lượt; rewrite tính ngược 10 ngày từ 30/7 ra 20/7 và giữ tên thương hiệu bảo hiểm."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"So sánh giá sạc các trạm trong 3km"},
+          {"role":"bot","content":"EVgo Cầu Giấy: 3.800đ/kWh. GreenCharge Dịch Vọng: 3.200đ/kWh. Eboost Trung Hoà: 3.500đ/kWh."},
+          {"role":"user","content":"Trạm nào rẻ nhất còn cổng không?"},
+          {"role":"bot","content":"GreenCharge Dịch Vọng rẻ nhất, còn 3 cổng AC 22kW trống."},
+          {"role":"user","content":"Sạc AC được rồi, đặt 1 cổng ở đó rồi chỉ đường vào"}
+        ],
+        "rewrite": "Đặt 1 cổng AC 22kW tại GreenCharge Dịch Vọng và chỉ đường đến đó.",
+        "rationale": "'Đó' resolve về GreenCharge Dịch Vọng sau chuỗi lọc giá và xác nhận cổng trống qua hai lượt trung gian."
+      },
+      {
+        "pattern": "negation",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi thông báo họp sáng mai cho tất cả trong danh bạ công ty"},
+          {"role":"bot","content":"Danh bạ công ty có 12 người gồm các phòng Kỹ thuật, Kinh doanh, Kế toán và Nhân sự."},
+          {"role":"user","content":"Gửi hết nhưng bỏ phòng Kế toán ra, họ không liên quan cuộc họp này"}
+        ],
+        "rewrite": "Gửi thông báo họp sáng mai cho toàn bộ danh bạ công ty, ngoại trừ phòng Kế toán.",
+        "rationale": "Phủ định loại trừ một phòng ban khỏi danh sách gửi; rewrite giữ rõ điều kiện loại trừ không mơ hồ."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe có hỗ trợ Remote Parking không?"},
+          {"role":"bot","content":"Có, xe hỗ trợ Remote Parking qua app và Surround View Camera 360°. Bạn muốn bật không?"},
+          {"role":"user","content":"Bật Surround View Camera thôi, chỗ đỗ hẹp, Remote Parking chưa quen dùng"}
+        ],
+        "rewrite": "Bật Surround View Camera 360°, không bật Remote Parking.",
+        "rationale": "Token 'Remote Parking', 'Surround View Camera' giữ nguyên; user chọn một trong hai tính năng bot giới thiệu và từ chối cái còn lại."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe dừng đón khách rồi, họ lên liền"},
+          {"role":"bot","content":"Bạn cần chuẩn bị gì không ạ?"},
+          {"role":"user","content":"Hạ nhiệt độ điều hoà xuống 22 độ, bật ghế mát hàng sau mức 2 và mở cửa hậu tự động"}
+        ],
+        "rewrite": "Hạ điều hoà xuống 22°C, bật ghế mát hàng sau mức 2 và mở cửa hậu tự động.",
+        "rationale": "Ba intent chuẩn bị đón khách song song; không có slot nào cần resolve từ lịch sử, nhưng lượt trước xác nhận ngữ cảnh đón khách."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Con tôi học trường Amsterdam Hà Nội, chiều nào tôi cũng đón"},
+          {"role":"bot","content":"Đã lưu trường THPT Chuyên Hà Nội – Amsterdam vào danh sách địa điểm thường xuyên."},
+          {"role":"user","content":"Hôm nay tan học sớm lúc 4 giờ, tính xem xuất phát mấy giờ cho kịp"}
+        ],
+        "rewrite": "Tính giờ xuất phát để đến trường THPT Chuyên Hà Nội – Amsterdam kịp lúc 16h tan học hôm nay.",
+        "rationale": "'Trường' resolve về THPT Chuyên Hà Nội – Amsterdam đã lưu; giờ tan học 4h chiều từ lượt cuối là slot cần thiết."
+      },
+      {
+        "pattern": "correction",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật robot hút bụi Roborock dọn phòng bếp"},
+          {"role":"bot","content":"Đã gửi lệnh Roborock dọn phòng bếp."},
+          {"role":"user","content":"Khoan, bếp đang nấu nguy hiểm, đổi sang phòng khách đi"},
+          {"role":"bot","content":"Đã chuyển Roborock sang dọn phòng khách."},
+          {"role":"user","content":"Thêm phòng ăn vào luôn, dọn cả hai"}
+        ],
+        "rewrite": "Điều khiển Roborock dọn cả phòng khách và phòng ăn.",
+        "rationale": "Phòng mục tiêu đã sửa sang phòng khách ở lượt trước; lượt cuối mở rộng thêm phòng ăn, rewrite gộp cả hai không nhắc lại phòng bếp."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem thông tin chuyến bay VN214 hôm nay"},
+          {"role":"bot","content":"VN214 Hà Nội – TP.HCM: cất cánh 17:45 đúng giờ, máy bay Airbus A321, cổng C12, terminal 1, còn 2 tiếng 18 phút nữa."},
+          {"role":"user","content":"Gọi cho anh Hoàng Minh hỏi anh ấy đang ở cổng nào rồi"}
+        ],
+        "rewrite": "Gọi cho anh Hoàng Minh.",
+        "rationale": "Bot trả 6 thông số chuyến bay đều là nhiễu; rewrite chỉ cần tên người cần gọi, mục đích hỏi cổng là nội dung cuộc trò chuyện không phải slot lệnh."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm bài hát phù hợp tập gym lúc lái xe"},
+          {"role":"bot","content":"Thể loại nào bạn thích: EDM, Hip-hop Việt, Rock hay BPM cao chung?"},
+          {"role":"user","content":"Hip-hop Việt đi, toàn bài của RPT MCK"},
+          {"role":"bot","content":"Playlist RPT MCK có 'Ngày Mai', 'Không Thể Say', 'NGÁO NGƠ' và 'Bùi Tiệm Phơi'. Phát hết không?"},
+          {"role":"user","content":"Phát hết theo thứ tự mới nhất, repeat playlist"}
+        ],
+        "rewrite": "Phát toàn bộ playlist RPT MCK theo thứ tự mới nhất, bật repeat playlist.",
+        "rationale": "Nghệ sĩ, thứ tự sắp xếp và chế độ repeat rải qua 5 lượt; lượt cuối xác nhận cả hai điều kiện phát nhạc."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem lịch sử báo động an ninh nhà tuần này"},
+          {"role":"bot","content":"Có 2 báo động: thứ Hai 02:14 cảm biến cửa sổ phòng ngủ kích hoạt, thứ Tư 14:32 camera phát hiện người lạ ở cổng."},
+          {"role":"user","content":"Cái xảy ra ban đêm thì xem lại video thời điểm đó đi"}
+        ],
+        "rewrite": "Xem lại video camera thời điểm báo động lúc 02:14 thứ Hai tại cảm biến cửa sổ phòng ngủ.",
+        "rationale": "'Cái xảy ra ban đêm' phân loại theo giờ rồi resolve về sự kiện 02:14 thứ Hai; vị trí cảm biến từ lượt bot bổ sung ngữ cảnh xem lại đúng camera."
+      }
+    ]
+  }

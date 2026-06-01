@@ -1,0 +1,136 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Kiểm tra xem robot hút bụi Roomba ở nhà đang làm gì"},
+          {"role":"bot","content":"Roomba đang sạc tại dock, pin 78%, lần dọn cuối lúc 8:30 sáng nay."},
+          {"role":"user","content":"Cho nó chạy luôn đi, dọn phòng khách trước"}
+        ],
+        "rewrite": "Khởi động Roomba, dọn phòng khách trước.",
+        "rationale": "'Nó' resolve về Roomba từ lượt trước; rewrite không nhắc lại trạng thái sạc dock vì bot đã xử lý xong."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn ghé đổ xăng trước khi về"},
+          {"role":"bot","content":"Loại xăng nào và khu vực nào ạ?"},
+          {"role":"user","content":"Xăng RON 95, gần đường Lê Văn Lương"},
+          {"role":"bot","content":"Có cây xăng Petrolimex tại số 143 Lê Văn Lương, cách 1.6km."},
+          {"role":"user","content":"Được rồi dẫn đường vào đó đi"}
+        ],
+        "rewrite": "Chỉ đường đến cây xăng Petrolimex tại 143 Lê Văn Lương.",
+        "rationale": "Tên cây xăng, địa chỉ và loại xăng rải qua 4 lượt; lượt cuối chỉ có 'đó' cần resolve đầy đủ."
+      },
+      {
+        "pattern": "negation",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật đèn nội thất nhưng đừng bật đèn trần, chỉ đèn cốp thôi"}
+        ],
+        "rewrite": "Bật đèn cốp, không bật đèn trần.",
+        "rationale": "Lượt đơn đã đủ thông tin; phủ định đèn trần phải giữ rõ, không rút gọn thành 'bật đèn cốp' thuần."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Hôm nay tâm trạng không tốt, mở nhạc giúp tôi"},
+          {"role":"bot","content":"Bạn muốn phát qua Spotify, Apple Music hay YouTube Music ạ?"},
+          {"role":"user","content":"Apple Music đi, playlist Chill Acoustic, repeat one bài đầu tiên"}
+        ],
+        "rewrite": "Phát playlist Chill Acoustic trên Apple Music, bật repeat one cho bài đầu tiên.",
+        "rationale": "Token 'Apple Music' và 'repeat one' giữ nguyên; slot playlist lấy từ lượt cuối."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "cancel_action",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Dẫn đường đến Vincom Bà Triệu đi"},
+          {"role":"bot","content":"Đã bắt đầu dẫn đường đến Vincom Bà Triệu, khoảng 22 phút."},
+          {"role":"user","content":"Thôi đừng đi đó nữa, huỷ dẫn đường đi"}
+        ],
+        "rewrite": "Huỷ dẫn đường đến Vincom Bà Triệu.",
+        "rationale": "User huỷ hoàn toàn tác vụ trước; rewrite phản ánh intent cancel với điểm đến cụ thể từ lượt đầu."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đường đang thế nào, có tắc không?"},
+          {"role":"bot","content":"Đường thông thoáng, mật độ xe thấp, thời tiết tốt, gió 12km/h, không có tai nạn 5km tới."},
+          {"role":"user","content":"Ngon rồi, bật cruise control 120km/h đi"}
+        ],
+        "rewrite": "Bật cruise control, giữ tốc độ 120km/h.",
+        "rationale": "Bot cung cấp 5 thông số môi trường không ai cần trong rewrite; chỉ lấy 120km/h từ lượt user cuối."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mình hay đón con ở trường Tiểu học Đống Đa lắm"},
+          {"role":"bot","content":"Đã lưu trường Tiểu học Đống Đa vào địa điểm yêu thích."},
+          {"role":"user","content":"Gọi cho văn phòng trường hỏi giờ tan học hôm nay"}
+        ],
+        "rewrite": "Gọi điện đến văn phòng trường Tiểu học Đống Đa hỏi giờ tan học hôm nay.",
+        "rationale": "'Trường' ngầm chỉ Tiểu học Đống Đa đã thiết lập ở lượt trước; resolve tên đầy đủ vào rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Nhắn tin cho Bảo Ngọc đi"},
+          {"role":"bot","content":"Nội dung tin nhắn là gì ạ?"},
+          {"role":"user","content":"Bảo mình đến chỗ đậu xe B3 rồi, nhờ cô ấy xuống đón và mang theo thẻ từ"}
+        ],
+        "rewrite": "Gửi tin nhắn cho Bảo Ngọc: 'Mình đang ở chỗ đậu xe B3 rồi, xuống đón mình với và nhớ mang theo thẻ từ nhé'.",
+        "rationale": "Lượt cuối chứa hai yêu cầu lồng nhau trong một tin nhắn; rewrite gộp đủ vị trí, yêu cầu đón và vật dụng cần mang."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe VF 9 của tôi hỗ trợ sạc tối đa bao nhiêu kW?"},
+          {"role":"bot","content":"VF 9 hỗ trợ sạc DC tối đa 150kW và AC tối đa 11kW."},
+          {"role":"user","content":"Tìm trạm nào có cổng DC 150kW trong bán kính 10km"},
+          {"role":"bot","content":"Có 2 trạm: VinFast Plaza Mỹ Đình cách 4.2km và VinFast Lotte Hà Nội cách 8.7km, cả hai đều có DC 150kW."},
+          {"role":"user","content":"Chỉ đường đến trạm gần hơn đi"}
+        ],
+        "rewrite": "Chỉ đường đến trạm sạc VinFast Plaza Mỹ Đình cách 4.2km, có cổng DC 150kW.",
+        "rationale": "'Trạm gần hơn' cần resolve về tên và khoảng cách cụ thể từ danh sách bot trả về."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Kiểm tra nhiệt độ trong xe các hàng ghế"},
+          {"role":"bot","content":"Hàng 1: 24°C, hàng 2: 26°C, hàng 3: chưa bật điều hoà."},
+          {"role":"user","content":"Hàng nóng nhất chỉnh xuống bằng hàng 1 đi"}
+        ],
+        "rewrite": "Chỉnh nhiệt độ điều hoà hàng ghế 2 xuống 24°C.",
+        "rationale": "'Hàng nóng nhất' phải resolve về hàng 2 (26°C) và 'bằng hàng 1' resolve về 24°C từ dữ liệu bot cung cấp."
+      }
+    ]
+  }

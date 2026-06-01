@@ -1,0 +1,241 @@
+{
+  "samples": [
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "driver_assist",
+      "intent": "toggle_feature",
+      "context_required": true,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tính năng giới hạn tốc độ của xe đã bật chưa?"
+        },
+        {
+          "role": "bot",
+          "content": "Hệ thống Speed Limiter đang ở trạng thái tắt. Bạn muốn cài đặt giới hạn ở bao nhiêu km/h?"
+        },
+        {
+          "role": "user",
+          "content": "Để 60 nhé."
+        },
+        {
+          "role": "bot",
+          "content": "Đã ghi nhận mức 60 km/h. Bạn muốn kích hoạt ngay bây giờ không?"
+        },
+        {
+          "role": "user",
+          "content": "Bật luôn đi."
+        }
+      ],
+      "rewrite": "Kích hoạt luôn tính năng giới hạn tốc độ Speed Limiter ở mức 60 km/h đi.",
+      "rationale": "Lệnh kích hoạt bị phân tán qua 3 lượt thoại của user. Lượt cuối chỉ có 'Bật luôn đi', model phải lấy được tên tính năng từ lượt 1 và tham số 60 km/h từ lượt 2 để ghép thành câu hoàn chỉnh."
+    },
+    {
+      "pattern": "implicit_reference",
+      "domain": "charging",
+      "intent": "find_charging",
+      "context_required": true,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Chiều nay tớ phải sang gặp đối tác ở toà nhà Keangnam."
+        },
+        {
+          "role": "bot",
+          "content": "Vâng, tôi đã đánh dấu toà nhà Keangnam Landmark 72 vào lịch trình chiều nay. Từ đây qua đó mất tầm 30 phút."
+        },
+        {
+          "role": "user",
+          "content": "Cậu coi dưới hầm đó có trụ sạc V-GREEN nào đang trống không?"
+        }
+      ],
+      "rewrite": "Tìm xem dưới hầm toà nhà Keangnam Landmark 72 có trụ sạc V-GREEN nào đang trống không.",
+      "rationale": "Cụm 'dưới hầm đó' ám chỉ vị trí toà nhà Keangnam ở lượt thoại đầu. Phải kết nối ngữ cảnh để xác định được địa điểm cụ thể cho lệnh tìm trạm sạc."
+    },
+    {
+      "pattern": "negation",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": false,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tình trạng an ninh ở nhà sao rồi?"
+        },
+        {
+          "role": "bot",
+          "content": "Cửa chính đang khoá, camera an ninh trước sân vẫn đang ghi hình bình thường."
+        },
+        {
+          "role": "user",
+          "content": "Mở khoá cửa chính ở nhà cho em trai tôi vào nhưng đừng tắt hệ thống báo trộm nha."
+        }
+      ],
+      "rewrite": "Mở khoá cửa chính ở nhà cho em trai tôi vào nhưng đừng tắt hệ thống báo trộm nha.",
+      "rationale": "Câu lệnh ở lượt cuối đã mang đầy đủ ngữ nghĩa (mở cửa, nhà) và chứa intent phủ định (đừng tắt báo trộm). Nó đứng độc lập hoàn toàn và không cần kế thừa thông tin từ bot."
+    },
+    {
+      "pattern": "correction",
+      "domain": "messaging",
+      "intent": "send_message",
+      "context_required": true,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Gửi tin nhắn SMS cho vợ đi."
+        },
+        {
+          "role": "bot",
+          "content": "Đang chuẩn bị gửi tin nhắn SMS cho Vợ. Bạn muốn nhắn nội dung gì?"
+        },
+        {
+          "role": "user",
+          "content": "Bảo là anh đang đi nhậu với phòng... à chết, ghi là tối nay anh phải OT về trễ nhé."
+        }
+      ],
+      "rewrite": "Gửi tin nhắn SMS cho vợ bảo là tối nay anh phải OT về trễ nhé.",
+      "rationale": "Người dùng sửa đổi nội dung tin nhắn ngay giữa câu (từ đi nhậu sang OT). Rewrite phải bắt được nội dung chốt cuối cùng và ghép với slot người nhận (vợ) từ lịch sử."
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "vehicle",
+      "intent": "control_window",
+      "context_required": true,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Kiểm tra tình trạng khoá trẻ em giúp mình."
+        },
+        {
+          "role": "bot",
+          "content": "Cửa sau bên trái đang bật khoá trẻ em. Tiện thể thông báo, áp suất lốp đang là 2.2 bar, dung lượng pin còn 75%, nước rửa kính sắp cạn."
+        },
+        {
+          "role": "user",
+          "content": "Chốt luôn cái cửa bên phải lại giùm."
+        }
+      ],
+      "rewrite": "Bật khoá trẻ em cho cửa sau bên phải lại giùm mình.",
+      "rationale": "Bot cung cấp hàng loạt dữ liệu kỹ thuật thừa thãi gây nhiễu (áp suất lốp, pin...). Lượt cuối yêu cầu thao tác với cửa còn lại, model phải lọc bỏ mọi con số nhiễu để tập trung vào intent điều khiển khoá cửa."
+    },
+    {
+      "pattern": "code_switching",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": false,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Trời nay mưa to nhỉ."
+        },
+        {
+          "role": "bot",
+          "content": "Vâng, khu vực Hà Nội đang có mưa dông, nhiệt độ 25 độ C. Tầm nhìn có thể bị hạn chế."
+        },
+        {
+          "role": "user",
+          "content": "Set route tới quán Highlands Coffee gần nhất giùm tớ."
+        }
+      ],
+      "rewrite": "Set route tới quán Highlands Coffee gần nhất giùm tớ.",
+      "rationale": "Câu lệnh độc lập hoàn toàn, sử dụng code-switching (set route, Highlands Coffee). Model chỉ việc giữ nguyên token mà không cần dịch hay nối bối cảnh thời tiết."
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "music",
+      "intent": "play_music_online",
+      "context_required": true,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Bật podcast lên nghe chút đi."
+        },
+        {
+          "role": "bot",
+          "content": "Bạn muốn nghe kênh The Present Writer, Sunhuyn Podcast, hay Giang Ơi Radio?"
+        },
+        {
+          "role": "user",
+          "content": "Play cái của Giang Ơi ấy."
+        }
+      ],
+      "rewrite": "Play kênh Giang Ơi Radio trên podcast.",
+      "rationale": "Đại từ 'cái của Giang Ơi' cần được ánh xạ trực tiếp với danh sách tuỳ chọn bot vừa gợi ý để lấy ra chính xác tên kênh 'Giang Ơi Radio'."
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "climate",
+      "intent": "set_climate",
+      "context_required": true,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Phía đằng sau đang bí quá."
+        },
+        {
+          "role": "bot",
+          "content": "Cửa gió điều hoà khu vực ghế sau hiện tại đang đóng."
+        },
+        {
+          "role": "user",
+          "content": "Mở nó ra đi, và bật luôn chế độ lọc ion không khí nhé."
+        }
+      ],
+      "rewrite": "Mở cửa gió điều hoà khu vực ghế sau ra và bật luôn chế độ lọc ion không khí nhé.",
+      "rationale": "Lượt user gộp 2 intent: điều khiển cửa gió (cần resolve đại từ 'nó' từ câu bot) và bật lọc không khí (intent mới). Model phải xử lý trọn vẹn cả hai vế."
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "calling",
+      "intent": "call",
+      "context_required": false,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Đồng hồ xe đang chỉ mấy giờ?"
+        },
+        {
+          "role": "bot",
+          "content": "Bây giờ là 14:30 chiều."
+        },
+        {
+          "role": "user",
+          "content": "Hạ cửa sổ bên tài xế xuống một nửa rồi gọi điện cho tổng đài bảo hiểm PVI giúp anh."
+        }
+      ],
+      "rewrite": "Hạ cửa sổ bên tài xế xuống một nửa rồi gọi điện cho tổng đài bảo hiểm PVI giúp anh.",
+      "rationale": "Gồm 2 intent độc lập (chỉnh kính cửa sổ và gọi điện), đầy đủ tham số và thông tin. Lệnh tự hoàn thiện, không cần kéo dữ liệu thời gian từ bot vào."
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": true,
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tí nữa có khách đến nhà chơi đấy."
+        },
+        {
+          "role": "bot",
+          "content": "Vâng, tôi có thể giúp gì để chuẩn bị đón khách không?"
+        },
+        {
+          "role": "user",
+          "content": "Cho con robot hút bụi chạy đi."
+        },
+        {
+          "role": "bot",
+          "content": "Robot Dreame đã sẵn sàng. Bạn muốn dọn dẹp toàn bộ nhà hay khu vực cụ thể?"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ dọn khu vực phòng khách thôi."
+        }
+      ],
+      "rewrite": "Cho robot hút bụi Dreame dọn dẹp khu vực phòng khách ở nhà đi.",
+      "rationale": "Intent ra lệnh smarthome bị cắt vụn: thiết bị (robot hút bụi Dreame) và vị trí (phòng khách) nằm rải rác qua 5 lượt thoại. Rewrite phải thu gom đủ thông tin để ghép thành lệnh chuẩn."
+    }
+  ]
+}
+

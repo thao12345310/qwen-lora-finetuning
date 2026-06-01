@@ -1,0 +1,139 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi đang lái trên đường Ngọ Quyền, muốn bật hỗ trợ giữ làn đường."},
+          {"role":"bot","content":"Bạn muốn bật Lane Assist ngay bây giờ?"},
+          {"role":"user","content":"Bật nó đi."}
+        ],
+        "rewrite": "Bật Lane Assist",
+        "rationale": "Câu cuối dùng đại từ “nó” để chỉ tính năng Lane Assist đã được đề cập."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn biết chỉ số VN‑Index hôm nay là bao nhiêu không?"},
+          {"role":"bot","content":"VN‑Index hiện tại 1,183.4 điểm."},
+          {"role":"user","content":"Phát bài \"Nơi Này\" của Hoài Lâm trên Spotify."}
+        ],
+        "rewrite": "Phát bài \"Nơi Này\" của Hoài Lâm trên Spotify",
+        "rationale": "Thông tin VN‑Index không liên quan tới yêu cầu phát nhạc; câu cuối tự chứa đầy đủ slot."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho anh Dũng: \"Hôm nay họp 10h\"."},
+          {"role":"bot","content":"Bạn muốn gửi ngay hay lên lịch?"},
+          {"role":"user","content":"Lên lịch vào 15/09."},
+          {"role":"bot","content":"Bạn muốn gửi vào giờ nào?"},
+          {"role":"user","content":"09:30 sáng."},
+          {"role":"bot","content":"Đã ghi lịch."},
+          {"role":"user","content":"Thêm nội dung: \"Mang tài liệu\"."},
+          {"role":"user","content":"Thực hiện gửi."}
+        ],
+        "rewrite": "Gửi tin đến anh Dũng vào 15/09 09:30 nội dung \"Hôm nay họp 10h. Mang tài liệu\"",
+        "rationale": "Người nhận, thời gian và nội dung được đưa ra rải rác, cần gộp lại thành một lệnh duy nhất."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đi tới Công viên Gia Định."},
+          {"role":"bot","content":"Công viên Gia Định cách 4.2 km, qua đường cao tốc."},
+          {"role":"user","content":"Không, tránh cao tốc."}
+        ],
+        "rewrite": "Điều hướng tới Công viên Gia Định, tránh cao tốc",
+        "rationale": "Người dùng sửa lại yêu cầu tránh đường cao tốc, cần cập nhật trong câu lệnh cuối."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Find a fast charger near 123 Main St, New York."},
+          {"role":"bot","content":"Nearest Supercharger is at 456 7th Ave, 0.9 km away."},
+          {"role":"user","content":"Navigate to that charger."}
+        ],
+        "rewrite": "Điều hướng tới 456 7th Ave, vị trí Supercharger",
+        "rationale": "Câu cuối chỉ yêu cầu chỉ đường, sử dụng địa chỉ đã được cung cấp trong câu trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa trong phòng khách."},
+          {"role":"bot","content":"Điều hòa phòng khách đã bật, nhiệt độ 24°C."},
+          {"role":"user","content":"Giảm nhiệt độ của nó còn 22 độ."}
+        ],
+        "rewrite": "Đặt nhiệt độ điều hòa phòng khách 22°C",
+        "rationale": "Đại từ “nó” tham chiếu tới điều hòa phòng khách đã bật, cần giải quyết để tạo câu lệnh đầy đủ."
+      },
+      {
+        "pattern": "negation",
+        "domain": "calling",
+        "intent": "cancel_action",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Gọi cho bác sĩ Huy số 0906 555 777."},
+          {"role":"bot","content":"Đang gọi bác sĩ Huy."},
+          {"role":"user","content":"Không, đừng gọi nữa."}
+        ],
+        "rewrite": "Hủy cuộc gọi tới bác sĩ Huy",
+        "rationale": "Câu cuối phủ định hành động gọi, không cần kéo lại thông tin nào."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 23 độ, giảm gió mức 2 và bật chế độ ngủ."}
+        ],
+        "rewrite": "Đặt nhiệt độ 23°C, gió mức 2 và bật chế độ ngủ",
+        "rationale": "Lượt cuối đồng thời yêu cầu ba cài đặt, cần giữ cả ba intent trong một câu."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ phía trước bên trái."},
+          {"role":"bot","content":"Cửa sổ phía trước bên trái đã mở."},
+          {"role":"user","content":"Đóng nó lại."}
+        ],
+        "rewrite": "Đóng cửa sổ phía trước bên trái",
+        "rationale": "Đại từ “nó” chỉ cửa sổ vừa mở, cần dựa vào lịch sử để xác định đối tượng."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật cruise control."},
+          {"role":"bot","content":"Cruise control đã bật, tốc độ mặc định 100km/h."},
+          {"role":"user","content":"Thay tốc độ thành 80km/h."},
+          {"role":"bot","content":"Tốc độ đã đổi 80km/h."},
+          {"role":"user","content":"Giữ khoảng cách an toàn 30m."}
+        ],
+        "rewrite": "Đặt khoảng cách an toàn 30m cho cruise control",
+        "rationale": "Sau khi tốc độ đã chỉnh, người dùng yêu cầu thiết lập khoảng cách an toàn; cần dùng thông tin lịch sử để sinh câu lệnh cuối."
+      }
+    ]
+  }

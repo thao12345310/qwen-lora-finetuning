@@ -1,0 +1,255 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lốp nào của xe đang cần kiểm tra?"
+    },
+    {
+    "role": "bot",
+    "content": "Lốp trước bên phải đang báo áp suất thấp, còn lốp sau bên trái đang báo mòn."
+    },
+    {
+    "role": "user",
+    "content": "Hiện hướng dẫn xử lý cho bánh bị non hơi."
+    }
+    ],
+    "rewrite": "Hiển thị hướng dẫn xử lý cho lốp trước bên phải đang báo áp suất thấp.",
+    "rationale": "Lượt cuối mô tả lỗi thay vì nêu vị trí lốp, nên model phải phân giải đúng bánh bị áp suất thấp."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lên lịch sấy quần áo trước khi tôi về nhà."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn điều khiển máy sấy ở căn hộ nào?"
+    },
+    {
+    "role": "user",
+    "content": "Căn hộ Feliz En Vista."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn chạy lúc nào và dùng chế độ nào?"
+    },
+    {
+    "role": "user",
+    "content": "18 giờ 50, chế độ đồ cotton."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn máy chạy trong bao lâu?"
+    },
+    {
+    "role": "user",
+    "content": "Trong 45 phút, lưu lịch nhé."
+    }
+    ],
+    "rewrite": "Lưu lịch chạy máy sấy quần áo tại căn hộ Feliz En Vista lúc 18 giờ 50 bằng chế độ đồ cotton trong 45 phút.",
+    "rationale": "Địa điểm, thời gian, chế độ và thời lượng hoạt động được cung cấp qua nhiều lượt user riêng biệt."
+    },
+    {
+    "pattern": "correction",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Gọi cho anh Hoài Nam bên gara để hỏi lịch thay lốp."
+    },
+    {
+    "role": "bot",
+    "content": "Trong danh bạ có anh Hoài Nam - Gara Việt Auto và anh Hoài Nam - bảo hiểm xe."
+    },
+    {
+    "role": "user",
+    "content": "Người bên gara nhé."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chọn anh Hoài Nam - Gara Việt Auto."
+    },
+    {
+    "role": "user",
+    "content": "Thôi gọi người bên bảo hiểm để hỏi quyền lợi lốp."
+    }
+    ],
+    "rewrite": "Gọi cho anh Hoài Nam - bảo hiểm xe để hỏi quyền lợi lốp.",
+    "rationale": "Lượt cuối đổi sang liên hệ còn lại có cùng tên, nên phải bỏ lựa chọn gara đã xác nhận trước đó."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "navigation",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Cho tôi xem thông tin xe hiện tại."
+    },
+    {
+    "role": "bot",
+    "content": "Lốp trước đang ở 2,4 bar và pin xe còn 69%."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn đường tới Chợ Hàn Đà Nẵng."
+    }
+    ],
+    "rewrite": "Dẫn đường tới Chợ Hàn Đà Nẵng.",
+    "rationale": "Áp suất lốp và mức pin chỉ là nhiễu, không liên quan đến điểm đến đã nêu đầy đủ ở lượt cuối."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi dừng chờ đèn đỏ, xe có hỗ trợ gì?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể dùng Auto Hold để giữ xe đứng yên hoặc Hill Descent Control khi xuống dốc."
+    },
+    {
+    "role": "user",
+    "content": "Bật Auto Hold khi dừng đèn đỏ, đừng bật tính năng còn lại."
+    }
+    ],
+    "rewrite": "Bật Auto Hold khi dừng đèn đỏ và đừng bật Hill Descent Control.",
+    "rationale": "Model phải giữ nguyên token Auto Hold và phân giải “tính năng còn lại” thành Hill Descent Control."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "smart_home",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đã lưu phòng em bé ở nhà tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có phòng nào được lưu với nhãn phòng em bé ở nhà bạn."
+    },
+    {
+    "role": "user",
+    "content": "Bật máy tạo ẩm trong phòng em bé ở nhà tôi."
+    }
+    ],
+    "rewrite": "Bật máy tạo ẩm trong phòng em bé ở nhà tôi.",
+    "rationale": "Lịch sử không cung cấp địa chỉ hay phòng cụ thể, nên phải giữ nguyên tham chiếu ngầm và không tự bịa vị trí."
+    },
+    {
+    "pattern": "negation",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm người phụ trách chuyến khảo sát trong nhóm công việc."
+    },
+    {
+    "role": "bot",
+    "content": "Trưởng nhóm là chị Bùi Thanh Vân, còn điều phối viên là anh Đỗ Quang Huy."
+    },
+    {
+    "role": "user",
+    "content": "Nhắn trưởng nhóm là tôi đã tới, không gửi vị trí trực tiếp."
+    }
+    ],
+    "rewrite": "Nhắn cho chị Bùi Thanh Vân với nội dung “Tôi đã tới” và không gửi vị trí trực tiếp.",
+    "rationale": "Người nhận được chỉ bằng vai trò và lượt cuối chứa ràng buộc phủ định về chia sẻ vị trí."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bạn tôi bị say xe đang ngồi ở đâu?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn của bạn đang ngồi ở ghế phụ phía trước."
+    },
+    {
+    "role": "user",
+    "content": "Tăng gió mát chỗ đó lên mức 3 rồi tắt sưởi ghế."
+    }
+    ],
+    "rewrite": "Tăng quạt gió mát tại ghế phụ phía trước lên mức 3 rồi tắt sưởi ghế ở vị trí đó.",
+    "rationale": "Cả hai thao tác ở lượt cuối đều phụ thuộc vào việc resolve “chỗ đó” thành ghế phụ phía trước."
+    },
+    {
+    "pattern": "correction",
+    "domain": "messaging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Gửi SMS cho chị Hạnh rằng tôi tới khu đón khách."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã soạn tin SMS cho chị Hạnh."
+    },
+    {
+    "role": "user",
+    "content": "Không gửi SMS cho chị Hạnh; gửi Signal cho anh Tùng: Tôi ở cột số 6."
+    }
+    ],
+    "rewrite": "Không gửi SMS cho chị Hạnh; hãy gửi Signal cho anh Tùng với nội dung “Tôi ở cột số 6”.",
+    "rationale": "Lượt cuối tự đủ thông tin để hủy tin nhắn cũ và chuyển sang người nhận cùng kênh gửi mới."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đặt phiên sạc cho chiếc Tesla Model Y trước chuyến đi Vũng Tàu."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn sạc tại đâu?"
+    },
+    {
+    "role": "user",
+    "content": "Trạm Supercharger ở Thiso Mall Sala."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn bắt đầu lúc nào và dừng ở mức pin nào?"
+    },
+    {
+    "role": "user",
+    "content": "5 giờ 20 sáng mai, dừng ở 88%."
+    },
+    {
+    "role": "bot",
+    "content": "Có cần bật làm mát khoang xe trước giờ khởi hành không?"
+    },
+    {
+    "role": "user",
+    "content": "Có, bật trước khi đi."
+    }
+    ],
+    "rewrite": "Lên lịch sạc Tesla Model Y tại trạm Supercharger ở Thiso Mall Sala lúc 5 giờ 20 sáng mai, dừng khi pin đạt 88% và bật làm mát khoang xe trước chuyến đi Vũng Tàu.",
+    "rationale": "Mẫu xe, trạm sạc, thời gian, ngưỡng pin và thao tác chuẩn bị khoang xe được rải qua nhiều lượt user."
+    }
+    ]
+    }
+    

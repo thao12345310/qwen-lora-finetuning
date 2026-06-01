@@ -1,0 +1,240 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "toggle_feature",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Tính năng hỗ trợ đổ đèo trên xe này bật chưa nhỉ?"
+          },
+          {
+            "role": "bot",
+            "content": "Hệ thống Downhill Assist Control đang ở chế độ chờ. Bạn muốn giới hạn tốc độ đổ đèo ở 10 km/h hay 15 km/h?"
+          },
+          {
+            "role": "user",
+            "content": "Set mức đầu tiên đi."
+          }
+        ],
+        "rewrite": "Cài đặt giới hạn tốc độ đổ đèo của hệ thống Downhill Assist Control ở mức 10 km/h.",
+        "rationale": "Người dùng nói 'mức đầu tiên' thay vì con số cụ thể, model bắt buộc phải đối chiếu với các lựa chọn bot vừa đưa ra để chốt được thông số 10 km/h."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "vehicle",
+        "intent": "control_seat",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Chỉnh lại ghế lái cho anh."
+          },
+          {
+            "role": "bot",
+            "content": "Ghế lái đang ở vị trí nhớ số 1. Bạn muốn chỉnh đệm lưng hay khoảng để chân?"
+          },
+          {
+            "role": "user",
+            "content": "Chỉnh khoảng để chân rộng ra chút."
+          },
+          {
+            "role": "bot",
+            "content": "Đang lùi đệm ghế lái ra sau. Bạn thấy vừa chưa?"
+          },
+          {
+            "role": "user",
+            "content": "Vẫn hơi chật, lùi đệm ghế thêm tí nữa đi."
+          }
+        ],
+        "rewrite": "Lùi đệm khoảng để chân của ghế lái ra sau thêm một tí nữa đi.",
+        "rationale": "Chỉ lệnh điều chỉnh ghế rải rác ở nhiều lượt: đối tượng (ghế lái, khoảng để chân) ở các lượt trước, hành động cuối chỉ nói 'lùi đệm ghế thêm tí nữa'."
+      },
+      {
+        "pattern": "negation",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Bản đồ có hiển thị trạm sạc không?"
+          },
+          {
+            "role": "bot",
+            "content": "Bản đồ xe luôn hỗ trợ tìm kiếm và hiển thị các trạm sạc công cộng theo thời gian thực."
+          },
+          {
+            "role": "user",
+            "content": "Chỉ tìm trạm sạc nhanh DC, tuyệt đối không hiện mấy trạm sạc AC dưới 11kW nhé."
+          }
+        ],
+        "rewrite": "Chỉ tìm trạm sạc nhanh DC, tuyệt đối không hiện mấy trạm sạc AC dưới 11kW.",
+        "rationale": "Câu lệnh mang ý định rõ ràng và độc lập, chứa điều kiện phủ định 'tuyệt đối không hiện...', rewrite phải giữ sự gay gắt và chính xác của thông số này mà không cần ngữ cảnh cũ."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Bé Cún nằm đằng sau khoang hành lý có vẻ đang bị nóng."
+          },
+          {
+            "role": "bot",
+            "content": "Cảm biến nhiệt độ khoang hành lý phía sau đang báo mức 29 độ C."
+          },
+          {
+            "role": "user",
+            "content": "Bật quạt gió khu vực đó lên mức cao nhất giùm mình."
+          }
+        ],
+        "rewrite": "Bật quạt gió điều hòa ở khoang hành lý phía sau lên mức cao nhất giùm mình.",
+        "rationale": "Đại từ 'khu vực đó' ngầm chỉ vị trí 'khoang hành lý phía sau' nơi có con chó đang nằm. Model phải truy vết lên để hiểu rõ bộ phận cần bật quạt gió là ở đâu."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Gọi điện cho cô Linh kế toán công ty."
+          },
+          {
+            "role": "bot",
+            "content": "Đang thực hiện cuộc gọi tới cô Linh kế toán qua kết nối Bluetooth."
+          },
+          {
+            "role": "user",
+            "content": "Ấy nhầm người rồi, tắt đi gọi cho chị Lan nhân sự cơ!"
+          }
+        ],
+        "rewrite": "Huỷ cuộc gọi hiện tại và gọi điện thoại cho chị Lan nhân sự.",
+        "rationale": "Người dùng phát hiện sai sót và đính chính người nhận ngay khi bot đang thực hiện lệnh cũ. Rewrite phải ghi nhận ý định huỷ lệnh gọi cũ và thực hiện lệnh gọi mới."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Kiểm tra tình trạng nhà cửa xem nào."
+          },
+          {
+            "role": "bot",
+            "content": "Nhiệt độ phòng khách là 24 độ, độ ẩm 60%. Máy lọc không khí đang chạy mức 2. Rèm cửa đóng 80%. Hệ thống tưới cây ngoài vườn vừa ngắt lúc 10h."
+          },
+          {
+            "role": "user",
+            "content": "Mở hết rèm ở phòng khách ra cho nhà sáng sủa chút."
+          }
+        ],
+        "rewrite": "Mở hoàn toàn rèm cửa ở phòng khách ở nhà ra cho sáng sủa chút.",
+        "rationale": "Bot trả về một mớ dữ liệu nhà thông minh gây nhiễu (24 độ, 60%, 10h...), nhưng người dùng chỉ có một yêu cầu đơn giản là kéo rèm. Model phải phớt lờ các số liệu thừa."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Tuần này có bài hát nào mới lên top trending không?"
+          },
+          {
+            "role": "bot",
+            "content": "Trên bảng xếp hạng tuần này có các ca khúc mới của tlinh và HIEUTHUHAI đang dẫn đầu."
+          },
+          {
+            "role": "user",
+            "content": "Play bài Shape of You của Ed Sheeran trên YouTube Music nhé."
+          }
+        ],
+        "rewrite": "Play bài Shape of You của Ed Sheeran trên YouTube Music nhé.",
+        "rationale": "Lượt user bao gồm các thuật ngữ tiếng Anh và tên thương hiệu (Play, Shape of You, Ed Sheeran, YouTube Music). Câu tự độc lập về ý nghĩa nên không phụ thuộc vào context BXH Vpop phía trên."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Hủy tuyến đường đi Vũng Tàu đi."
+          },
+          {
+            "role": "bot",
+            "content": "Đã hủy hướng dẫn lộ trình tới Vũng Tàu."
+          },
+          {
+            "role": "user",
+            "content": "Thiết lập lại điểm đến là khu du lịch Đại Nam, tiện thể mở luôn chế độ lái Eco cho tiết kiệm."
+          }
+        ],
+        "rewrite": "Dẫn đường đến khu du lịch Đại Nam, tiện thể chuyển xe sang chế độ lái Eco cho tiết kiệm.",
+        "rationale": "Lượt thoại kết hợp giữa việc ra lệnh dẫn đường (domain navigation) và thiết lập chế độ xe (domain vehicle). Model phải xử lý trọn vẹn cả hai vế mệnh lệnh."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Soạn email mới giùm anh."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn gửi email cho ai?"
+          },
+          {
+            "role": "user",
+            "content": "Gửi cho đối tác bên công ty xây dựng Hòa Bình."
+          },
+          {
+            "role": "bot",
+            "content": "Vâng, đã thêm địa chỉ email của công ty Hòa Bình. Tiêu đề email là gì?"
+          },
+          {
+            "role": "user",
+            "content": "Ghi tiêu đề là Báo giá vật liệu quý 3 nha."
+          }
+        ],
+        "rewrite": "Soạn email gửi cho công ty xây dựng Hòa Bình với tiêu đề là Báo giá vật liệu quý 3 nha.",
+        "rationale": "Quá trình gửi email bao gồm người nhận và tiêu đề, bị chia nhỏ qua tận 5 lượt nói giữa người và máy. Câu lệnh rewrite cuối cùng phải thu thập đủ các slot này từ lịch sử."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "toggle_feature",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Màn hình xe đang hiển thị giao diện ban đêm à?"
+          },
+          {
+            "role": "bot",
+            "content": "Vâng, hệ thống đã tự động chuyển sang Dark Mode do cảm biến ánh sáng nhận thấy trời đang tối."
+          },
+          {
+            "role": "user",
+            "content": "Bật massage ghế lái ở chế độ thư giãn và khóa toàn bộ cửa kính trẻ em phía sau lại."
+          }
+        ],
+        "rewrite": "Bật massage ghế lái ở chế độ thư giãn và khóa toàn bộ cửa kính trẻ em phía sau lại.",
+        "rationale": "Chứa hai intent hoàn toàn không liên quan (massage ghế và khóa trẻ em) nhưng đều đầy đủ thông tin để thực thi tức thì. Rewrite giữ nguyên 100% nội dung không cần bám vào context."
+      }
+    ]
+  }

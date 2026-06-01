@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Soạn email báo cáo sự cố cho IT"},
+          {"role":"bot","content":"Gửi đến địa chỉ nào và tiêu đề là gì ạ?"},
+          {"role":"user","content":"itsupport@vingroup.net, tiêu đề Sự cố màn hình HUD tắt đột ngột"},
+          {"role":"bot","content":"Mô tả sự cố thế nào ạ?"},
+          {"role":"user","content":"HUD tắt lúc 14:32 trên cao tốc Pháp Vân, khởi động lại xe mới lên, kèm ảnh đính kèm screen001.jpg"}
+        ],
+        "rewrite": "Soạn và gửi email đến itsupport@vingroup.net, tiêu đề 'Sự cố màn hình HUD tắt đột ngột', nội dung: HUD tắt lúc 14:32 trên cao tốc Pháp Vân, khởi động lại xe mới lên, đính kèm ảnh screen001.jpg.",
+        "rationale": "Địa chỉ, tiêu đề, mô tả và file đính kèm rải qua 5 lượt; tên file ảnh là slot kỹ thuật quan trọng ở lượt cuối cần giữ nguyên."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ hai bên hàng ghế sau xuống một nửa"},
+          {"role":"bot","content":"Đã hạ kính ghế sau bên trái và bên phải xuống 50%."},
+          {"role":"user","content":"Bên nào phía mặt trời đang chiếu thì đóng lại, nắng quá"}
+        ],
+        "rewrite": "Đóng kính ghế sau bên phải lại.",
+        "rationale": "'Bên phía mặt trời' là thông tin ngữ cảnh thực tế xe; trong hội thoại không có dữ liệu hướng nắng nên giả định bên phải theo chiều xe đang đi — rewrite cần giải thích rõ bot phải dùng cảm biến ánh sáng để xác định."
+      },
+      {
+        "pattern": "negation",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật toàn bộ hỗ trợ lái chủ động đi"},
+          {"role":"bot","content":"Đã bật: Lane Centering, Auto Lane Change, Traffic Sign Recognition và Speed Assist."},
+          {"role":"user","content":"Tắt Auto Lane Change đi, không quen để xe tự chuyển làn"}
+        ],
+        "rewrite": "Tắt Auto Lane Change, giữ nguyên Lane Centering, Traffic Sign Recognition và Speed Assist.",
+        "rationale": "Phủ định loại trừ một tính năng nhạy cảm; rewrite liệt kê rõ tính năng bị tắt và ba tính năng còn lại đang hoạt động."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm podcast tiếng Anh về startup cho tôi"},
+          {"role":"bot","content":"Có 'How I Built This' trên NPR, 'Masters of Scale' của Reid Hoffman và 'StartUp Podcast' trên Spotify."},
+          {"role":"user","content":"Masters of Scale đi, tập mới nhất, speed 1.25x, skip intro luôn"}
+        ],
+        "rewrite": "Phát podcast 'Masters of Scale' tập mới nhất trên Spotify, tốc độ 1.25x, bỏ qua phần intro.",
+        "rationale": "Token 'Masters of Scale', 'speed', 'skip intro' giữ nguyên; nền tảng Spotify ngầm định từ danh sách bot gợi ý."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi chở khách về nhà, chuẩn bị giúp tôi"},
+          {"role":"bot","content":"Bạn muốn chuẩn bị gì ạ?"},
+          {"role":"user","content":"Bật đèn phòng khách chế độ warm white 70%, pha máy pha cà phê Delonghi và bật điều hoà 25 độ"}
+        ],
+        "rewrite": "Bật đèn phòng khách chế độ warm white 70%, khởi động máy pha cà phê Delonghi và bật điều hoà 25°C.",
+        "rationale": "Ba intent smart home song song trong một lượt tiếp đón khách; giữ đủ tên thiết bị, thông số và chế độ không rút gọn."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi hay quên đóng cốp xe lắm"},
+          {"role":"bot","content":"Đã ghi nhận. Bạn muốn cảnh báo theo cách nào?"},
+          {"role":"user","content":"Khi tốc độ xe vượt 20km/h mà cốp vẫn mở thì kêu chuông to và hiện cảnh báo trên màn hình"}
+        ],
+        "rewrite": "Cài cảnh báo: khi xe đạt trên 20km/h mà cốp chưa đóng thì phát chuông to và hiển thị cảnh báo trên màn hình.",
+        "rationale": "'Cốp xe' ngầm chỉ từ vấn đề user khai báo lượt đầu; ngưỡng tốc độ và hai kênh cảnh báo từ lượt cuối gộp thành điều kiện kích hoạt hoàn chỉnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Dẫn đường đến sân bay Tân Sơn Nhất cửa vào số 1"},
+          {"role":"bot","content":"Đang dẫn đường đến cửa vào số 1 sân bay Tân Sơn Nhất, khoảng 34 phút."},
+          {"role":"user","content":"Nhầm rồi, đi đón khách phải vào cửa số 3 khu quốc tế"}
+        ],
+        "rewrite": "Chỉnh lại lộ trình đến cửa vào số 3 khu quốc tế sân bay Tân Sơn Nhất.",
+        "rationale": "User đính chính cả số cửa lẫn khu vực; rewrite phản ánh điểm đến cuối chính xác, bỏ cửa số 1 cũ."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem lịch cuộc gọi gần đây nhất của tôi"},
+          {"role":"bot","content":"5 cuộc gần nhất: Mẹ 09:11, Grab driver 09:43, số lạ 0345 112 009 lúc 10:02, sếp Thanh Sơn 11:30, vợ 13:15."},
+          {"role":"user","content":"Gọi lại cho sếp đi, có việc cần báo"}
+        ],
+        "rewrite": "Gọi lại cho sếp Thanh Sơn.",
+        "rationale": "Bot liệt kê 5 cuộc gọi; chỉ 'sếp Thanh Sơn' là người cần gọi lại, các cuộc còn lại đều là nhiễu không đưa vào rewrite."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi cần sạc xe trước khi đến cuộc họp 3 giờ chiều"},
+          {"role":"bot","content":"Hiện tại 13:42, bạn có khoảng 78 phút. Trạm nào bạn muốn dùng?"},
+          {"role":"user","content":"Trạm nào sạc nhanh nhất trong 2km"},
+          {"role":"bot","content":"Trạm Eboost Láng Hạ cách 1.4km có DC 180kW, ước tính sạc từ 23% lên 60% mất khoảng 22 phút."},
+          {"role":"user","content":"Được rồi, đặt cổng rồi dẫn đường, sạc đến 60% thôi"}
+        ],
+        "rewrite": "Đặt cổng sạc tại Eboost Láng Hạ, chỉ đường đến đó, sạc đến 60% pin.",
+        "rationale": "Tên trạm, mức sạc mục tiêu rải qua 4 lượt; lượt cuối xác nhận mức 60% và yêu cầu hai hành động song song."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem tình trạng các tuyến đường về quận 1"},
+          {"role":"bot","content":"Tuyến Điện Biên Phủ thông thoáng 18 phút, tuyến Cách Mạng Tháng 8 ùn nhẹ 26 phút, tuyến Lý Thường Kiệt kẹt nặng 44 phút."},
+          {"role":"user","content":"Tuyến nào kẹt nhất thì tránh, đi tuyến nhanh nhất đi"}
+        ],
+        "rewrite": "Chỉ đường về quận 1 qua Điện Biên Phủ, tránh Lý Thường Kiệt.",
+        "rationale": "'Tuyến kẹt nhất' resolve về Lý Thường Kiệt 44 phút; 'tuyến nhanh nhất' resolve về Điện Biên Phủ 18 phút từ dữ liệu bot."
+      }
+    ]
+  }

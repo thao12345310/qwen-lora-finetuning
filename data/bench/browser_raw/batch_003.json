@@ -1,0 +1,134 @@
+{
+  "samples": [
+    {
+      "pattern": "correction",
+      "domain": "climate",
+      "intent": "set_climate",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Bật sưởi ghế lái lên mức 3 đi"},
+        {"role":"bot","content":"Đã bật sưởi ghế lái mức 3."},
+        {"role":"user","content":"Thôi mức 3 nóng quá, chỉnh xuống mức 1 thôi"}
+      ],
+      "rewrite": "Chỉnh sưởi ghế lái từ mức 3 xuống mức 1.",
+      "rationale": "User đính chính mức sưởi, rewrite phải phản ánh intent cuối là mức 1, bỏ mức 3 cũ."
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "vehicle",
+      "intent": "toggle_light",
+      "context_required": false,
+      "turns": [
+        {"role":"user","content":"Bật đèn pha rồi gập gương chiếu hậu hai bên lại giúp tôi"}
+      ],
+      "rewrite": "Bật đèn pha và gập gương chiếu hậu hai bên.",
+      "rationale": "Lượt duy nhất chứa hai intent song song, không cần lịch sử, rewrite giữ đủ cả hai."
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "driver_assist",
+      "intent": "lane_assist",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Tốc độ tôi đang chạy bao nhiêu?"},
+        {"role":"bot","content":"Bạn đang chạy 112km/h, giới hạn tốc độ đoạn này 90km/h, còn 43% nhiên liệu."},
+        {"role":"user","content":"Thôi kệ, bật lane assist lên đi"}
+      ],
+      "rewrite": "Bật lane assist.",
+      "rationale": "Bot trả về 3 số (112km/h, 90km/h, 43%) đều không liên quan đến yêu cầu bật lane assist; rewrite không kéo số nhiễu nào."
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "calling",
+      "intent": "call",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Tìm số của bác sĩ Hoàng Việt Anh ở phòng khám Thu Cúc"},
+        {"role":"bot","content":"Số phòng khám Thu Cúc là 024 3556 6556, máy nhánh bác sĩ Hoàng Việt Anh là 112."},
+        {"role":"user","content":"Gọi vào số đó, chọn máy nhánh 112 luôn nhé"}
+      ],
+      "rewrite": "Gọi đến số 024 3556 6556 của phòng khám Thu Cúc, chọn máy nhánh 112 gặp bác sĩ Hoàng Việt Anh.",
+      "rationale": "Số tổng đài và máy nhánh rải qua lượt bot, lượt cuối chỉ nói 'số đó' và '112', cần gộp đủ slot."
+    },
+    {
+      "pattern": "implicit_reference",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Kiểm tra xem camera cổng nhà tôi có online không"},
+        {"role":"bot","content":"Camera cổng đang online, hình ảnh rõ nét, không phát hiện chuyển động bất thường."},
+        {"role":"user","content":"Ổn rồi, khoá cổng lại giúp tôi nhé"}
+      ],
+      "rewrite": "Khoá cổng nhà lại.",
+      "rationale": "'Cổng' ngầm chỉ cổng nhà từ ngữ cảnh trước; bot đã làm xong việc check camera nên rewrite chỉ chứa hành động mới là khoá cổng."
+    },
+    {
+      "pattern": "code_switching",
+      "domain": "music",
+      "intent": "play_music_offline",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Phát nhạc offline trong xe đi, tôi mất mạng rồi"},
+        {"role":"bot","content":"Bạn muốn phát playlist nào? Có 'Vpop Hits', 'EDM Drive' và 'Acoustic Morning' trong bộ nhớ xe."},
+        {"role":"user","content":"Playlist EDM Drive đi, shuffle on luôn"}
+      ],
+      "rewrite": "Phát playlist 'EDM Drive' offline từ bộ nhớ xe, bật shuffle.",
+      "rationale": "Token 'shuffle' giữ nguyên không dịch; tên playlist lấy từ danh sách bot gợi ý."
+    },
+    {
+      "pattern": "negation",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Chỉ đường từ đây về sân bay Nội Bài"},
+        {"role":"bot","content":"Có 2 tuyến: qua cầu Nhật Tân mất 35 phút, qua đường Võ Văn Kiệt mất 42 phút."},
+        {"role":"user","content":"Đi tuyến nhanh hơn nhưng đừng qua cầu Nhật Tân"}
+      ],
+      "rewrite": "Chỉ đường về sân bay Nội Bài theo tuyến nhanh nhất, không đi qua cầu Nhật Tân.",
+      "rationale": "User muốn tuyến nhanh nhưng có điều kiện phủ định cụ thể; rewrite phải giữ rõ cả hai ràng buộc."
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "charging",
+      "intent": "find_charging",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Pin còn 22%, tìm trạm sạc VinFast gần nhất"},
+        {"role":"bot","content":"Trạm VinFast gần nhất là tại Royal City, Nguyễn Trãi, cách bạn 2.4km, còn 6 cổng trống."},
+        {"role":"user","content":"Đặt trước một cổng ở đó luôn đi"}
+      ],
+      "rewrite": "Đặt trước một cổng sạc tại trạm VinFast Royal City, đường Nguyễn Trãi.",
+      "rationale": "'Đó' resolve về tên và địa chỉ trạm cụ thể mà bot cung cấp ở lượt trước."
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "messaging",
+      "intent": "send_message",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Soạn tin nhắn cho Tuấn Kiệt"},
+        {"role":"bot","content":"Nội dung tin nhắn là gì ạ?"},
+        {"role":"user","content":"Bảo anh ấy họp dời sang 3 giờ chiều"},
+        {"role":"bot","content":"Tin nhắn: 'Tuấn Kiệt ơi, họp dời sang 3 giờ chiều nhé'. Gửi chưa?"},
+        {"role":"user","content":"Thêm vào 'tại phòng họp B' rồi gửi đi"}
+      ],
+      "rewrite": "Gửi tin nhắn cho Tuấn Kiệt: 'Họp dời sang 3 giờ chiều, tại phòng họp B nhé'.",
+      "rationale": "Nội dung tin nhắn tích luỹ qua 3 lượt, lượt cuối chỉ bổ sung địa điểm và ra lệnh gửi; rewrite gộp đủ nội dung hoàn chỉnh."
+    },
+    {
+      "pattern": "correction",
+      "domain": "driver_assist",
+      "intent": "cruise_control",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Bật auto pilot giữ tốc độ 110 km/h"},
+        {"role":"bot","content":"Đã bật auto pilot, giữ tốc độ 110km/h."},
+        {"role":"user","content":"Chỉnh lại 100 thôi, sắp vào khu đông dân rồi"}
+      ],
+      "rewrite": "Chỉnh auto pilot từ 110km/h xuống 100km/h.",
+      "rationale": "User chỉnh tốc độ cruise từ giá trị cũ sang mới; rewrite phải dùng đúng cả hai con số từ hội thoại, không bịa."
+    }
+  ]
+}

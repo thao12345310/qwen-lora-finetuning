@@ -1,0 +1,240 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "vehicle",
+        "intent": "toggle_feature",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Kính chiếu hậu có gập tự động được không?"
+          },
+          {
+            "role": "bot",
+            "content": "Xe hỗ trợ gập gương chỉnh điện. Bạn muốn điều chỉnh gương bên nào?"
+          },
+          {
+            "role": "user",
+            "content": "Bên ghế phụ ấy."
+          },
+          {
+            "role": "bot",
+            "content": "Đã ghi nhận. Bạn muốn gập sát vào hoàn toàn hay chỉ gập một nửa?"
+          },
+          {
+            "role": "user",
+            "content": "Gập sát vào luôn đi."
+          }
+        ],
+        "rewrite": "Hãy gập sát gương chiếu hậu bên ghế phụ vào luôn đi.",
+        "rationale": "Thông tin lệnh bị xé nhỏ qua 3 lượt thoại của user (bên ghế phụ, gập sát vào), model phải gom đủ mọi chi tiết để tạo thành câu hoàn chỉnh điều khiển đúng bộ phận."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Tối nay nhà mình tổ chức tiệc BBQ ngoài sân vườn đấy."
+          },
+          {
+            "role": "bot",
+            "content": "Tuyệt quá. Thời tiết tối nay rất lý tưởng, trời quang mây, không mưa và nhiệt độ khoảng 26 độ C."
+          },
+          {
+            "role": "user",
+            "content": "Bật hết đèn chiếu sáng ở ngoài đó lên trước cho tôi."
+          }
+        ],
+        "rewrite": "Bật toàn bộ đèn chiếu sáng ngoài sân vườn ở nhà lên trước cho tôi.",
+        "rationale": "Đại từ 'ngoài đó' ngầm chỉ vị trí 'sân vườn ở nhà' được nhắc đến trong bối cảnh trò chuyện ban đầu, yêu cầu phải lôi đúng địa điểm từ lượt thoại cũ."
+      },
+      {
+        "pattern": "negation",
+        "domain": "driver_assist",
+        "intent": "set_alarm",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Camera hành trình đang ghi âm đúng không?"
+          },
+          {
+            "role": "bot",
+            "content": "Vâng, camera đang ghi hình đồng thời thu âm thanh trong khoang xe."
+          },
+          {
+            "role": "user",
+            "content": "Set cảnh báo tốc độ ở mức 60 km/h nhưng cấm không được phát ra tiếng bíp bíp đâu nhé."
+          }
+        ],
+        "rewrite": "Cài đặt cảnh báo tốc độ ở mức 60 km/h nhưng cấm không được phát ra tiếng bíp bíp cảnh báo.",
+        "rationale": "Lượt user cuối chứa đầy đủ tham số và ý định phủ định ('cấm không được phát ra tiếng bíp bíp'), nó hoàn toàn độc lập và không cần đến bối cảnh camera phía trước."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "read_message",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Có ai nhắn gì cho mình không?"
+          },
+          {
+            "role": "bot",
+            "content": "Có 2 tin nhắn chưa đọc trên Zalo. Một tin từ sếp Hùng: 'Nhớ gửi báo cáo tháng'. Tin thứ hai từ vợ: 'Chiều đón con nhé'."
+          },
+          {
+            "role": "user",
+            "content": "Đọc lại cái của sếp Hùng xem nào."
+          }
+        ],
+        "rewrite": "Đọc lại tin nhắn Zalo của sếp Hùng xem nào.",
+        "rationale": "Đại từ 'cái của' tham chiếu trực tiếp đến danh sách tin nhắn Zalo bot vừa thông báo, cần truy xuất tên người gửi và nền tảng ứng dụng từ lịch sử."
+      },
+      {
+        "pattern": "correction",
+        "domain": "charging",
+        "intent": "set_charging_limit",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Hẹn giờ sạc pin cho xe đi."
+          },
+          {
+            "role": "bot",
+            "content": "Tôi đã thiết lập sạc pin vào lúc 22:00 tối nay. Giới hạn sạc đang để ở mức 80% nhằm bảo vệ tuổi thọ pin."
+          },
+          {
+            "role": "user",
+            "content": "Thôi chỉnh lại lên thẳng 100% luôn giùm anh, mai anh đi công tác tỉnh."
+          }
+        ],
+        "rewrite": "Chỉnh mức giới hạn sạc pin xe lên thẳng 100% giùm anh.",
+        "rationale": "Người dùng sửa đổi tham số 'giới hạn sạc' từ 80% (mặc định của bot) lên 100%. Model cần hiểu được intent 'chỉnh lại' này nhắm tới thông số sạc pin."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "vehicle",
+        "intent": "toggle_feature",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Hệ thống giải trí đang chạy phiên bản phần mềm nào?"
+          },
+          {
+            "role": "bot",
+            "content": "Màn hình trung tâm đang chạy hệ điều hành iDrive 8 bản cập nhật OTA mới nhất."
+          },
+          {
+            "role": "user",
+            "content": "Đổi sang chế độ lái Sport Plus và tắt hẳn Traction Control đi."
+          }
+        ],
+        "rewrite": "Đổi sang chế độ lái Sport Plus và tắt hẳn tính năng Traction Control.",
+        "rationale": "Câu lệnh dùng nhiều từ khóa tiếng Anh ('Sport Plus', 'Traction Control'), có đủ ý nghĩa độc lập để thực thi ngay, không bị ảnh hưởng bởi đoạn hội thoại cập nhật phần mềm."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Xe mình đang làm bảo dưỡng định kỳ ở xưởng đúng không?"
+          },
+          {
+            "role": "bot",
+            "content": "Vâng, cố vấn dịch vụ tên là Hiếu báo xe đã thay 4 lít nhớt, kiểm tra áp suất lốp 2.4 bar và vệ sinh phanh 4 bánh. Tổng tiền là 1.500.000đ."
+          },
+          {
+            "role": "user",
+            "content": "Call cho anh chàng đó hỏi xem mấy giờ anh qua lấy xe được."
+          }
+        ],
+        "rewrite": "Call cho cố vấn dịch vụ Hiếu hỏi xem mấy giờ anh qua lấy xe được.",
+        "rationale": "Bot trả về quá nhiều số liệu kỹ thuật và chi phí gây nhiễu. Model phải khéo léo lấy đúng tên người 'cố vấn dịch vụ Hiếu' (từ 'anh chàng đó') mà không kéo nhầm bất kỳ con số nào."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Dẫn đường ra sân bay Nội Bài đi."
+          },
+          {
+            "role": "bot",
+            "content": "Đang chỉ đường đến nhà ga T1, sân bay Nội Bài. Thời gian dự kiến là 50 phút với tình trạng giao thông thông thoáng."
+          },
+          {
+            "role": "user",
+            "content": "Tìm trạm dừng chân nào trên tuyến đường đó để tớ mua cafe, xong rồi kích hoạt luôn Auto Pilot nhé."
+          }
+        ],
+        "rewrite": "Tìm trạm dừng chân trên tuyến đường đi sân bay Nội Bài để tớ mua cafe, đồng thời kích hoạt luôn hệ thống Auto Pilot.",
+        "rationale": "Lượt thoại nối 2 hành động: thêm điểm dừng dọc đường (dựa vào context tuyến Nội Bài) và bật tính năng hỗ trợ lái. Việc rewrite phải giữ mượt mà cả hai mệnh lệnh này."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Mình có thể ra lệnh bằng giọng nói những gì?"
+          },
+          {
+            "role": "bot",
+            "content": "Bạn có thể yêu cầu mở nhạc, gọi điện, chỉnh điều hoà, tìm đường hoặc điều khiển các tính năng của xe."
+          },
+          {
+            "role": "user",
+            "content": "Kéo rèm che nắng cửa sổ trời ra và mở bài hát Chìm Sâu của MCK."
+          }
+        ],
+        "rewrite": "Kéo rèm che nắng cửa sổ trời ra và mở bài hát Chìm Sâu của MCK.",
+        "rationale": "Lượt user bao hàm cùng lúc intent điều khiển xe (kéo rèm) và giải trí (nghe nhạc chỉ định bài hát), đủ chi tiết để đứng riêng thành lệnh không cần nhìn lại lượt giới thiệu của bot."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Mở nhạc của Vũ lên nghe cho chill."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn nghe bài Lạ Lùng, Bước Qua Nhau hay một playlist ngẫu nhiên của Vũ?"
+          },
+          {
+            "role": "user",
+            "content": "Bài Bước Qua Nhau ấy."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn nghe trên Apple Music hay Zing MP3?"
+          },
+          {
+            "role": "user",
+            "content": "Mở bên Zing nhé."
+          }
+        ],
+        "rewrite": "Mở bài hát Bước Qua Nhau của Vũ trên ứng dụng Zing MP3.",
+        "rationale": "Mệnh lệnh cuối 'Mở bên Zing nhé' không có nghĩa nếu đứng một mình. Model phải chắp vá các slot về tên nghệ sĩ, tên bài hát và nền tảng phát nhạc rải rác từ tận 4 lượt trước."
+      }
+    ]
+  }

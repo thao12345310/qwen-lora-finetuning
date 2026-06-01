@@ -1,0 +1,232 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Bật bình nóng lạnh ở nhà lên."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn có 2 bình nóng lạnh: một ở phòng tắm master, hai ở phòng khách. Bạn muốn bật cái nào?"
+          },
+          {
+            "role": "user",
+            "content": "Cái ở phòng master."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn bật trong bao lâu?"
+          },
+          {
+            "role": "user",
+            "content": "Đặt hẹn giờ 30 phút nhé."
+          }
+        ],
+        "rewrite": "Cài đặt hẹn giờ bật bình nóng lạnh ở phòng tắm master trong 30 phút.",
+        "rationale": "Lượt cuối chỉ có thông tin thời gian '30 phút', thiết bị và vị trí cụ thể nằm rải rác ở 2 lượt người dùng trước đó."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Chỉ đường tới Vincom Center."
+          },
+          {
+            "role": "bot",
+            "content": "Đang dẫn đường đến Vincom Center Landmark 81 ở Bình Thạnh."
+          },
+          {
+            "role": "user",
+            "content": "Ấy không, ý mình là Vincom Đồng Khởi cơ."
+          }
+        ],
+        "rewrite": "Chỉ đường tới Vincom Đồng Khởi.",
+        "rationale": "Bot chọn sai địa điểm theo ý định của người dùng, lượt cuối user huỷ Landmark 81 để đổi sang Đồng Khởi, model phải nắm bắt ý định dẫn đường cuối cùng."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Có thể chỉnh độ sáng màn hình không?"
+          },
+          {
+            "role": "bot",
+            "content": "Màn hình trung tâm đang để độ sáng tự động theo cảm biến."
+          },
+          {
+            "role": "user",
+            "content": "Chuyển đèn ambient light sang màu đỏ giúp anh."
+          }
+        ],
+        "rewrite": "Chuyển đèn ambient light sang màu đỏ giúp anh.",
+        "rationale": "Câu lệnh tự đủ nghĩa, sử dụng các thuật ngữ tiếng Anh 'ambient light', rewrite cần giữ nguyên token, không dịch sang tiếng Việt và không bị ảnh hưởng bởi đoạn hội thoại trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Cuối tuần này cả nhà mình sẽ đi cắm trại ở hồ Trị An."
+          },
+          {
+            "role": "bot",
+            "content": "Thật tuyệt, tôi đã cập nhật thời tiết tại hồ Trị An cuối tuần này, trời sẽ nắng đẹp và không mưa."
+          },
+          {
+            "role": "user",
+            "content": "Cậu tìm xem quanh đó có trạm sạc nhanh nào không?"
+          }
+        ],
+        "rewrite": "Tìm trạm sạc nhanh quanh khu vực hồ Trị An.",
+        "rationale": "Cụm 'quanh đó' ngầm chỉ địa danh 'hồ Trị An' đã được nhắc đến ở lượt thoại đầu, yêu cầu phải có lịch sử để resolve ra địa danh thực tế."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Hệ thống cảnh báo chệch làn đường đang thiết lập như nào?"
+          },
+          {
+            "role": "bot",
+            "content": "Tính năng Lane Departure Warning đang bật cả cảnh báo bằng âm thanh và rung vô lăng."
+          },
+          {
+            "role": "user",
+            "content": "Tắt cái rung đi, giữ lại cái đầu thôi."
+          }
+        ],
+        "rewrite": "Tắt cảnh báo rung vô lăng của hệ thống Lane Departure Warning và chỉ giữ lại cảnh báo bằng âm thanh.",
+        "rationale": "User dùng đại từ 'cái rung' và 'cái đầu' để tham chiếu tới 2 tuỳ chọn bot vừa nêu ra, model cần resolve về đúng tên thiết lập."
+      },
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Mở ứng dụng nghe nhạc lên."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn nghe nhạc trên Apple Music hay Spotify?"
+          },
+          {
+            "role": "user",
+            "content": "Phát playlist Top Hits Vietnam trên Apple Music nhưng đừng chọn mấy bài của Jack nha."
+          }
+        ],
+        "rewrite": "Phát playlist Top Hits Vietnam trên Apple Music nhưng đừng chọn các bài của Jack.",
+        "rationale": "Câu lệnh độc lập chứa slot đầy đủ và ý nghĩa phủ định rõ ràng (đừng chọn bài của Jack), rewrite giữ nguyên ý mà không cần lịch sử."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Có ai nhắn tin cho anh không?"
+          },
+          {
+            "role": "bot",
+            "content": "Anh có 5 thông báo Zalo từ nhóm Cà phê cuối tuần, 2 tin nhắn SMS từ số lạ quảng cáo bất động sản, và 1 email chưa đọc."
+          },
+          {
+            "role": "user",
+            "content": "Bỏ qua đi, soạn một tin nhắn gửi vợ bảo là anh sẽ về ăn cơm tối."
+          }
+        ],
+        "rewrite": "Soạn tin nhắn gửi vợ bảo là anh sẽ về ăn cơm tối.",
+        "rationale": "Bot đọc ra hàng loạt con số và thông báo nhiễu, nhưng user yêu cầu tạo tin nhắn mới, model phải vứt bỏ bối cảnh nhiễu và bắt trúng intent cuối."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Điều hoà hàng ghế sau đang tắt à?"
+          },
+          {
+            "role": "bot",
+            "content": "Vâng, điều hoà vùng phía sau đang được tắt để tiết kiệm năng lượng."
+          },
+          {
+            "role": "user",
+            "content": "Mở lên đi, sẵn tiện bật luôn sưởi hai ghế trước mức cao nhất."
+          }
+        ],
+        "rewrite": "Mở điều hoà cho hàng ghế sau và bật sưởi hai ghế trước ở mức cao nhất.",
+        "rationale": "Lượt user gộp 2 intent: bật lại điều hoà ghế sau (kế thừa context từ bot) và thiết lập sưởi ghế trước (mới sinh), bắt buộc phải gom đủ cả 2 vào câu rewrite."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Bluetooth đã kết nối chưa?"
+          },
+          {
+            "role": "bot",
+            "content": "Điện thoại iPhone 14 Pro Max của bạn đã được kết nối qua Bluetooth."
+          },
+          {
+            "role": "user",
+            "content": "Call cho hotline của Shopee giùm tớ nhé."
+          }
+        ],
+        "rewrite": "Call cho hotline của Shopee giùm tớ nhé.",
+        "rationale": "Lượt cuối hoàn toàn độc lập, chứa các từ lóng tiếng Anh ('Call', 'hotline', 'Shopee'), model phải bảo toàn văn phong nói và không được lôi thêm tên iPhone vào."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Xe mình còn đi được bao xa nữa?"
+          },
+          {
+            "role": "bot",
+            "content": "Mức pin hiện tại là 32%. Dự kiến quãng đường di chuyển còn lại khoảng 120km với nhiệt độ ngoài trời 38 độ C. Cửa sổ trời đang mở 50%."
+          },
+          {
+            "role": "user",
+            "content": "Nóng quá, đóng chặt nó lại giùm anh."
+          }
+        ],
+        "rewrite": "Đóng kín cửa sổ trời lại giùm anh.",
+        "rationale": "Đại từ 'nó' chỉ cửa sổ trời đang mở. Bot cung cấp nhiều số liệu không liên quan (32%, 120km, 38 độ), model cần filter thông tin chuẩn xác để đóng cửa sổ thay vì bị ảo giác do các con số."
+      }
+    ]
+  }

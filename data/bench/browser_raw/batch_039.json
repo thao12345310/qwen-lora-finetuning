@@ -1,0 +1,247 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đang có những chế độ đèn viền nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có chế độ Bình minh với ánh sáng hổ phách và chế độ Biển đêm với ánh sáng xanh lam."
+    },
+    {
+    "role": "user",
+    "content": "Bật chế độ thứ hai cho khoang lái."
+    }
+    ],
+    "rewrite": "Bật chế độ đèn viền Biển đêm với ánh sáng xanh lam cho khoang lái.",
+    "rationale": "Lượt cuối dùng thứ tự lựa chọn, nên model phải xác định đúng chế độ Biển đêm thay vì chế độ Bình minh."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tạo hàng chờ nhạc Việt cho chuyến đi tối nay."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn bắt đầu bằng bài nào?"
+    },
+    {
+    "role": "user",
+    "content": "“Chúng Ta Của Hiện Tại” của Sơn Tùng M-TP."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn nghe tiếp bài nào và phát trên nền tảng nào?"
+    },
+    {
+    "role": "user",
+    "content": "Tiếp theo là “Gác Lại Âu Lo” của Da LAB, trên NhacCuaTui."
+    },
+    {
+    "role": "bot",
+    "content": "Có bật phát lặp lại hàng chờ không?"
+    },
+    {
+    "role": "user",
+    "content": "Không lặp, tạo đi."
+    }
+    ],
+    "rewrite": "Tạo hàng chờ trên NhacCuaTui gồm “Chúng Ta Của Hiện Tại” của Sơn Tùng M-TP rồi “Gác Lại Âu Lo” của Da LAB và không bật phát lặp lại.",
+    "rationale": "Hai bài hát, thứ tự phát, nền tảng và ràng buộc không lặp được cung cấp qua nhiều lượt khác nhau."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "navigation",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo nhanh tình trạng xe hiện tại."
+    },
+    {
+    "role": "bot",
+    "content": "Pin còn 62% và nhiệt độ trong khoang là 24°C."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn đường tới Dinh Độc Lập."
+    }
+    ],
+    "rewrite": "Dẫn đường tới Dinh Độc Lập.",
+    "rationale": "Các con số về pin và nhiệt độ chỉ là nhiễu, không được đưa vào yêu cầu điều hướng độc lập."
+    },
+    {
+    "pattern": "correction",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi xe đến The Manor Central Park, bật điều hòa phòng làm việc."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị bật điều hòa phòng làm việc khi xe đến The Manor Central Park."
+    },
+    {
+    "role": "user",
+    "content": "Đổi lại, tới đó chỉ bật máy hút ẩm phòng ngủ."
+    }
+    ],
+    "rewrite": "Khi xe đến The Manor Central Park, chỉ bật máy hút ẩm phòng ngủ.",
+    "rationale": "Lượt cuối thay thiết bị và căn phòng, đồng thời dùng “tới đó” để tham chiếu địa điểm đã nêu trước."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Hai bên điều hòa đang lệch nhiệt độ."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể đồng bộ nhiệt độ hai vùng hoặc chỉnh riêng từng bên."
+    },
+    {
+    "role": "user",
+    "content": "Bật SYNC rồi đặt nhiệt độ 21°C."
+    }
+    ],
+    "rewrite": "Bật SYNC rồi đặt nhiệt độ điều hòa ở 21°C.",
+    "rationale": "Lượt cuối đã đủ thông tin và token tính năng “SYNC” phải được giữ nguyên, không dịch hoặc thay thế."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "navigation",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đã lưu tiệm sửa kính quen của tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có địa chỉ nào được lưu với nhãn tiệm sửa kính quen của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tôi đến tiệm sửa kính quen của tôi."
+    }
+    ],
+    "rewrite": "Dẫn tôi đến tiệm sửa kính quen của tôi.",
+    "rationale": "Không có địa chỉ cụ thể trong lịch sử nên phải giữ nguyên cụm tham chiếu, không được tự tạo điểm đến."
+    },
+    {
+    "pattern": "negation",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Ở bãi đỗ Thiso Mall Sala, xe hỗ trợ đỗ kiểu nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Xe có thể hỗ trợ đỗ vuông góc hoặc đỗ song song."
+    },
+    {
+    "role": "user",
+    "content": "Chọn kiểu thứ hai, nhưng đừng tự động phanh."
+    }
+    ],
+    "rewrite": "Tại bãi đỗ Thiso Mall Sala, hỗ trợ đỗ song song nhưng đừng kích hoạt phanh tự động.",
+    "rationale": "Model phải resolve “kiểu thứ hai” thành đỗ song song và giữ nguyên điều kiện không tự động phanh."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm bài của MONO và Tăng Duy Tân để nghe khi lái."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy “Waiting For You” của MONO và “Cắt Đôi Nỗi Sầu” của Tăng Duy Tân."
+    },
+    {
+    "role": "user",
+    "content": "Phát bài của MONO trên Zing MP3 rồi thêm vào yêu thích."
+    }
+    ],
+    "rewrite": "Phát bài “Waiting For You” của MONO trên Zing MP3 rồi thêm bài đó vào danh sách yêu thích.",
+    "rationale": "Lượt cuối xác định bài bằng nghệ sĩ và chứa hai hành động nối tiếp cần được giữ đầy đủ."
+    },
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đọc hai tin nhắn chưa trả lời gần nhất."
+    },
+    {
+    "role": "bot",
+    "content": "Chị Hồng Nhung hỏi biển số xe, còn anh Nhật Minh hỏi vị trí đón."
+    },
+    {
+    "role": "user",
+    "content": "Trả lời người hỏi vị trí là tôi đang ở cổng B."
+    }
+    ],
+    "rewrite": "Nhắn cho anh Nhật Minh với nội dung “Tôi đang ở cổng B”.",
+    "rationale": "Người nhận không được nêu tên ở lượt cuối mà phải xác định thông qua nội dung câu hỏi trước đó."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chuẩn bị phiên sạc qua đêm cho chiếc VinFast VF 3."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn dùng bộ sạc nào?"
+    },
+    {
+    "role": "user",
+    "content": "Bộ sạc treo tường trong gara nhà tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn bắt đầu lúc nào và kết thúc khi pin đạt bao nhiêu?"
+    },
+    {
+    "role": "user",
+    "content": "Bắt đầu lúc 0 giờ 30, dừng ở 85%."
+    },
+    {
+    "role": "bot",
+    "content": "Có cần ưu tiên sạc trong khung giờ thấp điểm không?"
+    },
+    {
+    "role": "user",
+    "content": "Có, áp dụng luôn."
+    }
+    ],
+    "rewrite": "Bắt đầu sạc chiếc VinFast VF 3 bằng bộ sạc treo tường trong gara nhà tôi lúc 0 giờ 30, ưu tiên khung giờ thấp điểm và dừng khi pin đạt 85%.",
+    "rationale": "Mẫu yêu cầu tổng hợp xe, thiết bị sạc, thời gian, giới hạn pin và tùy chọn ưu tiên từ nhiều lượt user."
+    }
+    ]
+    }
+    

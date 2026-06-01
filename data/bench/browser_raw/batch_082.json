@@ -1,0 +1,140 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài chế độ nghỉ lễ cho nhà tôi"},
+          {"role":"bot","content":"Nghỉ từ ngày nào đến ngày nào ạ?"},
+          {"role":"user","content":"Từ mùng 1 đến mùng 5 tháng 9"},
+          {"role":"bot","content":"Trong thời gian này bạn muốn tắt và giữ thiết bị nào?"},
+          {"role":"user","content":"Tắt hết điều hoà và đèn, giữ tủ lạnh bình thường, camera record liên tục và bật báo động chống trộm 24h"}
+        ],
+        "rewrite": "Cài chế độ nghỉ lễ từ mùng 1 đến mùng 5 tháng 9: tắt toàn bộ điều hoà và đèn, duy trì tủ lạnh bình thường, camera ghi hình liên tục và bật báo động chống trộm 24h.",
+        "rationale": "Khung ngày và bốn cấu hình thiết bị rải qua 5 lượt; lượt cuối gộp bốn hành động khác nhau cần giữ đủ không rút gọn."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm quán ăn Nhật gần đây có phòng riêng"},
+          {"role":"bot","content":"Có Kichi-Kichi Phú Mỹ Hưng có phòng tatami riêng, Sushi Tei Lê Văn Sỹ có phòng VIP 8 người và Nhà hàng Nhật Bản Sakura Đinh Tiên Hoàng có phòng riêng tối đa 12 người."},
+          {"role":"user","content":"Nhóm tôi 10 người, chỗ nào chứa vừa thì dẫn vào đó"}
+        ],
+        "rewrite": "Chỉ đường đến Nhà hàng Nhật Bản Sakura Đinh Tiên Hoàng, phòng riêng tối đa 12 người.",
+        "rationale": "'Chỗ nào chứa vừa 10 người' lọc theo sức chứa phòng riêng; Kichi-Kichi không rõ sức chứa, Sushi Tei chỉ 8 người, Sakura 12 người là phù hợp duy nhất."
+      },
+      {
+        "pattern": "negation",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Vào hầm đường bộ rồi, chỉnh lại hỗ trợ lái cho phù hợp"},
+          {"role":"bot","content":"Trong hầm nên tắt một số tính năng. Hiện đang bật: Adaptive Cruise 80km/h, Lane Centering, Traffic Sign Recognition và Auto High Beam."},
+          {"role":"user","content":"Tắt Traffic Sign Recognition và Auto High Beam thôi, hai cái kia giữ"}
+        ],
+        "rewrite": "Tắt Traffic Sign Recognition và Auto High Beam, giữ nguyên Adaptive Cruise 80km/h và Lane Centering.",
+        "rationale": "Phủ định chỉ định hai tính năng cụ thể trong bốn; rewrite xác nhận rõ hai cái tắt và hai cái giữ với thông số tốc độ từ lượt bot."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Chế độ ventilation xe đang ở mode nào?"},
+          {"role":"bot","content":"Đang ở Fresh Air mode, recirculation tắt, AQI ngoài trời 87 mức trung bình."},
+          {"role":"user","content":"AQI vậy là không tốt rồi, chuyển sang Recirculation mode, lọc PM2.5 mức max"}
+        ],
+        "rewrite": "Chuyển sang Recirculation mode và bật lọc PM2.5 mức tối đa.",
+        "rationale": "Token 'Fresh Air mode', 'Recirculation mode', 'PM2.5' giữ nguyên; chỉ số AQI 87 xác nhận lý do nhưng không phải slot của rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đang kẹt xe kinh khủng, muộn mất rồi"},
+          {"role":"bot","content":"Bạn muốn xử lý thế nào ạ?"},
+          {"role":"user","content":"Gọi cho khách hàng Hồng Vân xin lỗi trễ rồi nhắn Slack cho team báo họp dời 30 phút"}
+        ],
+        "rewrite": "Gọi điện cho khách hàng Hồng Vân xin lỗi vì đến trễ và nhắn Slack cho team thông báo dời họp 30 phút.",
+        "rationale": "Hai intent song song với hai kênh liên lạc và hai đầu nhận khác nhau; token 'Slack' giữ nguyên, rewrite không gộp lẫn nội dung."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe tôi dùng loại pin NMC hay LFP?"},
+          {"role":"bot","content":"Peugeot e-2008 của bạn dùng pin NMC 50kWh, không nên sạc vượt 80% thường xuyên để bảo vệ pin."},
+          {"role":"user","content":"Vậy tìm trạm sạc gần nhất và đặt giới hạn sạc 80% luôn"}
+        ],
+        "rewrite": "Tìm trạm sạc gần nhất cho xe Peugeot e-2008 và đặt giới hạn sạc tối đa 80%.",
+        "rationale": "Giới hạn 80% từ khuyến nghị bot ở lượt trước; user áp dụng khuyến nghị đó thành cài đặt thực tế trong lượt cuối."
+      },
+      {
+        "pattern": "correction",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đặt lịch nhắc nhở gửi báo cáo tuần cho sếp mỗi thứ Sáu"},
+          {"role":"bot","content":"Đã đặt nhắc gửi báo cáo tuần cho sếp mỗi thứ Sáu. Nhắc lúc mấy giờ ạ?"},
+          {"role":"user","content":"4 giờ chiều"},
+          {"role":"bot","content":"Đã cập nhật nhắc lúc 16h thứ Sáu hằng tuần."},
+          {"role":"user","content":"Đổi sang thứ Năm đi để còn thời gian sếp đọc trước cuối tuần"}
+        ],
+        "rewrite": "Chỉnh lịch nhắc gửi báo cáo tuần cho sếp từ thứ Sáu sang thứ Năm lúc 16h.",
+        "rationale": "Ngày nhắc được đính chính nhưng giờ 16h giữ nguyên; rewrite phản ánh thay đổi duy nhất là ngày trong tuần."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cho tôi biết dự báo thời tiết tuyến đường đang đi"},
+          {"role":"bot","content":"Hà Nội 34°C nắng, Ninh Bình 32°C có mây, Nam Định 31°C mưa nhẹ, Thanh Hoá 30°C mưa vừa, điểm đến Vinh 29°C mưa to."},
+          {"role":"user","content":"Sắp vào vùng mưa to, tắt recirculation bật fresh air lọc mùi ẩm đi"}
+        ],
+        "rewrite": "Tắt recirculation, bật fresh air và lọc mùi ẩm.",
+        "rationale": "Bot trả 5 điểm dự báo thời tiết; chỉ thông tin mưa to ở điểm đến xác nhận lý do nhưng không phải slot; rewrite chỉ cần ba hành động điều hoà."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn khám phá nhạc mới không quen"},
+          {"role":"bot","content":"Thể loại nào và ngôn ngữ nào ạ?"},
+          {"role":"user","content":"Nhạc Pháp, thể loại chanson"},
+          {"role":"bot","content":"Gợi ý: Edith Piaf classics, Zaz contemporary hoặc Radio Nostalgie France stream trực tiếp."},
+          {"role":"user","content":"Radio stream đó nghe thử đi, volume 45%"}
+        ],
+        "rewrite": "Phát Radio Nostalgie France trực tiếp, âm lượng 45%.",
+        "rationale": "'Radio stream đó' resolve về Radio Nostalgie France từ danh sách gợi ý của bot; volume là slot bổ sung ở lượt cuối."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đọc các tin nhắn chưa đọc trong WhatsApp"},
+          {"role":"bot","content":"3 tin chưa đọc: anh Duy Khang hỏi 'Cuối tuần đá bóng không?', chị Thu Hương nhắc 'Đừng quên mang hồ sơ ngày mai', nhóm Cựu sinh viên K58 có 12 tin."},
+          {"role":"user","content":"Nhắn lại cho người nhắc hồ sơ cảm ơn và bảo mình nhớ rồi"}
+        ],
+        "rewrite": "Nhắn WhatsApp lại cho chị Thu Hương: cảm ơn và đã nhớ mang hồ sơ ngày mai.",
+        "rationale": "'Người nhắc hồ sơ' resolve về chị Thu Hương từ nội dung tin nhắn bot đọc; nội dung reply kết hợp cảm ơn và xác nhận."
+      }
+    ]
+  }

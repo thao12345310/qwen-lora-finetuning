@@ -1,0 +1,225 @@
+{
+    "samples": [
+    {
+    "pattern": "negation",
+    "domain": "vehicle",
+    "intent": "control_window",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Trời bắt đầu mưa rồi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể đóng các cửa kính hoặc bật gạt mưa nếu cần."
+    },
+    {
+    "role": "user",
+    "content": "Đóng cửa sổ trời, nhưng đừng bật khóa trẻ em."
+    }
+    ],
+    "rewrite": "Đóng cửa sổ trời nhưng đừng bật khóa trẻ em.",
+    "rationale": "Lượt cuối tự đủ thao tác và bắt buộc giữ phủ định “đừng” đối với khóa trẻ em."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "messaging",
+    "intent": "send_message",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo nhanh tình trạng xe lúc này."
+    },
+    {
+    "role": "bot",
+    "content": "Pin xe còn 38% và nhiệt độ ngoài trời là 29°C."
+    },
+    {
+    "role": "user",
+    "content": "Gửi SMS cho Nguyễn Huyền Trang: Mình đang ở cổng B."
+    }
+    ],
+    "rewrite": "Gửi SMS cho Nguyễn Huyền Trang với nội dung “Mình đang ở cổng B”.",
+    "rationale": "Các con số trong trạng thái xe là nhiễu và không được đưa vào nội dung tin nhắn."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "smart_home",
+    "intent": "smart_home_control",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi sắp về nhà sau khi đón con."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chuẩn bị các thiết bị trong nhà ngay từ xe."
+    },
+    {
+    "role": "user",
+    "content": "Mở cổng gara ở Vinhomes Harmony rồi bật đèn hành lang tầng một."
+    }
+    ],
+    "rewrite": "Mở cổng gara ở Vinhomes Harmony rồi bật đèn hành lang tầng một.",
+    "rationale": "Lượt cuối đã tự chứa địa điểm cùng hai hành động liên tiếp, không cần lấy thêm thông tin từ lịch sử."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "charging",
+    "intent": "set_charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi muốn sạc xe nhanh trước khi vào họp."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chọn trạm và phương thức xác thực phiên sạc."
+    },
+    {
+    "role": "user",
+    "content": "Bật Plug & Charge tại trạm V-GREEN ở Vincom Mega Mall Smart City."
+    }
+    ],
+    "rewrite": "Bật Plug & Charge tại trạm V-GREEN ở Vincom Mega Mall Smart City.",
+    "rationale": "Lượt cuối đã đủ thông tin và token “Plug & Charge” cùng thương hiệu V-GREEN phải được giữ nguyên."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "navigation",
+    "intent": "navigate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đã lưu địa chỉ lớp đàn của con tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có địa điểm nào được lưu với nhãn lớp đàn của con bạn."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tôi tới lớp đàn của con tôi."
+    }
+    ],
+    "rewrite": "Dẫn tôi tới lớp đàn của con tôi.",
+    "rationale": "Không có địa chỉ cụ thể trong lịch sử nên phải giữ nguyên tham chiếu ngầm, không được tự bịa điểm đến."
+    },
+    {
+    "pattern": "negation",
+    "domain": "music",
+    "intent": "play_music_online",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật nhạc Việt vui một chút đi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chọn playlist và loại trừ bài không muốn nghe."
+    },
+    {
+    "role": "user",
+    "content": "Phát playlist V-Pop Party trên Spotify, trừ bài “Gieo Quẻ” của Hoàng Thùy Linh và Đen."
+    }
+    ],
+    "rewrite": "Phát playlist V-Pop Party trên Spotify, trừ bài “Gieo Quẻ” của Hoàng Thùy Linh và Đen.",
+    "rationale": "Lượt cuối tự đủ slot nhưng ngoại lệ “trừ” bắt buộc phải được giữ nguyên trong câu rewrite."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "driver_assist",
+    "intent": "lane_assist",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đang tiêu thụ điện thế nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Mức tiêu thụ trung bình là 16 kWh/100 km và pin còn 61%."
+    },
+    {
+    "role": "user",
+    "content": "Bật hỗ trợ giữ làn khi chạy trên đại lộ Võ Văn Kiệt."
+    }
+    ],
+    "rewrite": "Bật hỗ trợ giữ làn khi chạy trên đại lộ Võ Văn Kiệt.",
+    "rationale": "Thông số tiêu thụ và mức pin là nhiễu, không thuộc lệnh hỗ trợ giữ làn đã đầy đủ thông tin."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "smart_home",
+    "intent": "smart_home_control",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Nhà ven sông của tôi là căn tại Vinhomes Golden River."
+    },
+    {
+    "role": "bot",
+    "content": "Đã lưu nhà ven sông của bạn tại Vinhomes Golden River."
+    },
+    {
+    "role": "user",
+    "content": "Khóa cửa ban công ở nhà ven sông trước khi trời mưa."
+    }
+    ],
+    "rewrite": "Khóa cửa ban công tại căn nhà ở Vinhomes Golden River trước khi trời mưa.",
+    "rationale": "Lượt cuối dùng nhãn “nhà ven sông”, cần resolve về địa điểm cụ thể đã được lưu trước đó."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "vehicle",
+    "intent": "toggle_light",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Túi đồ của tôi đang để ở khu vực nào trong xe?"
+    },
+    {
+    "role": "bot",
+    "content": "Túi đồ được phát hiện trong cốp sau của xe."
+    },
+    {
+    "role": "user",
+    "content": "Mở chỗ để túi rồi bật đèn khoang hành lý."
+    }
+    ],
+    "rewrite": "Mở cốp sau rồi bật đèn khoang hành lý.",
+    "rationale": "Lượt cuối có hai hành động và cụm “chỗ để túi” phải được resolve thành cốp sau."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "climate",
+    "intent": "set_climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Trên Tesla Model 3, chế độ nào giữ điều hòa khi tôi ghé mua đồ?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể dùng Keep Climate On để duy trì nhiệt độ khoang xe khi rời xe trong thời gian ngắn."
+    },
+    {
+    "role": "user",
+    "content": "Bật chế độ đó ở 23°C nhé."
+    }
+    ],
+    "rewrite": "Bật Keep Climate On trên Tesla Model 3 ở 23°C.",
+    "rationale": "Model phải lấy tên tính năng tiếng Anh từ lịch sử và giữ đúng mức nhiệt đã xuất hiện ở lượt cuối."
+    }
+    ]
+    }
+    

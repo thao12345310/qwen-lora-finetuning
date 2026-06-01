@@ -1,0 +1,240 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Tìm trạm sạc cho xe quanh đây."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn tìm trạm sạc thường AC hay sạc nhanh DC?"
+          },
+          {
+            "role": "user",
+            "content": "Sạc nhanh siêu tốc ấy."
+          },
+          {
+            "role": "bot",
+            "content": "Quanh khu vực Cầu Giấy có trạm của VinFast và EV One. Bạn chọn hãng nào?"
+          },
+          {
+            "role": "user",
+            "content": "Dẫn tới chỗ của EV One đi."
+          }
+        ],
+        "rewrite": "Dẫn đường tới trạm sạc nhanh siêu tốc của hãng EV One ở khu vực Cầu Giấy đi.",
+        "rationale": "Slot phân mảnh qua nhiều lượt: loại sạc (nhanh siêu tốc), khu vực (Cầu Giấy), và hãng sạc (EV One). Lượt cuối quá ngắn, cần chắp vá toàn bộ lịch sử để ra lệnh dẫn đường chuẩn."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Hôm nay trời nóng quá."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn có muốn bật điều hòa ở nhà trước khi về không? Hệ thống ghi nhận điều hòa phòng khách và phòng ngủ bé Na đang tắt."
+          },
+          {
+            "role": "user",
+            "content": "Bật cái thứ hai lên 25 độ giùm."
+          }
+        ],
+        "rewrite": "Bật điều hòa phòng ngủ bé Na ở nhà lên 25 độ giùm.",
+        "rationale": "Đại từ 'cái thứ hai' trỏ trực tiếp đến danh sách thiết bị bot liệt kê. Model phải ánh xạ đúng thứ tự để gọi tên 'điều hòa phòng ngủ bé Na'."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "driver_assist",
+        "intent": "toggle_feature",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Xe dạo này đi bám đường tốt không?"
+          },
+          {
+            "role": "bot",
+            "content": "Hệ thống khung gầm và hệ dẫn động AWD đang hoạt động rất ổn định."
+          },
+          {
+            "role": "user",
+            "content": "Làm ơn bật tính năng Lane Keeping Assist ở mức nhạy nhất lên."
+          }
+        ],
+        "rewrite": "Làm ơn bật tính năng Lane Keeping Assist ở mức nhạy nhất lên.",
+        "rationale": "Câu lệnh tự mang đầy đủ ngữ nghĩa, chứa thuật ngữ tiếng Anh 'Lane Keeping Assist'. Rewrite giữ nguyên token, không dịch thuật và không phụ thuộc vào context AWD phía trên."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "vehicle",
+        "intent": "toggle_feature",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Tí nữa đi ngang qua chợ Bến Thành ghé mua ít đồ nhé."
+          },
+          {
+            "role": "bot",
+            "content": "Vâng, đã thêm điểm dừng tại chợ Bến Thành. Từ đây ra đó mất khoảng 20 phút."
+          },
+          {
+            "role": "user",
+            "content": "Mở cốp trước ra luôn để anh sắp bớt đồ chuẩn bị xuống đó mua sắm."
+          }
+        ],
+        "rewrite": "Mở cốp trước của xe ra để anh sắp bớt đồ chuẩn bị xuống chợ Bến Thành mua sắm.",
+        "rationale": "Cụm 'xuống đó' ngầm chỉ địa điểm 'chợ Bến Thành' đã nhắc ở lượt đầu tiên. Yêu cầu truy xuất lịch sử để điền rõ tên địa danh vào câu lệnh mở cốp."
+      },
+      {
+        "pattern": "negation",
+        "domain": "messaging",
+        "intent": "read_message",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Kiểm tra điện thoại xem có gì mới không."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn có 3 thông báo từ Zalo và Messenger."
+          },
+          {
+            "role": "user",
+            "content": "Chỉ đọc tin nhắn Zalo thôi, tuyệt đối không mở các tin trên Messenger nhé."
+          }
+        ],
+        "rewrite": "Chỉ đọc tin nhắn Zalo thôi, tuyệt đối không mở các tin trên Messenger nhé.",
+        "rationale": "Lượt user cuối chứa cả slot và ý định phủ định ('tuyệt đối không mở... Messenger'). Câu đã độc lập nên không cần nối thêm bối cảnh, phải giữ nguyên văn phong dứt khoát."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "charging",
+        "intent": "cancel_action",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Pin xe nãy giờ sạc được nhiều chưa?"
+          },
+          {
+            "role": "bot",
+            "content": "Mức pin hiện tại là 55%. Nhiệt độ cell pin đang là 45 độ C, điện áp 380V. Dòng điện đang bị giới hạn ở mức 50A do trời nóng."
+          },
+          {
+            "role": "user",
+            "content": "Thôi lâu quá, ngắt sạc đi anh không đợi nữa."
+          }
+        ],
+        "rewrite": "Ngắt quá trình sạc pin xe đi anh không đợi nữa.",
+        "rationale": "Bot nhồi nhét nhiều thông số kỹ thuật (55%, 45 độ, 380V, 50A), nhưng ý định của user chỉ đơn giản là 'ngắt sạc'. Model phải phớt lờ hoàn toàn các số liệu nhiễu này."
+      },
+      {
+        "pattern": "correction",
+        "domain": "driver_assist",
+        "intent": "toggle_feature",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Bật chế độ hỗ trợ đỗ xe lên."
+          },
+          {
+            "role": "bot",
+            "content": "Đã kích hoạt hệ thống đỗ xe. Bạn muốn ghép ngang hay lùi chuồng?"
+          },
+          {
+            "role": "user",
+            "content": "Ghép ngang nhé... à khoan chỗ này hẹp quá, lùi chuồng đi."
+          }
+        ],
+        "rewrite": "Kích hoạt hệ thống hỗ trợ đỗ xe ở chế độ lùi chuồng.",
+        "rationale": "User tự sửa đổi intent ngay trong cùng một câu (từ 'ghép ngang' sang 'lùi chuồng'). Rewrite phải chốt được ý định cuối cùng và ghép với bối cảnh 'hỗ trợ đỗ xe'."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Sếp Minh có gọi nhỡ cho tớ không?"
+          },
+          {
+            "role": "bot",
+            "content": "Không có cuộc gọi nhỡ nào từ sếp Minh."
+          },
+          {
+            "role": "user",
+            "content": "Gọi video qua Zalo cho anh Minh sếp phòng nhân sự, rồi bật loa ngoài lên mức max luôn giùm tớ."
+          }
+        ],
+        "rewrite": "Gọi video qua Zalo cho anh Minh sếp phòng nhân sự, rồi bật loa ngoài lên mức lớn nhất giùm tớ.",
+        "rationale": "Chứa 2 hành động độc lập (gọi video Zalo chỉ định người cụ thể + chỉnh loa ngoài lên max). Câu tự đủ nghĩa nên không lấy thông tin gọi nhỡ từ bot."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Chỉnh lại quạt gió điều hoà đi."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn điều chỉnh cho ghế lái hay ghế phụ?"
+          },
+          {
+            "role": "user",
+            "content": "Cả hai ghế phía trước."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn tăng hay giảm mức gió?"
+          },
+          {
+            "role": "user",
+            "content": "Tăng lên mức số 4."
+          }
+        ],
+        "rewrite": "Tăng quạt gió điều hoà cho cả hai ghế phía trước lên mức số 4.",
+        "rationale": "Hành động set điều hòa bị phân tách nhỏ lẻ: bộ phận (quạt gió), vị trí (hai ghế trước), thao tác (tăng, mức 4). Bắt buộc nối toàn bộ 5 lượt thoại để thành câu lệnh hoàn chỉnh."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "vehicle",
+        "intent": "toggle_feature",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Sao xe đi qua gờ giảm tốc cứ bị bồng bềnh thế nhỉ?"
+          },
+          {
+            "role": "bot",
+            "content": "Hệ thống treo khí nén đang ở chế độ Comfort. Khoảng sáng gầm xe là 180mm. Bạn có muốn đổi sang chế độ Sport cứng hơn không?"
+          },
+          {
+            "role": "user",
+            "content": "Ừ chuyển sang cái đó đi cho đầm xe."
+          }
+        ],
+        "rewrite": "Chuyển hệ thống treo khí nén sang chế độ Sport đi cho đầm xe.",
+        "rationale": "Cụm 'cái đó' thay thế cho 'chế độ Sport cứng hơn' của hệ thống 'treo khí nén' mà bot vừa gợi ý. Phải xử lý triệt để đại từ này để câu rewrite hoạt động được."
+      }
+    ]
+  }

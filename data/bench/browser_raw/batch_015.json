@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi đang ở Hà Nội, muốn tìm trạm sạc nhanh."},
+          {"role":"bot","content":"Bạn muốn trạm sạc nào? FastCharge hay EVBox?"},
+          {"role":"user","content":"FastCharge, khoảng 2km."},
+          {"role":"bot","content":"Có trạm FastCharge ở ngõ 23, cách bạn 1.8 km."},
+          {"role":"user","content":"Đặt GPS tới đó."}
+        ],
+        "rewrite": "Điều hướng tới trạm FastCharge ở ngõ 23, cách hiện tại 1.8 km",
+        "rationale": "Câu cuối ngắn, cần ghép địa chỉ và khoảng cách đã được cung cấp qua nhiều lượt."
+      },
+      {
+        "pattern": "correction",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật cruise control tốc độ 100km/h."},
+          {"role":"bot","content":"Cruise control đã bật ở 100km/h."},
+          {"role":"user","content":"Không, giảm xuống 80km/h."}
+        ],
+        "rewrite": "Đặt cruise control tốc độ 80km/h",
+        "rationale": "Người dùng sửa lại tốc độ, cần phản ánh giá trị mới mà không giữ lại giá trị cũ."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Turn on the living room lamp via Alexa."},
+          {"role":"bot","content":"Lamp is now on."},
+          {"role":"user","content":"Also set thermostat to 22°C."}
+        ],
+        "rewrite": "Bật đèn phòng khách và đặt thermostat 22°C",
+        "rationale": "Câu cuối chứa cả tiếng Anh và tiếng Việt, yêu cầu giữ nguyên token tiếng Anh."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ phía sau bên trái."},
+          {"role":"bot","content":"Cửa sổ phía sau bên trái đã mở."},
+          {"role":"user","content":"Đóng chúng lại."}
+        ],
+        "rewrite": "Đóng cửa sổ phía sau bên trái",
+        "rationale": "Đại từ \"chúng\" cần được giải quyết dựa trên cửa sổ đã mở ở lượt trước."
+      },
+      {
+        "pattern": "negation",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Gọi cho anh Hùng 0901234567."},
+          {"role":"bot","content":"Đang gọi anh Hùng."},
+          {"role":"user","content":"Không, hủy cuộc gọi."}
+        ],
+        "rewrite": "Hủy cuộc gọi",
+        "rationale": "Câu cuối phủ định, chỉ cần giữ lại hành động hủy."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở radio FM 101.2."},
+          {"role":"bot","content":"Radio FM 101.2 đang phát."},
+          {"role":"user","content":"Và bật bass boost."}
+        ],
+        "rewrite": "Phát radio FM 101.2 và bật bass boost",
+        "rationale": "Một lượt cuối chứa hai intent liên tiếp, cần hợp nhất trong một câu lệnh."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn bật ổ cắm ở phòng ngủ."},
+          {"role":"bot","content":"Ổ cắm phòng ngủ đã được bật."},
+          {"role":"user","content":"Tắt nó đi."}
+        ],
+        "rewrite": "Tắt ổ cắm phòng ngủ",
+        "rationale": "Đại từ \"nó\" phải liên kết tới ổ cắm phòng ngủ vừa được bật."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Xe hiện đang có 70% pin."},
+          {"role":"bot","content":"Pin còn 70%."},
+          {"role":"user","content":"Dẫn tôi tới bến xe Miền Tây."}
+        ],
+        "rewrite": "Điều hướng tới bến xe Miền Tây",
+        "rationale": "Thông tin pin không liên quan tới yêu cầu dẫn đường cuối cùng."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin nhắn cho mẹ: \"Bữa tối xong rồi\"."},
+          {"role":"bot","content":"Bạn muốn gửi ngay?"},
+          {"role":"user","content":"Không, đợi đến 19h."},
+          {"role":"bot","content":"Đã lên lịch gửi."},
+          {"role":"user","content":"Thêm nội dung: \"Mua bánh\"."}
+        ],
+        "rewrite": "Gửi tin nhắn đến mẹ vào 19h nội dung \"Bữa tối xong rồi, mua bánh\"",
+        "rationale": "Thông tin người nhận, thời gian và nội dung được đưa ra rải rác, cần tổng hợp thành một lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đặt nhiệt độ cabin 25 độ."},
+          {"role":"bot","content":"Nhiệt độ cabin đã đặt 25°C."},
+          {"role":"user","content":"Thay thành 21 độ."}
+        ],
+        "rewrite": "Đặt nhiệt độ cabin 21°C",
+        "rationale": "Người dùng sửa lại giá trị nhiệt độ, yêu cầu cập nhật slot giá trị mới."
+      }
+    ]
+  }

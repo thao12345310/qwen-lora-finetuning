@@ -1,0 +1,140 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài cảnh báo rò rỉ khí ga cho bếp nhà tôi"},
+          {"role":"bot","content":"Cảm biến khí ga đang kết nối. Bạn muốn cảnh báo qua chuông, đèn hay cả hai?"},
+          {"role":"user","content":"Cả hai, kèm tự động khoá van ga"},
+          {"role":"bot","content":"Khi phát hiện rò rỉ sẽ kêu chuông, đèn đỏ nhấp nháy và khoá van. Ngưỡng nồng độ bao nhiêu ạ?"},
+          {"role":"user","content":"Ngưỡng 10% LEL là kích hoạt, gửi thêm thông báo vào Zalo tôi luôn"}
+        ],
+        "rewrite": "Cài cảnh báo rò rỉ khí ga bếp: kích hoạt ở ngưỡng 10% LEL, bật chuông và đèn đỏ nhấp nháy, khoá van ga tự động và gửi thông báo Zalo.",
+        "rationale": "Bốn slot hành động và một slot ngưỡng rải qua 5 lượt; lượt cuối bổ sung ngưỡng LEL và kênh thông báo, rewrite gộp toàn bộ thành cấu hình hoàn chỉnh."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm bài nhạc đang hot nhất tuần này trên Vpop"},
+          {"role":"bot","content":"Top 3 tuần này: số 1 'Từ Hôm Nay' của Hieuthuhai, số 2 'Ngày Mai' của tlinh, số 3 'Mãi Mãi' của Wren Evans."},
+          {"role":"user","content":"Phát bài của người đứng cuối danh sách đó đi"}
+        ],
+        "rewrite": "Phát bài 'Mãi Mãi' của Wren Evans.",
+        "rationale": "'Người đứng cuối danh sách' resolve về vị trí số 3 tức Wren Evans với bài 'Mãi Mãi'."
+      },
+      {
+        "pattern": "negation",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm đường về nhà"},
+          {"role":"bot","content":"Có 3 tuyến: qua Nguyễn Xiển 28 phút, qua Giải Phóng 35 phút và qua Trường Chinh 31 phút."},
+          {"role":"user","content":"Đi tuyến nào cũng được trừ Giải Phóng, hay tắc lắm"}
+        ],
+        "rewrite": "Chỉ đường về nhà, không đi qua đường Giải Phóng.",
+        "rationale": "Phủ định loại trừ một tuyến đường cụ thể; không chọn tuyến thay thế cụ thể nên rewrite giữ điều kiện mở cho hệ thống tự chọn."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Sắp vào bãi đỗ xe tầng hầm rồi"},
+          {"role":"bot","content":"Bạn cần chuẩn bị gì không ạ?"},
+          {"role":"user","content":"Đóng hết kính lại, tắt điều hoà và chuyển sang chế độ đỗ xe"}
+        ],
+        "rewrite": "Đóng tất cả kính xe, tắt điều hoà và bật chế độ đỗ xe.",
+        "rationale": "Ba intent liên tiếp trong một lượt chuẩn bị vào hầm; rewrite giữ đủ cả ba hành động không rút gọn."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Kiểm tra xem tôi có lịch họp nào chiều nay không"},
+          {"role":"bot","content":"Có cuộc họp 15h với đối tác công ty Minh Phát, người liên hệ là anh Đức Hải số 0901 223 344."},
+          {"role":"user","content":"Gọi xác nhận địa điểm họp với người liên hệ đó trước đi"}
+        ],
+        "rewrite": "Gọi cho anh Đức Hải số 0901 223 344 để xác nhận địa điểm họp 15h với công ty Minh Phát.",
+        "rationale": "'Người liên hệ đó' resolve về anh Đức Hải; số điện thoại và ngữ cảnh cuộc họp lấy từ lượt bot."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cho tôi xem tổng quan hành trình hôm nay"},
+          {"role":"bot","content":"Đã chạy 187km, tiêu thụ 18.4kWh, tốc độ trung bình 62km/h, phanh tái sinh thu hồi 4.2kWh, thời gian lái 3 giờ 12 phút."},
+          {"role":"user","content":"Chạy lâu vậy mệt rồi, bật Drowsiness Detection lên đi"}
+        ],
+        "rewrite": "Bật Drowsiness Detection.",
+        "rationale": "Bot trả 5 chỉ số hành trình đều là nhiễu; rewrite chỉ cần hành động bật tính năng cảnh báo buồn ngủ, không kéo số nào vào."
+      },
+      {
+        "pattern": "correction",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đặt lịch gửi email nhắc họp cho team vào 8 giờ sáng mai"},
+          {"role":"bot","content":"Đã lên lịch gửi email nhắc họp lúc 8:00 sáng mai cho toàn team."},
+          {"role":"user","content":"Chỉnh lại 7 giờ 30 đi để người ta chuẩn bị kịp"},
+          {"role":"bot","content":"Đã cập nhật lịch gửi email lúc 7:30 sáng mai."},
+          {"role":"user","content":"Thêm vào nội dung email link tài liệu họp https://docs.google.com/xyz123 luôn"}
+        ],
+        "rewrite": "Cập nhật email nhắc họp gửi lúc 7:30 sáng mai, bổ sung link tài liệu https://docs.google.com/xyz123 vào nội dung.",
+        "rationale": "Giờ gửi đã được sửa đúng ở lượt trước; lượt cuối chỉ bổ sung link vào nội dung, rewrite không nhắc lại quá trình đổi giờ."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe tôi hỗ trợ V2G không?"},
+          {"role":"bot","content":"Nissan Leaf của bạn hỗ trợ V2G và V2H, cổng CHAdeMO, công suất discharge tối đa 6kW."},
+          {"role":"user","content":"Tìm trạm hỗ trợ V2G CHAdeMO trong khu vực Cầu Giấy"}
+        ],
+        "rewrite": "Tìm trạm sạc hỗ trợ V2G chuẩn CHAdeMO tại khu vực Cầu Giấy cho xe Nissan Leaf.",
+        "rationale": "Token 'V2G', 'V2H', 'CHAdeMO' giữ nguyên; loại xe từ lượt bot, khu vực từ lượt cuối."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài chế độ ngủ trưa cho xe"},
+          {"role":"bot","content":"Bạn muốn ngủ bao lâu ạ?"},
+          {"role":"user","content":"45 phút"},
+          {"role":"bot","content":"Nhiệt độ cabin bao nhiêu và có muốn tắt thông báo không?"},
+          {"role":"user","content":"23 độ, tắt hết thông báo, nhạc nhẹ volume 20% rồi sau 45 phút báo thức"}
+        ],
+        "rewrite": "Cài chế độ ngủ trưa 45 phút: nhiệt độ 23°C, tắt tất cả thông báo, phát nhạc nhẹ volume 20%, báo thức sau 45 phút.",
+        "rationale": "Năm slot rải qua 5 lượt đặt câu hỏi; lượt cuối gộp ba slot cùng lúc, rewrite tổng hợp thành cấu hình đầy đủ."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem lịch sử thiết bị nào tiêu thụ điện nhiều nhất tháng này"},
+          {"role":"bot","content":"Top 3: máy lạnh phòng ngủ 87kWh, máy nước nóng 43kWh và tủ lạnh 38kWh."},
+          {"role":"user","content":"Cái tốn điện nhất đặt lịch tắt từ 11 giờ đêm đến 5 giờ sáng để tiết kiệm"}
+        ],
+        "rewrite": "Đặt lịch tắt máy lạnh phòng ngủ từ 11 giờ đêm đến 5 giờ sáng hằng ngày.",
+        "rationale": "'Cái tốn điện nhất' resolve về máy lạnh phòng ngủ 87kWh đứng đầu danh sách; khung giờ từ lượt cuối."
+      }
+    ]
+  }

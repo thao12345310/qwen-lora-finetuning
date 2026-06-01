@@ -1,0 +1,142 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi đang lái trên đại lộ Thăng Long, muốn bật hỗ trợ giữ làn đường."},
+          {"role":"bot","content":"Bạn có muốn bật Lane Assist ngay không?"},
+          {"role":"user","content":"Bật nó luôn."}
+        ],
+        "rewrite": "Bật Lane Assist",
+        "rationale": "Câu cuối dùng đại từ “nó” để chỉ tính năng Lane Assist đã được đề cập, cần dựa vào lịch sử xác định intent."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết mức tiêu thụ điện năng hiện tại của xe không?"},
+          {"role":"bot","content":"Bạn đang tiêu thụ 5.4 kW."},
+          {"role":"user","content":"Bật đèn nội thất."}
+        ],
+        "rewrite": "Bật đèn nội thất",
+        "rationale": "Thông tin tiêu thụ điện năng không liên quan tới yêu cầu bật đèn nội thất, nên rewrite chỉ chứa hành động mới."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho chị Vân: \"Hẹn 9h sáng hôm nay\"."},
+          {"role":"bot","content":"Bạn muốn gửi ngay hay lên lịch?"},
+          {"role":"user","content":"Lên lịch vào ngày 03/10."},
+          {"role":"bot","content":"Bạn muốn gửi vào giờ nào?"},
+          {"role":"user","content":"09:00 sáng."},
+          {"role":"bot","content":"Đã ghi lịch."},
+          {"role":"user","content":"Thêm nội dung: \"Mang báo cáo tài chính\"."},
+          {"role":"user","content":"Gửi đi."}
+        ],
+        "rewrite": "Gửi tin đến chị Vân vào 03/10 09:00 nội dung \"Hẹn 9h sáng hôm nay. Mang báo cáo tài chính\"",
+        "rationale": "Người nhận, thời gian và nội dung được cung cấp rải rác qua nhiều lượt, cần gộp lại thành một lệnh duy nhất."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đi tới Bảo tàng Mỹ thuật Thành phố Hồ Chí Minh."},
+          {"role":"bot","content":"Bảo tàng cách bạn 5.2 km, thời gian dự kiến 12 phút."},
+          {"role":"user","content":"Không, mình muốn tới Bảo tàng Lịch sử."}
+        ],
+        "rewrite": "Điều hướng tới Bảo tàng Lịch sử, TP.HCM",
+        "rationale": "Người dùng sửa lại điểm đến, cần cập nhật địa chỉ mới trong câu lệnh cuối."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play \"Watermelon Sugar\" by Harry Styles on Spotify."},
+          {"role":"bot","content":"\"Watermelon Sugar\" is now playing on Spotify."},
+          {"role":"user","content":"Set volume to 65."}
+        ],
+        "rewrite": "Đặt âm lượng 65 cho \"Watermelon Sugar\" trên Spotify",
+        "rationale": "Câu cuối giữ token tiếng Anh \"Spotify\" và yêu cầu mức âm lượng, không cần tham chiếu tới ngữ cảnh trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa trong phòng sinh hoạt."},
+          {"role":"bot","content":"Điều hòa phòng sinh hoạt đã bật, nhiệt độ hiện tại 24°C."},
+          {"role":"user","content":"Giảm nhiệt độ của nó xuống 22°C."}
+        ],
+        "rewrite": "Đặt nhiệt độ điều hòa phòng sinh hoạt 22°C",
+        "rationale": "Đại từ “nó” ám chỉ điều hòa vừa bật, cần giải quyết để tạo câu lệnh đầy đủ."
+      },
+      {
+        "pattern": "negation",
+        "domain": "calling",
+        "intent": "cancel_action",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Gọi cho bác sĩ Minh số 0902 444 555."},
+          {"role":"bot","content":"Đang gọi bác sĩ Minh."},
+          {"role":"user","content":"Không, đừng gọi nữa."}
+        ],
+        "rewrite": "Hủy cuộc gọi tới bác sĩ Minh",
+        "rationale": "Câu cuối phủ định hành động gọi, không cần kéo lại thông tin nào."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật lane assist và bật cruise control 100km/h đồng thời."}
+        ],
+        "rewrite": "Bật Lane Assist và kích hoạt cruise control tốc độ 100km/h",
+        "rationale": "Lượt cuối chứa hai intent (lane assist và cruise control) cần giữ cả hai trong một câu lệnh."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa chế độ làm mát."},
+          {"role":"bot","content":"Điều hòa đã bật chế độ làm mát."},
+          {"role":"user","content":"Đặt nhiệt độ 22 độ."},
+          {"role":"bot","content":"Nhiệt độ đã đặt 22°C."},
+          {"role":"user","content":"Giảm gió mức 1."},
+          {"role":"bot","content":"Gió đã giảm mức 1."},
+          {"role":"user","content":"Bật chế độ eco."},
+          {"role":"user","content":"Xong."}
+        ],
+        "rewrite": "Bật điều hòa chế độ làm mát, đặt nhiệt độ 22°C, giảm gió mức 1 và bật chế độ eco",
+        "rationale": "Nhiệt độ, mức gió và chế độ eco được đưa ra rải rác qua các lượt, cần tổng hợp trong một câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Phát bài \"Em Gái Mưa\" của Hương Tràm trên Spotify."},
+          {"role":"bot","content":"\"Em Gái Mưa\" đang phát trên Spotify."},
+          {"role":"user","content":"Không, phát \"Cơn Mưa Ngang Qua\" của Sơn Tùng M-TP."}
+        ],
+        "rewrite": "Phát bài \"Cơn Mưa Ngang Qua\" của Sơn Tùng M-TP trên Spotify",
+        "rationale": "Người dùng thay đổi bài hát, cần phản ánh bài mới mà không giữ lại bài cũ."
+      }
+    ]
+  }

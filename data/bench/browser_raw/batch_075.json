@@ -1,0 +1,136 @@
+{
+  "samples": [
+    {
+      "pattern": "correction",
+      "domain": "music",
+      "intent": "play_music_offline",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Phát album mới của Đông Nhi"},
+        {"role": "bot", "content": "Đang phát album 'Như Những Cơn Mưa'"},
+        {"role": "user", "content": "Không phải, chuyển sang playlist ballad buồn"}
+      ],
+      "rewrite": "Chuyển sang playlist ballad buồn",
+      "rationale": "User sửa intent từ album cụ thể sang playlist khác"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "calling",
+      "intent": "call",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Gọi cho đồng nghiệp"},
+        {"role": "bot", "content": "Bạn muốn gọi ai?"},
+        {"role": "user", "content": "Anh Việt ở bộ phận kinh doanh"},
+        {"role": "user", "content": "Nói là kiểm tra hợp đồng"}
+      ],
+      "rewrite": "Gọi cho anh Việt bộ phận kinh doanh nói kiểm tra hợp đồng",
+      "rationale": "Thông tin người nhận và nội dung tích lũy qua nhiều lượt"
+    },
+    {
+      "pattern": "negation",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật đèn phòng khách"},
+        {"role": "bot", "content": "Đèn phòng khách sáng rồi"},
+        {"role": "user", "content": "Đừng bật đèn trắng, chuyển sang ánh vàng"}
+      ],
+      "rewrite": "Chuyển đèn phòng khách sang ánh vàng đừng bật đèn trắng",
+      "rationale": "Phủ định loại đèn cụ thể cần giữ nguyên"
+    },
+    {
+      "pattern": "code_switching",
+      "domain": "driver_assist",
+      "intent": "cruise_control",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Xe đang chạy ổn không"},
+        {"role": "bot", "content": "Hệ thống ổn định"},
+        {"role": "user", "content": "Enable Adaptive Cruise Control ở 95km/h"}
+      ],
+      "rewrite": "Enable Adaptive Cruise Control ở 95km/h",
+      "rationale": "Lượt cuối tự đầy đủ với thuật ngữ tiếng Anh"
+    },
+    {
+      "pattern": "implicit_reference",
+      "domain": "charging",
+      "intent": "find_charging",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Tìm chỗ sạc gần nhà"},
+        {"role": "bot", "content": "Trạm gần nhất ở đường Nguyễn Chí Thanh"},
+        {"role": "user", "content": "Chuyển sang chỗ công ty"}
+      ],
+      "rewrite": "Tìm trạm sạc chỗ công ty",
+      "rationale": "Implicit 'chỗ công ty' giữ nguyên không bịa địa chỉ"
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "messaging",
+      "intent": "send_message",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Thời tiết hôm nay thế nào"},
+        {"role": "bot", "content": "Mưa nhỏ, 28 độ"},
+        {"role": "user", "content": "Nhắn cho mẹ là con đang trên đường"}
+      ],
+      "rewrite": "Nhắn cho mẹ là con đang trên đường",
+      "rationale": "Thông tin thời tiết nhiễu không được kéo vào tin nhắn"
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Đi bến xe Mỹ Đình"},
+        {"role": "bot", "content": "Đang dẫn đường"},
+        {"role": "user", "content": "Tăng tốc và tránh đường ngập nước"}
+      ],
+      "rewrite": "Dẫn đường đến bến xe Mỹ Đình tăng tốc và tránh đường ngập nước",
+      "rationale": "Hai hành động kết hợp trong lượt user cuối"
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "climate",
+      "intent": "set_climate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật quạt gió"},
+        {"role": "bot", "content": "Quạt gió đang chạy mức 3"},
+        {"role": "user", "content": "Tăng cái đó lên mức mạnh"}
+      ],
+      "rewrite": "Tăng quạt gió lên mức mạnh",
+      "rationale": "Đại từ 'cái đó' resolve về quạt gió"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "vehicle",
+      "intent": "control_window",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Mở cửa sổ"},
+        {"role": "bot", "content": "Cửa sổ trước đã mở"},
+        {"role": "user", "content": "Mở thêm cửa sau"},
+        {"role": "user", "content": "Chỉ mở 50% thôi"}
+      ],
+      "rewrite": "Mở cửa sổ sau 50% cùng cửa trước",
+      "rationale": "Các slot cửa và mức độ được bổ sung dần"
+    },
+    {
+      "pattern": "negation",
+      "domain": "driver_assist",
+      "intent": "lane_assist",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Hệ thống hỗ trợ lái"},
+        {"role": "bot", "content": "Lane assist đang sẵn sàng"},
+        {"role": "user", "content": "Tắt lane assist đi"}
+      ],
+      "rewrite": "Tắt lane assist",
+      "rationale": "Lượt cuối tự chứa đầy đủ với phủ định"
+    }
+  ]
+}

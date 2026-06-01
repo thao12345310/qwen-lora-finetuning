@@ -1,0 +1,263 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Camera xe đang hiện những góc nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể xem camera trước, camera lùi hoặc camera bên phải."
+    },
+    {
+    "role": "user",
+    "content": "Mở góc cuối cùng để tôi ghép sát lề."
+    }
+    ],
+    "rewrite": "Mở camera bên phải để tôi ghép sát lề.",
+    "rationale": "Lượt cuối chỉ dùng cụm “góc cuối cùng”, buộc model ánh xạ đúng mục cuối trong danh sách camera."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Soạn tin báo trễ cho cô Lan."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi qua ứng dụng nào và nội dung gì?"
+    },
+    {
+    "role": "user",
+    "content": "Qua Messenger, bảo là em kẹt xe ở đường Nguyễn Trãi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi ngay hay hẹn giờ?"
+    },
+    {
+    "role": "user",
+    "content": "Hẹn 7 giờ 45 sáng."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã ghi nhận bản nháp, bạn xác nhận gửi theo lịch nhé."
+    },
+    {
+    "role": "user",
+    "content": "Xác nhận đi."
+    }
+    ],
+    "rewrite": "Hẹn gửi Messenger cho cô Lan lúc 7 giờ 45 sáng với nội dung “Em kẹt xe ở đường Nguyễn Trãi”.",
+    "rationale": "Lệnh xác nhận cuối cực ngắn, còn người nhận, kênh, thời gian và nội dung nằm ở các lượt trước."
+    },
+    {
+    "pattern": "correction",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi tôi về tới nhà, bật máy lọc không khí phòng ngủ."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn kích hoạt tự động khi xe đến nhà đúng không?"
+    },
+    {
+    "role": "user",
+    "content": "Đổi lại, bật máy lọc ở phòng khách khi tới EcoPark."
+    }
+    ],
+    "rewrite": "Khi xe tới EcoPark, bật máy lọc không khí ở phòng khách.",
+    "rationale": "Yêu cầu cuối thay cả địa điểm kích hoạt lẫn căn phòng, nên phải bỏ cấu hình ban đầu."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "driver_assist",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Cho tôi xem thông tin hành trình."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn đã đi 18 km, mức tiêu thụ trung bình là 14 kWh/100 km."
+    },
+    {
+    "role": "user",
+    "content": "Bật cảnh báo điểm mù cho cả hai bên."
+    }
+    ],
+    "rewrite": "Bật cảnh báo điểm mù cho cả hai bên.",
+    "rationale": "Quãng đường và mức tiêu thụ là dữ kiện gây nhiễu, không thuộc slot của lệnh hỗ trợ lái."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kính trước đang bị mờ."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật sấy kính hoặc tăng quạt gió để làm trong kính."
+    },
+    {
+    "role": "user",
+    "content": "Bật front defrost và quạt mức 4."
+    }
+    ],
+    "rewrite": "Bật front defrost và đặt quạt gió ở mức 4.",
+    "rationale": "Lượt cuối đã đầy đủ yêu cầu và token tiếng Anh “front defrost” phải được giữ nguyên."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Trường con là Vinschool Central Park nhé."
+    },
+    {
+    "role": "bot",
+    "content": "Đã lưu trường con của bạn là Vinschool Central Park tại Bình Thạnh."
+    },
+    {
+    "role": "user",
+    "content": "Lát đón con xong tôi cần qua Bến xe Miền Đông mới."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi có thể lập hành trình gồm hai điểm dừng."
+    },
+    {
+    "role": "user",
+    "content": "Lên đường tới trường con trước, rồi đến bến xe."
+    }
+    ],
+    "rewrite": "Dẫn đường tới Vinschool Central Park tại Bình Thạnh trước, rồi đến Bến xe Miền Đông mới.",
+    "rationale": "Cả “trường con” và “bến xe” đều cần được phục hồi thành hai điểm đến cụ thể từ lịch sử."
+    },
+    {
+    "pattern": "negation",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm điểm sạc trên đường từ Hà Nội đi Hạ Long."
+    },
+    {
+    "role": "bot",
+    "content": "Có điểm sạc VinFast tại trạm dừng nghỉ Hải Dương và điểm sạc tại Vincom Plaza Hạ Long."
+    },
+    {
+    "role": "user",
+    "content": "Chọn trạm dừng nghỉ Hải Dương, nhưng đừng sạc quá 90%."
+    }
+    ],
+    "rewrite": "Sạc xe tại điểm sạc VinFast ở trạm dừng nghỉ Hải Dương nhưng không sạc quá 90%.",
+    "rationale": "Model phải lấy đúng điểm sạc được chọn và giữ ràng buộc phủ định về giới hạn pin."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Mở radio cho tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn nghe kênh nào?"
+    },
+    {
+    "role": "user",
+    "content": "VOV Giao thông Hà Nội, FM 91.0."
+    },
+    {
+    "role": "bot",
+    "content": "Đã sẵn sàng phát VOV Giao thông Hà Nội trên FM 91.0."
+    },
+    {
+    "role": "user",
+    "content": "Phát kênh đó rồi giảm âm lượng xuống mức 6."
+    }
+    ],
+    "rewrite": "Phát VOV Giao thông Hà Nội trên FM 91.0 rồi giảm âm lượng xuống mức 6.",
+    "rationale": "Lượt cuối chứa hai hành động, còn tên kênh và tần số phải được lấy từ lượt trước."
+    },
+    {
+    "pattern": "correction",
+    "domain": "calling",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Gọi video cho bác sĩ Mai."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi chưa thực hiện cuộc gọi, bạn muốn dùng ứng dụng nào?"
+    },
+    {
+    "role": "user",
+    "content": "Không gọi video nữa, gọi thoại cho bác sĩ Mai qua Zalo."
+    }
+    ],
+    "rewrite": "Không gọi video; hãy gọi thoại cho bác sĩ Mai qua Zalo.",
+    "rationale": "Lượt cuối tự chứa đầy đủ việc hủy hình thức cũ và thay bằng cuộc gọi thoại qua Zalo."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Cài nhắc bảo dưỡng cho chiếc VinFast VF 8 của tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn nhắc về hạng mục nào?"
+    },
+    {
+    "role": "user",
+    "content": "Đảo lốp và kiểm tra phanh."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn được nhắc vào thời điểm nào?"
+    },
+    {
+    "role": "user",
+    "content": "Ngày 15 tháng 6 lúc 8 giờ sáng."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có muốn thêm địa điểm dịch vụ không?"
+    },
+    {
+    "role": "user",
+    "content": "Ghi thêm VinFast Times City."
+    }
+    ],
+    "rewrite": "Đặt nhắc bảo dưỡng VinFast VF 8 vào 8 giờ sáng ngày 15 tháng 6 tại VinFast Times City để đảo lốp và kiểm tra phanh.",
+    "rationale": "Mẫu yêu cầu gom mẫu xe, hai hạng mục, thời gian và địa điểm từ bốn lượt user khác nhau."
+    }
+    ]
+    }
+    

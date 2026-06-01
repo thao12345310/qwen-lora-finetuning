@@ -1,0 +1,144 @@
+```json
+{
+  "samples": [
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Tìm khách sạn gần biển ở Đà Nẵng cho tôi"},
+        {"role":"bot","content":"Có Fusion Maia Resort mặt tiền biển Mỹ Khê, Hyatt Regency cách biển 200m và Pullman Đà Nẵng cách biển 400m."},
+        {"role":"user","content":"Cái sát biển nhất còn phòng ngày mai không?"},
+        {"role":"bot","content":"Fusion Maia còn 2 phòng Deluxe Ocean View, giá 4.200.000đ/đêm."},
+        {"role":"user","content":"Đặt 1 phòng rồi dẫn đường vào đó luôn"}
+      ],
+      "rewrite": "Đặt 1 phòng Deluxe Ocean View tại Fusion Maia Resort Đà Nẵng cho ngày mai và chỉ đường đến đó.",
+      "rationale": "Tên khách sạn, loại phòng, số lượng và ngày nhận phòng rải qua 5 lượt; 'đó' resolve về Fusion Maia sau chuỗi thu hẹp lựa chọn."
+    },
+    {
+      "pattern": "code_switching",
+      "domain": "driver_assist",
+      "intent": "cruise_control",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Đang lên cao tốc, hệ thống ADAS đang ở mode nào?"},
+        {"role":"bot","content":"ADAS đang ở Comfort mode, adaptive cruise 90km/h, lane centering bật, max speed cap 110km/h."},
+        {"role":"user","content":"Chuyển sang Sport mode và bỏ speed cap đi"}
+      ],
+      "rewrite": "Chuyển ADAS sang Sport mode và tắt giới hạn tốc độ tối đa 110km/h.",
+      "rationale": "Token 'ADAS', 'Sport mode', 'speed cap' giữ nguyên; giá trị 110km/h từ lượt bot xác nhận cụ thể hơn là 'bỏ cap'."
+    },
+    {
+      "pattern": "negation",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Chạy scene 'Tiệc tùng' cho phòng khách"},
+        {"role":"bot","content":"Đã bật: đèn RGB đổi màu, loa JBL Flip 6 nhạc nền, điều hoà 26°C và rèm tự động kéo lại."},
+        {"role":"user","content":"Ổn hết trừ cái rèm, kéo rèm ra để nhìn ra sân đi"}
+      ],
+      "rewrite": "Mở rèm phòng khách, giữ nguyên đèn RGB, loa JBL Flip 6 và điều hoà 26°C.",
+      "rationale": "Phủ định đảo ngược một hành động trong scene; rewrite xác nhận cả hành động sửa lẫn danh sách giữ nguyên."
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "charging",
+      "intent": "find_charging",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Dọc đường ra Hải Phòng có trạm sạc nào của VinFast không?"},
+        {"role":"bot","content":"Có 2 trạm: VinFast Quán Toan Km89 còn 4 cổng trống và VinFast Đồ Sơn Km112 còn 1 cổng."},
+        {"role":"user","content":"Ghé cái nhiều chỗ hơn rồi sạc đến 80% thôi, đủ về rồi"}
+      ],
+      "rewrite": "Ghé trạm sạc VinFast Quán Toan Km89, sạc đến 80% pin.",
+      "rationale": "'Cái nhiều chỗ hơn' so sánh 4 và 1 cổng trống rồi resolve về VinFast Quán Toan; mức sạc 80% từ lượt cuối."
+    },
+    {
+      "pattern": "implicit_reference",
+      "domain": "messaging",
+      "intent": "send_message",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Hôm nay là sinh nhật mẹ vợ tôi"},
+        {"role":"bot","content":"Chúc mừng! Bạn có muốn làm gì để chào mừng không?"},
+        {"role":"user","content":"Nhắn tin Zalo cho bà chúc mừng sinh nhật, kèm emoji hoa nhé"}
+      ],
+      "rewrite": "Nhắn tin Zalo cho mẹ vợ lời chúc sinh nhật kèm emoji hoa.",
+      "rationale": "'Bà' ngầm chỉ mẹ vợ từ lượt user đầu; không có tên cụ thể nên giữ nguyên cụm 'mẹ vợ' thay vì bịa tên."
+    },
+    {
+      "pattern": "correction",
+      "domain": "vehicle",
+      "intent": "toggle_light",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Bật đèn cảnh báo khẩn cấp hazard đi"},
+        {"role":"bot","content":"Đã bật đèn hazard."},
+        {"role":"user","content":"Thôi tắt hazard đi, bật xi nhan phải thôi, sắp rẽ rồi"},
+        {"role":"bot","content":"Đã tắt hazard, bật xi nhan phải."},
+        {"role":"user","content":"Rẽ xong rồi, tắt xi nhan đi"}
+      ],
+      "rewrite": "Tắt xi nhan phải.",
+      "rationale": "Chuỗi sửa đổi qua nhiều lượt; lượt cuối chỉ yêu cầu tắt trạng thái hiện tại là xi nhan phải, rewrite gọn nhất có thể."
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "calling",
+      "intent": "call",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Tôi sắp vào khu vực sóng yếu"},
+        {"role":"bot","content":"Hiểu rồi, bạn cần làm gì trước khi mất sóng?"},
+        {"role":"user","content":"Gọi nhanh cho anh Hữu Lộc báo trễ họp rồi tắt wifi calling đi"}
+      ],
+      "rewrite": "Gọi cho anh Hữu Lộc báo trễ họp và tắt wifi calling.",
+      "rationale": "Hai intent khẩn cấp trước khi mất sóng; rewrite giữ cả cuộc gọi lẫn hành động cài đặt mạng, token 'wifi calling' không dịch."
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "vehicle",
+      "intent": "set_alarm",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Đặt nhắc tôi kiểm tra áp suất lốp định kỳ"},
+        {"role":"bot","content":"Nhắc bao nhiêu ngày một lần ạ?"},
+        {"role":"user","content":"Mỗi 2 tuần một lần"},
+        {"role":"bot","content":"Nhắc vào ngày nào trong tuần và lúc mấy giờ?"},
+        {"role":"user","content":"Thứ Hai đầu chu kỳ, 9 giờ sáng, gửi kèm hướng dẫn kiểm tra lốp luôn"}
+      ],
+      "rewrite": "Đặt nhắc kiểm tra áp suất lốp mỗi 2 tuần một lần vào thứ Hai lúc 9 giờ sáng, kèm gửi hướng dẫn kiểm tra lốp.",
+      "rationale": "Tần suất, thứ và giờ rải qua 5 lượt; yêu cầu đính kèm hướng dẫn là slot bổ sung quan trọng ở lượt cuối."
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "music",
+      "intent": "play_music_offline",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Thông tin xe tôi hiện tại thế nào?"},
+        {"role":"bot","content":"Tốc độ 0km/h, đang đỗ, pin 91%, điều hoà 24°C, cửa sổ trời mở 20%, đã kết nối USB."},
+        {"role":"user","content":"Ừ, phát nhạc từ USB đi, thư mục 'Nhạc Trịnh'"}
+      ],
+      "rewrite": "Phát nhạc từ USB, thư mục 'Nhạc Trịnh'.",
+      "rationale": "Bot trả 6 thông số trạng thái xe; chỉ trạng thái kết nối USB xác nhận nguồn phát hợp lệ nhưng không cần đưa vào rewrite vì đã ngầm hiểu."
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role":"user","content":"Tìm tiệm rửa xe tự động gần đây"},
+        {"role":"bot","content":"Có AutoSpa Trần Duy Hưng cách 1.1km, WashPro Hoàng Đạo Thuý cách 2.3km và CleanCar Vũ Trọng Phụng cách 3.0km."},
+        {"role":"user","content":"Chỗ thứ hai đang mở cửa không?"},
+        {"role":"bot","content":"WashPro Hoàng Đạo Thuý đang mở, giờ đóng lúc 21h, hiện còn 3 làn trống."},
+        {"role":"user","content":"Còn chỗ thì vào đó luôn, dẫn đường đi"}
+      ],
+      "rewrite": "Chỉ đường đến WashPro Hoàng Đạo Thuý.",
+      "rationale": "'Đó' resolve về WashPro Hoàng Đạo Thuý sau chuỗi xác nhận mở cửa và còn làn trống qua hai lượt trung gian."
+    }
+  ]
+}
+```

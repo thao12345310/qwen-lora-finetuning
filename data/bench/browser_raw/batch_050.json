@@ -1,0 +1,263 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm hai điểm sạc VinFast gần Hồ Tây."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy điểm sạc tại Lotte Mall West Lake Hanoi và điểm sạc tại Vincom Plaza Bắc Từ Liêm."
+    },
+    {
+    "role": "user",
+    "content": "Chỗ nào gần đường Võ Chí Công hơn?"
+    },
+    {
+    "role": "bot",
+    "content": "Điểm sạc tại Lotte Mall West Lake Hanoi gần đường Võ Chí Công hơn."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tới chỗ gần hơn để sạc."
+    }
+    ],
+    "rewrite": "Dẫn đường tới điểm sạc VinFast tại Lotte Mall West Lake Hanoi để sạc xe.",
+    "rationale": "Lượt cuối chỉ nói “chỗ gần hơn”, nên model phải lấy đúng điểm sạc được bot xác định ở lượt trước."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Cài cảnh báo mất tập trung cho chuyến đi đêm."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn sẽ đi trên hành trình nào và bắt đầu theo dõi từ lúc nào?"
+    },
+    {
+    "role": "user",
+    "content": "Từ Hà Nội tới Tam Cốc, sau 21 giờ."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn xe cảnh báo bằng cách nào?"
+    },
+    {
+    "role": "user",
+    "content": "Phát âm báo và rung ghế lái."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn độ nhạy cảnh báo ở mức nào?"
+    },
+    {
+    "role": "user",
+    "content": "Mức cao, áp dụng đi."
+    }
+    ],
+    "rewrite": "Trên hành trình từ Hà Nội tới Tam Cốc sau 21 giờ, bật cảnh báo mất tập trung ở mức nhạy cao bằng âm báo và rung ghế lái.",
+    "rationale": "Hành trình, thời điểm, hình thức cảnh báo và độ nhạy được cung cấp qua bốn lượt user khác nhau."
+    },
+    {
+    "pattern": "correction",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Sáng mai mở rèm phòng ngủ ở căn nhà Vinhomes Gardenia lúc 6 giờ 30."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị lịch mở rèm phòng ngủ tại Vinhomes Gardenia lúc 6 giờ 30."
+    },
+    {
+    "role": "user",
+    "content": "Không mở rèm nữa, tưới bồn hoa ban công ở căn đó lúc 7 giờ."
+    }
+    ],
+    "rewrite": "Không mở rèm phòng ngủ; hãy tưới bồn hoa ban công tại căn nhà Vinhomes Gardenia lúc 7 giờ.",
+    "rationale": "Lượt cuối hủy thiết bị ban đầu, đổi sang tác vụ khác và dùng “căn đó” để giữ đúng địa điểm."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "calling",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe còn đủ pin để đi tiếp không?"
+    },
+    {
+    "role": "bot",
+    "content": "Pin còn 56% và giá điện tại trạm gần nhất là 3.858 đồng mỗi kWh."
+    },
+    {
+    "role": "user",
+    "content": "Gọi Nhà hát Múa rối nước Thăng Long."
+    }
+    ],
+    "rewrite": "Gọi Nhà hát Múa rối nước Thăng Long.",
+    "rationale": "Phần trăm pin và giá điện là thông tin nhiễu, không liên quan tới lệnh gọi điện độc lập."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "vehicle",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi đưa chó đi cùng, cần giữ khoang xe mát khi dừng."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể sử dụng chế độ duy trì nhiệt độ phù hợp khi thú cưng ở trong xe."
+    },
+    {
+    "role": "user",
+    "content": "Bật Dog Mode trên Tesla Model 3, giữ khoang xe ở 22°C."
+    }
+    ],
+    "rewrite": "Bật Dog Mode trên Tesla Model 3 và giữ nhiệt độ khoang xe ở 22°C.",
+    "rationale": "Lượt cuối đã đủ slot và các token tiếng Anh, tên xe cùng mức nhiệt phải được giữ nguyên chính xác."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đã lưu bộ sạc ở nhà bố mẹ tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có bộ sạc nào được lưu với nhãn nhà bố mẹ của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Hẹn sạc bằng bộ sạc nhà bố mẹ tôi lúc 22 giờ."
+    }
+    ],
+    "rewrite": "Hẹn sạc bằng bộ sạc nhà bố mẹ tôi lúc 22 giờ.",
+    "rationale": "Lịch sử không cung cấp địa chỉ hoặc thiết bị cụ thể nên phải giữ nguyên tham chiếu ngầm “nhà bố mẹ tôi”."
+    },
+    {
+    "pattern": "negation",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm đường từ Bến xe Giáp Bát tới Tràng An."
+    },
+    {
+    "role": "bot",
+    "content": "Có tuyến nhanh qua cao tốc Pháp Vân - Cầu Giẽ và tuyến thay thế đi theo Quốc lộ 1A."
+    },
+    {
+    "role": "user",
+    "content": "Chọn tuyến Quốc lộ 1A, đừng vào cao tốc."
+    }
+    ],
+    "rewrite": "Dẫn đường từ Bến xe Giáp Bát tới Tràng An theo Quốc lộ 1A và tránh cao tốc Pháp Vân - Cầu Giẽ.",
+    "rationale": "Lượt cuối vừa chọn tuyến thay thế vừa phủ định rõ tuyến cao tốc đã được bot nêu."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đọc tin nhắn Zalo mới về việc đón người ở sân bay."
+    },
+    {
+    "role": "bot",
+    "content": "Anh Khôi hỏi số hiệu chuyến bay, còn chị Mai hỏi bạn sẽ đón ở cổng nào."
+    },
+    {
+    "role": "user",
+    "content": "Trả lời người hỏi cổng là cổng C rồi chia sẻ ETA 8 phút."
+    }
+    ],
+    "rewrite": "Gửi Zalo cho chị Mai với nội dung “Tôi sẽ đón ở cổng C” rồi chia sẻ ETA 8 phút.",
+    "rationale": "Model phải xác định người nhận qua nội dung câu hỏi và giữ cả thao tác trả lời lẫn chia sẻ ETA."
+    },
+    {
+    "pattern": "correction",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật thông gió ghế phụ phía trước."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn bật thông gió ghế phụ phía trước ở mức nào?"
+    },
+    {
+    "role": "user",
+    "content": "Mức 3."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị bật thông gió ghế phụ phía trước ở mức 3."
+    },
+    {
+    "role": "user",
+    "content": "Đổi vùng đó sang ghế lái, mức 1 thôi."
+    }
+    ],
+    "rewrite": "Bật thông gió ghế lái ở mức 1.",
+    "rationale": "Lượt cuối thay đổi vị trí ghế và mức hoạt động, còn loại điều khiển phải được lấy từ ngữ cảnh trước."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tạo danh sách nhạc acoustic cho chuyến đi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn bài nào phát đầu tiên?"
+    },
+    {
+    "role": "user",
+    "content": "“Nàng Thơ” của Hoàng Dũng."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn thêm bài nào tiếp theo và nghe trên nền tảng nào?"
+    },
+    {
+    "role": "user",
+    "content": "“Có Em” của Madihu, nghe trên Spotify."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn sử dụng danh sách này thế nào khi đang di chuyển?"
+    },
+    {
+    "role": "user",
+    "content": "Tải offline và không bật shuffle."
+    }
+    ],
+    "rewrite": "Tạo danh sách trên Spotify gồm “Nàng Thơ” của Hoàng Dũng rồi “Có Em” của Madihu, tải offline và không bật shuffle.",
+    "rationale": "Hai bài hát, thứ tự phát, nền tảng và hai tùy chọn phát được rải qua nhiều lượt user."
+    }
+    ]
+    }
+    

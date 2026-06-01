@@ -1,0 +1,140 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm số liên hệ khẩn cấp của trường con tôi"},
+          {"role":"bot","content":"Trong danh bạ có THCS Nguyễn Du số 024 3942 6789 và Tiểu học Đoàn Thị Điểm số 024 3773 5678. Con bạn học trường nào ạ?"},
+          {"role":"user","content":"THCS Nguyễn Du, gọi vào phòng bảo vệ"},
+          {"role":"bot","content":"Số phòng bảo vệ THCS Nguyễn Du là máy nhánh 103."},
+          {"role":"user","content":"Gọi vào đó ngay, con chưa về mà đã 5 giờ rưỡi rồi"}
+        ],
+        "rewrite": "Gọi khẩn đến THCS Nguyễn Du số 024 3942 6789, máy nhánh 103 phòng bảo vệ.",
+        "rationale": "Số tổng đài và máy nhánh rải qua 4 lượt; 'đó' resolve về phòng bảo vệ THCS Nguyễn Du sau chuỗi thu hẹp thông tin."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm tiệm cắt tóc nam gần đây có đặt lịch online"},
+          {"role":"bot","content":"Có Tóc Xinh Barbershop Hoàng Cầu cách 1.2km, 30Shine Đống Đa cách 2.1km và T&T Barbershop Ô Chợ Dừa cách 2.8km, cả ba đều đặt lịch online."},
+          {"role":"user","content":"Chỗ của chuỗi lớn nhất thì đặt lịch 10 giờ sáng mai rồi dẫn đường"}
+        ],
+        "rewrite": "Đặt lịch cắt tóc tại 30Shine Đống Đa lúc 10h sáng mai và chỉ đường đến đó.",
+        "rationale": "'Chuỗi lớn nhất' phân tích ba thương hiệu rồi resolve về 30Shine — chuỗi barbershop có quy mô toàn quốc lớn nhất trong danh sách."
+      },
+      {
+        "pattern": "negation",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm trạm sạc trong bán kính 8km"},
+          {"role":"bot","content":"Có 4 trạm: Eboost Cầu Giấy 1.8km, VinFast Mỹ Đình 3.2km, EVgo Hà Đông 6.1km và ChargePoint Thanh Xuân 7.4km."},
+          {"role":"user","content":"Loại hết trạm ngoài vành đai 3 ra, chỉ xem trạm trong vành đai thôi"}
+        ],
+        "rewrite": "Hiển thị trạm sạc trong vành đai 3 gồm Eboost Cầu Giấy 1.8km và VinFast Mỹ Đình 3.2km, bỏ qua EVgo Hà Đông và ChargePoint Thanh Xuân.",
+        "rationale": "Phủ định theo tiêu chí địa lý; Hà Đông và Thanh Xuân nằm ngoài vành đai 3; rewrite phân loại rõ trạm nào giữ và trạm nào loại."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe có tính năng geofencing không?"},
+          {"role":"bot","content":"Có, xe hỗ trợ geofencing qua app VinFast. Bạn muốn tạo vùng nào?"},
+          {"role":"user","content":"Tạo geofence bán kính 500m quanh trường con, alert khi xe ra khỏi vùng đó ngoài giờ đón 4 đến 5 giờ chiều"}
+        ],
+        "rewrite": "Tạo geofence bán kính 500m quanh trường con, cảnh báo khi xe ra khỏi vùng ngoài khung giờ 16h–17h.",
+        "rationale": "Token 'geofence', 'geofencing', 'alert' giữ nguyên; bán kính, mốc giờ và điều kiện kích hoạt từ lượt cuối tạo thành cấu hình hoàn chỉnh."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Có khách đến thăm bất ngờ, cần dọn dẹp nhanh"},
+          {"role":"bot","content":"Bạn muốn chuẩn bị gì ạ?"},
+          {"role":"user","content":"Chạy Roborock phòng khách, bật điều hoà 25 độ và mở rèm cửa sổ hết ra"}
+        ],
+        "rewrite": "Khởi động Roborock dọn phòng khách, bật điều hoà 25°C và mở toàn bộ rèm cửa sổ.",
+        "rationale": "Ba hành động chuẩn bị đón khách song song không cần slot từ lịch sử; token 'Roborock' giữ nguyên."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi mới mua xe điện lần đầu, chưa quen lái"},
+          {"role":"bot","content":"Không sao, xe có nhiều tính năng hỗ trợ người mới. Bạn muốn bật gì?"},
+          {"role":"user","content":"Bật hết mấy cái hỗ trợ lái cơ bản nhất cho người mới đi, đừng bật cái phức tạp"}
+        ],
+        "rewrite": "Bật các tính năng hỗ trợ lái cơ bản gồm Lane Keeping Assist, Forward Collision Warning và Automatic Emergency Braking, không bật các tính năng nâng cao như Auto Lane Change hay Remote Parking.",
+        "rationale": "'Cái hỗ trợ lái cơ bản cho người mới' và 'đừng bật cái phức tạp' là implicit reference đòi hỏi phán đoán về phân loại tính năng; rewrite liệt kê rõ cả hai nhóm."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Dẫn đường đến bệnh viện E Hà Nội"},
+          {"role":"bot","content":"Đang dẫn đường đến Bệnh viện E, 89 Trần Cung, Nghĩa Tân, ước tính 19 phút."},
+          {"role":"user","content":"Khoan nhầm, tôi cần đến bệnh viện Bạch Mai không phải bệnh viện E"},
+          {"role":"bot","content":"Đã cập nhật lộ trình đến Bệnh viện Bạch Mai, 78 Giải Phóng, ước tính 24 phút."},
+          {"role":"user","content":"Ừ đúng rồi, nhưng vào cổng khám bệnh theo yêu cầu chứ không phải cổng chính"}
+        ],
+        "rewrite": "Chỉ đường đến Bệnh viện Bạch Mai, 78 Giải Phóng, vào cổng khám bệnh theo yêu cầu.",
+        "rationale": "Điểm đến đã sửa đúng sang Bạch Mai; lượt cuối bổ sung cụ thể cổng vào, rewrite không nhắc bệnh viện E hay quá trình sửa lộ trình."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Báo cáo tiêu thụ điện nhà tôi tháng này thế nào?"},
+          {"role":"bot","content":"Tháng này dùng 487kWh, tăng 23% so với tháng trước, chi phí ước tính 1.215.000đ, máy lạnh chiếm 41%, bình nước nóng 28%, các thiết bị khác 31%."},
+          {"role":"user","content":"Tốn vậy, đặt ngưỡng cảnh báo khi tiêu thụ vượt 400kWh trong tháng"}
+        ],
+        "rewrite": "Đặt cảnh báo khi tiêu thụ điện hằng tháng vượt 400kWh.",
+        "rationale": "Bot trả 5 chỉ số tiêu thụ điện; chỉ con số 400kWh từ lượt user cuối là slot của rewrite, các số 487kWh, 23%, 1.215.000đ đều là nhiễu."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn nghe nhạc thiếu nhi cho con theo dõi"},
+          {"role":"bot","content":"Bé mấy tuổi để tôi gợi ý phù hợp ạ?"},
+          {"role":"user","content":"3 tuổi, thích nhạc vui nhộn"},
+          {"role":"bot","content":"Gợi ý: Playlist 'Nhạc Thiếu Nhi Sôi Động' trên Spotify, kênh 'Bé Tập Nói' trên YouTube và album 'Gấu Bông Đi Học' của NXB Kim Đồng."},
+          {"role":"user","content":"Playlist Spotify đó đi, volume 40% thôi kẻo ồn"}
+        ],
+        "rewrite": "Phát playlist 'Nhạc Thiếu Nhi Sôi Động' trên Spotify, âm lượng 40%.",
+        "rationale": "Tên playlist và nền tảng từ danh sách gợi ý bot; volume từ lượt cuối; 'đó' resolve về đúng playlist Spotify được đề xuất đầu tiên."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem tôi có tin nhắn nào từ số lạ không"},
+          {"role":"bot","content":"Có 2 tin từ số lạ: 0356 778 991 nhắn 'Anh ơi xe anh đang bị tắt đèn xi nhan' lúc 14:05 và 0912 003 445 nhắn 'Bạn đỗ xe chắn cửa nhà tôi' lúc 14:31."},
+          {"role":"user","content":"Tin nhắn nào gần nhất thì reply xin lỗi và bảo mình sẽ dời xe ngay"}
+        ],
+        "rewrite": "Reply tin nhắn số 0912 003 445: xin lỗi vì đỗ xe chắn cửa và sẽ dời xe ngay.",
+        "rationale": "'Tin nhắn gần nhất' resolve về số 0912 003 445 lúc 14:31; nội dung reply kết hợp xin lỗi và cam kết hành động từ lượt cuối."
+      }
+    ]
+  }

@@ -1,0 +1,225 @@
+{
+    "samples": [
+    {
+    "pattern": "negation",
+    "domain": "charging",
+    "intent": "set_charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tối nay tôi cắm xe ở bộ sạc trong gara."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bắt đầu sạc hoặc đặt giới hạn pin cho phiên sạc tại nhà."
+    },
+    {
+    "role": "user",
+    "content": "Bắt đầu sạc ở bộ sạc trong gara, không sạc quá 80%."
+    }
+    ],
+    "rewrite": "Bắt đầu sạc ở bộ sạc trong gara và không sạc quá 80%.",
+    "rationale": "Lượt cuối đã tự đủ thông tin nhưng gold bắt buộc giữ rõ giới hạn phủ định “không sạc quá 80%”."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "vehicle",
+    "intent": "toggle_light",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo trạng thái xe trước khi vào hầm."
+    },
+    {
+    "role": "bot",
+    "content": "Pin xe còn 44% và áp suất lốp trước bên trái là 2,3 bar."
+    },
+    {
+    "role": "user",
+    "content": "Bật đèn định vị ban ngày."
+    }
+    ],
+    "rewrite": "Bật đèn định vị ban ngày.",
+    "rationale": "Mức pin và áp suất lốp là dữ kiện nhiễu, không được đưa vào thao tác bật đèn."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "messaging",
+    "intent": "send_message",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi đang tới điểm hẹn, cần báo cho bạn."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể gửi tin nhắn và chia sẻ thông tin đến nơi."
+    },
+    {
+    "role": "user",
+    "content": "Gửi Messenger cho Thanh Tùng: Tôi tới cổng Nguyễn Bỉnh Khiêm, rồi chia sẻ ETA 6 phút."
+    }
+    ],
+    "rewrite": "Gửi Messenger cho Thanh Tùng với nội dung “Tôi tới cổng Nguyễn Bỉnh Khiêm” rồi chia sẻ ETA 6 phút.",
+    "rationale": "Lượt cuối tự chứa người nhận, nội dung và hai thao tác liên tiếp cần được giữ đầy đủ."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "driver_assist",
+    "intent": "cruise_control",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đoạn đường trường này khá thoáng."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể kích hoạt tính năng hỗ trợ giữ tốc độ khi thấy an toàn."
+    },
+    {
+    "role": "user",
+    "content": "Bật Adaptive Cruise Control trên VinFast VF 8, giữ 85 km/h."
+    }
+    ],
+    "rewrite": "Bật Adaptive Cruise Control trên VinFast VF 8 và giữ tốc độ 85 km/h.",
+    "rationale": "Lượt cuối đã đủ mẫu xe và tốc độ, đồng thời tên tính năng Adaptive Cruise Control phải được giữ nguyên."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "smart_home",
+    "intent": "smart_home_control",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đã lưu phòng làm việc tại nhà mới của tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có phòng nào được lưu với nhãn nhà mới của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Tắt đèn phòng làm việc ở nhà mới của tôi."
+    }
+    ],
+    "rewrite": "Tắt đèn phòng làm việc ở nhà mới của tôi.",
+    "rationale": "Không có địa chỉ cụ thể trong lịch sử nên phải giữ nguyên tham chiếu ngầm, không tự bịa vị trí."
+    },
+    {
+    "pattern": "negation",
+    "domain": "navigation",
+    "intent": "navigate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi cần sang Quận 1 để đón khách."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn hãy nêu điểm đi, điểm đến và tuyến cần tránh nếu có."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn từ Crescent Mall tới Thảo Cầm Viên Sài Gòn, tránh cầu Ba Son."
+    }
+    ],
+    "rewrite": "Dẫn đường từ Crescent Mall tới Thảo Cầm Viên Sài Gòn và tránh cầu Ba Son.",
+    "rationale": "Lượt cuối đã đủ các slot điều hướng và từ phủ định “tránh” bắt buộc phải còn trong rewrite."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "climate",
+    "intent": "set_climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kiểm tra xe sau khi đỗ ngoài trời."
+    },
+    {
+    "role": "bot",
+    "content": "Nhiệt độ ngoài trời là 35°C và pin xe còn 51%."
+    },
+    {
+    "role": "user",
+    "content": "Bật thông gió ghế sau bên phải mức 2."
+    }
+    ],
+    "rewrite": "Bật thông gió ghế sau bên phải ở mức 2.",
+    "rationale": "Nhiệt độ ngoài trời và mức pin là nhiễu, còn mức thông gió cần dùng đã xuất hiện trực tiếp trong lượt cuối."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "music",
+    "intent": "play_music_online",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật nhạc Việt nghe lúc chạy ven hồ đi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chọn bài hát và nền tảng phát nhạc."
+    },
+    {
+    "role": "user",
+    "content": "Play “Ngày Chưa Giông Bão” của Bùi Lan Hương trên YouTube Music."
+    }
+    ],
+    "rewrite": "Play “Ngày Chưa Giông Bão” của Bùi Lan Hương trên YouTube Music.",
+    "rationale": "Lượt cuối đã tự đủ bài hát, nghệ sĩ và nền tảng, đồng thời phải giữ nguyên token Play và YouTube Music."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "calling",
+    "intent": "call",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Cố vấn bảo hiểm xe của tôi là chị Nguyễn Thu Giang."
+    },
+    {
+    "role": "bot",
+    "content": "Đã lưu chị Nguyễn Thu Giang là cố vấn bảo hiểm xe của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Gọi cố vấn bảo hiểm xe của tôi để hỏi thủ tục bồi thường."
+    }
+    ],
+    "rewrite": "Gọi chị Nguyễn Thu Giang để hỏi thủ tục bồi thường bảo hiểm xe.",
+    "rationale": "Cụm “cố vấn bảo hiểm xe của tôi” phải được resolve về đúng liên hệ đã lưu trong lịch sử."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "vehicle",
+    "intent": "control_window",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chỗ nào trong xe đang bị nắng chiếu vào?"
+    },
+    {
+    "role": "bot",
+    "content": "Nắng đang chiếu vào cửa kính sau bên phải, nơi ghế trẻ em được lắp."
+    },
+    {
+    "role": "user",
+    "content": "Kéo rèm chỗ đó lên rồi bật khóa trẻ em bên ấy."
+    }
+    ],
+    "rewrite": "Kéo rèm che nắng cửa kính sau bên phải lên rồi bật khóa trẻ em tại cửa sau bên phải.",
+    "rationale": "Lượt cuối có hai hành động và cả “chỗ đó” lẫn “bên ấy” đều phải được quy về cửa sau bên phải."
+    }
+    ]
+    }
+    

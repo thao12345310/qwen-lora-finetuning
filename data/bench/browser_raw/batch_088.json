@@ -1,0 +1,255 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đang chia sẻ chìa khóa số cho những ai?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn đang chia sẻ chìa khóa số cho Khánh Ly dùng VinFast VF e34 và cho Quốc Huy dùng VinFast VF 9."
+    },
+    {
+    "role": "user",
+    "content": "Thu hồi quyền của người dùng chiếc VF e34."
+    }
+    ],
+    "rewrite": "Thu hồi chìa khóa số của Khánh Ly trên chiếc VinFast VF e34.",
+    "rationale": "Lượt cuối xác định người dùng thông qua mẫu xe được cấp quyền, không nêu trực tiếp tên người."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đặt cuộc gọi hỏi giờ nhận phòng khách sạn."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gọi khách sạn nào?"
+    },
+    {
+    "role": "user",
+    "content": "InterContinental Hanoi Westlake."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gọi khi nào và qua thiết bị nào?"
+    },
+    {
+    "role": "user",
+    "content": "17 giờ 40 hôm nay, qua tai nghe Bluetooth."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn ghi chú nội dung cần hỏi không?"
+    },
+    {
+    "role": "user",
+    "content": "Hỏi xem tôi có thể nhận phòng sớm không."
+    }
+    ],
+    "rewrite": "Đặt cuộc gọi tới InterContinental Hanoi Westlake lúc 17 giờ 40 hôm nay qua tai nghe Bluetooth để hỏi liệu tôi có thể nhận phòng sớm hay không.",
+    "rationale": "Tên khách sạn, giờ gọi, thiết bị âm thanh và mục đích cuộc gọi được cung cấp qua nhiều lượt user."
+    },
+    {
+    "pattern": "correction",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Dẫn tôi tới Chùa Thiên Mụ."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị tuyến đường tới Chùa Thiên Mụ ở Huế."
+    },
+    {
+    "role": "user",
+    "content": "Tôi muốn ngắm cảnh bên sông trước."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể ghé Cầu Trường Tiền hoặc Công viên Thương Bạc."
+    },
+    {
+    "role": "user",
+    "content": "Bỏ chùa, đổi sang điểm đầu tiên."
+    }
+    ],
+    "rewrite": "Bỏ tuyến tới Chùa Thiên Mụ và dẫn tôi tới Cầu Trường Tiền.",
+    "rationale": "Lượt cuối hủy điểm đến ban đầu và chọn điểm mới bằng thứ tự trong danh sách bot cung cấp."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "smart_home",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo tình trạng xe khi tôi sắp về."
+    },
+    {
+    "role": "bot",
+    "content": "Pin xe còn 47% và nhiệt độ khoang xe hiện là 26°C."
+    },
+    {
+    "role": "user",
+    "content": "Tắt bếp từ trong căn hộ Sunwah Pearl."
+    }
+    ],
+    "rewrite": "Tắt bếp từ trong căn hộ Sunwah Pearl.",
+    "rationale": "Mức pin và nhiệt độ khoang xe là thông tin nhiễu, không được đưa vào lệnh tắt bếp."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm hai người phụ trách buổi demo xe mới."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy chị Đặng Thanh Hà phụ trách nội dung và anh Vũ Minh Đức phụ trách kỹ thuật."
+    },
+    {
+    "role": "user",
+    "content": "Gửi người phụ trách kỹ thuật qua Slack: ETA 12 phút."
+    }
+    ],
+    "rewrite": "Gửi Slack cho anh Vũ Minh Đức với nội dung “ETA 12 phút”.",
+    "rationale": "Model phải phân giải người nhận bằng vai trò và giữ nguyên các token Slack cùng ETA."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đã lưu cấu hình điều hòa cho bé nhà tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có cấu hình điều hòa nào được lưu với nhãn cho bé nhà bạn."
+    },
+    {
+    "role": "user",
+    "content": "Bật điều hòa theo cấu hình cho bé nhà tôi."
+    }
+    ],
+    "rewrite": "Bật điều hòa theo cấu hình cho bé nhà tôi.",
+    "rationale": "Không có nhiệt độ hay chế độ cụ thể trong lịch sử nên phải giữ nguyên tham chiếu ngầm, không tự bịa slot."
+    },
+    {
+    "pattern": "negation",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm điểm sạc khi đi từ Hải Phòng về Hạ Long."
+    },
+    {
+    "role": "bot",
+    "content": "Có trạm V-GREEN tại Vincom Plaza Imperia Hải Phòng và trạm VinFast tại Vincom Plaza Hạ Long."
+    },
+    {
+    "role": "user",
+    "content": "Ghé điểm ở Hải Phòng, nhưng đừng sạc quá 80%."
+    }
+    ],
+    "rewrite": "Ghé trạm V-GREEN tại Vincom Plaza Imperia Hải Phòng để sạc nhưng không sạc quá 80%.",
+    "rationale": "Lượt cuối chọn trạm bằng thành phố và bổ sung giới hạn phủ định về mức pin tối đa."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đoạn nào trên đường ven biển Đà Nẵng hay có người băng qua?"
+    },
+    {
+    "role": "bot",
+    "content": "Đoạn trước Công viên Biển Đông thường có nhiều người đi bộ băng qua đường."
+    },
+    {
+    "role": "user",
+    "content": "Tới đoạn đó thì cảnh báo người đi bộ rồi giảm giới hạn xuống 25 km/h."
+    }
+    ],
+    "rewrite": "Khi tới đoạn trước Công viên Biển Đông, bật cảnh báo người đi bộ rồi giảm giới hạn tốc độ xuống 25 km/h.",
+    "rationale": "Lượt cuối chứa hai hành động và dùng “đoạn đó” để tham chiếu vị trí cụ thể đã được bot nêu."
+    },
+    {
+    "pattern": "correction",
+    "domain": "music",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Mở bài “Em Gì Ơi” của Jack và K-ICM."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị phát “Em Gì Ơi” của Jack và K-ICM."
+    },
+    {
+    "role": "user",
+    "content": "Không mở bài đó; phát “3107-3” của W/n, Nâu và Duongg."
+    }
+    ],
+    "rewrite": "Không phát “Em Gì Ơi” của Jack và K-ICM; hãy phát “3107-3” của W/n, Nâu và Duongg.",
+    "rationale": "Lượt cuối tự đủ thông tin để hủy bài trước và chuyển sang bài hát mới cụ thể."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chuẩn bị khoang xe mát trước khi đón ông bà."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn chỉnh khu vực nào?"
+    },
+    {
+    "role": "user",
+    "content": "Hai ghế sau của chiếc VinFast VF 8."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn nhiệt độ và tốc độ quạt bao nhiêu?"
+    },
+    {
+    "role": "user",
+    "content": "24°C, quạt mức 1."
+    },
+    {
+    "role": "bot",
+    "content": "Có bật cửa gió trần cho hàng ghế sau không?"
+    },
+    {
+    "role": "user",
+    "content": "Không bật cửa gió trần, lưu thiết lập."
+    }
+    ],
+    "rewrite": "Lưu thiết lập làm mát hai ghế sau của VinFast VF 8 ở 24°C với quạt mức 1 và không bật cửa gió trần cho hàng ghế sau.",
+    "rationale": "Mẫu xe, vùng điều hòa, nhiệt độ, mức quạt và điều kiện không bật cửa gió được cung cấp rải rác qua nhiều lượt."
+    }
+    ]
+    }
+    

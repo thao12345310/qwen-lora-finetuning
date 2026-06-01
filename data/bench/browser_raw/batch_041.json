@@ -1,0 +1,140 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn đi ăn lẩu tối nay"},
+          {"role":"bot","content":"Khu vực nào và mấy người ăn ạ?"},
+          {"role":"user","content":"Gần Hồ Hoàn Kiếm, 6 người"},
+          {"role":"bot","content":"Có Lẩu Bò Sài Gòn Đinh Tiên Hoàng sức chứa 8 người, Lẩu Nấm Nhật Linh Hàng Bài sức chứa 20 người và Lẩu Thái Sông Hương Lý Thái Tổ sức chứa 15 người."},
+          {"role":"user","content":"Đặt bàn ở chỗ nhỏ nhất rồi dẫn đường vào"}
+        ],
+        "rewrite": "Đặt bàn tại Lẩu Bò Sài Gòn Đinh Tiên Hoàng cho 6 người và chỉ đường đến đó.",
+        "rationale": "'Chỗ nhỏ nhất' phải so sánh sức chứa ba quán rồi resolve về Lẩu Bò Sài Gòn 8 chỗ; số người từ lượt user thứ hai."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ trời và hai kính sau xuống một chút"},
+          {"role":"bot","content":"Đã mở cửa sổ trời 30% và hạ kính ghế sau hai bên xuống 25%."},
+          {"role":"user","content":"Cái nào đang mở nhiều nhất thì đóng bớt xuống bằng cái kia"}
+        ],
+        "rewrite": "Đóng cửa sổ trời từ 30% xuống còn 25%.",
+        "rationale": "'Cái mở nhiều nhất' resolve về cửa sổ trời 30%; 'bằng cái kia' resolve về mức 25% của kính sau."
+      },
+      {
+        "pattern": "negation",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật chế độ về nhà cho tôi"},
+          {"role":"bot","content":"Đã bật: đèn hành lang, điều hoà phòng ngủ 25°C, máy lọc nước nóng và nhạc nền phòng khách."},
+          {"role":"user","content":"Tắt nhạc nền đi, tôi muốn yên tĩnh, cái khác giữ nguyên"}
+        ],
+        "rewrite": "Tắt nhạc nền phòng khách, giữ nguyên đèn hành lang, điều hoà phòng ngủ 25°C và máy lọc nước nóng.",
+        "rationale": "Phủ định chỉ nhắm một mục trong danh sách bốn thiết bị đã bật; rewrite xác nhận rõ cái tắt và liệt kê cái giữ nguyên."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe có những gói safety nào đang hoạt động?"},
+          {"role":"bot","content":"Đang bật: AEB, ESC và TPMS. Đang tắt: HUD và Drowsiness Detection."},
+          {"role":"user","content":"Bật Drowsiness Detection lên đi, chạy đường dài mệt lắm"}
+        ],
+        "rewrite": "Bật Drowsiness Detection.",
+        "rationale": "Token 'Drowsiness Detection' giữ nguyên tiếng Anh; lượt cuối đủ rõ intent, không cần kéo thêm slot từ danh sách bot."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Ai đang gọi vào vậy?"},
+          {"role":"bot","content":"Số lạ 0376 889 001 đang gọi đến."},
+          {"role":"user","content":"Từ chối đi rồi chặn số đó luôn, chắc spam"}
+        ],
+        "rewrite": "Từ chối cuộc gọi từ số 0376 889 001 và chặn số này.",
+        "rationale": "Hai intent liên tiếp: từ chối và chặn số; số điện thoại resolve từ lượt bot, rewrite giữ đủ cả hai hành động."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cuối tuần mình chạy lên Mộc Châu chơi"},
+          {"role":"bot","content":"Mộc Châu cách Hà Nội khoảng 180km. Bạn có muốn lên kế hoạch trạm sạc không?"},
+          {"role":"user","content":"Ừ, tìm trạm sạc dọc quốc lộ 6 cho xe VinFast VF 8"}
+        ],
+        "rewrite": "Tìm trạm sạc tương thích VinFast VF 8 dọc quốc lộ 6 trên hành trình từ Hà Nội đến Mộc Châu.",
+        "rationale": "Điểm xuất phát Hà Nội và điểm đến Mộc Châu từ ngữ cảnh trước; tuyến đường và loại xe từ lượt cuối."
+      },
+      {
+        "pattern": "correction",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Phát album Hoàng của Hoàng Dũng đi"},
+          {"role":"bot","content":"Đang phát album Hoàng của Hoàng Dũng trên Spotify, bài đầu tiên: 'Muộn'."},
+          {"role":"user","content":"Ơ nhầm, phát album Mơ của Hoàng Dũng mới đúng"},
+          {"role":"bot","content":"Đã chuyển sang album Mơ của Hoàng Dũng, bài đầu: 'Để Tôi Ôm Em'."},
+          {"role":"user","content":"Bỏ qua bài đầu, phát từ bài thứ hai luôn"}
+        ],
+        "rewrite": "Bỏ qua bài 'Để Tôi Ôm Em', phát từ bài thứ hai trong album Mơ của Hoàng Dũng.",
+        "rationale": "Album đã được sửa đúng ở lượt trước; lượt cuối chỉ điều chỉnh vị trí bài phát, rewrite không nhắc lại album Hoàng cũ."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đọc thông báo mới nhất cho tôi nghe"},
+          {"role":"bot","content":"Có 4 thông báo: Grab giảm 30k, VPBank nhắc thanh toán 2.4 triệu, Shopee flash sale 20h, Zalo từ chị Thanh Loan hỏi 'Tối nay có rảnh không?'."},
+          {"role":"user","content":"Nhắn Zalo lại cho chị Thanh Loan bảo tối nay bận, hẹn cuối tuần nhé"}
+        ],
+        "rewrite": "Nhắn Zalo cho chị Thanh Loan: tối nay bận, hẹn gặp cuối tuần.",
+        "rationale": "Bot liệt kê 4 thông báo từ nhiều nguồn; chỉ Zalo chị Thanh Loan là liên quan, rewrite không kéo thông tin Grab, VPBank hay Shopee vào."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài chế độ khí hậu tự động cho xe"},
+          {"role":"bot","content":"Nhiệt độ mục tiêu bao nhiêu ạ?"},
+          {"role":"user","content":"24 độ, áp dụng cả xe"},
+          {"role":"bot","content":"Chế độ auto 24°C toàn xe đã bật. Bạn có muốn đặt lịch không?"},
+          {"role":"user","content":"Đặt lịch bật tự động mỗi khi tôi vào xe sau 6 giờ sáng"}
+        ],
+        "rewrite": "Đặt lịch tự động bật điều hoà toàn xe chế độ auto 24°C mỗi khi khởi động xe sau 6 giờ sáng.",
+        "rationale": "Nhiệt độ, phạm vi áp dụng và điều kiện kích hoạt rải qua 5 lượt; lượt cuối bổ sung trigger quan trọng nhất."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm bãi đỗ xe gần Royal City"},
+          {"role":"bot","content":"Có bãi B1 Royal City tầng hầm còn 34 chỗ trống và bãi Nguyễn Trãi Park cách 400m còn 12 chỗ."},
+          {"role":"user","content":"Chỗ nào còn nhiều chỗ hơn thì dẫn vào đó"}
+        ],
+        "rewrite": "Chỉ đường vào bãi đỗ xe B1 Royal City tầng hầm.",
+        "rationale": "'Chỗ còn nhiều hơn' so sánh 34 và 12 rồi resolve về bãi B1 Royal City; rewrite không cần nêu lý do so sánh."
+      }
+    ]
+  }

@@ -1,0 +1,225 @@
+{
+    "samples": [
+    {
+    "pattern": "negation",
+    "domain": "vehicle",
+    "intent": "toggle_light",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi đang dừng sát lề để chờ người."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật tín hiệu cảnh báo hoặc điều chỉnh khóa cửa khi đang dừng."
+    },
+    {
+    "role": "user",
+    "content": "Bật đèn khẩn cấp, nhưng không mở khóa cửa xe."
+    }
+    ],
+    "rewrite": "Bật đèn khẩn cấp nhưng không mở khóa cửa xe.",
+    "rationale": "Lượt cuối tự đủ hai yêu cầu và bắt buộc giữ nguyên phủ định không mở khóa cửa."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "smart_home",
+    "intent": "smart_home_control",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe còn ổn để đi tiếp chứ?"
+    },
+    {
+    "role": "bot",
+    "content": "Pin xe còn 64% và nhiệt độ ngoài trời là 34°C."
+    },
+    {
+    "role": "user",
+    "content": "Tắt bình nóng lạnh phòng tắm tại căn hộ Vinhomes Green Bay."
+    }
+    ],
+    "rewrite": "Tắt bình nóng lạnh phòng tắm tại căn hộ Vinhomes Green Bay.",
+    "rationale": "Phần trăm pin và nhiệt độ chỉ là nhiễu, không liên quan tới lệnh điều khiển thiết bị trong nhà."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "messaging",
+    "intent": "send_message",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi cần báo người đang chờ ở điểm đón."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể nhắn tin hoặc gọi điện trực tiếp từ hệ thống xe."
+    },
+    {
+    "role": "user",
+    "content": "Gửi Telegram cho Hoàng Anh: Tôi ở cổng số 2, rồi gọi Hoàng Anh."
+    }
+    ],
+    "rewrite": "Gửi Telegram cho Hoàng Anh với nội dung “Tôi ở cổng số 2” rồi gọi cho Hoàng Anh.",
+    "rationale": "Lượt cuối tự chứa đầy đủ người nhận, nội dung và hai hành động liên tiếp cần giữ nguyên."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "music",
+    "intent": "play_music_online",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Mở nhạc nhẹ nghe lúc đợi bạn nhé."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chọn bài hát, nền tảng và chế độ phát."
+    },
+    {
+    "role": "user",
+    "content": "Phát “Có Em Chờ” của MIN trên Spotify rồi bật repeat one."
+    }
+    ],
+    "rewrite": "Phát “Có Em Chờ” của MIN trên Spotify rồi bật repeat one.",
+    "rationale": "Lượt cuối đã tự đủ slot và các token Spotify, repeat one phải được giữ nguyên."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "calling",
+    "intent": "call",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe có lưu số huấn luyện viên bơi của con tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có liên hệ nào được lưu với nhãn huấn luyện viên bơi của con bạn."
+    },
+    {
+    "role": "user",
+    "content": "Gọi huấn luyện viên bơi của con tôi để báo đến trễ."
+    }
+    ],
+    "rewrite": "Gọi huấn luyện viên bơi của con tôi để báo rằng tôi đến trễ.",
+    "rationale": "Lịch sử không cung cấp tên hoặc số điện thoại cụ thể nên phải giữ nguyên tham chiếu ngầm."
+    },
+    {
+    "pattern": "negation",
+    "domain": "navigation",
+    "intent": "navigate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi muốn sang khu trung tâm thành phố."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn hãy nêu điểm đi, điểm đến và đường cần tránh nếu có."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn từ Hồ Con Rùa tới Bảo tàng Mỹ thuật Thành phố Hồ Chí Minh, tránh đường Pasteur."
+    }
+    ],
+    "rewrite": "Dẫn đường từ Hồ Con Rùa tới Bảo tàng Mỹ thuật Thành phố Hồ Chí Minh và tránh đường Pasteur.",
+    "rationale": "Lượt cuối đã đầy đủ hành trình và điều kiện tránh đường, nên gold phải giữ rõ từ phủ định “tránh”."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "climate",
+    "intent": "set_climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tình trạng hành trình hiện thế nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Xe còn 45% pin và điểm đến cách bạn 12 km."
+    },
+    {
+    "role": "user",
+    "content": "Đặt điều hòa vùng ghế sau bên trái ở 22°C."
+    }
+    ],
+    "rewrite": "Đặt điều hòa vùng ghế sau bên trái ở 22°C.",
+    "rationale": "Hai số liệu lịch sử là nhiễu, còn nhiệt độ cần dùng đã được nêu trực tiếp trong lượt cuối."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "vehicle",
+    "intent": "control_window",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kiểm tra xem trẻ ngồi phía sau đã an toàn chưa."
+    },
+    {
+    "role": "bot",
+    "content": "Cửa sổ sau bên trái đang mở và khóa trẻ em tại cửa đó đang tắt."
+    },
+    {
+    "role": "user",
+    "content": "Đóng cửa đó rồi bật khóa trẻ em bên ấy."
+    }
+    ],
+    "rewrite": "Đóng cửa sổ sau bên trái rồi bật khóa trẻ em tại cửa sau bên trái.",
+    "rationale": "Hai hành động ở lượt cuối đều cần resolve “cửa đó” và “bên ấy” về cùng vị trí đã được bot nêu."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "smart_home",
+    "intent": "smart_home_control",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Studio của tôi là căn hộ ở Vinhomes Golden River."
+    },
+    {
+    "role": "bot",
+    "content": "Đã lưu studio của bạn tại Vinhomes Golden River."
+    },
+    {
+    "role": "user",
+    "content": "Bật robot hút bụi ở studio, không dọn phòng ngủ."
+    }
+    ],
+    "rewrite": "Bật robot hút bụi tại căn hộ Vinhomes Golden River và không dọn phòng ngủ.",
+    "rationale": "Model phải resolve “studio” thành địa điểm đã lưu đồng thời giữ nguyên phủ định không dọn phòng ngủ."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "driver_assist",
+    "intent": "lane_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kia EV6 có tính năng nào hỗ trợ nhìn điểm mù khi chuyển làn?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể dùng cảnh báo điểm mù hoặc Blind-Spot View Monitor để hiển thị hình ảnh vùng khuất."
+    },
+    {
+    "role": "user",
+    "content": "Bật tính năng hiển thị hình ảnh vùng khuất đi."
+    }
+    ],
+    "rewrite": "Bật Blind-Spot View Monitor trên Kia EV6.",
+    "rationale": "Lượt cuối mô tả công dụng bằng tiếng Việt, nên phải khôi phục đúng tên tính năng tiếng Anh từ lịch sử."
+    }
+    ]
+    }
+    

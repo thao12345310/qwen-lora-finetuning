@@ -1,0 +1,232 @@
+{
+    "samples": [
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "messaging",
+    "intent": "send_message",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Nhắn tin cho anh Tuấn đi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi nội dung gì cho anh Tuấn?"
+    },
+    {
+    "role": "user",
+    "content": "Hẹn 6h tối nay ở quán bia Hải Xồm."
+    },
+    {
+    "role": "bot",
+    "content": "Đã ghi nhận. Bạn muốn gửi qua SMS hay Zalo?"
+    },
+    {
+    "role": "user",
+    "content": "Gửi Zalo nhé."
+    }
+    ],
+    "rewrite": "Hãy gửi tin nhắn Zalo cho anh Tuấn với nội dung là hẹn 6h tối nay ở quán bia Hải Xồm.",
+    "rationale": "Hành động gửi tin nhắn bị phân mảnh qua 3 lượt thoại của user (tên người nhận, nội dung, nền tảng), rewrite phải gom đủ mọi slot rải rác."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "driver_assist",
+    "intent": "toggle_feature",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe mình có cảnh báo điểm mù không nhỉ?"
+    },
+    {
+    "role": "bot",
+    "content": "Xe đang được trang bị hệ thống cảnh báo điểm mù Blind Spot Monitor."
+    },
+    {
+    "role": "user",
+    "content": "Tắt tính năng Auto Hold giùm mình nhé."
+    }
+    ],
+    "rewrite": "Tắt tính năng Auto Hold giùm mình nhé.",
+    "rationale": "Lượt cuối hoàn toàn độc lập và đủ nghĩa, chứa token tiếng Anh 'Auto Hold', model không được tự ý dịch hay chế thêm nội dung từ lịch sử."
+    },
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "charging",
+    "intent": "find_charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm trạm sạc VinFast gần đây."
+    },
+    {
+    "role": "bot",
+    "content": "Có 2 trạm gần nhất: một ở Vincom Mega Mall Thảo Điền cách 2km, hai là ở trạm dừng nghỉ cao tốc Long Thành cách 5km."
+    },
+    {
+    "role": "user",
+    "content": "Cho mình đi tới cái đầu tiên."
+    }
+    ],
+    "rewrite": "Cho mình tuyến đường tới trạm sạc VinFast ở Vincom Mega Mall Thảo Điền.",
+    "rationale": "User dùng đại từ 'cái đầu tiên', cần dùng lịch sử để resolve ra địa điểm cụ thể là trạm ở Vincom Mega Mall Thảo Điền."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "vehicle",
+    "intent": "control_window",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi thấy hơi mờ kính lái."
+    },
+    {
+    "role": "bot",
+    "content": "Có vẻ ngoài trời đang mưa phùn và chênh lệch nhiệt độ. Bạn có muốn bật sấy kính trước không?"
+    },
+    {
+    "role": "user",
+    "content": "Ừ bật đi, với làm ơn kéo hai rèm che nắng đằng sau xuống luôn."
+    }
+    ],
+    "rewrite": "Hãy bật sấy kính trước, đồng thời kéo hai rèm che nắng phía sau xuống.",
+    "rationale": "Lượt user gộp 2 intent (sấy kính từ gợi ý của bot + rèm che nắng do user tự nghĩ ra), cần lấy đúng context sấy kính và không bỏ sót hành động nào."
+    },
+    {
+    "pattern": "negation",
+    "domain": "navigation",
+    "intent": "navigate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Mở bản đồ lên."
+    },
+    {
+    "role": "bot",
+    "content": "Ứng dụng bản đồ đã sẵn sàng. Bạn muốn đi đâu?"
+    },
+    {
+    "role": "user",
+    "content": "Dẫn đường ra Lotte Mall Tây Hồ, tuyệt đối không đi đường đê nhé."
+    }
+    ],
+    "rewrite": "Dẫn đường đến Lotte Mall Tây Hồ nhưng tuyệt đối không đi qua đường đê.",
+    "rationale": "Câu lệnh độc lập chứa slot địa danh và intent phủ định rõ ràng 'không đi đường đê', rewrite giữ nguyên ý nghĩa mà không cần bám vào context trước."
+    },
+    {
+    "pattern": "correction",
+    "domain": "smart_home",
+    "intent": "smart_home_control",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Mở camera phòng khách ở nhà lên màn hình xe đi."
+    },
+    {
+    "role": "bot",
+    "content": "Đang kết nối với camera phòng khách."
+    },
+    {
+    "role": "user",
+    "content": "À nhầm, mở cái ngoài cổng ấy."
+    }
+    ],
+    "rewrite": "Mở camera ngoài cổng ở nhà lên màn hình xe.",
+    "rationale": "User sửa đổi slot vị trí từ 'phòng khách' thành 'ngoài cổng', model phải bắt được intent cuối cùng và kết hợp thông tin 'camera ở nhà' từ lượt trước."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "climate",
+    "intent": "set_climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Trong xe hơi nóng nhỉ."
+    },
+    {
+    "role": "bot",
+    "content": "Nhiệt độ ngoài trời đang là 36 độ C, độ ẩm 80%. Nhiệt độ điều hoà trong xe đang ở mức 26 độ. Pin xe còn 65%."
+    },
+    {
+    "role": "user",
+    "content": "Làm ơn hạ xuống 23 độ, gió mức trung bình đi."
+    }
+    ],
+    "rewrite": "Làm ơn hạ nhiệt độ điều hoà trong xe xuống 23 độ và chỉnh mức gió trung bình.",
+    "rationale": "Bot cung cấp nhiều con số nhiễu (36 độ, 80%, 65%), user yêu cầu slot mới hoàn toàn, model phải tránh bị ảo giác kéo nhầm số liệu không liên quan."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "calling",
+    "intent": "call",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lát nữa rẽ qua trường đón bé Cún nhé."
+    },
+    {
+    "role": "bot",
+    "content": "Vâng, đã thêm điểm dừng tại trường Tiểu học Chu Văn An. Còn 15 phút nữa sẽ đến nơi."
+    },
+    {
+    "role": "user",
+    "content": "Gọi cho cô giáo chủ nhiệm của nó giùm anh."
+    }
+    ],
+    "rewrite": "Gọi điện thoại cho cô giáo chủ nhiệm của bé Cún giúp anh.",
+    "rationale": "Cụm đại từ 'của nó' ngầm chỉ 'bé Cún' từ lượt thoại đầu tiên, yêu cầu truy xuất lịch sử để điền rõ danh tính người cần nhắc đến."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "music",
+    "intent": "play_music_online",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đang phát bài gì vậy?"
+    },
+    {
+    "role": "bot",
+    "content": "Xe đang phát bài 'Chúng Ta Của Tương Lai'."
+    },
+    {
+    "role": "user",
+    "content": "Mình muốn nghe bài Nhắm Mắt Thấy Mùa Hè trên Spotify và chỉnh âm thanh loa sang chế độ vòm."
+    }
+    ],
+    "rewrite": "Mình muốn nghe bài Nhắm Mắt Thấy Mùa Hè trên Spotify và chỉnh âm thanh loa sang chế độ vòm.",
+    "rationale": "Lượt cuối chứa 2 intent độc lập (chơi nhạc chỉ định brand + chỉnh hệ thống loa), tự mang đủ ngữ nghĩa nên không cần lấy thông tin cũ ở lượt bot."
+    },
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "driver_assist",
+    "intent": "cruise_control",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật chế độ tự động giữ khoảng cách đi."
+    },
+    {
+    "role": "bot",
+    "content": "Hệ thống Adaptive Cruise Control đã kích hoạt. Tốc độ giới hạn hiện tại của cao tốc Hà Nội - Hải Phòng là 120 km/h. Bạn muốn đặt bao nhiêu?"
+    },
+    {
+    "role": "user",
+    "content": "Set bằng mức giới hạn đó luôn đi."
+    }
+    ],
+    "rewrite": "Cài đặt tốc độ của hệ thống Adaptive Cruise Control ở mức 120 km/h.",
+    "rationale": "User dùng 'mức giới hạn đó' thay thế cho 120 km/h bot vừa nêu, model cần ánh xạ đúng chỉ số này để tạo câu lệnh độc lập có số liệu thực tế."
+    }
+    ]
+    }

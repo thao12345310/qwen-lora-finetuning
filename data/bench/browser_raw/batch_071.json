@@ -1,0 +1,140 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm số điện thoại dịch vụ kéo xe cứu hộ"},
+          {"role":"bot","content":"Gần bạn có ATA Rescue 1800 646 848 và Vietnam Road Rescue 0243 556 7890, cả hai trực 24h."},
+          {"role":"user","content":"Chỗ nào của nhà nước hay uy tín hơn?"},
+          {"role":"bot","content":"ATA Rescue là đơn vị thuộc Hiệp hội Vận tải, có hợp đồng với nhiều hãng bảo hiểm lớn, uy tín hơn."},
+          {"role":"user","content":"Gọi vào đó đi, báo xe chết máy trên đường Vành Đai 3"}
+        ],
+        "rewrite": "Gọi ATA Rescue số 1800 646 848, báo xe chết máy trên đường Vành Đai 3.",
+        "rationale": "Tên đơn vị, số điện thoại từ lượt bot đầu; vị trí sự cố từ lượt cuối; 'đó' resolve sau chuỗi xác nhận uy tín."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem tôi đang theo dõi nghệ sĩ nào trên Spotify"},
+          {"role":"bot","content":"Bạn đang follow: Bích Phương, Đen Vâu, Mỹ Tâm, tlinh và Hoàng Dũng."},
+          {"role":"user","content":"Người có tên ngắn nhất phát album mới nhất đi"}
+        ],
+        "rewrite": "Phát album mới nhất của Đen Vâu trên Spotify.",
+        "rationale": "'Người có tên ngắn nhất' so sánh độ dài tên các nghệ sĩ trong danh sách rồi resolve về Đen Vâu — 3 ký tự không kể khoảng trắng."
+      },
+      {
+        "pattern": "negation",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật toàn bộ đèn ngoại thất xe lên cho đẹp"},
+          {"role":"bot","content":"Đã bật: đèn pha, đèn hậu, đèn sương mù trước, đèn sương mù sau, đèn chào và đèn logo."},
+          {"role":"user","content":"Tắt đèn sương mù hết đi, trời đang tạnh, bị phạt đó"}
+        ],
+        "rewrite": "Tắt đèn sương mù trước và đèn sương mù sau, giữ nguyên đèn pha, đèn hậu, đèn chào và đèn logo.",
+        "rationale": "Phủ định loại trừ cả hai loại đèn sương mù; rewrite liệt kê rõ cái tắt và xác nhận bốn loại đèn còn lại giữ nguyên."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe tôi pin đang ở trạng thái gì?"},
+          {"role":"bot","content":"State of Charge 31%, State of Health 94%, nhiệt độ pin 32°C, estimated range 118km, cell balance tốt."},
+          {"role":"user","content":"SoC thấp vậy, tìm trạm hỗ trợ pre-conditioning pin trước khi sạc DC trong 10km"}
+        ],
+        "rewrite": "Tìm trạm sạc DC trong bán kính 10km có hỗ trợ pre-conditioning pin.",
+        "rationale": "Token 'SoC', 'pre-conditioning', 'DC' giữ nguyên; các chỉ số SoH, nhiệt độ, range, cell balance đều là nhiễu không đưa vào rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi vừa qua tai nạn nhỏ, cần xử lý gấp"},
+          {"role":"bot","content":"Bạn có bị thương không? Cần gọi cấp cứu không?"},
+          {"role":"user","content":"Không sao, nhắn Zalo cho vợ báo trễ về và chụp ảnh hiện trường gửi vào group bảo hiểm"}
+        ],
+        "rewrite": "Nhắn Zalo cho vợ thông báo về muộn do tai nạn và gửi ảnh hiện trường vào group bảo hiểm.",
+        "rationale": "Hai intent nhắn tin đến hai đầu nhận khác nhau; rewrite giữ đủ nội dung và đích nhận của từng tin không gộp lẫn."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bể cá của tôi cần chăm sóc tự động"},
+          {"role":"bot","content":"Đã kết nối bộ điều khiển bể cá thông minh AquaLife. Bạn muốn cài gì?"},
+          {"role":"user","content":"Đèn bể bật lúc 7 sáng tắt 9 tối, máy lọc chạy 24h và cho ăn tự động 8 sáng với 6 chiều"}
+        ],
+        "rewrite": "Cài bộ điều khiển AquaLife: đèn bể bật 7h tắt 21h, máy lọc chạy liên tục 24h, cho ăn tự động lúc 8h và 18h hằng ngày.",
+        "rationale": "'Bể cá' từ lượt đầu xác nhận thiết bị AquaLife; ba lịch vận hành khác nhau trong lượt cuối cần giữ đủ không rút gọn."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Chỉ đường đến Trung tâm Hội nghị Quốc gia Mỹ Đình"},
+          {"role":"bot","content":"Đang dẫn đường đến Trung tâm Hội nghị Quốc gia, ước tính 22 phút qua đường Lê Văn Lương."},
+          {"role":"user","content":"Đổi điểm đến thành Cung Thể thao Quần Ngựa đi, nhầm địa chỉ"},
+          {"role":"bot","content":"Đã cập nhật lộ trình đến Cung Thể thao Quần Ngựa, ước tính 31 phút."},
+          {"role":"user","content":"Lâu vậy thì tránh đường Giải Phóng giờ cao điểm đi"}
+        ],
+        "rewrite": "Chỉ đường đến Cung Thể thao Quần Ngựa, tránh đường Giải Phóng.",
+        "rationale": "Điểm đến đã sửa đúng ở lượt trước; lượt cuối bổ sung điều kiện tránh đường, rewrite không nhắc Trung tâm Hội nghị cũ."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cho tôi xem báo cáo lái xe tháng này"},
+          {"role":"bot","content":"Tháng này: tổng 2.340km, phanh gấp 12 lần, tăng tốc đột ngột 8 lần, điểm an toàn 73/100, tiêu thụ trung bình 16.2kWh/100km."},
+          {"role":"user","content":"Điểm thấp vậy, bật Eco Drive Assist giúp tôi lái tiết kiệm hơn đi"}
+        ],
+        "rewrite": "Bật Eco Drive Assist.",
+        "rationale": "Năm chỉ số báo cáo đều là nhiễu; rewrite chỉ cần hành động bật tính năng hỗ trợ lái, không kéo điểm số hay số km vào."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài chế độ tự động cho buổi sáng ngủ dậy đi làm"},
+          {"role":"bot","content":"Bật lúc mấy giờ và nhiệt độ bao nhiêu ạ?"},
+          {"role":"user","content":"Bật lúc 6 giờ kém 5, 24 độ"},
+          {"role":"bot","content":"Áp dụng các ngày nào trong tuần ạ?"},
+          {"role":"user","content":"Thứ Hai đến thứ Sáu thôi, thêm chế độ khử mùi 5 phút đầu luôn"}
+        ],
+        "rewrite": "Cài lịch điều hoà tự động thứ Hai đến thứ Sáu: bật lúc 5h55 sáng, nhiệt độ 24°C, chạy chế độ khử mùi 5 phút đầu tiên.",
+        "rationale": "Giờ, nhiệt độ, ngày áp dụng và chế độ khử mùi rải qua 5 lượt; rewrite quy đổi '6 giờ kém 5' thành 5h55 và gộp toàn bộ cấu hình."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Kiểm tra các thiết bị nào đang bật ở nhà"},
+          {"role":"bot","content":"Đang bật: máy lạnh phòng ngủ chính, đèn hành lang, TV phòng khách, bình nước nóng và quạt phòng làm việc."},
+          {"role":"user","content":"Tắt hết mấy cái không cần thiết khi không có người, chỉ giữ bình nước nóng thôi"}
+        ],
+        "rewrite": "Tắt máy lạnh phòng ngủ chính, đèn hành lang, TV phòng khách và quạt phòng làm việc, giữ nguyên bình nước nóng.",
+        "rationale": "'Mấy cái không cần thiết' resolve bằng cách loại trừ ngoại lệ bình nước nóng khỏi danh sách bot; rewrite liệt kê đủ 4 thiết bị cần tắt."
+      }
+    ]
+  }

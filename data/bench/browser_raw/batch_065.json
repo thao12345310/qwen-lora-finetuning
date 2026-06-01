@@ -1,0 +1,137 @@
+
+{
+  "samples": [
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "music",
+      "intent": "play_music_offline",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Mở nhạc đi"},
+        {"role": "bot", "content": "Đang phát bài 'Hãy Trao Cho Anh' của Sơn Tùng M-TP"},
+        {"role": "user", "content": "Đổi sang bài đó của Đông Nhi đi"}
+      ],
+      "rewrite": "Đổi sang bài 'Hãy Trao Cho Anh' của Đông Nhi",
+      "rationale": "Đại từ 'bài đó' cần resolve về bài hát bot vừa phát trước đó"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Đi Vincom Bà Triệu"},
+        {"role": "bot", "content": "Đang dẫn đường đến Vincom Bà Triệu"},
+        {"role": "user", "content": "Tránh đường Nguyễn Trãi"},
+        {"role": "user", "content": "Đi giờ"}
+      ],
+      "rewrite": "Dẫn đường đến Vincom Bà Triệu tránh đường Nguyễn Trãi ngay bây giờ",
+      "rationale": "Các slot (địa điểm, tránh đường, thời gian) rải rác qua nhiều lượt, lượt cuối rất ngắn"
+    },
+    {
+      "pattern": "correction",
+      "domain": "climate",
+      "intent": "set_climate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật điều hoà 24 độ"},
+        {"role": "bot", "content": "Điều hoà đã bật 24 độ"},
+        {"role": "user", "content": "Không, chỉnh thành 26 đi"}
+      ],
+      "rewrite": "Chỉnh điều hoà lên 26 độ",
+      "rationale": "User sửa lại nhiệt độ, rewrite chỉ giữ intent cuối"
+    },
+    {
+      "pattern": "code_switching",
+      "domain": "music",
+      "intent": "play_music_online",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Mở nhạc đi"},
+        {"role": "bot", "content": "Bạn muốn nghe gì?"},
+        {"role": "user", "content": "Play Spotify playlist 'Today's Top Hits'"}
+      ],
+      "rewrite": "Play Spotify playlist 'Today's Top Hits'",
+      "rationale": "Lượt cuối đã tự chứa đầy đủ thông tin với code-switching"
+    },
+    {
+      "pattern": "implicit_reference",
+      "domain": "calling",
+      "intent": "call",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Gọi cho vợ tôi"},
+        {"role": "bot", "content": "Đang gọi Nguyễn Thị Lan"},
+        {"role": "user", "content": "Thôi gọi cho sếp đi"}
+      ],
+      "rewrite": "Gọi cho sếp",
+      "rationale": "Implicit 'sếp' không cần resolve cụ thể, giữ nguyên cụm ngầm"
+    },
+    {
+      "pattern": "negation",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Đi sân bay Nội Bài"},
+        {"role": "bot", "content": "Đang dẫn đường qua cầu Nhật Tân"},
+        {"role": "user", "content": "Đừng đi cầu Nhật Tân, chọn đường khác"}
+      ],
+      "rewrite": "Dẫn đường đến sân bay Nội Bài đừng đi cầu Nhật Tân",
+      "rationale": "Phủ định rõ ràng 'đừng đi' cần giữ trong rewrite"
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "charging",
+      "intent": "find_charging",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Pin còn bao nhiêu"},
+        {"role": "bot", "content": "Pin còn 42%, nhiệt độ ngoài 31 độ"},
+        {"role": "user", "content": "Tìm trạm sạc gần nhất"}
+      ],
+      "rewrite": "Tìm trạm sạc gần nhất",
+      "rationale": "Bot đưa thông tin nhiễu (pin, nhiệt độ), user yêu cầu slot khác, rewrite không kéo nhầm số"
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "driver_assist",
+      "intent": "cruise_control",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật cruise control"},
+        {"role": "bot", "content": "Cruise control đã bật"},
+        {"role": "user", "content": "Tăng lên 90 và bật lane assist"}
+      ],
+      "rewrite": "Tăng cruise control lên 90 và bật lane assist",
+      "rationale": "Hai intent kết hợp trong một lượt user"
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "messaging",
+      "intent": "send_message",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Nhắn cho mẹ là con về muộn"},
+        {"role": "bot", "content": "Đã gửi tin nhắn"},
+        {"role": "user", "content": "Nhắn thêm cho mẹ là mai con đi họp phụ huynh"}
+      ],
+      "rewrite": "Nhắn cho mẹ là mai con đi họp phụ huynh",
+      "rationale": "Lượt cuối đã tự đủ, không cần kéo nội dung tin nhắn trước"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Mở cửa gara"},
+        {"role": "bot", "content": "Cửa gara đã mở"},
+        {"role": "user", "content": "Bật đèn ngoài nhà"},
+        {"role": "user", "content": "Tắt hết đi"}
+      ],
+      "rewrite": "Tắt hết đèn ngoài nhà và cửa gara",
+      "rationale": "Nhiều slot qua các lượt, lượt cuối ngắn với intent huỷ/tắt tổng hợp"
+    }
+  ]
+}

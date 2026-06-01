@@ -1,0 +1,140 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài nhắc nhở kiểm tra xe trước chuyến đi dài"},
+          {"role":"bot","content":"Chuyến đi ngày nào và nhắc những hạng mục nào ạ?"},
+          {"role":"user","content":"Chuyến đi ngày 20 tháng 8, nhắc kiểm tra lốp và dầu máy"},
+          {"role":"bot","content":"Nhắc trước mấy ngày và lúc mấy giờ ạ?"},
+          {"role":"user","content":"Trước 3 ngày lúc 9 giờ sáng, thêm kiểm tra đèn phanh vào danh sách luôn"}
+        ],
+        "rewrite": "Đặt nhắc kiểm tra xe trước chuyến đi ngày 20 tháng 8 vào 9 giờ sáng ngày 17 tháng 8, danh sách: lốp xe, dầu máy và đèn phanh.",
+        "rationale": "Ngày chuyến đi, danh sách hạng mục và khoảng nhắc sớm rải qua 5 lượt; rewrite tính ngược 3 ngày từ 20/8 ra 17/8 và gộp hạng mục bổ sung ở lượt cuối."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem nhiệt độ các phòng trong nhà"},
+          {"role":"bot","content":"Phòng khách 31°C, phòng ngủ chính 29°C, phòng trẻ em 33°C, phòng làm việc 28°C."},
+          {"role":"user","content":"Phòng nóng nhất bật điều hoà 24 độ gấp, con đang ngủ trong đó"}
+        ],
+        "rewrite": "Bật điều hoà phòng trẻ em, đặt nhiệt độ 24°C.",
+        "rationale": "'Phòng nóng nhất' so sánh bốn nhiệt độ rồi resolve về phòng trẻ em 33°C; ngữ cảnh 'con đang ngủ' xác nhận mức độ khẩn nhưng không thêm slot."
+      },
+      {
+        "pattern": "negation",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Chỉ đường từ đây ra sân bay Nội Bài"},
+          {"role":"bot","content":"3 tuyến: Nhật Tân – Nội Bài 28 phút, Thăng Long 35 phút, Phạm Văn Đồng – Võ Chí Công 31 phút."},
+          {"role":"user","content":"Đi tuyến nào cũng được nhưng không qua đường Thăng Long và Võ Chí Công, hay đông xe"}
+        ],
+        "rewrite": "Chỉ đường ra sân bay Nội Bài, không đi qua đường Thăng Long và không đi qua Võ Chí Công.",
+        "rationale": "Hai điều kiện phủ định tuyến đường cụ thể; rewrite để ngỏ tuyến thay thế cho hệ thống tự chọn, chỉ ràng buộc hai đường cấm."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Team tôi đang dùng công cụ gì để quản lý task?"},
+          {"role":"bot","content":"Theo lịch sử kết nối, team bạn dùng Jira cho bug tracking và Notion cho tài liệu."},
+          {"role":"user","content":"Tạo ticket Jira báo lỗi HUD lag khi vào hầm, priority High, assign cho Tuấn Anh"}
+        ],
+        "rewrite": "Tạo ticket Jira báo lỗi HUD bị lag khi vào hầm, đặt priority High, assign cho Tuấn Anh.",
+        "rationale": "Token 'Jira', 'ticket', 'priority High', 'assign' giữ nguyên; thông tin nền tảng từ lượt bot xác nhận đúng công cụ cần dùng."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đang đi qua khu công nghiệp, mùi khói nặng lắm"},
+          {"role":"bot","content":"Tôi có thể điều chỉnh hệ thống lọc không khí ngay. Bạn muốn làm gì?"},
+          {"role":"user","content":"Đóng recirculation lại, bật lọc than hoạt tính mức cao nhất và phun nước ion khử mùi"}
+        ],
+        "rewrite": "Bật recirculation, kích hoạt lọc than hoạt tính mức cao nhất và bật phun ion khử mùi.",
+        "rationale": "Ba hành động xử lý mùi song song; 'đóng recirculation' thực ra là bật chế độ tuần hoàn nội thất để ngăn không khí ngoài vào — rewrite dùng thuật ngữ chính xác."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi vừa xem concert Coldplay ở Mỹ Đình về, xúc động lắm"},
+          {"role":"bot","content":"Nghe hay quá! Bạn muốn làm gì không?"},
+          {"role":"user","content":"Phát lại bài họ kết thúc concert tối qua đi, bài đó hay nhất"}
+        ],
+        "rewrite": "Phát bài kết thúc concert Coldplay tại Mỹ Đình tối qua trên Spotify.",
+        "rationale": "'Họ' resolve về Coldplay; 'bài đó' ngầm chỉ bài kết thúc concert nhưng không có tên cụ thể trong hội thoại nên giữ nguyên mô tả, không bịa tên bài."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi video call cho bố đang ở Đà Lạt"},
+          {"role":"bot","content":"Đang kết nối video call đến bố qua FaceTime."},
+          {"role":"user","content":"Ông không dùng FaceTime đâu, đổi sang Zalo đi"},
+          {"role":"bot","content":"Đã huỷ FaceTime, đang kết nối video call Zalo đến bố."},
+          {"role":"user","content":"Bật loa ngoài lên đi nghe cho rõ"}
+        ],
+        "rewrite": "Bật loa ngoài trong khi gọi video Zalo cho bố.",
+        "rationale": "Nền tảng gọi đã sửa đúng ở lượt trước; lượt cuối chỉ bổ sung cài đặt loa trong cuộc gọi đang diễn ra, rewrite không nhắc lại lịch sử đổi app."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cập nhật tình trạng giao thông tuyến đường tôi đang đi"},
+          {"role":"bot","content":"Tuyến bạn đang đi thông thoáng, không tai nạn, camera giao thông 2km tới, trạm thu phí cách 5km phí 45.000đ, gió ngang 18km/h."},
+          {"role":"user","content":"Gió ngang vậy thì bật Cross Wind Assist đi cho an toàn"}
+        ],
+        "rewrite": "Bật Cross Wind Assist.",
+        "rationale": "Bot trả 5 thông tin giao thông; chỉ gió ngang 18km/h là lý do bật tính năng nhưng không phải slot của rewrite; token 'Cross Wind Assist' giữ nguyên."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn sạc xe rồi đi ăn trưa, tiết kiệm thời gian"},
+          {"role":"bot","content":"Bạn muốn ăn gì và sạc bao nhiêu % ạ?"},
+          {"role":"user","content":"Ăn bún riêu, sạc thêm 40%"},
+          {"role":"bot","content":"Có Eboost Vincom Bà Triệu kết hợp ẩm thực, cách 1.9km. Bún Riêu Cua Bà Liên ngay tầng B1, sạc DC 120kW ước tính 40% mất 18 phút."},
+          {"role":"user","content":"Hoàn hảo, dẫn vào đó cắm sạc rồi xuống ăn luôn"}
+        ],
+        "rewrite": "Chỉ đường đến Eboost Vincom Bà Triệu, cắm sạc DC 120kW thêm 40% pin và ăn trưa tại Bún Riêu Cua Bà Liên tầng B1.",
+        "rationale": "Điểm đến, loại sạc, mức sạc và địa điểm ăn rải qua 5 lượt; lượt cuối xác nhận cả hai hành động song song trong một địa điểm."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đọc email mới nhất trong hộp thư công việc"},
+          {"role":"bot","content":"Email từ ông Nguyễn Văn Phúc – Giám đốc Công ty CP Xây dựng Phú Hưng, gửi lúc 08:17: hỏi về tiến độ dự án Khu đô thị Bắc An Khánh, cần phản hồi trước 12h hôm nay."},
+          {"role":"user","content":"Reply ngay bảo tiến độ đang đúng kế hoạch, sẽ gửi báo cáo chi tiết trước 11h"}
+        ],
+        "rewrite": "Reply email cho ông Nguyễn Văn Phúc – Công ty CP Xây dựng Phú Hưng: tiến độ dự án Khu đô thị Bắc An Khánh đang đúng kế hoạch, báo cáo chi tiết sẽ gửi trước 11h hôm nay.",
+        "rationale": "Người nhận, công ty, tên dự án và deadline nội bộ từ lượt bot; nội dung phản hồi từ lượt cuối; rewrite gộp đủ để email có thể gửi độc lập."
+      }
+    ]
+  }

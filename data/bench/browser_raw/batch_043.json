@@ -1,0 +1,239 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi trời mưa, kiểm soát hành trình nên giữ khoảng cách nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chọn khoảng cách mức 2 hoặc mức 4; mức 4 phù hợp hơn khi trời mưa."
+    },
+    {
+    "role": "user",
+    "content": "Bật mức phù hợp hơn khi vào cao tốc."
+    }
+    ],
+    "rewrite": "Khi vào cao tốc, bật kiểm soát hành trình với khoảng cách mức 4.",
+    "rationale": "Lượt cuối chỉ nói “mức phù hợp hơn”, nên phải lấy đúng lựa chọn bot đã xác định cho điều kiện trời mưa."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lên lịch cho mèo ăn khi tôi đang lái về."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn điều khiển máy cho ăn ở căn nhà nào?"
+    },
+    {
+    "role": "user",
+    "content": "Căn hộ ở Lumi Hanoi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn cho ăn lúc nào và lượng bao nhiêu?"
+    },
+    {
+    "role": "user",
+    "content": "18 giờ 40, khẩu phần 60 gram."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn dùng ngăn thức ăn nào?"
+    },
+    {
+    "role": "user",
+    "content": "Ngăn số 2, lưu lịch đi."
+    }
+    ],
+    "rewrite": "Lưu lịch cho máy cho mèo ăn tại căn hộ Lumi Hanoi lúc 18 giờ 40 với khẩu phần 60 gram từ ngăn số 2.",
+    "rationale": "Địa điểm, thời gian, lượng thức ăn và ngăn sử dụng được cung cấp rải rác qua nhiều lượt."
+    },
+    {
+    "pattern": "correction",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm nhạc của Vũ. cho chuyến đi tối nay."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy “Bước Qua Nhau” và “Lạ Lùng” của Vũ."
+    },
+    {
+    "role": "user",
+    "content": "Mở bài đầu tiên."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị phát “Bước Qua Nhau” của Vũ."
+    },
+    {
+    "role": "user",
+    "content": "Thôi đổi sang bài còn lại, phát ở loa hàng ghế sau."
+    }
+    ],
+    "rewrite": "Phát bài “Lạ Lùng” của Vũ. ở loa hàng ghế sau.",
+    "rationale": "Yêu cầu cuối hủy lựa chọn đầu tiên và dùng “bài còn lại” để chỉ bài thứ hai trong danh sách."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "calling",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kiểm tra trạng thái xe trước khi tôi gọi điện."
+    },
+    {
+    "role": "bot",
+    "content": "Nhiệt độ động cơ hiện là 88°C và pin điện thoại còn 39%."
+    },
+    {
+    "role": "user",
+    "content": "Gọi tổng đài Bệnh viện Bạch Mai."
+    }
+    ],
+    "rewrite": "Gọi tổng đài Bệnh viện Bạch Mai.",
+    "rationale": "Hai số liệu trạng thái chỉ là nhiễu, không được đưa vào lệnh gọi điện độc lập."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm hai người trong nhóm triển khai trạm sạc."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy Lan Anh và Phạm Minh Khang trong nhóm triển khai trạm sạc."
+    },
+    {
+    "role": "user",
+    "content": "ETA là 15 phút, gửi người thứ hai qua Microsoft Teams."
+    }
+    ],
+    "rewrite": "Gửi Microsoft Teams cho Phạm Minh Khang với nội dung “ETA là 15 phút”.",
+    "rationale": "Model phải resolve “người thứ hai” và giữ nguyên các token tiếng Anh Microsoft Teams cùng ETA."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "vehicle",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe có lưu preset lái đường đèo của tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có preset nào được lưu với tên lái đường đèo của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Bật preset lái đường đèo của tôi."
+    }
+    ],
+    "rewrite": "Bật preset lái đường đèo của tôi.",
+    "rationale": "Lịch sử xác nhận chưa có cấu hình cụ thể, nên phải giữ nguyên cụm tham chiếu thay vì tự tạo thiết lập."
+    },
+    {
+    "pattern": "negation",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm đường từ Bến xe Nước Ngầm tới Sân bay Nội Bài."
+    },
+    {
+    "role": "bot",
+    "content": "Có tuyến đi qua cầu Nhật Tân và tuyến đi qua cầu Thăng Long."
+    },
+    {
+    "role": "user",
+    "content": "Chọn đường qua Thăng Long, đừng đi qua Nhật Tân."
+    }
+    ],
+    "rewrite": "Dẫn đường từ Bến xe Nước Ngầm tới Sân bay Nội Bài qua cầu Thăng Long và tránh cầu Nhật Tân.",
+    "rationale": "Lượt cuối chọn một tuyến cụ thể đồng thời phủ định rõ cây cầu không được đi qua."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Mẹ tôi đang ngồi ở ghế sau bên trái."
+    },
+    {
+    "role": "bot",
+    "content": "Đã xác định vị trí của mẹ bạn là ghế sau bên trái."
+    },
+    {
+    "role": "user",
+    "content": "Làm ấm chỗ mẹ ngồi rồi đóng cửa gió bên đó."
+    }
+    ],
+    "rewrite": "Bật sưởi ghế sau bên trái rồi đóng cửa gió tại vị trí đó.",
+    "rationale": "Cả hai thao tác đều phụ thuộc vào việc resolve “chỗ mẹ ngồi” và “bên đó” thành cùng một vị trí ghế."
+    },
+    {
+    "pattern": "correction",
+    "domain": "vehicle",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Mở cửa sổ trời cho thoáng."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã sẵn sàng mở cửa sổ trời."
+    },
+    {
+    "role": "user",
+    "content": "Không mở cửa sổ trời; chỉ hé cửa kính ghế lái 3 cm."
+    }
+    ],
+    "rewrite": "Không mở cửa sổ trời; chỉ hé cửa kính ghế lái 3 cm.",
+    "rationale": "Lượt cuối tự nêu đầy đủ việc hủy thao tác cũ và thay bằng mức mở cụ thể của cửa kính ghế lái."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Trạm sạc trước mặt đang thế nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Trạm VinFast tại Royal City hiện còn 4 cổng trống và nhiệt độ ngoài trời là 31°C."
+    },
+    {
+    "role": "user",
+    "content": "Bật Plug & Charge tại trạm VinFast Royal City."
+    }
+    ],
+    "rewrite": "Bật Plug & Charge tại trạm VinFast Royal City.",
+    "rationale": "Lượt cuối đã tự đủ nghĩa, còn số cổng trống và nhiệt độ là nhiễu không được thêm vào câu lệnh."
+    }
+    ]
+    }
+    

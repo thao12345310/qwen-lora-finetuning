@@ -1,0 +1,142 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn đến nhà bố ở số 8 Phan Đình Giót, Quận 1, TP.Hồ Chí Minh."},
+          {"role":"bot","content":"Đã lưu địa chỉ."},
+          {"role":"user","content":"Tránh đường cao tốc."},
+          {"role":"bot","content":"Đã bật tránh cao tốc."},
+          {"role":"user","content":"Đi nhanh nhất."},
+          {"role":"bot","content":"Đã chọn chế độ nhanh nhất."},
+          {"role":"user","content":"Bắt đầu."}
+        ],
+        "rewrite": "Điều hướng tới 8 Phan Đình Giót, Quận 1, TP.Hồ Chí Minh, tránh cao tốc, ưu tiên tốc độ nhanh nhất",
+        "rationale": "Người dùng cung cấp địa chỉ, ưu tiên tránh cao tốc và tốc độ nhanh nhất qua nhiều lượt, cần tổng hợp."
+      },
+      {
+        "pattern": "correction",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Phát bài \"Mona Lisa\" của Sơn Tùng M-TP."},
+          {"role":"bot","content":"Đang phát \"Mona Lisa\"..."},
+          {"role":"user","content":"Không, phát \"Lạc Trôi\" của Sơn Tùng M-TP."}
+        ],
+        "rewrite": "Phát bài \"Lạc Trôi\" của Sơn Tùng M-TP",
+        "rationale": "Người dùng sửa lại bài hát, cần phản ánh bài mới mà không giữ lại bài cũ."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có tính năng AutoPilot không?"},
+          {"role":"bot","content":"Có, bạn muốn bật."},
+          {"role":"user","content":"Bật AutoPilot."}
+        ],
+        "rewrite": "Bật AutoPilot",
+        "rationale": "Câu cuối chứa token tiếng Anh AutoPilot và yêu cầu bật, không cần thông tin từ lịch sử."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cho tôi biết trạm sạc nhanh gần đây."},
+          {"role":"bot","content":"Có trạm fastcharge ở ngõ 12, cách 1.5 km."},
+          {"role":"user","content":"Tôi muốn dùng nó."}
+        ],
+        "rewrite": "Đi tới trạm sạc fastcharge ở ngõ 12 cách 1.5 km",
+        "rationale": "Đại từ \"nó\" tham chiếu tới trạm sạc fastcharge đã được nêu trong phản hồi trước."
+      },
+      {
+        "pattern": "negation",
+        "domain": "smart_home",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật đèn trần phòng ngủ."},
+          {"role":"bot","content":"Đèn trần phòng ngủ đã bật."},
+          {"role":"user","content":"Không, đừng bật nữa."}
+        ],
+        "rewrite": "Không bật đèn trần phòng ngủ",
+        "rationale": "Câu cuối phủ định yêu cầu bật đèn, cần giữ lại ý không bật."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin nhắn cho anh Nam: \"Bạn đi làm chưa?\""},
+          {"role":"bot","content":"Tin nhắn đã chuẩn bị gửi."},
+          {"role":"user","content":"Và đặt báo thức 7h sáng."}
+        ],
+        "rewrite": "Gửi tin nhắn đến anh Nam nội dung \"Bạn đi làm chưa?\" và đặt báo thức 7:00",
+        "rationale": "Lượt cuối đồng thời yêu cầu gửi tin và đặt báo thức, cần hợp nhất hai intent."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn tới bệnh viện Bạch Mai."},
+          {"role":"bot","content":"Đã tìm Bệnh viện Bạch Mai, khoảng 8 km."},
+          {"role":"user","content":"Đi tới đó ngay."}
+        ],
+        "rewrite": "Điều hướng tới Bệnh viện Bạch Mai",
+        "rationale": "Đại từ \"đó\" phải được giải quyết dựa trên địa điểm được đề cập trước."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Xe hiện đang chạy 90km/h."},
+          {"role":"bot","content":"Tốc độ hiện tại 90km/h."},
+          {"role":"user","content":"Bật đèn pha."}
+        ],
+        "rewrite": "Bật đèn pha",
+        "rationale": "Thông tin tốc độ không liên quan tới yêu cầu bật đèn pha."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho chị Hương số 0901 234 567."},
+          {"role":"bot","content":"Đang gọi chị Hương."},
+          {"role":"user","content":"Không, gọi số 0901 234 568."}
+        ],
+        "rewrite": "Gọi chị Hương số 0901 234 568",
+        "rationale": "Người dùng sửa lại số điện thoại, cần cập nhật số mới mà không giữ số cũ."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa trong xe."},
+          {"role":"bot","content":"Điều hòa đã bật."},
+          {"role":"user","content":"Đặt nhiệt độ 24 độ."},
+          {"role":"bot","content":"Nhiệt độ đã đặt 24°C."},
+          {"role":"user","content":"Chế độ gió 3."},
+          {"role":"bot","content":"Chế độ gió 3 đã bật."},
+          {"role":"user","content":"Xong."}
+        ],
+        "rewrite": "Bật điều hòa, đặt nhiệt độ 24°C, chế độ gió 3",
+        "rationale": "Các slot nhiệt độ và chế độ gió được đưa ra rải rác, cần tổng hợp thành một câu lệnh."
+      }
+    ]
+  }

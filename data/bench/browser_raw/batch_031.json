@@ -1,0 +1,140 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm số bệnh viện gần nhất có khoa cấp cứu"},
+          {"role":"bot","content":"Bệnh viện Đức Giang cách 3.1km, số 024 3827 1100. Bệnh viện Gia Lâm cách 4.7km, số 024 3877 1923."},
+          {"role":"user","content":"Chỗ gần hơn có trực 24h không?"},
+          {"role":"bot","content":"Bệnh viện Đức Giang khoa cấp cứu trực 24h."},
+          {"role":"user","content":"Gọi vào đó ngay đi"}
+        ],
+        "rewrite": "Gọi ngay cho Bệnh viện Đức Giang số 024 3827 1100.",
+        "rationale": "'Đó' resolve về bệnh viện gần hơn đã xác nhận trực 24h; số điện thoại lấy từ lượt bot đầu."
+      },
+      {
+        "pattern": "negation",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật toàn bộ hệ thống hỗ trợ lái đi"},
+          {"role":"bot","content":"Đã bật Lane Keeping Assist, Adaptive Cruise Control 100km/h, Blind Spot Warning và Auto Emergency Braking."},
+          {"role":"user","content":"Giữ nguyên hết trừ Blind Spot Warning, tắt cái đó đi"}
+        ],
+        "rewrite": "Tắt Blind Spot Warning, giữ nguyên Lane Keeping Assist, Adaptive Cruise Control 100km/h và Auto Emergency Braking.",
+        "rationale": "Phủ định loại trừ một tính năng trong danh sách đã bật; rewrite liệt kê rõ những gì giữ và cái gì tắt."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Ai nhắn tin cho tôi vừa nãy?"},
+          {"role":"bot","content":"Anh Quốc Bảo nhắn lúc 15:33: 'Họp lúc 4h chiều ở tầng 12 nhé, quan trọng đó'."},
+          {"role":"user","content":"Nhắn lại bảo tôi đang lái xe, trả lời sau, rồi đặt nhắc nhở cho tôi lúc 3h45"}
+        ],
+        "rewrite": "Nhắn tin lại cho anh Quốc Bảo 'Mình đang lái xe, sẽ trả lời sau' và đặt nhắc nhở lúc 3 giờ 45 phút chiều.",
+        "rationale": "Hai intent độc lập trong một lượt: nhắn tin và đặt nhắc; người nhận resolve từ lượt bot đọc tin."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật ghế massage cho tôi"},
+          {"role":"bot","content":"Ghế lái hay ghế phụ ạ? Có 3 chế độ: nhẹ, vừa và mạnh."},
+          {"role":"user","content":"Ghế tôi đang ngồi, chế độ vừa, chạy 15 phút rồi tắt"}
+        ],
+        "rewrite": "Bật massage ghế lái chế độ vừa, tự động tắt sau 15 phút.",
+        "rationale": "'Ghế tôi đang ngồi' trong xe ngầm chỉ ghế lái; resolve kèm chế độ và thời gian từ lượt cuối."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem camera an ninh ngoài sân có gì không"},
+          {"role":"bot","content":"Camera phát hiện 1 người đứng trước cổng từ 16:51, chưa bấm chuông."},
+          {"role":"user","content":"Mở intercom nói chuyện với người đó xem là ai"}
+        ],
+        "rewrite": "Mở intercom để nói chuyện với người đang đứng trước cổng.",
+        "rationale": "'Người đó' resolve về người đứng trước cổng từ 16:51 mà camera phát hiện ở lượt bot."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mình muốn nghe podcast"},
+          {"role":"bot","content":"Trên Spotify có podcast 'Spiderum', 'Cà Phê Cùng Tony' và 'Vietnam Innovators'. Bạn thích thể loại nào?"},
+          {"role":"user","content":"Vietnam Innovators đi, tập mới nhất, playback speed 1.5x luôn"}
+        ],
+        "rewrite": "Phát podcast Vietnam Innovators tập mới nhất trên Spotify, tốc độ playback 1.5x.",
+        "rationale": "Token 'playback speed' giữ nguyên; tên podcast và nền tảng lấy từ danh sách bot gợi ý."
+      },
+      {
+        "pattern": "correction",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật máy lọc không khí Panasonic phòng ngủ mức 1"},
+          {"role":"bot","content":"Đã bật máy lọc không khí Panasonic phòng ngủ mức 1."},
+          {"role":"user","content":"Nhầm phòng rồi, tắt cái đó đi bật phòng em bé mới đúng, vẫn mức 1"}
+        ],
+        "rewrite": "Tắt máy lọc không khí Panasonic phòng ngủ và bật máy lọc phòng em bé mức 1.",
+        "rationale": "User đính chính phòng sai; rewrite giữ cả hành động tắt phòng cũ và bật phòng mới đúng với cùng mức."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe tôi đang tiêu hao điện những gì nhiều nhất?"},
+          {"role":"bot","content":"Điều hoà chiếm 38%, hệ thống giải trí 22%, đèn pha 18%, sưởi ghế 12%, còn lại 10%."},
+          {"role":"user","content":"Tắt sưởi ghế đi tiết kiệm điện"}
+        ],
+        "rewrite": "Tắt sưởi ghế.",
+        "rationale": "Bot liệt kê 5 mục tiêu hao điện nhưng chỉ sưởi ghế 12% là slot của rewrite; các số khác là nhiễu không đưa vào."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn đi xem phim tối nay"},
+          {"role":"bot","content":"Rạp nào bạn hay đến ạ?"},
+          {"role":"user","content":"CGV Vincom Bà Triệu"},
+          {"role":"bot","content":"Suất phim nào ạ? Tối nay có 19:30 và 21:45."},
+          {"role":"user","content":"Suất 19:30, tính xem mấy giờ phải xuất phát"}
+        ],
+        "rewrite": "Tính giờ xuất phát để đến CGV Vincom Bà Triệu kịp suất phim 19:30 tối nay.",
+        "rationale": "Rạp và suất chiếu rải qua 4 lượt; lượt cuối yêu cầu tính giờ xuất phát cần đủ cả hai slot."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"So sánh hai trạm sạc gần nhất cho tôi"},
+          {"role":"bot","content":"Trạm A: Eboost Cầu Giấy 1.9km, 8 cổng, phí 3.500đ/kWh. Trạm B: VinFast Mỹ Đình 2.6km, 12 cổng, phí 3.200đ/kWh."},
+          {"role":"user","content":"Trạm rẻ hơn còn trống cổng không?"},
+          {"role":"bot","content":"VinFast Mỹ Đình hiện còn 5 cổng trống."},
+          {"role":"user","content":"Đặt trước rồi dẫn đường vào đó luôn"}
+        ],
+        "rewrite": "Đặt trước một cổng tại trạm VinFast Mỹ Đình và chỉ đường đến đó.",
+        "rationale": "'Trạm rẻ hơn' và 'đó' đều resolve về VinFast Mỹ Đình qua hai bước suy luận giá và xác nhận trống cổng."
+      }
+    ]
+  }

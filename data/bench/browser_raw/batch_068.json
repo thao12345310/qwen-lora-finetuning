@@ -1,0 +1,137 @@
+
+{
+  "samples": [
+    {
+      "pattern": "correction",
+      "domain": "vehicle",
+      "intent": "toggle_light",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật đèn sương mù"},
+        {"role": "bot", "content": "Đèn sương mù đã bật"},
+        {"role": "user", "content": "Thôi tắt đi, bật đèn pha thay vào"}
+      ],
+      "rewrite": "Tắt đèn sương mù và bật đèn pha",
+      "rationale": "User sửa hành động từ bật sương mù sang bật đèn pha"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "messaging",
+      "intent": "send_message",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Nhắn cho anh Huy"},
+        {"role": "bot", "content": "Nội dung tin nhắn là gì?"},
+        {"role": "user", "content": "Hôm nay họp muộn"},
+        {"role": "user", "content": "Thêm là về lúc 9 giờ tối"}
+      ],
+      "rewrite": "Nhắn cho anh Huy hôm nay họp muộn về lúc 9 giờ tối",
+      "rationale": "Slot người nhận và nội dung rải qua nhiều lượt user"
+    },
+    {
+      "pattern": "negation",
+      "domain": "climate",
+      "intent": "set_climate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật điều hoà"},
+        {"role": "bot", "content": "Điều hoà đang chạy 25 độ"},
+        {"role": "user", "content": "Đừng để dưới 24, tăng nhiệt độ lên"}
+      ],
+      "rewrite": "Tăng nhiệt độ điều hoà đừng để dưới 24 độ",
+      "rationale": "Phủ định rõ ràng về ngưỡng nhiệt độ cần giữ trong rewrite"
+    },
+    {
+      "pattern": "code_switching",
+      "domain": "music",
+      "intent": "play_music_online",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Nghe nhạc lúc lái xe"},
+        {"role": "bot", "content": "Bạn thích playlist nào?"},
+        {"role": "user", "content": "Mở Apple Music Chill Hits playlist"}
+      ],
+      "rewrite": "Mở Apple Music Chill Hits playlist",
+      "rationale": "Lượt cuối đã đầy đủ với brand Apple Music"
+    },
+    {
+      "pattern": "implicit_reference",
+      "domain": "calling",
+      "intent": "call",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Gọi cho bố"},
+        {"role": "bot", "content": "Đang gọi ông Trần Văn Nam"},
+        {"role": "user", "content": "Gọi cho trường con đi"}
+      ],
+      "rewrite": "Gọi cho trường con",
+      "rationale": "Implicit reference 'trường con' giữ nguyên không bịa thông tin"
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "charging",
+      "intent": "find_charging",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Tình trạng xe thế nào"},
+        {"role": "bot", "content": "Pin 67%, lốp trước áp suất 2.3 bar"},
+        {"role": "user", "content": "Tìm trạm sạc VinFast gần đây"}
+      ],
+      "rewrite": "Tìm trạm sạc VinFast gần đây",
+      "rationale": "Thông tin nhiễu về lốp xe không được kéo vào rewrite"
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "driver_assist",
+      "intent": "lane_assist",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật auto pilot"},
+        {"role": "bot", "content": "Auto pilot đã kích hoạt"},
+        {"role": "user", "content": "Bật lane assist và giảm tốc độ xuống 80"}
+      ],
+      "rewrite": "Bật lane assist và giảm tốc độ xuống 80",
+      "rationale": "Hai hành động driver assist kết hợp trong lượt cuối"
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Mở rèm phòng khách"},
+        {"role": "bot", "content": "Rèm phòng khách đã mở"},
+        {"role": "user", "content": "Đóng cái đó lại và bật máy lạnh"}
+      ],
+      "rewrite": "Đóng rèm phòng khách và bật máy lạnh",
+      "rationale": "Đại từ 'cái đó' resolve về rèm phòng khách"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Đi bưu điện Cầu Giấy"},
+        {"role": "bot", "content": "Đang dẫn đường"},
+        {"role": "user", "content": "Tránh giờ cao điểm"},
+        {"role": "user", "content": "Chọn đường ngắn nhất"}
+      ],
+      "rewrite": "Dẫn đường đến bưu điện Cầu Giấy chọn đường ngắn nhất tránh giờ cao điểm",
+      "rationale": "Nhiều điều kiện (ngắn nhất, tránh cao điểm) tích lũy từ các lượt"
+    },
+    {
+      "pattern": "correction",
+      "domain": "vehicle",
+      "intent": "control_window",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Mở cửa sổ sau"},
+        {"role": "bot", "content": "Cửa sổ sau đã mở"},
+        {"role": "user", "content": "Đóng hết cửa sổ xe lại"}
+      ],
+      "rewrite": "Đóng hết cửa sổ xe lại",
+      "rationale": "Lượt cuối tự chứa đầy đủ intent sửa chữa, không cần context thêm"
+    }
+  ]
+}

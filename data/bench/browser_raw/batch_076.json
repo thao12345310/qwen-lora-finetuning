@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn đến sân bay Nội Bài."},
+          {"role":"bot","content":"Sân bay Nội Bài cách 35 km, thời gian dự kiến 45 phút."},
+          {"role":"user","content":"Tránh đường cao tốc."},
+          {"role":"bot","content":"Đã bật tránh cao tốc."},
+          {"role":"user","content":"Tốc độ tối đa 120km/h."},
+          {"role":"bot","content":"Tốc độ đã đặt 120km/h."},
+          {"role":"user","content":"Bắt đầu."}
+        ],
+        "rewrite": "Điều hướng tới sân bay Nội Bài, tránh cao tốc, tốc độ tối đa 120km/h",
+        "rationale": "Lượt cuối ngắn chỉ “Bắt đầu”, cần gộp các slot đã cung cấp qua các lượt trước."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đi tới nhà anh Nam, số 5 Đường Lê Thị Hồng, Hà Nội."},
+          {"role":"bot","content":"Đã lưu địa chỉ."},
+          {"role":"user","content":"Không, tôi muốn tới nhà anh Nam, số 7 Đường Lê Thị Hồng, Hà Nội."}
+        ],
+        "rewrite": "Điều hướng tới nhà anh Nam, số 7 Đường Lê Thị Hồng, Hà Nội",
+        "rationale": "Người dùng sửa lại địa chỉ, cần phản ánh thay đổi cuối cùng."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Find a fast charger near 5th Avenue, New York."},
+          {"role":"bot","content":"Nearest Tesla Supercharger is at 120 5th Ave, 0.8 km away."},
+          {"role":"user","content":"Navigate to that Supercharger."}
+        ],
+        "rewrite": "Điều hướng tới 120 5th Ave, vị trí Tesla Supercharger",
+        "rationale": "Câu cuối không cần thông tin trước, chỉ yêu cầu điều hướng tới địa điểm đã được nêu."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ phía trước bên phải."},
+          {"role":"bot","content":"Cửa sổ phía trước bên phải đã mở."},
+          {"role":"user","content":"Đóng chúng."}
+        ],
+        "rewrite": "Đóng cửa sổ phía trước bên phải",
+        "rationale": "Đại từ “chúng” tham chiếu tới cửa sổ vừa mở; cần giải quyết để tạo câu lệnh độc lập."
+      },
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play \"Leise\" by Rammstein on Spotify."},
+          {"role":"bot","content":"\"Leise\" đang phát trên Spotify."},
+          {"role":"user","content":"Don't play it."}
+        ],
+        "rewrite": "Không phát bài \"Leise\" trên Spotify",
+        "rationale": "Câu cuối phủ định hành động phát nhạc, không cần dựa vào ngữ cảnh trước."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật đèn salon và giảm độ sáng TV xuống 30%."}
+        ],
+        "rewrite": "Bật đèn salon và giảm độ sáng TV xuống 30%",
+        "rationale": "Lượt cuối chứa hai intent đồng thời, cần giữ cả hai trong một câu."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho chị Lan: \"Hôm nay gặp mình lúc 15h nhé\"."},
+          {"role":"bot","content":"Tin nhắn đã sẵn sàng gửi."},
+          {"role":"user","content":"Gửi nó ngay."}
+        ],
+        "rewrite": "Gửi tin đến chị Lan nội dung \"Hôm nay gặp mình lúc 15h nhé\" ngay lập tức",
+        "rationale": "Đại từ “nó” ám chỉ tin nhắn đã chuẩn bị, cần giải quyết để tạo lệnh đầy đủ."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết tỷ giá USD hôm nay không?"},
+          {"role":"bot","content":"1 USD = 23,500 VND."},
+          {"role":"user","content":"Đặt nhiệt độ cabin 21 độ."}
+        ],
+        "rewrite": "Đặt nhiệt độ cabin 21°C",
+        "rationale": "Thông tin tỷ giá không liên quan; câu cuối tự đủ để điều chỉnh nhiệt độ."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn sạc 80% nhanh ở khu vực Hồ Tây."},
+          {"role":"bot","content":"Có trạm FastCharge ở ngã 9, cách 2.0 km, công suất 150 kW."},
+          {"role":"user","content":"Muốn cấp 3, không thu phí."},
+          {"role":"bot","content":"Đã bật cấp 3, không tính phí."},
+          {"role":"user","content":"Đi tới đó."}
+        ],
+        "rewrite": "Điều hướng tới trạm FastCharge ở ngã 9, cách 2.0 km, công suất 150 kW, cấp 3, không thu phí",
+        "rationale": "Các slot vị trí, công suất, cấp và phí rải rác, cần tổng hợp đầy đủ trong một câu."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho bác sĩ Hà số 0910 555 666."},
+          {"role":"bot","content":"Đang gọi bác sĩ Hà."},
+          {"role":"user","content":"Không, gọi cho bác sĩ Hân số 0910 555 667."}
+        ],
+        "rewrite": "Gọi bác sĩ Hân số 0910 555 667",
+        "rationale": "Người dùng sửa lại người nhận và số điện thoại, cần phản ánh thông tin mới."
+      }
+    ]
+  }

@@ -1,0 +1,136 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn tìm trạm xăng gần nhất."},
+          {"role":"bot","content":"Trạm xăng Vinamilk nằm 2.3 km phía Tây, đang mở bán."},
+          {"role":"user","content":"Đi tới cái đó đi."}
+        ],
+        "rewrite": "Điều hướng tới trạm xăng Vinamilk",
+        "rationale": "Câu cuối chỉ dùng đại từ \"cái đó\" nên cần dựa vào lịch sử để xác định trạm xăng."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Làm ơn cho tôi biết áp suất lốp hiện tại."},
+          {"role":"bot","content":"Áp suất lốp là 32 psi ở cả 4 bánh."},
+          {"role":"user","content":"Bật đèn nội thất."}
+        ],
+        "rewrite": "Bật đèn nội thất",
+        "rationale": "Yêu cầu cuối không liên quan tới thông tin áp suất lốp mà bot vừa đưa."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở Spotify."},
+          {"role":"bot","content":"Bạn muốn nghe playlist nào?"},
+          {"role":"user","content":"Playlist \"Vũ Trụ Tình Yêu\" nhé."},
+          {"role":"bot","content":"Đã chọn playlist."},
+          {"role":"user","content":"Bật ở volume 35."}
+        ],
+        "rewrite": "Phát playlist \"Vũ Trụ Tình Yêu\" trên Spotify với âm lượng 35",
+        "rationale": "Tên playlist và dịch vụ được cung cấp qua các lượt trước, câu cuối chỉ là thiết lập âm lượng."
+      },
+      {
+        "pattern": "correction",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin nhắn cho Linh: \"Hẹn gặp 5h.\""},
+          {"role":"bot","content":"Bạn muốn gửi ngay bây giờ?"},
+          {"role":"user","content":"Không, gửi cho Lương."}
+        ],
+        "rewrite": "Gửi tin nhắn đến Lương nội dung \"Hẹn gặp 5h\"",
+        "rationale": "Người dùng sửa người nhận, vì vậy phải cập nhật slot người nhận mà không thay đổi nội dung."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tôi đang muốn bật tính năng hỗ trợ lái."},
+          {"role":"bot","content":"Bạn muốn bật Adaptive Cruise Control hay Lane Assist?"},
+          {"role":"user","content":"Bật lane assist."}
+        ],
+        "rewrite": "Bật Lane Assist",
+        "rationale": "Câu cuối sử dụng thuật ngữ tiếng Anh \"lane assist\" và không cần thông tin từ trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật nhiệt độ 24 độ trong phòng khách qua smart home."},
+          {"role":"bot","content":"Nhiệt độ phòng khách đã được đặt thành 24°C."},
+          {"role":"user","content":"Tắt đèn ở đó."}
+        ],
+        "rewrite": "Tắt đèn phòng khách",
+        "rationale": "Đại từ \"đó\" phải được giải quyết dựa trên địa điểm đã được nhắc tới trước đó."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có thể bật điều hòa không?"},
+          {"role":"bot","content":"Điều hòa hiện đang ở chế độ làm mát 22°C."},
+          {"role":"user","content":"Không, đừng bật điều hòa."}
+        ],
+        "rewrite": "Không bật điều hòa",
+        "rationale": "Câu cuối chứa phủ định rõ ràng, yêu cầu giữ nguyên ý không bật."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin nhắn cho anh Bình: \"Đến nơi nhé\"."},
+          {"role":"bot","content":"Tin nhắn đã sẵn sàng gửi."},
+          {"role":"user","content":"Và nhắc tôi sau 5 phút."}
+        ],
+        "rewrite": "Gửi tin nhắn đến anh Bình nội dung \"Đến nơi nhé\" và đặt nhắc giờ 5 phút sau",
+        "rationale": "Lượt cuối muốn thực hiện đồng thời hai intent: gửi tin và đặt nhắc, cần hợp nhất trong một câu."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cần đi đến nhà mình ở Số 12 Phố Lý Thái Tổ, Quận 1, TP.HCM."},
+          {"role":"bot","content":"Đã lưu địa chỉ."},
+          {"role":"user","content":"Đi nhanh tới đó."}
+        ],
+        "rewrite": "Điều hướng nhanh tới 12 Phố Lý Thái Tổ, Quận 1, TP.HCM",
+        "rationale": "Từ \"đó\" cần tham chiếu lại địa chỉ đã được cung cấp ở lượt trước."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Nhiệt độ ngoài trời hôm nay là 31 độ."},
+          {"role":"bot","content":"Nhiệt độ bên ngoài đang 31°C, cảm giác 33°C."},
+          {"role":"user","content":"Bật sưởi ghế cho người lái."}
+        ],
+        "rewrite": "Bật sưởi ghế cho người lái",
+        "rationale": "Thông tin nhiệt độ không liên quan, câu cuối tự chứa đủ slot để thực hiện hành động."
+      }
+    ]
+  }

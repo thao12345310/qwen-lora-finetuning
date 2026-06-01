@@ -1,0 +1,136 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi đang đi trên con đèo, muốn bật hệ thống hỗ trợ làn đường."},
+          {"role":"bot","content":"Bạn muốn bật Lane Assist ngay bây giờ?"},
+          {"role":"user","content":"Bật nó đi."}
+        ],
+        "rewrite": "Bật Lane Assist",
+        "rationale": "Câu cuối dùng đại từ \"nó\" để chỉ tính năng Lane Assist đã được đề cập."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn cho tôi biết mức tiêu hao nhiên liệu hiện tại."},
+          {"role":"bot","content":"Bạn đang tiêu hao 7.8 L/100km."},
+          {"role":"user","content":"Bật đèn hậu."}
+        ],
+        "rewrite": "Bật đèn hậu",
+        "rationale": "Thông tin tiêu hao nhiên liệu không liên quan, câu cuối tự chứa đủ slot để bật đèn hậu."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đi tới Trung tâm Thương mại Vincom Đồng Khởi."},
+          {"role":"bot","content":"Vincom Đồng Khởi cách 5.1 km, dự kiến 12 phút."},
+          {"role":"user","content":"Tránh đường cao tốc."},
+          {"role":"bot","content":"Đã bật tránh cao tốc."},
+          {"role":"user","content":"Mình muốn nhanh nhất."}
+        ],
+        "rewrite": "Điều hướng tới Vincom Đồng Khởi, tránh cao tốc, ưu tiên tốc độ nhanh nhất",
+        "rationale": "Địa điểm, yêu cầu tránh cao tốc và tốc độ nhanh nhất được đưa ra qua nhiều lượt, cần gộp lại."
+      },
+      {
+        "pattern": "correction",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm trạm sạc nhanh gần đây."},
+          {"role":"bot","content":"Có trạm FastCharge ở ngã 2, cách 1.0 km."},
+          {"role":"user","content":"Không, mình muốn trạm sạc thường."}
+        ],
+        "rewrite": "Tìm trạm sạc thường ở ngã 2, cách 1.0 km",
+        "rationale": "Người dùng sửa lại loại trạm, cần cập nhật lại slot loại trạm sạc."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play my \"Road Trip\" playlist on Apple Music."},
+          {"role":"bot","content":"Playlist \"Road Trip\" is now playing."},
+          {"role":"user","content":"Shuffle the playlist."}
+        ],
+        "rewrite": "Bật chế độ shuffle trên Apple Music",
+        "rationale": "Câu cuối chỉ yêu cầu bật shuffle, giữ nguyên token tiếng Anh \"Apple Music\"."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho anh Quang: \"Dự án đã hoàn thiện\"."},
+          {"role":"bot","content":"Tin nhắn đã sẵn sàng."},
+          {"role":"user","content":"Gửi cho người đó ngay bây giờ."}
+        ],
+        "rewrite": "Gửi tin nhắn đến anh Quang nội dung \"Dự án đã hoàn thiện\" ngay lập tức",
+        "rationale": "Đại từ \"người đó\" tham chiếu tới người nhận đã nêu ở lượt trước."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật chế độ làm ẩm trong xe."},
+          {"role":"bot","content":"Chế độ làm ẩm đã bật."},
+          {"role":"user","content":"Đừng bật chế độ ấy."}
+        ],
+        "rewrite": "Không bật chế độ làm ẩm",
+        "rationale": "Câu cuối phủ định hành động bật chế độ, không cần thông tin lịch sử."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tắt đèn bếp và giảm độ sáng TV xuống 30%."},
+          {"role":"bot","content":"Đèn bếp đã tắt, độ sáng TV giảm còn 30%."},
+          {"role":"user","content":"Còn bật đèn sưởi ở phía sau nhé."}
+        ],
+        "rewrite": "Tắt đèn bếp, giảm độ sáng TV xuống 30% và bật đèn sưởi phía sau",
+        "rationale": "Lượt cuối chứa ba hành động, cần đưa cả ba intent vào một câu lệnh."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho bác sĩ Đạt số 0988 555 666."},
+          {"role":"bot","content":"Đang gọi bác sĩ Đạt."},
+          {"role":"user","content":"Không, gọi cho anh ấy."}
+        ],
+        "rewrite": "Gọi bác sĩ Đạt số 0988 555 666",
+        "rationale": "Đại từ \"anh ấy\" chỉ bác sĩ vừa được nhắc tới, cần giải quyết để thực hiện cuộc gọi."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Giới hạn tốc độ ở đoạn này là 80km/h."},
+          {"role":"bot","content":"Bạn đang ở khu vực giới hạn 80km/h."},
+          {"role":"user","content":"Bật hệ thống giữ làn đường."}
+        ],
+        "rewrite": "Bật hệ thống giữ làn đường",
+        "rationale": "Thông tin giới hạn tốc độ không ảnh hưởng tới yêu cầu bật lane keeping, câu cuối tự chứa đủ slot."
+      }
+    ]
+  }

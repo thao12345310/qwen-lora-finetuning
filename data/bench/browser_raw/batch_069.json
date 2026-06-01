@@ -1,0 +1,136 @@
+{
+  "samples": [
+    {
+      "pattern": "negation",
+      "domain": "music",
+      "intent": "play_music_offline",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Phát bài mới đi"},
+        {"role": "bot", "content": "Đang phát 'See You Again' của Charlie Puth"},
+        {"role": "user", "content": "Đừng phát bài đó, chuyển sang nhạc Việt"}
+      ],
+      "rewrite": "Chuyển sang nhạc Việt đừng phát bài See You Again",
+      "rationale": "Phủ định rõ ràng về bài hát cụ thể cần giữ trong rewrite"
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Đi Lotte Center"},
+        {"role": "bot", "content": "Đang dẫn đường đến Lotte Center Hà Nội"},
+        {"role": "user", "content": "Chỗ gần hơn đi"}
+      ],
+      "rewrite": "Dẫn đường đến Lotte Center chỗ gần hơn",
+      "rationale": "Đại từ 'chỗ gần hơn' cần resolve về địa điểm bot đang dẫn"
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "climate",
+      "intent": "set_climate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Nhiệt độ ngoài trời bao nhiêu"},
+        {"role": "bot", "content": "Ngoài trời 33 độ, độ ẩm 65%"},
+        {"role": "user", "content": "Làm mát cabin xuống 22 độ"}
+      ],
+      "rewrite": "Làm mát cabin xuống 22 độ",
+      "rationale": "Thông tin nhiễu về thời tiết ngoài trời không được đưa vào rewrite"
+    },
+    {
+      "pattern": "code_switching",
+      "domain": "vehicle",
+      "intent": "toggle_light",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Đèn xe đang sao vậy"},
+        {"role": "bot", "content": "Đèn tự động đang hoạt động"},
+        {"role": "user", "content": "Bật Auto High Beam ngay"}
+      ],
+      "rewrite": "Bật Auto High Beam ngay",
+      "rationale": "Lượt cuối tự đầy đủ với thuật ngữ Auto High Beam"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "calling",
+      "intent": "call",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Gọi cho chị Lan"},
+        {"role": "bot", "content": "Đang gọi chị Lan"},
+        {"role": "user", "content": "Không, gọi cho sếp Minh"},
+        {"role": "user", "content": "Báo là đang kẹt xe"}
+      ],
+      "rewrite": "Gọi cho sếp Minh báo là đang kẹt xe",
+      "rationale": "Người gọi thay đổi và nội dung được tích lũy qua nhiều lượt"
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật đèn phòng ngủ"},
+        {"role": "bot", "content": "Đèn phòng ngủ đã bật"},
+        {"role": "user", "content": "Tắt quạt và bật máy lọc không khí"}
+      ],
+      "rewrite": "Tắt quạt và bật máy lọc không khí",
+      "rationale": "Hai hành động smart home kết hợp trong lượt cuối"
+    },
+    {
+      "pattern": "implicit_reference",
+      "domain": "messaging",
+      "intent": "send_message",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Nhắn cho công ty"},
+        {"role": "bot", "content": "Đã gửi cho công ty bạn"},
+        {"role": "user", "content": "Nhắn thêm cho trường con"}
+      ],
+      "rewrite": "Nhắn thêm cho trường con",
+      "rationale": "Implicit reference 'trường con' giữ nguyên mà không bịa thông tin"
+    },
+    {
+      "pattern": "correction",
+      "domain": "driver_assist",
+      "intent": "cruise_control",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật cruise control 100km/h"},
+        {"role": "bot", "content": "Cruise control đã bật ở 100km/h"},
+        {"role": "user", "content": "Giảm còn 85 thôi"}
+      ],
+      "rewrite": "Giảm cruise control còn 85km/h",
+      "rationale": "User sửa tốc độ cruise control"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "charging",
+      "intent": "find_charging",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Tìm trạm sạc"},
+        {"role": "bot", "content": "Có nhiều trạm gần đây"},
+        {"role": "user", "content": "Chọn VinFast"},
+        {"role": "user", "content": "Gần nhất ở đường Cầu Giấy"}
+      ],
+      "rewrite": "Tìm trạm sạc VinFast gần nhất ở đường Cầu Giấy",
+      "rationale": "Các slot (hãng, vị trí) được bổ sung dần qua lượt"
+    },
+    {
+      "pattern": "negation",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Đi siêu thị Big C"},
+        {"role": "bot", "content": "Đang dẫn đường"},
+        {"role": "user", "content": "Tránh đường Phạm Văn Đồng luôn"}
+      ],
+      "rewrite": "Dẫn đường đến siêu thị Big C tránh đường Phạm Văn Đồng",
+      "rationale": "Lượt cuối đã chứa đầy đủ thông tin với phủ định"
+    }
+  ]
+}

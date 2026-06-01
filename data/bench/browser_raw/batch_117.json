@@ -1,0 +1,118 @@
+{
+    "samples": [
+      {
+        "pattern": "negation",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Dẫn đường đến Lăng Bác, không đi qua đường Điện Biên Phủ nhé"}
+        ],
+        "rewrite": "Chỉ đường đến Lăng Bác, không đi qua đường Điện Biên Phủ.",
+        "rationale": "Lượt đơn đủ điểm đến và điều kiện tránh cụ thể; từ 'không' bắt buộc giữ nguyên trong rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Nâng kính xe lên hết rồi bật chế độ khóa cửa tự động khi chạy"}
+        ],
+        "rewrite": "Nâng tất cả kính xe lên và bật chế độ khoá cửa tự động khi xe chạy.",
+        "rationale": "Lượt đơn hai intent thiết bị xe độc lập, không cần lịch sử."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Mở SoundCloud phát track lo-fi mới nhất của Masew đi"}
+        ],
+        "rewrite": "Phát track lo-fi mới nhất của Masew trên SoundCloud.",
+        "rationale": "Token 'SoundCloud', 'track', 'lo-fi' giữ nguyên tiếng Anh; lượt đơn đủ nền tảng, thể loại và nghệ sĩ."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Cho tôi đường đến phòng tập gym quen của tôi, chiều nay lịch tập"}
+        ],
+        "rewrite": "Chỉ đường đến phòng tập gym quen.",
+        "rationale": "'Phòng tập gym quen' là implicit reference không có địa chỉ trong hội thoại, giữ nguyên cụm không bịa địa điểm."
+      },
+      {
+        "pattern": "negation",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tìm trạm sạc trong 8km nhưng đừng lấy trạm nào phí trên 4000đ/kWh"}
+        ],
+        "rewrite": "Tìm trạm sạc trong bán kính 8km, đừng lấy trạm có phí trên 4.000đ/kWh.",
+        "rationale": "Lượt đơn đủ bán kính và điều kiện loại trừ theo giá; từ 'đừng' và số 8km, 4000đ đều có trong hội thoại."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem các cảm biến trong nhà đang đọc chỉ số gì"},
+          {"role":"bot","content":"Cảm biến phòng khách: nhiệt độ 29°C, độ ẩm 71%, CO₂ 650ppm. Cảm biến nhà kho: nhiệt độ 34°C, độ ẩm 83%, CO₂ 420ppm. Cảm biến cửa trước: đóng."},
+          {"role":"user","content":"Nhà kho ẩm vậy, bật quạt thông gió nhà kho mức cao đi"}
+        ],
+        "rewrite": "Bật quạt thông gió nhà kho mức cao.",
+        "rationale": "Bot trả 7 chỉ số cảm biến; chỉ độ ẩm nhà kho 83% xác nhận lý do nhưng không phải slot của rewrite; các số 29°C, 71°C, 650ppm, 34°C, 420ppm đều là nhiễu."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Ghim tin nhắn quan trọng nhất của nhóm Dự án Xanh rồi tắt thông báo nhóm đó"}
+        ],
+        "rewrite": "Ghim tin nhắn quan trọng nhất trong nhóm Dự án Xanh và tắt thông báo nhóm này.",
+        "rationale": "Lượt đơn hai intent quản lý tin nhắn song song trên cùng nhóm chat, không cần lịch sử."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật Traffic Jam Assist rồi set following distance mức 4 đi"}
+        ],
+        "rewrite": "Bật Traffic Jam Assist và đặt following distance mức 4.",
+        "rationale": "Token 'Traffic Jam Assist' và 'following distance' giữ nguyên tiếng Anh; lượt đơn đủ slot tính năng và mức khoảng cách, số 4 có trong hội thoại."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi đặt robot lau sàn Ecovacs chạy lịch thứ Tư và thứ Bảy"},
+          {"role":"bot","content":"Đã ghi nhận, robot Ecovacs Deebot T20 chạy lịch lúc 9h thứ Tư và 9h thứ Bảy hằng tuần."},
+          {"role":"user","content":"Thêm thứ Hai vào lịch đó, cùng giờ đó luôn"}
+        ],
+        "rewrite": "Thêm thứ Hai vào lịch chạy robot Ecovacs Deebot T20 lúc 9h hằng tuần.",
+        "rationale": "'Giờ đó' resolve về 9h từ lịch bot xác nhận; tên robot đầy đủ và giờ 9h đều có trong hội thoại, không bịa thêm số."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật chế độ thông gió tự nhiên, không bật máy nén lạnh, tiết kiệm điện"}
+        ],
+        "rewrite": "Bật chế độ thông gió tự nhiên, không bật máy nén lạnh.",
+        "rationale": "Lượt đơn đủ chế độ bật và thiết bị bị loại trừ; từ 'không' bắt buộc giữ nguyên trong rewrite."
+      }
+    ]
+  }

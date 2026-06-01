@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Nhắn tin cho ban tổ chức sự kiện"},
+          {"role":"bot","content":"Số hoặc tên liên hệ nào ạ?"},
+          {"role":"user","content":"Chị Ngọc Hân, số 0987 112 233"},
+          {"role":"bot","content":"Nội dung nhắn gì ạ?"},
+          {"role":"user","content":"Hỏi xem còn chỗ đăng ký gian hàng B7 không, cần biết trước 5 giờ chiều nay"}
+        ],
+        "rewrite": "Nhắn tin cho chị Ngọc Hân số 0987 112 233: hỏi còn chỗ đăng ký gian hàng B7 không, cần phản hồi trước 5 giờ chiều nay.",
+        "rationale": "Tên, số điện thoại và nội dung rải qua 5 lượt; deadline 5 giờ chiều là slot quan trọng ở lượt cuối cần giữ nguyên."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Liệt kê các tính năng hỗ trợ lái đang bật"},
+          {"role":"bot","content":"Đang bật: Lane Keeping Assist, Blind Spot Warning và Forward Collision Warning."},
+          {"role":"user","content":"Tắt cái thứ hai đi, hay báo nhầm lắm"}
+        ],
+        "rewrite": "Tắt Blind Spot Warning.",
+        "rationale": "'Cái thứ hai' resolve về Blind Spot Warning theo thứ tự liệt kê của bot."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Hôm nay thứ mấy, mấy giờ rồi?"},
+          {"role":"bot","content":"Hôm nay thứ Năm, 16:42, nhiệt độ ngoài 33°C, mặt trời lặn lúc 18:21."},
+          {"role":"user","content":"Ừ, dẫn đường về nhà đi, tránh giờ cao điểm"}
+        ],
+        "rewrite": "Chỉ đường về nhà, tránh các tuyến đường cao điểm giờ này.",
+        "rationale": "Bot trả 4 thông tin nhưng chỉ hành động điều hướng về nhà là cần thiết; 33°C, giờ lặn mặt trời đều là nhiễu không đưa vào rewrite."
+      },
+      {
+        "pattern": "correction",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật radio FM 99.9 đi"},
+          {"role":"bot","content":"Đang phát FM 99.9 VOV Giao thông."},
+          {"role":"user","content":"Nhầm rồi, chuyển sang FM 96.0 mới đúng"}
+        ],
+        "rewrite": "Chuyển từ FM 99.9 sang FM 96.0.",
+        "rationale": "User đính chính tần số; rewrite giữ cả tần số cũ và mới để rõ hành động chuyển đổi."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Pin xuống 15% rồi, lo quá"},
+          {"role":"bot","content":"Trạm sạc VinFast gần nhất ở Vincom Nguyễn Chí Thanh, cách 2.8km, còn 3 cổng trống."},
+          {"role":"user","content":"Dẫn đường đến đó luôn và bật hazard light để người ta nhường đường"}
+        ],
+        "rewrite": "Chỉ đường đến trạm sạc VinFast tại Vincom Nguyễn Chí Thanh và bật đèn hazard.",
+        "rationale": "Hai intent song song: điều hướng và bật đèn khẩn cấp; 'đó' resolve về địa điểm trạm sạc từ lượt bot."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Trời bắt đầu tối rồi mà đèn chưa bật"},
+          {"role":"bot","content":"Chế độ đèn tự động đang tắt. Bạn muốn bật đèn thủ công hay bật auto?"},
+          {"role":"user","content":"Bật auto đi, khỏi lo mỗi lần"}
+        ],
+        "rewrite": "Bật chế độ đèn tự động.",
+        "rationale": "'Auto' ngầm chỉ chế độ đèn tự động mà bot đã đề cập; rewrite không nhắc lại trạng thái tắt trước đó."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài lịch tưới cây tự động cho tôi"},
+          {"role":"bot","content":"Tưới lúc mấy giờ và mấy ngày một lần ạ?"},
+          {"role":"user","content":"6 giờ sáng, cách ngày tưới một lần"},
+          {"role":"bot","content":"Tưới bao lâu mỗi lần ạ?"},
+          {"role":"user","content":"15 phút, chỉ áp dụng cho khu vườn trước nhà thôi"}
+        ],
+        "rewrite": "Cài lịch tưới tự động khu vườn trước nhà lúc 6 giờ sáng, cách ngày một lần, mỗi lần 15 phút.",
+        "rationale": "Bốn slot giờ, tần suất, thời lượng và khu vực rải qua 5 lượt; lượt cuối bổ sung slot khu vực quan trọng."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi cần gọi video call họp khẩn"},
+          {"role":"bot","content":"Dùng Zoom, Google Meet hay FaceTime ạ?"},
+          {"role":"user","content":"Google Meet đi, gọi cho Phúc Lâm và Khánh Vy cùng lúc"}
+        ],
+        "rewrite": "Tạo cuộc họp Google Meet và gọi cho Phúc Lâm và Khánh Vy.",
+        "rationale": "Token 'Google Meet' giữ nguyên; slot người tham gia và nền tảng lấy từ lượt cuối sau khi user chọn từ danh sách bot."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Chỉnh điều hoà cho tôi với, ngồi không chịu được"},
+          {"role":"bot","content":"Hiện tại điều hoà đang 20°C, quạt mức 4, chế độ cool, luồng gió hướng xuống chân."},
+          {"role":"user","content":"Tăng lên 24 độ, đừng thổi xuống chân nữa, hướng ra giữa thôi"}
+        ],
+        "rewrite": "Chỉnh điều hoà lên 24°C, hướng gió ra giữa, không thổi xuống chân.",
+        "rationale": "Rewrite giữ rõ phủ định hướng gió cũ và điều chỉnh cả nhiệt độ lẫn hướng gió mới."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem có sự cố giao thông nào trên đường mình đang đi không"},
+          {"role":"bot","content":"Có 2 điểm ùn tắc: ngã tư Khuất Duy Tiến – Nguyễn Trãi kẹt nặng và cầu Thanh Trì ùn nhẹ 1.2km."},
+          {"role":"user","content":"Tránh cái nghiêm trọng hơn, tìm đường vòng đi"}
+        ],
+        "rewrite": "Tìm đường vòng tránh điểm ùn tắc tại ngã tư Khuất Duy Tiến – Nguyễn Trãi.",
+        "rationale": "'Cái nghiêm trọng hơn' phải so sánh mức độ từ mô tả bot rồi resolve về tên giao lộ kẹt nặng cụ thể."
+      }
+    ]
+  }

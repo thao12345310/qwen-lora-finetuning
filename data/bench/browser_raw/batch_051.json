@@ -1,0 +1,133 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật cruise control."},
+          {"role":"bot","content":"Cruise control đã bật, tốc độ mặc định 90km/h."},
+          {"role":"user","content":"Thay tốc độ thành 70km/h."},
+          {"role":"bot","content":"Đã đặt tốc độ 70km/h."},
+          {"role":"user","content":"Giờ bật giữ khoảng cách an toàn 30m."}
+        ],
+        "rewrite": "Đặt khoảng cách an toàn 30m cho cruise control",
+        "rationale": "Thông tin tốc độ đã được đưa qua các lượt, cuối cùng người dùng chỉ yêu cầu khoảng cách, cần dựa trên ngữ cảnh để sinh câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "smart_home",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật đèn phòng khách."},
+          {"role":"bot","content":"Đèn phòng khách đã bật."},
+          {"role":"user","content":"Không, tắt đèn phòng khách và bật đèn phòng bếp."}
+        ],
+        "rewrite": "Tắt đèn phòng khách và bật đèn phòng bếp",
+        "rationale": "Người dùng sửa lại hành động, chỉ cần thể hiện intent cuối cùng."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Find a fast charger on the Tesla Supercharger network near me."},
+          {"role":"bot","content":"Searching for nearby Tesla Supercharger stations…"}
+        ],
+        "rewrite": "Tìm trạm sạc nhanh Tesla Supercharger gần nhất",
+        "rationale": "Câu cuối không cần ngữ cảnh trước, chỉ yêu cầu tìm trạm sạc nhanh."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ bên phải phía sau."},
+          {"role":"bot","content":"Cửa sổ bên phải phía sau đã mở."},
+          {"role":"user","content":"Đóng nó."}
+        ],
+        "rewrite": "Đóng cửa sổ bên phải phía sau",
+        "rationale": "Đại từ \"nó\" phải được liên kết tới cửa sổ vừa mở trong lịch sử."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Có quán ăn Hokkaido gần đây không?"},
+          {"role":"bot","content":"Có quán Hokkaido ở số 15 Đường Lê Lợi, Quận 1, cách bạn 1.2 km."},
+          {"role":"user","content":"Đưa tôi tới đó."}
+        ],
+        "rewrite": "Điều hướng tới quán Hokkaido, số 15 Đường Lê Lợi, Quận 1",
+        "rationale": "Đại từ \"đó\" ám chỉ địa điểm đã được bot cung cấp."
+      },
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật bài \"Cứ Thế Đi\" của Sơn Tùng M-TP trên Spotify."},
+          {"role":"bot","content":"Đang phát \"Cứ Thế Đi\" trên Spotify."},
+          {"role":"user","content":"Không, đừng bật nhạc."}
+        ],
+        "rewrite": "Không bật nhạc",
+        "rationale": "Câu cuối phủ định hành động bật nhạc, cần giữ lại phủ định."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho chị Thảo: \"Bữa trưa lúc 12h nhé\" và nhắc tôi 10 phút trước."}
+        ],
+        "rewrite": "Gửi tin đến chị Thảo nội dung \"Bữa trưa lúc 12h nhé\" và đặt nhắc 10 phút trước",
+        "rationale": "Lượt cuối chứa hai intent (gửi tin và nhắc), cần đưa cả hai trong một câu."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Battery còn 80% và đang ở mức 25°C ngoài trời."},
+          {"role":"bot","content":"Battery 80%, nhiệt độ ngoài trời 25°C."},
+          {"role":"user","content":"Đặt nhiệt độ trong xe 22 độ."}
+        ],
+        "rewrite": "Đặt nhiệt độ cabin 22°C",
+        "rationale": "Thông tin pin và thời tiết không liên quan, chỉ cần thiết lập nhiệt độ."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đi tới phố Điện Biên Phủ."},
+          {"role":"bot","content":"Bạn muốn đến số 68 phố Điện Biên Phủ, Quận Ba Đình."},
+          {"role":"user","content":"Không, muốn tới phố Điện Biên, số 30."}
+        ],
+        "rewrite": "Điều hướng tới số 30 phố Điện Biên, Quận Ba Đình",
+        "rationale": "Người dùng sửa lại địa chỉ, cần phản ánh thông tin mới."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play local file \"Thương Nhau.mp3\"."},
+          {"role":"bot","content":"Đang phát Thương Nhau.mp3."},
+          {"role":"user","content":"Giảm volume xuống 40."}
+        ],
+        "rewrite": "Đặt âm lượng 40 cho Thương Nhau.mp3",
+        "rationale": "Câu cuối giữ nguyên token tệp .mp3 và nhu cầu điều chỉnh âm lượng."
+      }
+    ]
+  }

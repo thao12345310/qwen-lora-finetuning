@@ -1,0 +1,136 @@
+{
+  "samples": [
+    {
+      "pattern": "negation",
+      "domain": "vehicle",
+      "intent": "toggle_light",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật đèn hậu"},
+        {"role": "bot", "content": "Đèn hậu đã bật"},
+        {"role": "user", "content": "Đừng bật đèn hậu, chỉ cần đèn vị trí thôi"}
+      ],
+      "rewrite": "Bật đèn vị trí đừng bật đèn hậu",
+      "rationale": "Phủ định rõ ràng hành động đèn cụ thể"
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "calling",
+      "intent": "call",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Gọi cho bạn thân"},
+        {"role": "bot", "content": "Đang gọi Phạm Minh Quân"},
+        {"role": "user", "content": "Hỏi người thứ hai xem chiều nay rảnh không"}
+      ],
+      "rewrite": "Gọi cho Phạm Minh Quân hỏi chiều nay rảnh không",
+      "rationale": "Đại từ 'người thứ hai' resolve về người bot vừa gọi"
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "music",
+      "intent": "play_music_offline",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Pin Bluetooth còn bao nhiêu"},
+        {"role": "bot", "content": "Bluetooth còn 85%, kết nối ổn"},
+        {"role": "user", "content": "Phát bài 'Em Của Ngày Hôm Qua'"}
+      ],
+      "rewrite": "Phát bài 'Em Của Ngày Hôm Qua'",
+      "rationale": "Thông tin pin Bluetooth nhiễu không liên quan đến bài hát"
+    },
+    {
+      "pattern": "code_switching",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Muốn đi ăn"},
+        {"role": "bot", "content": "Bạn muốn đi đâu?"},
+        {"role": "user", "content": "Navigate to Phở Thìn using Waze"}
+      ],
+      "rewrite": "Navigate to Phở Thìn using Waze",
+      "rationale": "Lượt cuối tự đầy đủ với code-switching Waze"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật đèn ngoài sân"},
+        {"role": "bot", "content": "Đèn sân đã bật"},
+        {"role": "user", "content": "Bật thêm camera"},
+        {"role": "user", "content": "Tắt sau 30 phút"}
+      ],
+      "rewrite": "Bật đèn sân và camera tắt sau 30 phút",
+      "rationale": "Nhiều slot thiết bị và thời gian tích lũy"
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "messaging",
+      "intent": "send_message",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Nhắn cho đội nhóm"},
+        {"role": "bot", "content": "Đang soạn tin"},
+        {"role": "user", "content": "Báo họp lúc 10h và gửi file đính kèm"}
+      ],
+      "rewrite": "Nhắn cho đội nhóm báo họp lúc 10h và gửi file đính kèm",
+      "rationale": "Hai hành động nhắn tin + đính kèm kết hợp"
+    },
+    {
+      "pattern": "implicit_reference",
+      "domain": "climate",
+      "intent": "set_climate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Làm mát xe đi"},
+        {"role": "bot", "content": "Điều hoà đang 24 độ"},
+        {"role": "user", "content": "Tương tự như nhà tôi"}
+      ],
+      "rewrite": "Làm mát xe tương tự như nhà tôi",
+      "rationale": "Implicit reference 'nhà tôi' giữ nguyên không bịa nhiệt độ"
+    },
+    {
+      "pattern": "correction",
+      "domain": "charging",
+      "intent": "find_charging",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Tìm trạm sạc nhanh"},
+        {"role": "bot", "content": "Trạm VinFast 150kW gần nhất"},
+        {"role": "user", "content": "Không, tìm trạm chậm hơn nhưng miễn phí"}
+      ],
+      "rewrite": "Tìm trạm sạc miễn phí",
+      "rationale": "User thay đổi tiêu chí từ sạc nhanh sang miễn phí"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "driver_assist",
+      "intent": "lane_assist",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật hỗ trợ đỗ xe"},
+        {"role": "bot", "content": "Hỗ trợ đỗ xe sẵn sàng"},
+        {"role": "user", "content": "Bật cảnh báo va chạm"},
+        {"role": "user", "content": "Giữ khoảng cách 50m"}
+      ],
+      "rewrite": "Bật cảnh báo va chạm giữ khoảng cách 50m với hỗ trợ đỗ xe",
+      "rationale": "Nhiều tính năng driver assist được tích hợp dần"
+    },
+    {
+      "pattern": "negation",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Đi trung tâm thương mại"},
+        {"role": "bot", "content": "Có nhiều trung tâm gần đây"},
+        {"role": "user", "content": "Đi Aeon Mall không đi đường vòng"}
+      ],
+      "rewrite": "Đi Aeon Mall không đi đường vòng",
+      "rationale": "Lượt cuối đã tự đầy đủ với phủ định"
+    }
+  ]
+}

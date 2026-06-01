@@ -1,0 +1,247 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Ở nhà tôi điều khiển được những cửa nào từ trên xe?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể điều khiển cửa gara và cổng trượt tại căn nhà ở Vinhomes Ocean Park 2."
+    },
+    {
+    "role": "user",
+    "content": "Khi còn cách nhà 200 mét, mở cái thứ hai."
+    }
+    ],
+    "rewrite": "Khi xe còn cách căn nhà ở Vinhomes Ocean Park 2 200 mét, hãy mở cổng trượt.",
+    "rationale": "Cụm “cái thứ hai” phải được ánh xạ chính xác sang cổng trượt, không nhầm với cửa gara."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi cần gọi cho nhân viên hỗ trợ giao xe."
+    },
+    {
+    "role": "bot",
+    "content": "Trong danh bạ có anh Tuấn Kiệt và chị Phương Linh thuộc bộ phận giao xe."
+    },
+    {
+    "role": "user",
+    "content": "Chị Phương Linh nhé."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gọi số cá nhân hay số công việc của chị Phương Linh?"
+    },
+    {
+    "role": "user",
+    "content": "Số công việc, qua Bluetooth."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị cuộc gọi qua hệ thống xe."
+    },
+    {
+    "role": "user",
+    "content": "Gọi luôn đi."
+    }
+    ],
+    "rewrite": "Gọi cho chị Phương Linh thuộc bộ phận giao xe bằng số công việc qua Bluetooth.",
+    "rationale": "Lượt cuối không chứa slot nào, trong khi người nhận, loại số và phương thức gọi nằm rải rác ở các lượt trước."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe còn đi được bao xa nữa?"
+    },
+    {
+    "role": "bot",
+    "content": "Quãng đường ước tính còn lại là 286 km và nhiệt độ ngoài trời hiện là 33°C."
+    },
+    {
+    "role": "user",
+    "content": "Bật thông gió ghế lái mức 3."
+    }
+    ],
+    "rewrite": "Bật thông gió ghế lái ở mức 3.",
+    "rationale": "Hai con số về quãng đường và nhiệt độ ngoài trời là nhiễu, không được đưa vào điều khiển ghế."
+    },
+    {
+    "pattern": "correction",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Hẹn sạc chiếc VinFast VF 6 ở nhà tối nay."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn bắt đầu lúc nào và sạc đến mức pin bao nhiêu?"
+    },
+    {
+    "role": "user",
+    "content": "21 giờ, đến 85%."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị lịch sạc VinFast VF 6 tại nhà lúc 21 giờ đến 85%."
+    },
+    {
+    "role": "user",
+    "content": "Đổi thành 23 giờ và chỉ sạc đến 70%."
+    }
+    ],
+    "rewrite": "Hẹn sạc chiếc VinFast VF 6 ở nhà lúc 23 giờ và chỉ sạc đến 70%.",
+    "rationale": "Lượt cuối thay đổi cả giờ bắt đầu lẫn giới hạn pin, còn xe và địa điểm phải lấy từ lịch sử."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Gợi ý podcast tiếng Việt để nghe lúc lái đường dài."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể nghe Have A Sip của Vietcetera hoặc The Present Writer của Chi Nguyễn."
+    },
+    {
+    "role": "user",
+    "content": "Mở show đầu tiên trên Apple Podcasts nhé."
+    }
+    ],
+    "rewrite": "Mở podcast Have A Sip của Vietcetera trên Apple Podcasts.",
+    "rationale": "Model phải resolve “show đầu tiên” và giữ nguyên tên riêng tiếng Anh của podcast cùng nền tảng."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "navigation",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi chưa lưu địa điểm lớp yoga trong xe đúng không?"
+    },
+    {
+    "role": "bot",
+    "content": "Đúng, hiện chưa có địa chỉ lớp yoga nào được lưu."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn đường đến chỗ tập yoga của tôi."
+    }
+    ],
+    "rewrite": "Dẫn đường đến chỗ tập yoga của tôi.",
+    "rationale": "Không có địa chỉ cụ thể trong lịch sử nên gold phải giữ nguyên tham chiếu ngầm, tuyệt đối không tự bịa điểm đến."
+    },
+    {
+    "pattern": "negation",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm chỗ đỗ xe gần phố Đồng Khởi."
+    },
+    {
+    "role": "bot",
+    "content": "Có bãi đỗ tại Saigon Centre và bãi đỗ tại Vincom Center Đồng Khởi."
+    },
+    {
+    "role": "user",
+    "content": "Điểm thứ hai gần hơn, bạn có muốn bật hỗ trợ đỗ tự động không?"
+    },
+    {
+    "role": "bot",
+    "content": "Tôi có thể dẫn tới bãi đỗ Vincom Center Đồng Khởi và kích hoạt hỗ trợ đỗ tự động."
+    },
+    {
+    "role": "user",
+    "content": "Tới đó nhưng đừng tự động đánh lái."
+    }
+    ],
+    "rewrite": "Dẫn tới bãi đỗ Vincom Center Đồng Khởi nhưng đừng kích hoạt tính năng tự động đánh lái.",
+    "rationale": "Lượt cuối dùng “tới đó” cho địa điểm đã chọn và phủ định rõ một chức năng hỗ trợ lái."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Ghế trẻ em đang lắp ở cửa nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Ghế trẻ em đang được lắp tại vị trí sau bên phải."
+    },
+    {
+    "role": "user",
+    "content": "Khóa cửa bên có ghế trẻ em rồi gập cả hai gương."
+    }
+    ],
+    "rewrite": "Khóa cửa sau bên phải nơi lắp ghế trẻ em rồi gập cả hai gương chiếu hậu.",
+    "rationale": "Model phải phục hồi đúng vị trí cửa từ lịch sử và giữ cả hai hành động trong cùng một lệnh."
+    },
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đọc các tin Zalo chưa trả lời giúp tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có tin từ mẹ hỏi mấy giờ về và tin từ chị Khánh Vy hỏi có ghé siêu thị không."
+    },
+    {
+    "role": "user",
+    "content": "Trả lời người đầu là con về sau giờ làm."
+    }
+    ],
+    "rewrite": "Gửi Zalo cho mẹ với nội dung “Con về sau giờ làm”.",
+    "rationale": "Lượt cuối chỉ nêu “người đầu”, nên cần xác định đúng người gửi đầu tiên là mẹ."
+    },
+    {
+    "pattern": "correction",
+    "domain": "navigation",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lập đường đi tới Landmark 81."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã sẵn sàng dẫn đường tới Landmark 81."
+    },
+    {
+    "role": "user",
+    "content": "Đừng đi tới Landmark 81 nữa; dẫn tôi đến Thảo Cầm Viên Sài Gòn."
+    }
+    ],
+    "rewrite": "Đừng dẫn đường tới Landmark 81 nữa; hãy dẫn tôi đến Thảo Cầm Viên Sài Gòn.",
+    "rationale": "Lượt cuối đã tự đủ nghĩa và thay thế hoàn toàn điểm đến cũ bằng yêu cầu mới."
+    }
+    ]
+    }
+    

@@ -1,0 +1,271 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Ghế lái có những chế độ làm dễ chịu nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chọn sưởi ghế lái hoặc thông gió ghế lái."
+    },
+    {
+    "role": "user",
+    "content": "Bật lựa chọn thứ hai ở mức 2."
+    }
+    ],
+    "rewrite": "Bật thông gió ghế lái ở mức 2.",
+    "rationale": "Lượt cuối chỉ nhắc “lựa chọn thứ hai”, nên cần phục hồi đúng chế độ thông gió từ danh sách trước đó."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tạo lịch sạc trước chuyến đi cuối tuần."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn sạc chiếc xe nào và tại đâu?"
+    },
+    {
+    "role": "user",
+    "content": "Chiếc VinFast VF 7 tại Lotte Mall West Lake Hanoi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn bắt đầu sạc vào thời điểm nào?"
+    },
+    {
+    "role": "user",
+    "content": "6 giờ 30 sáng thứ Bảy."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn giới hạn pin ở mức nào và dùng loại sạc nào?"
+    },
+    {
+    "role": "user",
+    "content": "90%, sạc nhanh CCS2."
+    }
+    ],
+    "rewrite": "Lên lịch sạc nhanh CCS2 cho VinFast VF 7 tại Lotte Mall West Lake Hanoi lúc 6 giờ 30 sáng thứ Bảy và giới hạn pin ở 90%.",
+    "rationale": "Mẫu buộc model tổng hợp mẫu xe, địa điểm, thời gian, loại sạc và giới hạn pin từ bốn lượt user."
+    },
+    {
+    "pattern": "correction",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Dẫn tôi tới Bệnh viện Chợ Rẫy."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị tuyến đường tới Bệnh viện Chợ Rẫy."
+    },
+    {
+    "role": "user",
+    "content": "Tôi cần đón người ở Ga Sài Gòn trước."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn đổi điểm đến sang Ga Sài Gòn hay thêm điểm dừng?"
+    },
+    {
+    "role": "user",
+    "content": "Đổi sang ga đó thôi."
+    }
+    ],
+    "rewrite": "Đổi điểm đến sang Ga Sài Gòn.",
+    "rationale": "Lượt cuối dùng “ga đó” và hủy kế hoạch tới bệnh viện, nên gold chỉ giữ điểm đến mới."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "calling",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo cáo nhanh trạng thái hành trình."
+    },
+    {
+    "role": "bot",
+    "content": "Xe còn 74% pin và dự kiến tới nơi lúc 16 giờ 20."
+    },
+    {
+    "role": "user",
+    "content": "Gọi cho chú Hùng bằng số di động."
+    }
+    ],
+    "rewrite": "Gọi cho chú Hùng bằng số di động.",
+    "rationale": "Phần trăm pin và giờ đến nơi là dữ kiện nhiễu, không được gắn vào cuộc gọi."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lúc đi cao tốc xe hỗ trợ giữ tốc độ kiểu nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể dùng Cruise Control thường hoặc Adaptive Cruise Control."
+    },
+    {
+    "role": "user",
+    "content": "Bật option sau, giữ 100 km/h."
+    }
+    ],
+    "rewrite": "Bật Adaptive Cruise Control và đặt tốc độ 100 km/h.",
+    "rationale": "Model phải xác định “option sau” là Adaptive Cruise Control và giữ nguyên token tiếng Anh trong lệnh."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "messaging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe có lưu liên hệ bác trông trẻ của tôi không?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có liên hệ nào được lưu với nhãn bác trông trẻ."
+    },
+    {
+    "role": "user",
+    "content": "Nhắn bác trông trẻ là tôi đến đón muộn."
+    }
+    ],
+    "rewrite": "Nhắn bác trông trẻ của tôi với nội dung “Tôi đến đón muộn”.",
+    "rationale": "Không có tên hay số liên hệ cụ thể trong lịch sử, nên không được tự thay cụm tham chiếu bằng một người được bịa ra."
+    },
+    {
+    "pattern": "negation",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm các phiên bản bài “Đi Để Trở Về” của Soobin Hoàng Sơn."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy bản gốc và bản acoustic của “Đi Để Trở Về” do Soobin Hoàng Sơn thể hiện."
+    },
+    {
+    "role": "user",
+    "content": "Bản acoustic nghe nhẹ hơn nhỉ?"
+    },
+    {
+    "role": "bot",
+    "content": "Đúng, bản acoustic có phối khí nhẹ hơn."
+    },
+    {
+    "role": "user",
+    "content": "Phát bản đó, đừng phát bản gốc."
+    }
+    ],
+    "rewrite": "Phát bản acoustic của bài “Đi Để Trở Về” do Soobin Hoàng Sơn thể hiện và đừng phát bản gốc.",
+    "rationale": "Lượt cuối vừa tham chiếu bản acoustic đã bàn tới vừa loại trừ rõ bản gốc."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lốp nào đang cần chú ý?"
+    },
+    {
+    "role": "bot",
+    "content": "Lốp sau bên trái của xe đang có cảnh báo áp suất thấp."
+    },
+    {
+    "role": "user",
+    "content": "Có cần dừng xe ngay không?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn nên kiểm tra lốp tại nơi an toàn sớm nhất có thể."
+    },
+    {
+    "role": "user",
+    "content": "Hiện vị trí bánh đó rồi bật đèn cảnh báo nguy hiểm."
+    }
+    ],
+    "rewrite": "Hiển thị vị trí lốp sau bên trái đang có cảnh báo áp suất thấp rồi bật đèn cảnh báo nguy hiểm.",
+    "rationale": "Model phải resolve “bánh đó” thành đúng lốp gặp vấn đề và giữ cả thao tác hiển thị lẫn bật đèn."
+    },
+    {
+    "pattern": "correction",
+    "domain": "smart_home",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi tôi về tới nhà, mở cửa gara."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị tự động mở cửa gara khi bạn về nhà."
+    },
+    {
+    "role": "user",
+    "content": "Không mở cửa gara; bật đèn lối vào khi tôi tới Crescent Mall."
+    }
+    ],
+    "rewrite": "Không mở cửa gara; hãy bật đèn lối vào khi tôi tới Crescent Mall.",
+    "rationale": "Lượt cuối tự chứa đầy đủ việc hủy hành động cũ và thiết lập hành động mới tại địa điểm cụ thể."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lập hành trình mua đồ rồi ghé lấy xe giúp tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn mua đồ ở đâu trước?"
+    },
+    {
+    "role": "user",
+    "content": "Vincom Center Bà Triệu."
+    },
+    {
+    "role": "bot",
+    "content": "Sau đó bạn muốn đến đâu để lấy xe?"
+    },
+    {
+    "role": "user",
+    "content": "Bãi xe Tràng Tiền Plaza."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có yêu cầu gì về tuyến đường hoặc thời gian đến không?"
+    },
+    {
+    "role": "user",
+    "content": "Tránh phố Huế và tới bãi xe trước 20 giờ."
+    }
+    ],
+    "rewrite": "Dẫn đường tới Vincom Center Bà Triệu trước, sau đó tới bãi xe Tràng Tiền Plaza trước 20 giờ và tránh phố Huế.",
+    "rationale": "Hai điểm dừng, thứ tự hành trình, thời hạn đến và tuyến cần tránh được cung cấp qua nhiều lượt khác nhau."
+    }
+    ]
+    }
+    

@@ -1,0 +1,240 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "driver_assist",
+        "intent": "toggle_feature",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Mở hệ thống camera 360 độ lên."
+          },
+          {
+            "role": "bot",
+            "content": "Camera 360 đã mở. Bạn muốn xem góc nhìn toàn cảnh hay góc cận cảnh?"
+          },
+          {
+            "role": "user",
+            "content": "Cho mình xem góc cận."
+          },
+          {
+            "role": "bot",
+            "content": "Bạn muốn xem cận cảnh phía trước, phía sau hay hai bên sườn xe?"
+          },
+          {
+            "role": "user",
+            "content": "Phía sườn bên lốp phụ ấy, để mình canh lề đá."
+          }
+        ],
+        "rewrite": "Mở camera 360 ở góc nhìn cận cảnh phía sườn bên lốp phụ để mình canh lề đá.",
+        "rationale": "Thông tin thiết lập camera bị phân tách qua nhiều lượt: chế độ (góc cận) và vị trí (sườn bên lốp phụ). Cần gom tất cả lại từ lịch sử để ra lệnh điều khiển chính xác."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Không khí ở nhà hôm nay thế nào?"
+          },
+          {
+            "role": "bot",
+            "content": "Nhiệt độ trong nhà là 28 độ C, độ ẩm 75%. Mức độ bụi mịn PM2.5 là 60 AQI. Tủ lạnh đang chạy công suất 120W, tivi phòng khách đang tắt."
+          },
+          {
+            "role": "user",
+            "content": "Bật máy lọc không khí ở phòng khách lên chế độ Turbo giùm."
+          }
+        ],
+        "rewrite": "Bật máy lọc không khí ở phòng khách ở nhà lên chế độ Turbo giùm.",
+        "rationale": "Bot cung cấp một loạt chỉ số kỹ thuật và trạng thái thiết bị thừa thãi (28 độ, 75%, PM2.5, tủ lạnh, tivi). Người dùng chỉ có intent bật máy lọc không khí, model phải loại bỏ toàn bộ thông tin nhiễu."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "vehicle",
+        "intent": "toggle_feature",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Hệ thống treo dạo này hoạt động ổn không?"
+          },
+          {
+            "role": "bot",
+            "content": "Phuộc nhún và hệ thống treo đang ở trạng thái tốt, không ghi nhận mã lỗi nào."
+          },
+          {
+            "role": "user",
+            "content": "Chuyển sang chế độ Eco mode và kích hoạt Regenerative Braking mức cao nhất nhé."
+          }
+        ],
+        "rewrite": "Chuyển sang chế độ Eco mode và kích hoạt Regenerative Braking mức cao nhất nhé.",
+        "rationale": "Câu lệnh tự mang đầy đủ ngữ nghĩa, chứa nhiều thuật ngữ tiếng Anh chuyên ngành xe điện (Eco mode, Regenerative Braking). Không cần dịch thuật và cũng không phụ thuộc vào context về hệ thống treo."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Chiều nay anh phải ra sân bay Tân Sơn Nhất đón sếp."
+          },
+          {
+            "role": "bot",
+            "content": "Lộ trình đến ga quốc nội sân bay Tân Sơn Nhất mất khoảng 40 phút. Bạn có muốn đi ngay không?"
+          },
+          {
+            "role": "user",
+            "content": "Chưa, cậu tìm xem quanh bãi đỗ xe đó có trụ sạc AC nào không đã."
+          }
+        ],
+        "rewrite": "Tìm xem quanh bãi đỗ xe của sân bay Tân Sơn Nhất có trụ sạc AC nào không đã.",
+        "rationale": "Cụm 'bãi đỗ xe đó' ngầm ám chỉ sân bay Tân Sơn Nhất đã được đề cập ở lượt thoại đầu tiên. Cần phải lấy đúng địa danh này để lệnh tìm trạm sạc có ý nghĩa."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "read_message",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Sáng nay có email nào quan trọng gửi tới không?"
+          },
+          {
+            "role": "bot",
+            "content": "Có 3 email chưa đọc. Một cái từ phòng Hành chính nhân sự, một cái từ ngân hàng Techcombank, và một cái từ anh Hoàng đối tác."
+          },
+          {
+            "role": "user",
+            "content": "Đọc cho anh nội dung của cái cuối cùng đi."
+          }
+        ],
+        "rewrite": "Đọc cho anh nội dung email của anh Hoàng đối tác đi.",
+        "rationale": "Đại từ 'cái cuối cùng' tham chiếu tới danh sách email bot vừa liệt kê. Model phải đếm và xác định đúng đối tượng là email từ 'anh Hoàng đối tác' để điền vào câu lệnh."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Kiểm tra nhiệt độ khoang xe xem."
+          },
+          {
+            "role": "bot",
+            "content": "Nhiệt độ trong xe hiện đang là 30 độ C."
+          },
+          {
+            "role": "user",
+            "content": "Bật điều hòa xuống 20 độ nhưng cấm thổi gió trực tiếp vào mặt nhé, khô da lắm."
+          }
+        ],
+        "rewrite": "Bật điều hòa xuống 20 độ nhưng cấm thổi gió trực tiếp vào mặt nhé, khô da lắm.",
+        "rationale": "Câu lệnh tự mang đầy đủ ngữ nghĩa về nhiệt độ mong muốn và chứa một intent phủ định rõ ràng (cấm thổi gió vào mặt). Nó độc lập hoàn toàn nên không cần kéo thêm dữ liệu từ lượt trước."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Dẫn đường ra Lăng Bác chơi đi."
+          },
+          {
+            "role": "bot",
+            "content": "Đang thiết lập lộ trình tới Lăng Chủ tịch Hồ Chí Minh qua đường Điện Biên Phủ."
+          },
+          {
+            "role": "user",
+            "content": "À thôi cuối tuần đường đó cấm xe, đổi hướng ra Hồ Tây uống cafe đi."
+          }
+        ],
+        "rewrite": "Hủy lộ trình tới Lăng Bác và dẫn đường ra Hồ Tây uống cafe đi.",
+        "rationale": "Người dùng thay đổi quyết định, hủy bỏ đích đến cũ (Lăng Bác) để chuyển sang đích mới (Hồ Tây). Rewrite cần nắm bắt được intent huỷ lộ trình cũ và thiết lập lộ trình mới này."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "toggle_feature",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Đèn trần ghế sau nãy giờ vẫn sáng à?"
+          },
+          {
+            "role": "bot",
+            "content": "Vâng, đèn đọc sách phía sau bên trái đang được bật."
+          },
+          {
+            "role": "user",
+            "content": "Tắt nó giùm anh, xong rồi chốt luôn toàn bộ cửa ra vào lại."
+          }
+        ],
+        "rewrite": "Tắt đèn đọc sách phía sau bên trái giùm anh, xong rồi chốt luôn toàn bộ cửa ra vào xe lại.",
+        "rationale": "Lượt user gộp 2 intent: tắt đèn (cần resolve đại từ 'nó' từ câu bot) và khóa cửa (mệnh lệnh mới). Phải gom đủ cả 2 vế để không làm mất hành động nào."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": false,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Danh bạ đã đồng bộ chưa?"
+          },
+          {
+            "role": "bot",
+            "content": "Danh bạ từ điện thoại Samsung Galaxy S23 đã được đồng bộ hoàn tất."
+          },
+          {
+            "role": "user",
+            "content": "Tắt nhạc đang phát đi và gọi điện thoại nội bộ cho phòng IT công ty."
+          }
+        ],
+        "rewrite": "Tắt nhạc đang phát đi và gọi điện thoại nội bộ cho phòng IT công ty.",
+        "rationale": "Chứa 2 intent hoàn toàn độc lập (tắt media và thực hiện cuộc gọi), có đầy đủ đối tượng để thực thi. Câu tự đủ nghĩa nên không lấy thông tin tên thiết bị Samsung từ bot."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {
+            "role": "user",
+            "content": "Tìm bài hát cho anh."
+          },
+          {
+            "role": "bot",
+            "content": "Anh muốn nghe bài hát cụ thể nào hay tìm theo ca sĩ?"
+          },
+          {
+            "role": "user",
+            "content": "Tìm nhạc của Binz."
+          },
+          {
+            "role": "bot",
+            "content": "Binz có nhiều bài hit như Bigcityboi, Sao Cũng Được, OK. Anh muốn phát bài nào?"
+          },
+          {
+            "role": "user",
+            "content": "Bật bài OK lên nghe cho chill."
+          }
+        ],
+        "rewrite": "Bật bài hát OK của Binz lên nghe cho chill.",
+        "rationale": "Các slot phục vụ cho việc phát nhạc trực tuyến (tên ca sĩ Binz, tên bài hát OK) bị xé lẻ qua nhiều lượt thoại hỏi đáp. Cần tổng hợp lại để hệ thống truy vấn đúng bài hát của đúng nghệ sĩ."
+      }
+    ]
+  }

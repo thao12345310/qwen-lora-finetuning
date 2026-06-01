@@ -1,0 +1,263 @@
+{
+    "samples": [
+    {
+    "pattern": "implicit_reference",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lưu giúp tôi: công ty là tòa Bitexco Financial Tower."
+    },
+    {
+    "role": "bot",
+    "content": "Đã ghi nhớ công ty của bạn tại Bitexco Financial Tower, Quận 1."
+    },
+    {
+    "role": "user",
+    "content": "Nhà tôi thì ở Masteri Thảo Điền."
+    },
+    {
+    "role": "bot",
+    "content": "Đã lưu nhà của bạn tại Masteri Thảo Điền."
+    },
+    {
+    "role": "user",
+    "content": "Giờ cho tôi tới công ty, tránh cầu Ba Son."
+    }
+    ],
+    "rewrite": "Dẫn đường tới Bitexco Financial Tower, Quận 1 và tránh cầu Ba Son.",
+    "rationale": "Lượt cuối dùng cụm ngầm “công ty”, cần lấy đúng địa điểm đã được thiết lập trước đó và giữ ràng buộc tránh đường."
+    },
+    {
+    "pattern": "correction",
+    "domain": "calling",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Gọi cho anh Quốc Bảo giúp tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gọi anh Quốc Bảo bằng số di động hay số công việc?"
+    },
+    {
+    "role": "user",
+    "content": "Đừng gọi anh Quốc Bảo; gọi chị Ngọc Anh bằng số công việc."
+    }
+    ],
+    "rewrite": "Đừng gọi anh Quốc Bảo; hãy gọi chị Ngọc Anh bằng số công việc.",
+    "rationale": "Lượt cuối đã tự nêu đầy đủ việc hủy đối tượng cũ và chuyển sang người nhận mới."
+    },
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm trạm sạc VinFast có cổng CCS2 gần đây."
+    },
+    {
+    "role": "bot",
+    "content": "Có trạm tại AEON Mall Long Biên và trạm tại Vincom Mega Mall Ocean Park, đều hỗ trợ CCS2."
+    },
+    {
+    "role": "user",
+    "content": "Trạm nào tiện đường đi Gia Lâm hơn?"
+    },
+    {
+    "role": "bot",
+    "content": "Trạm tại Vincom Mega Mall Ocean Park tiện đường hơn."
+    },
+    {
+    "role": "user",
+    "content": "Đặt lịch ở điểm đó lúc 19 giờ."
+    }
+    ],
+    "rewrite": "Đặt lịch sạc VinFast bằng cổng CCS2 tại Vincom Mega Mall Ocean Park lúc 19 giờ.",
+    "rationale": "Model phải resolve “điểm đó” về trạm được bot chọn, đồng thời giữ điều kiện cổng sạc từ yêu cầu ban đầu."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "messaging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kiểm tra nhanh tình trạng xe."
+    },
+    {
+    "role": "bot",
+    "content": "Pin xe còn 52% và lịch bảo dưỡng tiếp theo sau 14 ngày."
+    },
+    {
+    "role": "user",
+    "content": "Gửi SMS cho bố: Con đang trên đường về."
+    }
+    ],
+    "rewrite": "Gửi SMS cho bố với nội dung “Con đang trên đường về”.",
+    "rationale": "Các con số về pin và bảo dưỡng chỉ là nhiễu, không liên quan đến nội dung tin nhắn."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chỉnh riêng vùng ghế sau bên phải giúp tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn thay đổi nhiệt độ hay sưởi ghế ở vùng ghế sau bên phải?"
+    },
+    {
+    "role": "user",
+    "content": "Nhiệt độ trước."
+    },
+    {
+    "role": "bot",
+    "content": "Vùng ghế sau bên phải hiện đang ở 23°C."
+    },
+    {
+    "role": "user",
+    "content": "Tăng bên đó lên 25°C rồi bật sưởi ghế mức 2."
+    }
+    ],
+    "rewrite": "Tăng nhiệt độ vùng ghế sau bên phải lên 25°C rồi bật sưởi ghế tại vị trí đó ở mức 2.",
+    "rationale": "Lượt cuối gồm hai hành động và dùng “bên đó” để tham chiếu vùng ghế đã xác định từ trước."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật kiểm soát hành trình thích ứng khi vào cao tốc."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn áp dụng trên tuyến cao tốc nào?"
+    },
+    {
+    "role": "user",
+    "content": "Cao tốc Hà Nội - Hải Phòng."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn đặt tốc độ và khoảng cách xe phía trước thế nào?"
+    },
+    {
+    "role": "user",
+    "content": "Giữ 90 km/h, khoảng cách mức 3."
+    },
+    {
+    "role": "bot",
+    "content": "Có bật thêm hỗ trợ giữ làn đường không?"
+    },
+    {
+    "role": "user",
+    "content": "Có, bật luôn giữ làn."
+    }
+    ],
+    "rewrite": "Trên cao tốc Hà Nội - Hải Phòng, bật kiểm soát hành trình thích ứng ở 90 km/h, giữ khoảng cách mức 3 và bật hỗ trợ giữ làn đường.",
+    "rationale": "Tuyến đường, tốc độ, khoảng cách và chức năng bổ sung được cung cấp ở ba lượt user khác nhau."
+    },
+    {
+    "pattern": "negation",
+    "domain": "music",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Gợi ý playlist Việt nghe lúc trời mưa đi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể thử playlist Chill Hits Việt hoặc V-Pop Không Thể Thiếu."
+    },
+    {
+    "role": "user",
+    "content": "Phát playlist Chill Hits Việt, trừ bài “Bước Qua Mùa Cô Đơn” của Vũ."
+    }
+    ],
+    "rewrite": "Phát playlist Chill Hits Việt, trừ bài “Bước Qua Mùa Cô Đơn” của Vũ.",
+    "rationale": "Lệnh cuối tự đủ slot nhưng bắt buộc giữ chính xác ngoại lệ loại bỏ một bài hát cụ thể."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Ghép đôi điện thoại mới cho xe."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi tìm thấy iPhone 15 của Linh và Galaxy S24 của Linh."
+    },
+    {
+    "role": "user",
+    "content": "Chọn cái iPhone, nối bằng Bluetooth rồi mở Apple CarPlay."
+    }
+    ],
+    "rewrite": "Kết nối iPhone 15 của Linh với xe qua Bluetooth rồi mở Apple CarPlay.",
+    "rationale": "Model phải xác định đúng thiết bị từ cách gọi rút gọn và giữ nguyên các token công nghệ tiếng Anh."
+    },
+    {
+    "pattern": "correction",
+    "domain": "smart_home",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi xe về tới khu nhà, bật đèn sân và mở rèm phòng khách."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã ghi nhận hai thao tác tự động khi bạn về nhà."
+    },
+    {
+    "role": "user",
+    "content": "Không mở rèm phòng khách; chỉ bật đèn sân khi xe vào Vinhomes Riverside."
+    }
+    ],
+    "rewrite": "Khi xe vào Vinhomes Riverside, chỉ bật đèn sân và không mở rèm phòng khách.",
+    "rationale": "Lượt cuối tự nêu rõ địa điểm và sửa lại hành động tự động trước đó bằng một phủ định bắt buộc."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm liên hệ Minh Châu trong danh bạ."
+    },
+    {
+    "role": "bot",
+    "content": "Có Nguyễn Minh Châu và Trần Minh Châu."
+    },
+    {
+    "role": "user",
+    "content": "Nguyễn Minh Châu, đồng nghiệp ở VinFast."
+    },
+    {
+    "role": "bot",
+    "content": "Đã chọn liên hệ Nguyễn Minh Châu."
+    },
+    {
+    "role": "user",
+    "content": "Gọi người đó rồi nhắn Zalo: Tôi tới cổng A trong 5 phút."
+    }
+    ],
+    "rewrite": "Gọi cho Nguyễn Minh Châu rồi gửi Zalo với nội dung “Tôi tới cổng A trong 5 phút”.",
+    "rationale": "Lượt cuối có hai intent liên tiếp và dùng “người đó” để tham chiếu một liên hệ đã được phân giải trước."
+    }
+    ]
+    }
+    

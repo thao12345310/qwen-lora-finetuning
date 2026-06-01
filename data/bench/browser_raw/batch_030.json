@@ -1,0 +1,136 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ phía trái."},
+          {"role":"bot","content":"Cửa sổ phía trái đã mở."},
+          {"role":"user","content":"Đóng nó lại."}
+        ],
+        "rewrite": "Đóng cửa sổ phía trái",
+        "rationale": "Câu cuối dùng đại từ \"nó\" nên cần dựa vào thông tin cửa sổ đã mở ở lượt trước."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Độ nghiêng đường hiện tại là 3%."},
+          {"role":"bot","content":"Độ nghiêng 3%, tốc độ hiện tại 80km/h."},
+          {"role":"user","content":"Bật lane assist."}
+        ],
+        "rewrite": "Bật Lane Assist",
+        "rationale": "Thông tin độ nghiêng không liên quan tới yêu cầu bật lane assist."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho chị Tuyết: \"Hẹn 8h sáng ngày mai.\""},
+          {"role":"bot","content":"Bạn muốn gửi ngay hay lên lịch?"},
+          {"role":"user","content":"Thay giờ thành 9h."},
+          {"role":"bot","content":"Giờ đã cập nhật thành 9h."},
+          {"role":"user","content":"Thêm nội dung: \"Mang hồ sơ.\""}
+        ],
+        "rewrite": "Gửi tin đến chị Tuyết vào 9h nội dung \"Hẹn 9h sáng ngày mai. Mang hồ sơ.\"",
+        "rationale": "Slot người nhận, thời gian và nội dung được đưa ra rải rác, cần tổng hợp lại một câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đi tới Vincom Center."},
+          {"role":"bot","content":"Đã tính tuyến đường, dự kiến 12 phút qua đường cao tốc."},
+          {"role":"user","content":"Không, đi đến Aeon Mall nhé."}
+        ],
+        "rewrite": "Điều hướng tới Aeon Mall, tránh cao tốc",
+        "rationale": "Người dùng sửa lại điểm đến, yêu cầu cập nhật route mới."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play \"Shape of You\" on Spotify."},
+          {"role":"bot","content":"Đang phát \"Shape of You\" trên Spotify."},
+          {"role":"user","content":"Set tempo to 120 BPM."}
+        ],
+        "rewrite": "Đặt tempo 120 BPM cho bài \"Shape of You\" trên Spotify",
+        "rationale": "Câu cuối chứa token tiếng Anh và yêu cầu thay đổi tempo, không cần thông tin lịch sử."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi đang ở Quận 6, cần sạc pin."},
+          {"role":"bot","content":"Có trạm SuperCharge tại ngã 3, cách 1.7 km."},
+          {"role":"user","content":"Hướng tới địa điểm đó."}
+        ],
+        "rewrite": "Điều hướng tới trạm SuperCharge ở ngã 3, cách 1.7 km",
+        "rationale": "Đại từ \"đó\" tham chiếu tới trạm sạc đã được nêu trong phản hồi trước."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 25 độ."},
+          {"role":"bot","content":"Điều hòa đã bật 25°C."},
+          {"role":"user","content":"Không, tắt điều hòa."}
+        ],
+        "rewrite": "Tắt điều hòa",
+        "rationale": "Câu cuối phủ định hành động bật điều hòa, không cần thông tin lại từ lịch sử."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở rèm salon và bật đèn bàn ăn."},
+          {"role":"bot","content":"Rèm salon đã mở, đèn bàn ăn bật."},
+          {"role":"user","content":"Giảm độ sáng đèn xuống 40%."}
+        ],
+        "rewrite": "Mở rèm salon, bật đèn bàn ăn và giảm độ sáng đèn xuống 40%",
+        "rationale": "Lượt cuối muốn thực hiện ba hành động cùng lúc, cần đưa cả ba intent vào một câu."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho anh Phúc số 0902 123 456."},
+          {"role":"bot","content":"Đang gọi anh Phúc."},
+          {"role":"user","content":"Không phải anh ấy, gọi cho cô Lan 0902 123 457."}
+        ],
+        "rewrite": "Gọi cô Lan số 0902 123 457",
+        "rationale": "Đại từ \"không phải anh ấy\" yêu cầu thay đổi người nhận, cần đích danh lại người mới."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Mức nhiên liệu còn 55%."},
+          {"role":"bot","content":"Nhiên liệu hiện tại 55%."},
+          {"role":"user","content":"Bật đèn hazard."}
+        ],
+        "rewrite": "Bật đèn hazard",
+        "rationale": "Thông tin nhiên liệu không liên quan tới yêu cầu bật đèn hazard."
+      }
+    ]
+  }

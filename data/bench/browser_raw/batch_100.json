@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cho tôi biết nhà hàng Bún Bò Nam Định gần nhất ở quận 3."},
+          {"role":"bot","content":"Nhà hàng Bún Bò Nam Định ở số 27 Đường Trần Hưng Đạo, Quận 3, cách bạn 1.6 km."},
+          {"role":"user","content":"Đi tới chỗ ấy ngay."}
+        ],
+        "rewrite": "Điều hướng tới nhà hàng Bún Bò Nam Định, số 27 Đường Trần Hưng Đạo, Quận 3, TP.Hồ Chí Minh",
+        "rationale": "Câu cuối dùng đại từ “chỗ ấy” để chỉ địa điểm đã được bot cung cấp, cần dựa vào lịch sử để xác định điểm đến."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết tỷ lệ lạm phát tháng này là bao nhiêu?"},
+          {"role":"bot","content":"Tỷ lệ lạm phát tháng này 3.2%."},
+          {"role":"user","content":"Tìm trạm sạc nhanh gần tôi nhất."}
+        ],
+        "rewrite": "Tìm trạm sạc nhanh gần nhất",
+        "rationale": "Thông tin lạm phát không liên quan tới yêu cầu tìm trạm sạc; câu cuối đã cung cấp đủ slot."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật cruise control."},
+          {"role":"bot","content":"Cruise control đã bật, tốc độ mặc định 90km/h."},
+          {"role":"user","content":"Thay tốc độ thành 80km/h."},
+          {"role":"bot","content":"Tốc độ đã đổi 80km/h."},
+          {"role":"user","content":"Bây giờ đặt khoảng cách an toàn 35m."}
+        ],
+        "rewrite": "Đặt khoảng cách an toàn 35m cho cruise control",
+        "rationale": "Sau khi tốc độ đã được thiết lập, người dùng yêu cầu thay đổi khoảng cách an toàn; cần dựa trên lịch sử để tạo câu lệnh cuối."
+      },
+      {
+        "pattern": "correction",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Phát file \"Tình Yêu Đầu Nhiên\".mp3 từ bộ nhớ."},
+          {"role":"bot","content":"File \"Tình Yêu Đầu Nhiên\".mp3 đã sẵn sàng."},
+          {"role":"user","content":"Không, phát \"Nắng Ấm Bên Trời\" của Đạt G."}
+        ],
+        "rewrite": "Phát file \"Nắng Ấm Bên Trời\".mp3 của Đạt G từ bộ nhớ",
+        "rationale": "Người dùng sửa lại bài hát, cần phản ánh bài mới mà không giữ lại bài cũ."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Call my colleague via Skype: 123456789."},
+          {"role":"bot","content":"Initiating Skype call to 123456789."},
+          {"role":"user","content":"Please set the call volume to 40."}
+        ],
+        "rewrite": "Đặt âm lượng cuộc gọi Skype 40",
+        "rationale": "Câu cuối yêu cầu điều chỉnh âm lượng cho cuộc gọi Skype, giữ nguyên token tiếng Anh “Skype” và không cần ngữ cảnh trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở rèm phòng khách."},
+          {"role":"bot","content":"Rèm phòng khách đã mở."},
+          {"role":"user","content":"Đóng chúng ngay."}
+        ],
+        "rewrite": "Đóng rèm phòng khách",
+        "rationale": "Đại từ “chúng” chỉ rèm vừa mở; cần giải quyết để tạo câu lệnh độc lập."
+      },
+      {
+        "pattern": "negation",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ phía sau bên trái."},
+          {"role":"bot","content":"Cửa sổ phía sau bên trái đã mở."},
+          {"role":"user","content":"Không, đừng mở cửa sổ nữa."}
+        ],
+        "rewrite": "Không mở cửa sổ phía sau bên trái",
+        "rationale": "Câu cuối phủ định hành động mở, không cần kéo lại thông tin nào từ lịch sử."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho anh Hòa: \"Đến công ty lúc 8h sáng\" và nhắc tôi 15 phút trước."},
+          {"role":"bot","content":"Tin nhắn và nhắc đã được chuẩn bị."},
+          {"role":"user","content":"Thực hiện gửi."}
+        ],
+        "rewrite": "Gửi tin đến anh Hòa nội dung \"Đến công ty lúc 8h sáng\" và đặt nhắc 15 phút trước",
+        "rationale": "Lượt cuối cần gộp cả hai intent (gửi tin và đặt nhắc) trong một câu duy nhất."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn sạc nhanh ở khu vực Đông Đa."},
+          {"role":"bot","content":"Có trạm FastCharge tại ngã 9, cách 2.0 km, công suất 150 kW."},
+          {"role":"user","content":"Muốn cấp 2, không trả phí phụ."},
+          {"role":"bot","content":"Đã bật cấp 2, không thu phí phụ."},
+          {"role":"user","content":"Đi tới đó ngay."}
+        ],
+        "rewrite": "Điều hướng tới trạm FastCharge ở ngã 9, cách 2.0 km, công suất 150 kW, cấp 2, không thu phí phụ",
+        "rationale": "Các slot vị trí, công suất, cấp và phí rải rác qua nhiều lượt, cần tổng hợp đầy đủ trong một câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đi tới công viên Lê Văn Hiến."},
+          {"role":"bot","content":"Công viên Lê Văn Hiến cách 6.5 km, thời gian dự kiến 15 phút."},
+          {"role":"user","content":"Không, mình muốn tới công viên Lê Thanh Nhân."}
+        ],
+        "rewrite": "Điều hướng tới công viên Lê Thanh Nhân, TP.Hồ Chí Minh",
+        "rationale": "Người dùng sửa lại điểm đến; câu cuối cần phản ánh địa điểm mới."
+      }
+    ]
+  }

@@ -1,0 +1,255 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm chỗ đỗ gần Bệnh viện Nhi Trung ương."
+    },
+    {
+    "role": "bot",
+    "content": "Có bãi đỗ tại Vincom Center Nguyễn Chí Thanh và bãi đỗ tại Lotte Center Hanoi."
+    },
+    {
+    "role": "user",
+    "content": "Bãi nào gần bệnh viện hơn?"
+    },
+    {
+    "role": "bot",
+    "content": "Bãi đỗ tại Vincom Center Nguyễn Chí Thanh gần Bệnh viện Nhi Trung ương hơn."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tôi tới bãi gần hơn."
+    }
+    ],
+    "rewrite": "Dẫn tôi tới bãi đỗ tại Vincom Center Nguyễn Chí Thanh gần Bệnh viện Nhi Trung ương.",
+    "rationale": "Lượt cuối chỉ nhắc “bãi gần hơn”, nên cần truy xuất đúng địa điểm được bot xác định sau khi so sánh."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đặt cuộc gọi nhắc lịch khám cho mẹ tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gọi cho ai để xác nhận lịch khám?"
+    },
+    {
+    "role": "user",
+    "content": "Phòng khám Vinmec Royal City."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gọi vào thời điểm nào và dùng thiết bị âm thanh nào?"
+    },
+    {
+    "role": "user",
+    "content": "8 giờ 15 sáng mai, qua loa xe."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn ghi chú nội dung gì cho cuộc gọi?"
+    },
+    {
+    "role": "user",
+    "content": "Hỏi xác nhận lịch khám của mẹ tôi."
+    }
+    ],
+    "rewrite": "Đặt cuộc gọi tới Phòng khám Vinmec Royal City qua loa xe lúc 8 giờ 15 sáng mai để xác nhận lịch khám của mẹ tôi.",
+    "rationale": "Đơn vị nhận cuộc gọi, thời gian, thiết bị âm thanh và mục đích được thu thập qua nhiều lượt user."
+    },
+    {
+    "pattern": "correction",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đặt trạm sạc V-GREEN ở Vincom Mega Mall Royal City làm điểm dừng."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị thêm trạm sạc V-GREEN tại Vincom Mega Mall Royal City vào hành trình."
+    },
+    {
+    "role": "user",
+    "content": "Thôi bỏ trạm đó, chuyển sang trạm ở Vincom Center Metropolis."
+    }
+    ],
+    "rewrite": "Bỏ điểm dừng tại trạm sạc V-GREEN ở Vincom Mega Mall Royal City và chuyển sang trạm sạc tại Vincom Center Metropolis.",
+    "rationale": "Lượt cuối hủy trạm sạc ban đầu qua cụm “trạm đó” và thay bằng địa điểm mới."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "vehicle",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kiểm tra nhanh thông tin chuyến đi."
+    },
+    {
+    "role": "bot",
+    "content": "Thời gian di chuyển còn 36 phút và pin xe hiện ở mức 77%."
+    },
+    {
+    "role": "user",
+    "content": "Bật đèn sương mù sau."
+    }
+    ],
+    "rewrite": "Bật đèn sương mù sau.",
+    "rationale": "Thời gian di chuyển và mức pin chỉ là thông tin nhiễu, không liên quan đến lệnh bật đèn."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm hai bài của Hoàng Thùy Linh để nghe trên xe."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy “Để Mị Nói Cho Mà Nghe” và “See Tình” của Hoàng Thùy Linh."
+    },
+    {
+    "role": "user",
+    "content": "Add bài đầu vào Favorites trên Spotify."
+    }
+    ],
+    "rewrite": "Add bài “Để Mị Nói Cho Mà Nghe” của Hoàng Thùy Linh vào Favorites trên Spotify.",
+    "rationale": "Model phải resolve “bài đầu” và giữ nguyên ba token tiếng Anh Add, Favorites và Spotify."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "messaging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe có lưu nhóm phụ huynh lớp của con tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có nhóm liên lạc nào được lưu với nhãn phụ huynh lớp của con bạn."
+    },
+    {
+    "role": "user",
+    "content": "Nhắn nhóm phụ huynh lớp của con tôi là tôi đang đến trường."
+    }
+    ],
+    "rewrite": "Nhắn nhóm phụ huynh lớp của con tôi với nội dung “Tôi đang đến trường”.",
+    "rationale": "Không có tên nhóm cụ thể trong lịch sử nên phải giữ nguyên tham chiếu ngầm, không tự tạo người nhận."
+    },
+    {
+    "pattern": "negation",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi đi trong phố, xe hỗ trợ cảnh báo nào cho người đi xe máy?"
+    },
+    {
+    "role": "bot",
+    "content": "Xe có cảnh báo điểm mù và cảnh báo mở cửa khi có phương tiện tới gần."
+    },
+    {
+    "role": "user",
+    "content": "Bật tính năng sau, không bật cảnh báo điểm mù."
+    }
+    ],
+    "rewrite": "Bật cảnh báo mở cửa khi có phương tiện tới gần và không bật cảnh báo điểm mù.",
+    "rationale": "Lượt cuối chọn tính năng thứ hai bằng tham chiếu và đồng thời phủ định rõ tính năng còn lại."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bé đang ngủ ở ghế nào trong xe?"
+    },
+    {
+    "role": "bot",
+    "content": "Bé đang nằm ở ghế sau bên phải."
+    },
+    {
+    "role": "user",
+    "content": "Giảm gió chỗ bé xuống mức 1 rồi bật rèm che nắng bên đó."
+    }
+    ],
+    "rewrite": "Giảm quạt gió tại ghế sau bên phải xuống mức 1 rồi bật rèm che nắng ở vị trí đó.",
+    "rationale": "Hai thao tác đều phụ thuộc vào việc resolve “chỗ bé” và “bên đó” thành ghế sau bên phải."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Ở căn hộ Masteri Centre Point, phòng nào đang bật thiết bị?"
+    },
+    {
+    "role": "bot",
+    "content": "Đèn bàn đang bật trong phòng làm việc, còn máy lọc không khí phòng ngủ đang tắt."
+    },
+    {
+    "role": "user",
+    "content": "Tắt đèn ở phòng đó rồi bật máy lọc trong phòng ngủ."
+    }
+    ],
+    "rewrite": "Tắt đèn bàn trong phòng làm việc rồi bật máy lọc không khí phòng ngủ tại căn hộ Masteri Centre Point.",
+    "rationale": "Lượt cuối dùng tham chiếu phòng cho thao tác đầu và nối thêm một thao tác khác trên thiết bị đã nêu."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tạo hồ sơ giới hạn cho người mới tập lái chiếc VinFast VF 9."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn đặt giới hạn tốc độ bao nhiêu?"
+    },
+    {
+    "role": "user",
+    "content": "Không quá 50 km/h."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có muốn hạn chế chế độ lái nào không?"
+    },
+    {
+    "role": "user",
+    "content": "Không cho dùng chế độ Sport."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn hồ sơ có hiệu lực trong bao lâu?"
+    },
+    {
+    "role": "user",
+    "content": "Từ 9 giờ đến 11 giờ sáng mai, lưu lại."
+    }
+    ],
+    "rewrite": "Lưu hồ sơ người mới tập lái cho VinFast VF 9 từ 9 giờ đến 11 giờ sáng mai, giới hạn tốc độ không quá 50 km/h và không cho dùng chế độ Sport.",
+    "rationale": "Mẫu xe, khoảng thời gian, giới hạn tốc độ và chế độ bị cấm được cung cấp qua bốn lượt user."
+    }
+    ]
+    }
+    

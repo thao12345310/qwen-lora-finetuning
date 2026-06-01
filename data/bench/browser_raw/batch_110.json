@@ -1,0 +1,118 @@
+{
+    "samples": [
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Phát nhạc offline trong thẻ nhớ đi, không shuffle, nghe theo thứ tự album"}
+        ],
+        "rewrite": "Phát nhạc offline trong thẻ nhớ theo thứ tự album, không shuffle.",
+        "rationale": "Lượt đơn đủ nguồn phát và điều kiện phủ định; từ 'không' bắt buộc giữ nguyên trong rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Khoá cửa chính và tắt điện toàn nhà trừ tủ lạnh giúp tôi"}
+        ],
+        "rewrite": "Khoá cửa chính và tắt điện toàn nhà, không tắt tủ lạnh.",
+        "rationale": "Lượt đơn chứa hai intent kèm một ngoại lệ; từ 'không' bắt buộc xuất hiện vì tủ lạnh bị loại trừ."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật ambient light màu blue, chế độ pulse breathing, brightness 50%"}
+        ],
+        "rewrite": "Bật ambient light màu blue chế độ pulse breathing, brightness 50%.",
+        "rationale": "Token 'ambient light', 'pulse breathing', 'brightness' giữ nguyên tiếng Anh; lượt đơn đủ slot, 50% có trong hội thoại."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Dẫn đường đến chỗ học thêm của con, nhanh nhất đi"}
+        ],
+        "rewrite": "Chỉ đường đến chỗ học thêm của con theo tuyến nhanh nhất.",
+        "rationale": "'Chỗ học thêm của con' là implicit reference không có địa chỉ trong hội thoại, giữ nguyên cụm không bịa địa điểm."
+      },
+      {
+        "pattern": "negation",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật hỗ trợ giữ làn nhưng đừng bật cảnh báo lệch làn, hay kêu lắm"}
+        ],
+        "rewrite": "Bật hỗ trợ giữ làn, đừng bật cảnh báo âm thanh lệch làn.",
+        "rationale": "Lượt đơn đủ hai điều khoản trên cùng hệ thống; từ 'đừng' bắt buộc giữ nguyên trong rewrite."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tóm tắt hành trình từ sáng đến giờ cho tôi"},
+          {"role":"bot","content":"Từ 7h đến nay: tổng 143km, tiêu thụ 21.4kWh, tốc độ trung bình 58km/h, phanh tái sinh thu hồi 3.1kWh, pin hiện tại 21%."},
+          {"role":"user","content":"Pin thấp rồi, tìm trạm sạc CCS2 gần nhất đi"}
+        ],
+        "rewrite": "Tìm trạm sạc CCS2 gần nhất.",
+        "rationale": "Bot trả 5 chỉ số hành trình; chỉ trạng thái pin 21% xác nhận lý do nhưng không phải slot của rewrite; token 'CCS2' giữ nguyên, không kéo số km hay kWh vào."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Từ chối cuộc gọi đến rồi nhắn lại bảo đang lái xe, gọi sau"}
+        ],
+        "rewrite": "Từ chối cuộc gọi đến và nhắn tin lại: đang lái xe, sẽ gọi lại sau.",
+        "rationale": "Lượt đơn hai intent liên tiếp trên cùng đầu liên hệ đang gọi đến, không cần lịch sử."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Reply Slack cho chị Bảo Châu bảo mình đang on-the-way, 15 phút nữa tới"}
+        ],
+        "rewrite": "Reply Slack cho chị Bảo Châu: đang on-the-way, 15 phút nữa tới.",
+        "rationale": "Token 'Slack', 'Reply', 'on-the-way' giữ nguyên; lượt đơn đủ kênh, người nhận và nội dung; 15 phút có trong hội thoại."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cái điều hoà phòng làm việc tôi hay để mức nào?"},
+          {"role":"bot","content":"Theo lịch sử, điều hoà phòng làm việc thường đặt 25°C chế độ Cool, tốc độ quạt Auto."},
+          {"role":"user","content":"Bật lên đúng mức đó đi, sắp về rồi"}
+        ],
+        "rewrite": "Bật điều hoà phòng làm việc 25°C chế độ Cool, tốc độ quạt Auto.",
+        "rationale": "'Mức đó' resolve về ba thông số 25°C, Cool và Auto từ lịch sử bot truy xuất; 25 có trong hội thoại, không bịa thêm số."
+      },
+      {
+        "pattern": "negation",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tìm quán phở gần đây nhưng không lấy quán trong trung tâm thương mại"}
+        ],
+        "rewrite": "Tìm quán phở gần đây, không lấy quán trong trung tâm thương mại.",
+        "rationale": "Lượt đơn đủ loại địa điểm và điều kiện loại trừ; từ 'không' bắt buộc giữ nguyên trong rewrite."
+      }
+    ]
+  }

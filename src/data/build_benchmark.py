@@ -221,15 +221,27 @@ def _numbers(text: str) -> set[str]:
     return {m.group(0).replace(",", ".") for m in NUMBER_RE.finditer(text)}
 
 
-def validate_sample(s: dict, pattern: str) -> tuple[BenchSample | None, str]:
-    """Return (sample, reason). Sample is None when rejected."""
+def validate_sample(
+    s: dict, pattern: str, min_turns: int = 3, allow_equal_rewrite: bool = False
+) -> tuple[BenchSample | None, str]:
+    """Return (sample, reason). Sample is None when rejected.
+
+    min_turns defaults to 3 (API pipeline only wants hard multi-turn cases).
+    The browser ingest passes min_turns=1 for context_required=False samples,
+    which may legitimately be single-turn "keep as is".
+
+    allow_equal_rewrite: when True, a rewrite identical to the final user turn
+    is accepted. This is correct for context_required=False "keep as is" cases
+    where the final turn is already self-sufficient; the API pipeline keeps it
+    False to reject trivial copies of hard multi-turn cases.
+    """
     if not isinstance(s, dict):
         return None, "not_dict"
     turns = s.get("turns")
     rewrite = s.get("rewrite", "").strip()
     domain = s.get("domain", "").strip()
     rationale = s.get("rationale", "").strip()
-    if not isinstance(turns, list) or len(turns) < 3:
+    if not isinstance(turns, list) or len(turns) < min_turns:
         return None, "too_few_turns"
     if not rewrite or not domain:
         return None, "missing_field"
@@ -251,7 +263,7 @@ def validate_sample(s: dict, pattern: str) -> tuple[BenchSample | None, str]:
     last_user = cleaned[-1]["content"]
     if len(last_user.split()) > 25:
         return None, "final_user_too_long"
-    if _norm(last_user) == _norm(rewrite):
+    if not allow_equal_rewrite and _norm(last_user) == _norm(rewrite):
         return None, "rewrite_equals_final_turn"
 
     dialogue_numbers = _numbers(" ".join(t["content"] for t in cleaned))

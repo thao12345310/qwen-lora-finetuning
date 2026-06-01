@@ -1,0 +1,205 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm giúp tôi hai bảo tàng ở trung tâm Hà Nội."
+    },
+    {
+    "role": "bot",
+    "content": "Có Bảo tàng Lịch sử Quốc gia tại 1 Tràng Tiền và Bảo tàng Phụ nữ Việt Nam tại 36 Lý Thường Kiệt."
+    },
+    {
+    "role": "user",
+    "content": "Chỗ nào gần vị trí hiện tại hơn?"
+    },
+    {
+    "role": "bot",
+    "content": "Bảo tàng Lịch sử Quốc gia gần hơn."
+    },
+    {
+    "role": "user",
+    "content": "Đưa tôi tới chỗ gần hơn nhé."
+    }
+    ],
+    "rewrite": "Dẫn đường tới Bảo tàng Lịch sử Quốc gia tại 1 Tràng Tiền.",
+    "rationale": "Lượt cuối chỉ nói “chỗ gần hơn”, cần đối chiếu lựa chọn mà bot vừa xác định."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "vehicle",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe hiện còn bao nhiêu pin?"
+    },
+    {
+    "role": "bot",
+    "content": "Pin còn 67%, nhiệt độ ngoài trời là 34°C."
+    },
+    {
+    "role": "user",
+    "content": "Mở cốp sau giúp tôi."
+    }
+    ],
+    "rewrite": "Mở cốp sau giúp tôi.",
+    "rationale": "Hai con số trong lịch sử là nhiễu và không được đưa vào lệnh mở cốp."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đặt lịch sạc cho xe tối nay."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn sạc ở đâu?"
+    },
+    {
+    "role": "user",
+    "content": "Trạm sạc VinFast tại Vincom Mega Mall Times City."
+    },
+    {
+    "role": "bot",
+    "content": "Bắt đầu lúc nào và dừng ở mức pin bao nhiêu?"
+    },
+    {
+    "role": "user",
+    "content": "22 giờ, dừng khi đạt 80%."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn dùng loại cổng sạc nào?"
+    },
+    {
+    "role": "user",
+    "content": "CCS2 nhé."
+    }
+    ],
+    "rewrite": "Đặt lịch sạc xe tối nay lúc 22 giờ tại trạm sạc VinFast ở Vincom Mega Mall Times City bằng cổng CCS2 và dừng khi pin đạt 80%.",
+    "rationale": "Địa điểm, thời gian, ngưỡng pin và loại cổng nằm rải rác qua nhiều lượt trước."
+    },
+    {
+    "pattern": "correction",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật điều hòa 24°C giúp mình."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn bật điều hòa ở 24°C đúng không?"
+    },
+    {
+    "role": "user",
+    "content": "Thôi đổi sang 26°C, chế độ Eco nhé."
+    }
+    ],
+    "rewrite": "Bật điều hòa ở 26°C với chế độ Eco.",
+    "rationale": "Lượt cuối sửa nhiệt độ ban đầu và bổ sung chế độ mới, nên gold phải phản ánh yêu cầu sau cùng."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm vài bài Vpop nghe lúc lái xe."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy “See Tình” của Hoàng Thùy Linh và “Có Chắc Yêu Là Đây” của Sơn Tùng M-TP."
+    },
+    {
+    "role": "user",
+    "content": "Phát bài thứ hai trên Spotify đi."
+    }
+    ],
+    "rewrite": "Phát bài “Có Chắc Yêu Là Đây” của Sơn Tùng M-TP trên Spotify.",
+    "rationale": "Model phải resolve “bài thứ hai” đồng thời giữ nguyên tên nền tảng Spotify."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "smart_home",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đã kết nối hệ thống nhà thông minh chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Đã kết nối, nhưng bạn chưa lưu địa chỉ nhà mặc định."
+    },
+    {
+    "role": "user",
+    "content": "Tắt đèn phòng khách ở nhà tôi đi."
+    }
+    ],
+    "rewrite": "Tắt đèn phòng khách ở nhà tôi.",
+    "rationale": "Không có địa chỉ cụ thể trong lịch sử nên phải giữ nguyên cụm “nhà tôi”, không tự suy diễn."
+    },
+    {
+    "pattern": "negation",
+    "domain": "driver_assist",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Có những hỗ trợ lái nào đang sẵn sàng?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện có hỗ trợ giữ làn đường và auto pilot."
+    },
+    {
+    "role": "user",
+    "content": "Bật giữ làn đường, nhưng không bật auto pilot."
+    }
+    ],
+    "rewrite": "Bật hỗ trợ giữ làn đường nhưng không bật auto pilot.",
+    "rationale": "Lệnh có một chức năng cần bật và một chức năng bị phủ định rõ ràng."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Nhắn cho Thu Hà là tôi sắp tới."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi qua SMS hay Zalo?"
+    },
+    {
+    "role": "user",
+    "content": "Zalo."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi sẽ gửi Zalo cho Thu Hà với nội dung bạn vừa nói."
+    },
+    {
+    "role": "user",
+    "content": "Sửa thành “Tớ đến sau 10 phút” rồi gọi cho cô ấy."
+    }
+    ],
+    "rewrite": "Gửi Zalo cho Thu Hà với nội dung “Tớ đến sau 10 phút” rồi gọi cho Thu Hà.",
+    "rationale": "Lượt cuối vừa sửa nội dung tin nhắn vừa thêm cuộc gọi, đồng thời “cô ấy” phải được resolve thành Thu Hà."
+    }
+    ]
+    }
+    

@@ -1,0 +1,136 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn tới cà phê Huyền."},
+          {"role":"bot","content":"Cà phê Huyền nằm 1.9 km trên Đường Trần Hưng Đạo, số 23, Quận Hoàn Kiếm."},
+          {"role":"user","content":"Đi tới chỗ đó ngay."}
+        ],
+        "rewrite": "Điều hướng tới cà phê Huyền, số 23 Đường Trần Hưng Đạo, Quận Hoàn Kiếm, Hà Nội",
+        "rationale": "Câu cuối dùng đại từ “chỗ đó” để chỉ địa điểm đã được bot cung cấp, cần dựa vào lịch sử."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn biết mức tiêu thụ nhiên liệu hiện tại là bao nhiêu?"},
+          {"role":"bot","content":"Bạn đang tiêu thụ 7.2 L/100km."},
+          {"role":"user","content":"Bật lane assist."}
+        ],
+        "rewrite": "Bật Lane Assist",
+        "rationale": "Thông tin tiêu thụ nhiên liệu không liên quan tới yêu cầu lane assist."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở Spotify."},
+          {"role":"bot","content":"Bạn muốn nghe playlist nào?"},
+          {"role":"user","content":"Playlist VpopHits."},
+          {"role":"bot","content":"Đã chọn playlist VpopHits."},
+          {"role":"user","content":"Đặt âm lượng 55."}
+        ],
+        "rewrite": "Phát playlist VpopHits trên Spotify với âm lượng 55",
+        "rationale": "Tên playlist và âm lượng được đưa ra rải rác, cần gộp lại thành một lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho anh Tùng số 0915 123 456."},
+          {"role":"bot","content":"Đang gọi anh Tùng."},
+          {"role":"user","content":"Không, gọi cho chị Thảo số 0915 123 457."}
+        ],
+        "rewrite": "Gọi chị Thảo số 0915 123 457",
+        "rationale": "Người dùng sửa lại người nhận và số điện thoại, cần cập nhật thông tin mới."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Hey, turn on the high beam lights."},
+          {"role":"bot","content":"High beam lights are now on."},
+          {"role":"user","content":"Tắt đèn P."}
+        ],
+        "rewrite": "Tắt đèn P",
+        "rationale": "Câu cuối chứa token tiếng Anh “high beam” trước đó, nhưng hành động chỉ yêu cầu tắt đèn P."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở máy lạnh phòng ngủ."},
+          {"role":"bot","content":"Máy lạnh phòng ngủ đã bật."},
+          {"role":"user","content":"Tắt nó đi."}
+        ],
+        "rewrite": "Tắt máy lạnh phòng ngủ",
+        "rationale": "Đại từ “nó” tham chiếu tới máy lạnh phòng ngủ đã được bật trong lượt trước."
+      },
+      {
+        "pattern": "negation",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho chị Mai: \"Sắp tới sinh nhật nhé\"."},
+          {"role":"bot","content":"Tin nhắn đã sẵn sàng gửi."},
+          {"role":"user","content":"Đừng gửi nữa."}
+        ],
+        "rewrite": "Hủy tin nhắn đến chị Mai",
+        "rationale": "Câu cuối phủ định việc gửi tin, cần giữ lại người nhận nhưng không thực hiện gửi."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 22 độ, giảm gió mức 1 và bật chế độ ngủ."},
+          {"role":"bot","content":"Điều hòa 22°C, gió mức 1, chế độ ngủ đã bật."},
+          {"role":"user","content":"Giờ tắt chế độ ngủ và tăng nhiệt độ lên 24 độ."}
+        ],
+        "rewrite": "Đặt nhiệt độ 24°C và tắt chế độ ngủ",
+        "rationale": "Lượt cuối chứa hai thay đổi (tắt chế độ ngủ, tăng nhiệt độ) cần hợp nhất trong một câu."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn sạc nhanh ngay."},
+          {"role":"bot","content":"Có trạm SuperCharge ở ngã 7, cách 1.4 km, công suất 120 kW."},
+          {"role":"user","content":"Đi tới đó đi."}
+        ],
+        "rewrite": "Điều hướng tới trạm SuperCharge ở ngã 7, cách 1.4 km, công suất 120 kW",
+        "rationale": "Đại từ “đó” cần liên kết tới trạm sạc đã được bot cung cấp."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bây giờ đồng hồ là 14:30."},
+          {"role":"bot","content":"Đồng hồ hiện tại 14:30."},
+          {"role":"user","content":"Phát bài \"Người Lạ ơi\" của Karik."}
+        ],
+        "rewrite": "Phát bài \"Người Lạ ơi\" của Karik từ bộ nhớ",
+        "rationale": "Thời gian hiện tại không liên quan tới yêu cầu phát nhạc, câu cuối tự chứa đủ slot."
+      }
+    ]
+  }

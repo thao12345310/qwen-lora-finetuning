@@ -1,0 +1,118 @@
+{
+    "samples": [
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ trời 50% nhưng đừng bật quạt gió thêm nhé"}
+        ],
+        "rewrite": "Mở cửa sổ trời 50%, đừng bật quạt gió.",
+        "rationale": "Lượt đơn đủ slot mức mở và điều kiện phủ định; từ 'đừng' và con số 50% bắt buộc giữ nguyên trong rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Hạ kính sau hai bên xuống hết rồi bật đèn đọc sách hàng sau luôn"}
+        ],
+        "rewrite": "Hạ kính cửa sau hai bên hoàn toàn và bật đèn đọc sách hàng ghế sau.",
+        "rationale": "Lượt đơn chứa hai intent thiết bị xe độc lập nhau, không cần lịch sử."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tìm trạm sạc hỗ trợ Plug & Charge gần nhất trong 10km"}
+        ],
+        "rewrite": "Tìm trạm sạc hỗ trợ Plug & Charge trong bán kính 10km.",
+        "rationale": "Token 'Plug & Charge' giữ nguyên tiếng Anh; lượt đơn đủ tính năng và bán kính tìm kiếm, 10km có trong hội thoại."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Gọi cho bác sĩ gia đình hỏi lịch tái khám tuần sau"}
+        ],
+        "rewrite": "Gọi cho bác sĩ gia đình hỏi lịch tái khám tuần sau.",
+        "rationale": "'Bác sĩ gia đình' là implicit reference không có tên hay số điện thoại trong hội thoại, giữ nguyên cụm không bịa thông tin."
+      },
+      {
+        "pattern": "negation",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật scene Tiệc nhưng không bật loa ngoài sân, hàng xóm đang ngủ"}
+        ],
+        "rewrite": "Bật scene Tiệc, không bật loa ngoài sân.",
+        "rationale": "Lượt đơn đủ tên scene và ngoại lệ thiết bị; từ 'không' bắt buộc giữ nguyên trong rewrite."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cho tôi xem dashboard xe đang hiển thị gì"},
+          {"role":"bot","content":"Dashboard hiện: tốc độ 78km/h, pin 63%, nhiệt độ động cơ 82°C, áp suất lốp đều 36 PSI, đèn check engine tắt."},
+          {"role":"user","content":"Ổn rồi, bật adaptive cruise control giữ khoảng cách mức 2 đi"}
+        ],
+        "rewrite": "Bật adaptive cruise control, giữ khoảng cách mức 2.",
+        "rationale": "Bot trả 5 chỉ số dashboard đều là nhiễu; rewrite chỉ cần hành động bật tính năng, không kéo tốc độ 78km/h hay pin 63% vào."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Đọc tin nhắn mới nhất của anh Gia Huy rồi reply bảo mình đã nhận"}
+        ],
+        "rewrite": "Đọc tin nhắn mới nhất từ anh Gia Huy và reply xác nhận đã nhận.",
+        "rationale": "Lượt đơn chứa hai intent liên tiếp: đọc rồi phản hồi trên cùng luồng tin nhắn, không cần lịch sử."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật Samsung SmartThings chế độ Vacation mode cho nhà từ hôm nay"}
+        ],
+        "rewrite": "Bật Samsung SmartThings chế độ Vacation mode từ hôm nay.",
+        "rationale": "Token 'Samsung SmartThings' và 'Vacation mode' giữ nguyên tiếng Anh; lượt đơn đủ thiết bị và chế độ cần bật."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi hay nhờ chị Ngọc Ánh đặt phòng khách sạn mỗi chuyến công tác"},
+          {"role":"bot","content":"Đã ghi nhận. Chị Ngọc Ánh số 0903 558 247 là liên hệ hỗ trợ công tác của bạn."},
+          {"role":"user","content":"Nhắn chị ấy đặt khách sạn Hội An gần phố cổ cho 2 đêm cuối tuần này"}
+        ],
+        "rewrite": "Nhắn tin cho chị Ngọc Ánh số 0903 558 247 đặt khách sạn tại Hội An gần phố cổ cho 2 đêm cuối tuần này.",
+        "rationale": "'Chị ấy' resolve về chị Ngọc Ánh và số 0903 558 247 từ lượt bot; số điện thoại và số đêm đều có trong hội thoại, không bịa."
+      },
+      {
+        "pattern": "negation",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Dẫn về Hà Đông nhưng không qua đường Tố Hữu, hay kẹt buổi chiều"}
+        ],
+        "rewrite": "Chỉ đường về Hà Đông, không đi qua đường Tố Hữu.",
+        "rationale": "Lượt đơn đủ điểm đến và điều kiện tránh cụ thể; từ 'không' bắt buộc giữ nguyên trong rewrite."
+      }
+    ]
+  }

@@ -1,0 +1,255 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Trời lạnh quá, xe có những chế độ sưởi nào cho tài xế?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật sưởi vô lăng hoặc sưởi tựa lưng ghế lái."
+    },
+    {
+    "role": "user",
+    "content": "Bật loại làm ấm tay ở mức 2."
+    }
+    ],
+    "rewrite": "Bật sưởi vô lăng ở mức 2.",
+    "rationale": "Lượt cuối mô tả chức năng theo công dụng “làm ấm tay”, nên phải phân giải đúng thành sưởi vô lăng."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lên lịch tưới cây trước khi tôi về nhà."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn điều khiển hệ thống tưới tại địa điểm nào?"
+    },
+    {
+    "role": "user",
+    "content": "Sân thượng căn hộ Vinhomes Park Hill."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn tưới khu vực nào, vào lúc nào và trong bao lâu?"
+    },
+    {
+    "role": "user",
+    "content": "Luống rau thơm, lúc 18 giờ 10 trong 12 phút."
+    },
+    {
+    "role": "bot",
+    "content": "Có tưới cả bồn hoa bên cạnh không?"
+    },
+    {
+    "role": "user",
+    "content": "Không tưới bồn hoa, lưu lịch nhé."
+    }
+    ],
+    "rewrite": "Lưu lịch tưới luống rau thơm trên sân thượng căn hộ Vinhomes Park Hill lúc 18 giờ 10 trong 12 phút và không tưới bồn hoa.",
+    "rationale": "Địa điểm, khu vực tưới, thời gian, thời lượng và ngoại lệ không tưới bồn hoa nằm ở nhiều lượt user khác nhau."
+    },
+    {
+    "pattern": "correction",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Dẫn tôi tới Bến Nhà Rồng."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị tuyến đường tới Bến Nhà Rồng."
+    },
+    {
+    "role": "user",
+    "content": "Gần đó còn điểm tham quan nào khác?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể tới Bảo tàng Thành phố Hồ Chí Minh hoặc Bảo tàng Áo dài."
+    },
+    {
+    "role": "user",
+    "content": "Bỏ điểm cũ, đổi sang chỗ thứ hai."
+    }
+    ],
+    "rewrite": "Bỏ tuyến tới Bến Nhà Rồng và dẫn tôi tới Bảo tàng Áo dài.",
+    "rationale": "Lượt cuối vừa hủy điểm đến ban đầu vừa chọn điểm mới bằng thứ tự trong danh sách được bot nêu."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "messaging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kiểm tra nhanh xe trước khi tôi nhắn tin."
+    },
+    {
+    "role": "bot",
+    "content": "Áp suất lốp sau là 2,2 bar và pin xe còn 54%."
+    },
+    {
+    "role": "user",
+    "content": "Gửi Messenger cho Mai Linh: Tôi đang ở sảnh đón khách."
+    }
+    ],
+    "rewrite": "Gửi Messenger cho Mai Linh với nội dung “Tôi đang ở sảnh đón khách”.",
+    "rationale": "Hai con số trạng thái xe chỉ là nhiễu và không được đưa vào tin nhắn đã đầy đủ thông tin."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chiếc Kia EV6 ở nhà có những kiểu hẹn sạc nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể dùng Scheduled Charging hoặc Off-Peak Charging để ưu tiên khung giờ điện thấp điểm."
+    },
+    {
+    "role": "user",
+    "content": "Bật tùy chọn ưu tiên giờ thấp điểm, bắt đầu lúc 23 giờ."
+    }
+    ],
+    "rewrite": "Bật Off-Peak Charging cho Kia EV6 tại nhà, bắt đầu lúc 23 giờ.",
+    "rationale": "Model phải ánh xạ mô tả tiếng Việt về tùy chọn sạc sang đúng tên tính năng tiếng Anh được nêu trước đó."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "calling",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe có lưu số ban quản lý bãi đỗ chung cư tôi không?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có liên hệ nào được lưu với nhãn ban quản lý bãi đỗ chung cư của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Gọi ban quản lý bãi đỗ chung cư tôi."
+    }
+    ],
+    "rewrite": "Gọi ban quản lý bãi đỗ chung cư tôi.",
+    "rationale": "Không có tên hoặc số điện thoại cụ thể trong lịch sử nên phải giữ nguyên cụm tham chiếu ngầm."
+    },
+    {
+    "pattern": "negation",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe xử lý biển giới hạn tốc độ bằng những cách nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Xe có thể chỉ cảnh báo giới hạn tốc độ hoặc tự điều chỉnh tốc độ theo biển báo."
+    },
+    {
+    "role": "user",
+    "content": "Dùng cách đầu, đừng tự giảm tốc."
+    }
+    ],
+    "rewrite": "Bật cảnh báo giới hạn tốc độ và đừng tự điều chỉnh tốc độ theo biển báo.",
+    "rationale": "Lượt cuối chọn tùy chọn đầu tiên bằng tham chiếu và đồng thời phủ định việc xe tự can thiệp tốc độ."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm bài song ca của Orange với Hoàng Dũng."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy bài “Khi Em Lớn” của Orange và Hoàng Dũng."
+    },
+    {
+    "role": "user",
+    "content": "Phát bài đó rồi hiện lời trên màn hình trung tâm."
+    }
+    ],
+    "rewrite": "Phát bài “Khi Em Lớn” của Orange và Hoàng Dũng rồi hiển thị lời bài hát trên màn hình trung tâm.",
+    "rationale": "Lượt cuối tham chiếu bài hát đã tìm thấy và yêu cầu thêm một thao tác hiển thị lời ngay sau khi phát."
+    },
+    {
+    "pattern": "correction",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật massage ghế lái mức 3."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã sẵn sàng bật massage ghế lái ở mức 3."
+    },
+    {
+    "role": "user",
+    "content": "Không massage ghế lái; bật massage ghế phụ mức 2."
+    }
+    ],
+    "rewrite": "Không bật massage ghế lái; hãy bật massage ghế phụ ở mức 2.",
+    "rationale": "Lượt cuối tự nêu đầy đủ việc hủy vị trí cũ và chuyển sang ghế phụ với mức hoạt động mới."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lập lộ trình đi nhận giấy tờ rồi về nhà giúp tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn nhận giấy tờ ở đâu?"
+    },
+    {
+    "role": "user",
+    "content": "Phòng Công chứng số 1 thành phố Hà Nội."
+    },
+    {
+    "role": "bot",
+    "content": "Sau đó bạn muốn về địa điểm nào?"
+    },
+    {
+    "role": "user",
+    "content": "Khu đô thị Times City."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có yêu cầu gì về thời gian hoặc tuyến đường không?"
+    },
+    {
+    "role": "user",
+    "content": "Tới phòng công chứng trước 16 giờ, tránh phố Huế."
+    }
+    ],
+    "rewrite": "Dẫn đường tới Phòng Công chứng số 1 thành phố Hà Nội trước 16 giờ, sau đó tới Khu đô thị Times City và tránh phố Huế.",
+    "rationale": "Hai điểm đến, thứ tự hành trình, thời hạn tới điểm đầu và tuyến cần tránh được cung cấp qua nhiều lượt user."
+    }
+    ]
+    }
+    

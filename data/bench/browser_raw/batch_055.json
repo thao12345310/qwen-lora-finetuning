@@ -1,0 +1,247 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm hai liên hệ tên Ngọc Ánh trong danh bạ xe."
+    },
+    {
+    "role": "bot",
+    "content": "Có Trần Ngọc Ánh - bảo hiểm ô tô và Lê Ngọc Ánh - lễ tân showroom."
+    },
+    {
+    "role": "user",
+    "content": "Gọi người làm bảo hiểm giúp tôi."
+    }
+    ],
+    "rewrite": "Gọi cho Trần Ngọc Ánh - bảo hiểm ô tô.",
+    "rationale": "Lượt cuối nhận diện người cần gọi bằng vai trò thay vì tên, nên phải chọn đúng liên hệ trong hai kết quả trùng tên."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lập hành trình tham quan ở trung tâm Sài Gòn chiều nay."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn ghé điểm nào trước?"
+    },
+    {
+    "role": "user",
+    "content": "Bảo tàng Chứng tích Chiến tranh trước."
+    },
+    {
+    "role": "bot",
+    "content": "Điểm tiếp theo là đâu và bạn cần tới đó trước mấy giờ?"
+    },
+    {
+    "role": "user",
+    "content": "Bưu điện Trung tâm Sài Gòn, trước 17 giờ 30."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có muốn tránh đoạn đường nào không?"
+    },
+    {
+    "role": "user",
+    "content": "Tránh đường Nam Kỳ Khởi Nghĩa nhé."
+    }
+    ],
+    "rewrite": "Dẫn đường tới Bảo tàng Chứng tích Chiến tranh trước, sau đó tới Bưu điện Trung tâm Sài Gòn trước 17 giờ 30 và tránh đường Nam Kỳ Khởi Nghĩa.",
+    "rationale": "Hai điểm dừng, thứ tự, thời hạn đến và tuyến cần tránh được cung cấp ở nhiều lượt riêng biệt."
+    },
+    {
+    "pattern": "correction",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật hỗ trợ giữ làn trên đường Võ Nguyên Giáp."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị bật hỗ trợ giữ làn trên đường Võ Nguyên Giáp."
+    },
+    {
+    "role": "user",
+    "content": "Đổi lại, trên đoạn đó chỉ bật nhận diện biển giới hạn tốc độ."
+    }
+    ],
+    "rewrite": "Trên đường Võ Nguyên Giáp, chỉ bật nhận diện biển giới hạn tốc độ.",
+    "rationale": "Lượt cuối thay thế tính năng đã yêu cầu trước đó và dùng “đoạn đó” để tham chiếu tuyến đường ban đầu."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "messaging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kiểm tra xe trước khi tôi nhắn bạn."
+    },
+    {
+    "role": "bot",
+    "content": "Quãng đường còn lại 132 km và pin xe hiện ở mức 49%."
+    },
+    {
+    "role": "user",
+    "content": "Gửi Zalo cho Trọng Nghĩa: Tôi đang đợi ở sảnh E."
+    }
+    ],
+    "rewrite": "Gửi Zalo cho Trọng Nghĩa với nội dung “Tôi đang đợi ở sảnh E”.",
+    "rationale": "Quãng đường và phần trăm pin chỉ là nhiễu, không được đưa vào tin nhắn đã tự đủ thông tin."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Sáng mai trước khi đi, xe điện có thể chuẩn bị những gì?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể đặt Scheduled Departure hoặc bật Preconditioning cho khoang xe và pin."
+    },
+    {
+    "role": "user",
+    "content": "Bật option thứ hai lúc 6 giờ 45."
+    }
+    ],
+    "rewrite": "Bật Preconditioning cho khoang xe và pin lúc 6 giờ 45 sáng mai.",
+    "rationale": "Model phải resolve “option thứ hai” thành Preconditioning và giữ nguyên tên tính năng tiếng Anh."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "smart_home",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đã lưu thông tin nhà mới của tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có địa chỉ nào được lưu với nhãn nhà mới của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Đóng toàn bộ rèm ở nhà mới của tôi."
+    }
+    ],
+    "rewrite": "Đóng toàn bộ rèm ở nhà mới của tôi.",
+    "rationale": "Không có địa chỉ cụ thể trong lịch sử nên phải giữ nguyên cụm “nhà mới của tôi”, không tự tạo vị trí."
+    },
+    {
+    "pattern": "negation",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bố tôi đang ngồi ở ghế nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bố bạn đang ngồi ở ghế phụ phía trước."
+    },
+    {
+    "role": "user",
+    "content": "Bật sưởi ghế cho bố, không bật ghế lái."
+    }
+    ],
+    "rewrite": "Bật sưởi ghế phụ phía trước và không bật sưởi ghế lái.",
+    "rationale": "Cần resolve vị trí của bố thành ghế phụ phía trước đồng thời giữ rõ ràng điều kiện phủ định với ghế lái."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Cửa nào chưa đóng kín?"
+    },
+    {
+    "role": "bot",
+    "content": "Cửa sau bên trái đang chưa đóng kín."
+    },
+    {
+    "role": "user",
+    "content": "Hiện cảnh báo cho cửa đó rồi khóa các cửa còn lại."
+    }
+    ],
+    "rewrite": "Hiển thị cảnh báo cho cửa sau bên trái đang chưa đóng kín rồi khóa các cửa còn lại.",
+    "rationale": "Lượt cuối chứa hai hành động và dùng “cửa đó” để tham chiếu chính xác cửa đang có vấn đề."
+    },
+    {
+    "pattern": "correction",
+    "domain": "music",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Phát “Hơn Cả Yêu” của Đức Phúc."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị phát “Hơn Cả Yêu” của Đức Phúc."
+    },
+    {
+    "role": "user",
+    "content": "Không phát bài đó; mở “Chuyện Đôi Ta” của Emcee L và Muộii."
+    }
+    ],
+    "rewrite": "Không phát “Hơn Cả Yêu” của Đức Phúc; hãy mở “Chuyện Đôi Ta” của Emcee L và Muộii.",
+    "rationale": "Lượt cuối đã tự nêu đầy đủ việc hủy bài cũ và thay bằng một bài hát cụ thể khác."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chuẩn bị nhiệt độ xe trước giờ tan làm."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn làm mát khu vực nào trong xe?"
+    },
+    {
+    "role": "user",
+    "content": "Toàn bộ khoang xe của VinFast VF 6."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn đặt nhiệt độ bao nhiêu và bắt đầu lúc nào?"
+    },
+    {
+    "role": "user",
+    "content": "23°C, bắt đầu lúc 17 giờ 20."
+    },
+    {
+    "role": "bot",
+    "content": "Có bật lọc bụi mịn trong lúc làm mát không?"
+    },
+    {
+    "role": "user",
+    "content": "Có, lưu lịch này."
+    }
+    ],
+    "rewrite": "Lưu lịch làm mát toàn bộ khoang xe VinFast VF 6 ở 23°C lúc 17 giờ 20 và bật lọc bụi mịn.",
+    "rationale": "Mẫu xe, phạm vi khoang xe, nhiệt độ, thời gian và tùy chọn lọc bụi được cung cấp qua nhiều lượt user."
+    }
+    ]
+    }
+    

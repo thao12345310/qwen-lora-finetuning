@@ -1,0 +1,140 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi cần đi công chứng gấp hôm nay"},
+          {"role":"bot","content":"Loại giấy tờ nào và cần phòng công chứng nhà nước hay tư nhân ạ?"},
+          {"role":"user","content":"Công chứng hợp đồng mua bán nhà, phòng nhà nước được"},
+          {"role":"bot","content":"Phòng Công chứng số 1 Hà Nội tại 40 Đinh Lễ, Hoàn Kiếm mở đến 17h, cách 3.8km. Phòng số 4 tại 46 Tràng Thi mở đến 16h30, cách 2.1km."},
+          {"role":"user","content":"Giờ 15h45 rồi, chỗ nào còn kịp thì dẫn vào"}
+        ],
+        "rewrite": "Chỉ đường đến Phòng Công chứng số 1 Hà Nội tại 40 Đinh Lễ, còn mở đến 17h.",
+        "rationale": "Với thời điểm 15h45, chỉ Phòng số 1 mở đến 17h là còn kịp; Phòng số 4 đóng lúc 16h30 nên loại; rewrite resolve 'chỗ còn kịp' bằng so sánh giờ."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Kiểm tra hệ thống đèn xe có lỗi gì không"},
+          {"role":"bot","content":"Phát hiện 2 lỗi: đèn xi nhan trái phía sau đứt bóng và đèn phanh trung tâm cần thay."},
+          {"role":"user","content":"Cái nào nguy hiểm hơn khi lái đêm thì ưu tiên báo garage sửa trước"}
+        ],
+        "rewrite": "Báo garage ưu tiên sửa đèn phanh trung tâm trước.",
+        "rationale": "'Cái nguy hiểm hơn khi lái đêm' cần phán đoán kỹ thuật: đèn phanh trung tâm ảnh hưởng an toàn phanh hơn xi nhan sau; resolve rõ tên đèn cần sửa trước."
+      },
+      {
+        "pattern": "negation",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật scene Sáng Sớm cho toàn nhà"},
+          {"role":"bot","content":"Đã bật: rèm phòng ngủ tự mở, đèn bếp 80%, ấm đun nước Philips 100°C, nhạc nền Acoustic và điều hoà tắt."},
+          {"role":"user","content":"Tắt nhạc nền đi và đừng mở rèm phòng ngủ, còn ngủ thêm"}
+        ],
+        "rewrite": "Tắt nhạc nền và đóng rèm phòng ngủ lại, giữ nguyên đèn bếp 80% và ấm đun nước Philips.",
+        "rationale": "Hai phủ định cùng lúc trên hai thiết bị khác nhau; rewrite đảo ngược đúng hai hành động và xác nhận hai thiết bị còn lại giữ nguyên."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Hôm nay chạy bộ trong xe, cần nhạc năng lượng cao"},
+          {"role":"bot","content":"Bạn muốn phát trên Spotify hay YouTube Music? Có playlist Running Power và Cardio Boost."},
+          {"role":"user","content":"Spotify đi, playlist Cardio Boost, crossfade 5 giây giữa các bài"}
+        ],
+        "rewrite": "Phát playlist Cardio Boost trên Spotify, bật crossfade 5 giây.",
+        "rationale": "Token 'Cardio Boost', 'crossfade' giữ nguyên; nền tảng và tính năng crossfade từ lượt cuối sau khi user chọn từ options bot đưa ra."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi hay quên xe trong bãi đỗ mấy tầng hầm"},
+          {"role":"bot","content":"Bạn muốn cài gì để nhớ vị trí xe?"},
+          {"role":"user","content":"Tự động lưu vị trí GPS khi tắt máy và chụp ảnh biển số tầng hầm rồi gửi vào note"}
+        ],
+        "rewrite": "Cài tự động lưu vị trí GPS khi tắt máy và chụp ảnh biển số tầng hầm gửi vào ghi chú.",
+        "rationale": "Hai tính năng tự động hóa song song không cần ngữ cảnh bổ sung từ lịch sử; lượt trước chỉ xác nhận vấn đề user gặp phải."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi hay mua đồ ở siêu thị Winmart Cầu Giấy"},
+          {"role":"bot","content":"Đã lưu Winmart Cầu Giấy vào danh sách yêu thích."},
+          {"role":"user","content":"Gọi hỏi hôm nay họ có khuyến mãi thịt bò không"}
+        ],
+        "rewrite": "Gọi điện đến Winmart Cầu Giấy hỏi khuyến mãi thịt bò hôm nay.",
+        "rationale": "'Họ' ngầm chỉ Winmart Cầu Giấy từ lượt khai báo đầu; resolve đầy đủ tên siêu thị vào rewrite."
+      },
+      {
+        "pattern": "correction",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật Lane Centering độ nhạy cao đi"},
+          {"role":"bot","content":"Đã bật Lane Centering độ nhạy cao, xe sẽ can thiệp sớm khi lệch làn."},
+          {"role":"user","content":"Can thiệp mạnh quá tay lái bị giật, chỉnh xuống độ nhạy trung bình"},
+          {"role":"bot","content":"Đã chỉnh Lane Centering về độ nhạy trung bình."},
+          {"role":"user","content":"Vẫn chưa ổn lắm, thử mức thấp nhất xem sao"}
+        ],
+        "rewrite": "Chỉnh Lane Centering xuống độ nhạy thấp nhất.",
+        "rationale": "User liên tục giảm độ nhạy qua hai lần sửa; rewrite chỉ giữ mức cuối cùng, không nhắc lại quá trình điều chỉnh."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tóm tắt tình hình xe tôi hôm nay"},
+          {"role":"bot","content":"Hôm nay: quãng đường 94km, thời gian lái 1h47, tốc độ max 118km/h, cảnh báo vượt tốc 2 lần, điểm lái 81/100, tiêu thụ 14.8kWh."},
+          {"role":"user","content":"Gửi báo cáo này cho vợ qua Messenger đi"}
+        ],
+        "rewrite": "Gửi báo cáo hành trình hôm nay qua Messenger cho vợ: 94km, 1h47 lái, tốc độ max 118km/h, 2 lần cảnh báo vượt tốc, điểm lái 81/100, tiêu thụ 14.8kWh.",
+        "rationale": "Khác với các mẫu irrelevant_context thông thường, lần này toàn bộ số liệu bot trả về đều là nội dung cần gửi đi; rewrite giữ nguyên tất cả và thêm đích nhận."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn sạc xe qua đêm ở đâu đó tiện"},
+          {"role":"bot","content":"Bạn cần sạc AC chậm qua đêm hay DC nhanh? Và khu vực nào ạ?"},
+          {"role":"user","content":"AC được, quanh khu Tây Hồ"},
+          {"role":"bot","content":"Có bãi đỗ kết hợp sạc AC tại Lotte Mall Tây Hồ, 8 cổng 7.4kW, phí 25.000đ/giờ, mở đến 23h."},
+          {"role":"user","content":"Đặt chỗ từ 20h đến 7h sáng mai, cần 2 cổng"}
+        ],
+        "rewrite": "Đặt 2 cổng sạc AC 7.4kW tại Lotte Mall Tây Hồ từ 20h tối nay đến 7h sáng mai.",
+        "rationale": "Loại sạc, số cổng, địa điểm và khung giờ rải qua 5 lượt; lượt cuối xác nhận thời gian và số lượng cổng cần đặt."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm phòng khám nha khoa có máy chụp X-quang kỹ thuật số gần đây"},
+          {"role":"bot","content":"Có Nha khoa Smile Up Hoàng Quốc Việt cách 1.5km, Nha khoa Quốc tế Paris Xuân Thuỷ cách 2.8km và Elite Dental Cầu Giấy cách 3.1km, cả ba đều có X-quang kỹ thuật số."},
+          {"role":"user","content":"Chỗ có tên quốc tế nghe sang nhất thì đặt lịch rồi dẫn đường vào"}
+        ],
+        "rewrite": "Đặt lịch khám tại Nha khoa Quốc tế Paris Xuân Thuỷ và chỉ đường đến đó.",
+        "rationale": "'Chỗ có tên quốc tế nghe sang nhất' phân tích tên ba phòng khám rồi resolve về Nha khoa Quốc tế Paris vì tên mang yếu tố quốc tế rõ nhất."
+      }
+    ]
+  }

@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm số điện thoại garage ô tô gần đây"},
+          {"role":"bot","content":"Có Garage Hoàng Long số 0243 789 1234 cách 1.8km và Auto Care Việt số 0912 456 789 cách 3.2km."},
+          {"role":"user","content":"Chỗ nào mở cửa sớm hơn?"},
+          {"role":"bot","content":"Garage Hoàng Long mở lúc 7h, Auto Care Việt mở lúc 8h30."},
+          {"role":"user","content":"Gọi cho chỗ mở sớm hơn đi"}
+        ],
+        "rewrite": "Gọi cho Garage Hoàng Long số 0243 789 1234.",
+        "rationale": "'Chỗ mở sớm hơn' cần so sánh giờ mở từ lượt bot rồi resolve về tên và số điện thoại cụ thể."
+      },
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_offline",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Phát nhạc offline trong thẻ SD đi"},
+          {"role":"bot","content":"Có 4 album: Hoàng của Hoàng Dũng, Tự Tình của Hà Anh Tuấn, Chìm Sâu của Vũ và Gió của Bích Phương."},
+          {"role":"user","content":"Phát tất cả trừ album Chìm Sâu, shuffle luôn"}
+        ],
+        "rewrite": "Phát offline tất cả album trong thẻ SD trừ album Chìm Sâu của Vũ, bật shuffle.",
+        "rationale": "Phủ định loại trừ album cụ thể trong danh sách bot; rewrite giữ rõ tên album bị loại và điều kiện shuffle."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Con tôi hay ngồi ghế sau bên trái"},
+          {"role":"bot","content":"Đã ghi nhớ vị trí ngồi thường xuyên của bé."},
+          {"role":"user","content":"Khoá kính cửa chỗ đó lại, tránh bé nghịch"}
+        ],
+        "rewrite": "Khoá kính cửa ghế sau bên trái để trẻ em không tự điều khiển được.",
+        "rationale": "'Chỗ đó' resolve về ghế sau bên trái từ thông tin user khai báo lượt trước."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi đang muốn đi mua sắm"},
+          {"role":"bot","content":"Bạn muốn đến trung tâm thương mại nào ạ?"},
+          {"role":"user","content":"AEON Mall Hà Đông đi, ghé rút tiền ATM Vietcombank trên đường luôn"}
+        ],
+        "rewrite": "Chỉ đường đến AEON Mall Hà Đông, ghé ATM Vietcombank gần nhất trên đường đi.",
+        "rationale": "Hai intent điều hướng lồng nhau: điểm chính và điểm dừng giữa đường; rewrite giữ đủ cả hai với thương hiệu ATM cụ thể."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Trạm sạc nào gần nhất hỗ trợ xe Hyundai Ioniq 5?"},
+          {"role":"bot","content":"Trạm E-Charging Hyundai tại Mipec Tower, Tây Sơn, cách 3.3km, có 4 cổng CCS2 trống."},
+          {"role":"user","content":"Đặt trước một cổng ở đó rồi dẫn đường vào luôn"}
+        ],
+        "rewrite": "Đặt trước một cổng CCS2 tại trạm E-Charging Hyundai ở Mipec Tower, Tây Sơn, rồi chỉ đường đến đó.",
+        "rationale": "'Đó' resolve về tên trạm và địa chỉ; lượt cuối chứa hai hành động đặt chỗ và dẫn đường cần giữ đủ."
+      },
+      {
+        "pattern": "correction",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đặt máy nước nóng Ariston bật lúc 6 giờ sáng"},
+          {"role":"bot","content":"Đã lên lịch bật máy nước nóng Ariston lúc 6:00 sáng."},
+          {"role":"user","content":"Đổi lại 5 giờ 30 đi, mai phải dậy sớm"},
+          {"role":"bot","content":"Đã cập nhật lịch bật máy nước nóng Ariston lúc 5:30 sáng."},
+          {"role":"user","content":"Thêm tắt tự động sau 30 phút nhé"}
+        ],
+        "rewrite": "Cài máy nước nóng Ariston tắt tự động sau 30 phút kể từ khi bật lúc 5:30 sáng.",
+        "rationale": "Bot đã xử lý xong việc đổi giờ; lượt cuối chỉ bổ sung tính năng tắt tự động, rewrite không nhắc lại quá trình sửa giờ."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật ambient light trong xe chế độ sunset, độ sáng 70% đi"}
+        ],
+        "rewrite": "Bật ambient light chế độ sunset, độ sáng 70%.",
+        "rationale": "Token 'ambient light' và 'sunset' giữ nguyên tiếng Anh; lượt đơn đã đủ slot, không cần lịch sử."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Hôm nay lịch của tôi có gì?"},
+          {"role":"bot","content":"Bạn có họp 9h với nhóm marketing, deadline báo cáo Q2 lúc 17h, sinh nhật chị Thanh Hà và đặt bàn nhà hàng Cicchetti 19h30."},
+          {"role":"user","content":"Nhắn Zalo cho chị Thanh Hà chúc sinh nhật đi"}
+        ],
+        "rewrite": "Nhắn Zalo cho chị Thanh Hà lời chúc sinh nhật.",
+        "rationale": "Bot trả về 4 sự kiện trong ngày nhưng chỉ sinh nhật chị Thanh Hà liên quan; rewrite không kéo giờ họp, deadline hay nhà hàng vào."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ trời cho thoáng"},
+          {"role":"bot","content":"Mở bao nhiêu phần trăm ạ?"},
+          {"role":"user","content":"50% thôi, ngoài đang có gió"},
+          {"role":"bot","content":"Đã mở cửa sổ trời 50%."},
+          {"role":"user","content":"Bắt đầu mưa rồi, đóng lại và bật recirculation đi"}
+        ],
+        "rewrite": "Đóng cửa sổ trời và bật chế độ recirculation.",
+        "rationale": "Bot đã xử lý xong mở 50%; lượt cuối yêu cầu hai hành động mới hoàn toàn, rewrite không nhắc lại trạng thái cũ."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Biển tốc độ tối đa đoạn này là bao nhiêu?"},
+          {"role":"bot","content":"Giới hạn tốc độ đoạn này là 80km/h, bạn đang chạy 76km/h."},
+          {"role":"user","content":"Bật cruise control giữ đúng mức đó đi"}
+        ],
+        "rewrite": "Bật cruise control, giữ tốc độ 80km/h.",
+        "rationale": "'Mức đó' phải resolve về giới hạn tốc độ 80km/h chứ không phải tốc độ hiện tại 76km/h của xe."
+      }
+    ]
+  }

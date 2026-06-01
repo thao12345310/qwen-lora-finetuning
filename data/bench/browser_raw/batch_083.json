@@ -1,0 +1,136 @@
+{
+  "samples": [
+    {
+      "pattern": "correction",
+      "domain": "climate",
+      "intent": "set_climate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật điều hoà 25 độ"},
+        {"role": "bot", "content": "Điều hoà đang chạy 25 độ"},
+        {"role": "user", "content": "Không ổn, hạ xuống 20 độ và chế độ làm lạnh mạnh"}
+      ],
+      "rewrite": "Hạ điều hoà xuống 20 độ chế độ làm lạnh mạnh",
+      "rationale": "User sửa nhiệt độ và chế độ sau khi thử"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "messaging",
+      "intent": "send_message",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Nhắn cho chị Hoa"},
+        {"role": "bot", "content": "Nội dung gì ạ?"},
+        {"role": "user", "content": "Mai đi picnic"},
+        {"role": "user", "content": "Nhắc mang theo kem chống nắng"}
+      ],
+      "rewrite": "Nhắn cho chị Hoa mai đi picnic nhớ mang kem chống nắng",
+      "rationale": "Thông tin người nhận và nội dung chi tiết rải qua nhiều lượt"
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "music",
+      "intent": "play_music_offline",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Mở bài hit cũ"},
+        {"role": "bot", "content": "Đang phát 'Ngày Ấy' của Nguyễn Trần Trung Quân"},
+        {"role": "user", "content": "Tăng volume bài đó lên"}
+      ],
+      "rewrite": "Tăng volume bài 'Ngày Ấy' của Nguyễn Trần Trung Quân",
+      "rationale": "Đại từ 'bài đó' cần resolve chính xác bài hát bot đang phát"
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "vehicle",
+      "intent": "control_window",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Kiểm tra lốp xe"},
+        {"role": "bot", "content": "Áp suất lốp trước 2.4 bar, sau 2.5 bar"},
+        {"role": "user", "content": "Mở cửa sổ trời"}
+      ],
+      "rewrite": "Mở cửa sổ trời",
+      "rationale": "Thông tin áp suất lốp nhiễu không liên quan đến cửa sổ"
+    },
+    {
+      "pattern": "code_switching",
+      "domain": "driver_assist",
+      "intent": "cruise_control",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Xe chạy êm không"},
+        {"role": "bot", "content": "Hệ thống ổn"},
+        {"role": "user", "content": "Activate Highway Assist mode"}
+      ],
+      "rewrite": "Activate Highway Assist mode",
+      "rationale": "Lượt cuối tự đầy đủ với thuật ngữ driver assist tiếng Anh"
+    },
+    {
+      "pattern": "negation",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật đèn gara"},
+        {"role": "bot", "content": "Đèn gara đã bật"},
+        {"role": "user", "content": "Đừng bật sáng quá, giảm độ sáng"}
+      ],
+      "rewrite": "Giảm độ sáng đèn gara đừng bật sáng quá",
+      "rationale": "Phủ định mức độ sáng cần giữ rõ"
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "charging",
+      "intent": "find_charging",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Pin thấp quá"},
+        {"role": "bot", "content": "Pin còn 18%"},
+        {"role": "user", "content": "Tìm trạm sạc và đặt lịch hẹn"}
+      ],
+      "rewrite": "Tìm trạm sạc gần nhất và đặt lịch hẹn",
+      "rationale": "Hai intent tìm và đặt lịch kết hợp"
+    },
+    {
+      "pattern": "implicit_reference",
+      "domain": "calling",
+      "intent": "call",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Gọi cho phòng ban"},
+        {"role": "bot", "content": "Đang gọi phòng kinh doanh"},
+        {"role": "user", "content": "Chuyển sang trường con"}
+      ],
+      "rewrite": "Gọi cho trường con",
+      "rationale": "Implicit reference 'trường con' giữ nguyên cụm"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Đi chợ Đồng Xuân"},
+        {"role": "bot", "content": "Đang dẫn đường"},
+        {"role": "user", "content": "Tránh đường hẹp"},
+        {"role": "user", "content": "Đến trước 8 giờ sáng"}
+      ],
+      "rewrite": "Dẫn đường đến chợ Đồng Xuân tránh đường hẹp đến trước 8 giờ sáng",
+      "rationale": "Slot địa điểm, tránh đường và thời gian tích lũy"
+    },
+    {
+      "pattern": "correction",
+      "domain": "music",
+      "intent": "play_music_online",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Mở Top 100 Vpop"},
+        {"role": "bot", "content": "Đang phát Top 100 Vpop"},
+        {"role": "user", "content": "Đổi sang top nhạc lofi chill"}
+      ],
+      "rewrite": "Đổi sang top nhạc lofi chill",
+      "rationale": "Lượt cuối tự chứa đầy đủ sau khi sửa thể loại"
+    }
+  ]
+}

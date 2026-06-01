@@ -1,0 +1,271 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi đưa bà tới Bệnh viện Vinmec Times City."
+    },
+    {
+    "role": "bot",
+    "content": "Có lối vào sảnh khám bệnh và lối vào khoa Cấp cứu."
+    },
+    {
+    "role": "user",
+    "content": "Bà dùng xe lăn, lối nào phù hợp hơn?"
+    },
+    {
+    "role": "bot",
+    "content": "Lối vào sảnh khám bệnh thuận tiện cho xe lăn hơn."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tới lối phù hợp hơn giúp tôi."
+    }
+    ],
+    "rewrite": "Dẫn đường tới lối vào sảnh khám bệnh của Bệnh viện Vinmec Times City.",
+    "rationale": "Lượt cuối chỉ nói “lối phù hợp hơn”, cần lấy đúng lối vào đã được bot xác định sau khi biết nhu cầu xe lăn."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi muốn báo cho chị Thủy về việc đổi điểm hẹn."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi bằng ứng dụng nào?"
+    },
+    {
+    "role": "user",
+    "content": "Qua Viber."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn nhắn nội dung gì?"
+    },
+    {
+    "role": "user",
+    "content": "Em sẽ đón chị ở cổng Nhà hát Lớn Hà Nội."
+    },
+    {
+    "role": "bot",
+    "content": "Gửi ngay hay hẹn giờ?"
+    },
+    {
+    "role": "user",
+    "content": "Hẹn gửi lúc 18 giờ 05."
+    }
+    ],
+    "rewrite": "Hẹn gửi Viber cho chị Thủy lúc 18 giờ 05 với nội dung “Em sẽ đón chị ở cổng Nhà hát Lớn Hà Nội”.",
+    "rationale": "Người nhận, kênh gửi, nội dung và thời điểm được cung cấp ở bốn lượt user khác nhau."
+    },
+    {
+    "pattern": "correction",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Hẹn sạc chiếc VinFast VF 5 ở bộ sạc tại nhà đêm nay."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn bắt đầu lúc nào và sạc đến mức pin bao nhiêu?"
+    },
+    {
+    "role": "user",
+    "content": "22 giờ, đến 90%."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị lịch sạc VinFast VF 5 tại nhà lúc 22 giờ đến 90%."
+    },
+    {
+    "role": "user",
+    "content": "Đổi xuống 75%, bắt đầu lúc 23 giờ."
+    }
+    ],
+    "rewrite": "Hẹn sạc chiếc VinFast VF 5 tại nhà lúc 23 giờ và giới hạn pin ở 75%.",
+    "rationale": "Lượt cuối thay đổi cả thời gian lẫn ngưỡng pin, còn xe và vị trí sạc phải được giữ từ lịch sử."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kiểm tra nhanh tình trạng trước khi đón khách."
+    },
+    {
+    "role": "bot",
+    "content": "Áp suất lốp hiện là 2,3 bar và bạn còn 41 km tới điểm đến."
+    },
+    {
+    "role": "user",
+    "content": "Bật lọc bụi mịn cho khoang sau."
+    }
+    ],
+    "rewrite": "Bật lọc bụi mịn cho khoang sau.",
+    "rationale": "Các con số về lốp và quãng đường là nhiễu, không thuộc thao tác lọc không khí được yêu cầu."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chiếc Tesla Model X có những cốp nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Xe có cốp sau và cốp trước, còn gọi là frunk."
+    },
+    {
+    "role": "user",
+    "content": "Mở frunk đó giúp tôi."
+    }
+    ],
+    "rewrite": "Mở frunk của chiếc Tesla Model X.",
+    "rationale": "Model phải giữ nguyên token “frunk” và liên kết nó với cốp trước của đúng chiếc xe đã nêu."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "calling",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Trong danh bạ xe có lưu nha sĩ của tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có liên hệ nào được lưu với nhãn nha sĩ của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Gọi nha sĩ của tôi để báo tôi sẽ đến muộn."
+    }
+    ],
+    "rewrite": "Gọi nha sĩ của tôi để báo rằng tôi sẽ đến muộn.",
+    "rationale": "Lịch sử không cung cấp tên hoặc số điện thoại cụ thể, nên phải giữ nguyên tham chiếu “nha sĩ của tôi”."
+    },
+    {
+    "pattern": "negation",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Gợi ý hai playlist có nhạc Đức Phúc."
+    },
+    {
+    "role": "bot",
+    "content": "Có playlist V-Pop Năng Lượng và playlist Ballad Việt Buổi Tối."
+    },
+    {
+    "role": "user",
+    "content": "Playlist nào có bài “Ngày Đầu Tiên”?"
+    },
+    {
+    "role": "bot",
+    "content": "Playlist Ballad Việt Buổi Tối có bài “Ngày Đầu Tiên” của Đức Phúc."
+    },
+    {
+    "role": "user",
+    "content": "Phát playlist đó, trừ bài vừa nhắc."
+    }
+    ],
+    "rewrite": "Phát playlist Ballad Việt Buổi Tối, trừ bài “Ngày Đầu Tiên” của Đức Phúc.",
+    "rationale": "Lượt cuối tham chiếu cả playlist lẫn bài hát trước đó và bắt buộc giữ ngoại lệ không phát bài đã nêu."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Trên đường tới Công viên Thống Nhất, đoạn nào cần chú ý người đi bộ?"
+    },
+    {
+    "role": "bot",
+    "content": "Đoạn trước cổng Trường Đại học Bách khoa Hà Nội cần chú ý người đi bộ."
+    },
+    {
+    "role": "user",
+    "content": "Đến đoạn đó, bật cảnh báo người đi bộ rồi giới hạn 30 km/h."
+    }
+    ],
+    "rewrite": "Khi đến đoạn trước cổng Trường Đại học Bách khoa Hà Nội, bật cảnh báo người đi bộ rồi giới hạn tốc độ ở 30 km/h.",
+    "rationale": "Câu cuối gồm hai intent và dùng “đoạn đó” để tham chiếu vị trí cụ thể được nêu trong lượt trước."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "navigation",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi cần tới khu triển lãm ở Quận 7."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể nêu rõ điểm đến và ứng dụng điều hướng muốn dùng."
+    },
+    {
+    "role": "user",
+    "content": "Mở Apple Maps, dẫn tới Trung tâm Hội chợ và Triển lãm Sài Gòn, tránh hầm Thủ Thiêm."
+    }
+    ],
+    "rewrite": "Mở Apple Maps, dẫn tới Trung tâm Hội chợ và Triển lãm Sài Gòn và tránh hầm Thủ Thiêm.",
+    "rationale": "Lượt cuối đã tự đủ điểm đến, ứng dụng và ràng buộc tuyến đường, đồng thời phải giữ nguyên tên Apple Maps."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chuẩn bị nước nóng trước khi tôi về căn nhà ở Gamuda Gardens."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn bật thiết bị nào trong nhà?"
+    },
+    {
+    "role": "user",
+    "content": "Bình nóng lạnh phòng tắm tầng hai."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn thiết bị bắt đầu hoạt động lúc nào?"
+    },
+    {
+    "role": "user",
+    "content": "19 giờ 10."
+    },
+    {
+    "role": "bot",
+    "content": "Có cần tự động tắt sau một khoảng thời gian không?"
+    },
+    {
+    "role": "user",
+    "content": "Sau 25 phút, lưu lịch này."
+    }
+    ],
+    "rewrite": "Lưu lịch bật bình nóng lạnh phòng tắm tầng hai tại căn nhà ở Gamuda Gardens lúc 19 giờ 10 và tự động tắt sau 25 phút.",
+    "rationale": "Thiết bị, căn nhà, giờ bật và thời lượng hoạt động được thu thập qua nhiều lượt trước khi người dùng yêu cầu lưu lịch."
+    }
+    ]
+    }
+    

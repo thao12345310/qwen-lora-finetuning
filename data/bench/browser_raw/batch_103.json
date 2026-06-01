@@ -1,0 +1,120 @@
+{
+    "samples": [
+      {
+        "pattern": "negation",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Chỉ đường về nhà, không đi qua đường Nguyễn Trãi, hay tắc lắm"}
+        ],
+        "rewrite": "Chỉ đường về nhà, không đi qua đường Nguyễn Trãi.",
+        "rationale": "Lượt đơn đã đủ điểm đến và điều kiện phủ định; từ 'không' phải giữ nguyên trong rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tắt điều hoà rồi hạ kính lái xuống một nửa cho thoáng"}
+        ],
+        "rewrite": "Tắt điều hoà và hạ kính cửa lái xuống 50%.",
+        "rationale": "Lượt đơn chứa hai intent song song trên hai hệ thống khác nhau, không cần lịch sử."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật Spotify phát playlist Lo-fi Hip Hop, bật repeat all luôn"}
+        ],
+        "rewrite": "Phát playlist Lo-fi Hip Hop trên Spotify, bật repeat all.",
+        "rationale": "Token 'Spotify', 'Lo-fi Hip Hop', 'repeat all' giữ nguyên tiếng Anh; lượt đơn đã đủ slot."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Chỉ đường về công ty cho tôi, nhanh nhất đi"}
+        ],
+        "rewrite": "Chỉ đường về công ty theo tuyến nhanh nhất.",
+        "rationale": "'Công ty' là implicit reference không có thông tin trong hội thoại nên giữ nguyên cụm, không bịa địa chỉ."
+      },
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Phát nhạc Vpop trên Spotify nhưng đừng phát nhạc buồn, tôi đang vui"}
+        ],
+        "rewrite": "Phát nhạc Vpop trên Spotify, không phát các bài nhạc buồn.",
+        "rationale": "Lượt đơn đủ thông tin; từ 'không' chỉ thể loại bị loại trừ phải giữ rõ trong rewrite."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tình trạng các thiết bị ở nhà ra sao?"},
+          {"role":"bot","content":"Điều hoà phòng khách 24°C đang bật, máy giặt còn 18 phút, pin dự phòng nhà 74%, router wifi uptime 6 ngày, bóng đèn sân trước đang tắt."},
+          {"role":"user","content":"Bật bóng đèn sân trước lên đi, sắp về rồi"}
+        ],
+        "rewrite": "Bật đèn sân trước.",
+        "rationale": "Bot trả 5 thông số trạng thái thiết bị; chỉ trạng thái đèn sân trước xác nhận đang tắt, các số 24°C, 18 phút, 74%, 6 ngày đều là nhiễu không đưa vào rewrite."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật adaptive cruise control 90km/h và tắt lane assist đi, không quen"}
+        ],
+        "rewrite": "Bật adaptive cruise control 90km/h và tắt lane assist.",
+        "rationale": "Lượt đơn đủ slot; hai intent đối lập trên hai tính năng riêng biệt, token 'adaptive cruise control' và 'lane assist' giữ nguyên."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi hay gọi cho xưởng sửa xe ở đầu ngõ nhà"},
+          {"role":"bot","content":"Đã ghi nhận. Số xưởng trong danh bạ là 0916 334 221, tên liên hệ là anh Tùng."},
+          {"role":"user","content":"Gọi cho anh ấy hỏi xem có nhận sửa lốp hôm nay không"}
+        ],
+        "rewrite": "Gọi cho anh Tùng số 0916 334 221 hỏi có nhận sửa lốp hôm nay không.",
+        "rationale": "Tên và số của xưởng từ lượt bot; 'anh ấy' resolve về anh Tùng — đây là implicit reference có thông tin trước nên resolve đầy đủ."
+      },
+      {
+        "pattern": "negation",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Tìm trạm sạc gần đây nhưng đừng tìm trạm EVgo, thẻ tôi không hợp"}
+        ],
+        "rewrite": "Tìm trạm sạc gần nhất, không bao gồm trạm EVgo.",
+        "rationale": "Lượt đơn đã đủ điều kiện tìm kiếm và loại trừ; từ 'không' phải giữ nguyên, không rút gọn thành câu khẳng định."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Kiểm tra lịch hôm nay của tôi"},
+          {"role":"bot","content":"Hôm nay thứ Tư: 9h họp phòng marketing, 12h ăn trưa với khách Hàn, 15h review báo cáo Q3, 18h sinh nhật anh Đức Trung, 20h yoga."},
+          {"role":"user","content":"Nhắn Zalo chúc sinh nhật anh Đức Trung đi, quên mất"}
+        ],
+        "rewrite": "Nhắn Zalo chúc sinh nhật anh Đức Trung.",
+        "rationale": "Bot liệt kê 5 sự kiện trong ngày; chỉ sinh nhật anh Đức Trung là liên quan đến yêu cầu nhắn tin, các lịch khác đều là nhiễu không đưa vào rewrite."
+      }
+    ]
+  }

@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin nhắn cho bạn Nam: \"Hẹn gặp vào chiều nay nhé\"."},
+          {"role":"bot","content":"Tin nhắn đã sẵn sàng."},
+          {"role":"user","content":"Gửi nó ngay."}
+        ],
+        "rewrite": "Gửi tin nhắn đến bạn Nam nội dung \"Hẹn gặp vào chiều nay nhé\" ngay lập tức",
+        "rationale": "Câu cuối dùng đại từ \"nó\" cần dựa vào tin nhắn trước để xác định người và nội dung."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Nhiệt độ ngoài trời hiện tại là 30°C, độ ẩm 70%."},
+          {"role":"bot","content":"Độ ẩm 70%, nhiệt độ 30°C."},
+          {"role":"user","content":"Bật cruise control 100km/h."}
+        ],
+        "rewrite": "Bật cruise control với tốc độ 100km/h",
+        "rationale": "Thông tin thời tiết không liên quan, câu cuối tự chứa đủ slot để thực hiện hành động."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở TV trong xe."},
+          {"role":"bot","content":"TV đã bật."},
+          {"role":"user","content":"Âm lượng 30."},
+          {"role":"bot","content":"Âm lượng đã đặt 30."},
+          {"role":"user","content":"Chuyển nguồn sang HDMI2."},
+          {"role":"bot","content":"Đã chuyển sang HDMI2."},
+          {"role":"user","content":"Bật phụ đề."}
+        ],
+        "rewrite": "Bật TV, đặt âm lượng 30, chuyển nguồn sang HDMI2 và bật phụ đề",
+        "rationale": "Các slot được đưa ra rải rác qua nhiều lượt, cần gộp lại thành một lệnh duy nhất."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đi đến trung tâm thương mại Vincom."},
+          {"role":"bot","content":"Đã tính route, thời gian 15 phút, qua đường cao tốc."},
+          {"role":"user","content":"Không qua cao tốc, dùng đường thường."}
+        ],
+        "rewrite": "Điều hướng tới Vincom, tránh cao tốc, sử dụng đường thường",
+        "rationale": "Người dùng sửa lại yêu cầu tránh cao tốc, cần cập nhật thông tin routing."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play some Jazz on Spotify."},
+          {"role":"bot","content":"Playing Jazz playlist."},
+          {"role":"user","content":"Set volume to 45 on Spotify."}
+        ],
+        "rewrite": "Đặt âm lượng 45 trên Spotify",
+        "rationale": "Câu cuối chứa token tiếng Anh \"Spotify\" và yêu cầu điều chỉnh âm lượng, không cần thông tin lịch sử."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm trạm sạc nhanh gần nhất."},
+          {"role":"bot","content":"Có trạm SuperCharge ở ngã 5, cách 2.2 km."},
+          {"role":"user","content":"Đến đó ngay."}
+        ],
+        "rewrite": "Điều hướng tới trạm SuperCharge ở ngã 5, cách 2.2 km",
+        "rationale": "Đại từ \"đó\" phải được giải quyết dựa trên trạm sạc đã được đề cập trong phản hồi trước."
+      },
+      {
+        "pattern": "negation",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 22 độ."},
+          {"role":"bot","content":"Điều hòa đã bật 22°C."},
+          {"role":"user","content":"Không, đừng bật điều hòa."}
+        ],
+        "rewrite": "Không bật điều hòa",
+        "rationale": "Câu cuối phủ định hành động bật điều hòa, không cần thông tin lại từ lịch sử."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật đèn pha và đèn hazard."},
+          {"role":"bot","content":"Đèn pha và hazard đã bật."},
+          {"role":"user","content":"Tắt đèn pha, giữ hazard."}
+        ],
+        "rewrite": "Tắt đèn pha, giữ đèn hazard bật",
+        "rationale": "Lượt cuối chứa hai intent (tắt đèn pha, giữ hazard), cần giữ cả hai trong một câu."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn tới nhà cô Hương ở 45 Đường Lê Duẩn, Hà Nội."},
+          {"role":"bot","content":"Đã lưu địa chỉ."},
+          {"role":"user","content":"Đi đến chỗ đó nhé."}
+        ],
+        "rewrite": "Điều hướng tới 45 Đường Lê Duẩn, Hà Nội",
+        "rationale": "Đại từ \"đó\" cần liên kết tới địa chỉ đã được cung cấp ở lượt trước."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho anh Dũng số 0913 555 666."},
+          {"role":"bot","content":"Đang gọi anh Dũng."},
+          {"role":"user","content":"Không, gọi số 0913 555 667 nhé."}
+        ],
+        "rewrite": "Gọi anh Dũng số 0913 555 667",
+        "rationale": "Người dùng sửa lại số điện thoại, cần phản ánh số mới mà không giữ lại số cũ."
+      }
+    ]
+  }

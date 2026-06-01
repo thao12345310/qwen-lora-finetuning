@@ -1,0 +1,225 @@
+{
+    "samples": [
+    {
+    "pattern": "negation",
+    "domain": "vehicle",
+    "intent": "vehicle_control",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi chuẩn bị xuống xe mua đồ."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể khóa cửa hoặc bật cảnh báo an ninh khi rời xe."
+    },
+    {
+    "role": "user",
+    "content": "Khóa toàn bộ cửa nhưng không bật còi báo động."
+    }
+    ],
+    "rewrite": "Khóa toàn bộ cửa nhưng không bật còi báo động.",
+    "rationale": "Lượt cuối đã tự đủ hai yêu cầu và bắt buộc giữ nguyên phủ định “không bật còi báo động”."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "calling",
+    "intent": "call",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe còn đi được bao xa trước khi cần sạc?"
+    },
+    {
+    "role": "bot",
+    "content": "Phạm vi hoạt động còn lại là 93 km và nhiệt độ ngoài trời hiện là 26°C."
+    },
+    {
+    "role": "user",
+    "content": "Gọi quầy thông tin Bến xe Miền Đông mới."
+    }
+    ],
+    "rewrite": "Gọi quầy thông tin Bến xe Miền Đông mới.",
+    "rationale": "Quãng đường còn lại và nhiệt độ là nhiễu, không liên quan tới cuộc gọi đã được yêu cầu đầy đủ."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "driver_assist",
+    "intent": "driver_assist_control",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đường nội đô đông quá, hỗ trợ tôi lái an toàn."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật cảnh báo an toàn và giới hạn tốc độ theo nhu cầu."
+    },
+    {
+    "role": "user",
+    "content": "Bật cảnh báo va chạm phía trước rồi giới hạn 40 km/h trên đường Nguyễn Du."
+    }
+    ],
+    "rewrite": "Bật cảnh báo va chạm phía trước rồi giới hạn tốc độ ở 40 km/h trên đường Nguyễn Du.",
+    "rationale": "Lượt cuối tự chứa hai intent liên tiếp cùng ngưỡng tốc độ và tuyến đường cụ thể."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "music",
+    "intent": "play_music_online",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Cho tôi nghe nhạc trẻ khi đang chờ ở bãi xe."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chọn bài hát, nền tảng và chế độ phát."
+    },
+    {
+    "role": "user",
+    "content": "Play “Có Không Giữ Mất Đừng Tìm” của Trúc Nhân trên Apple Music rồi bật shuffle."
+    }
+    ],
+    "rewrite": "Play “Có Không Giữ Mất Đừng Tìm” của Trúc Nhân trên Apple Music rồi bật shuffle.",
+    "rationale": "Lượt cuối đã đầy đủ bài hát, nghệ sĩ và thao tác, đồng thời phải giữ nguyên Play, Apple Music và shuffle."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "charging",
+    "intent": "set_charging",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe có lưu bộ sạc ở nhà dì tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có bộ sạc nào được lưu với nhãn nhà dì của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Hẹn sạc ở nhà dì tôi lúc 20 giờ 45."
+    }
+    ],
+    "rewrite": "Hẹn sạc ở nhà dì tôi lúc 20 giờ 45.",
+    "rationale": "Không có địa chỉ hay thiết bị cụ thể trong lịch sử nên phải giữ nguyên tham chiếu ngầm “nhà dì tôi”."
+    },
+    {
+    "pattern": "negation",
+    "domain": "smart_home",
+    "intent": "smart_home_control",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi sắp về tới khu nhà."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chuẩn bị thiết bị ngoài sân trước khi xe tới."
+    },
+    {
+    "role": "user",
+    "content": "Bật đèn sân trước tại Vinhomes Riverside nhưng không mở cổng."
+    }
+    ],
+    "rewrite": "Bật đèn sân trước tại Vinhomes Riverside nhưng không mở cổng.",
+    "rationale": "Lượt cuối đã đủ thiết bị và địa điểm, đồng thời phủ định “không mở cổng” phải được giữ lại."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "climate",
+    "intent": "set_climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Cho tôi xem tình trạng xe sau khi phơi nắng."
+    },
+    {
+    "role": "bot",
+    "content": "Pin xe hiện còn 47% và nhiệt độ ngoài trời là 37°C."
+    },
+    {
+    "role": "user",
+    "content": "Bật lọc không khí cho khoang trước."
+    }
+    ],
+    "rewrite": "Bật lọc không khí cho khoang trước.",
+    "rationale": "Phần trăm pin và nhiệt độ ngoài trời là dữ liệu nhiễu, không thuộc yêu cầu lọc không khí."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "messaging",
+    "intent": "send_message",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Đọc tin nhắn mới về việc giao chìa khóa xe."
+    },
+    {
+    "role": "bot",
+    "content": "Chị Vân Anh hỏi bạn đang đứng ở đâu để nhận chìa khóa tại hầm B3 của Vincom Center Metropolis."
+    },
+    {
+    "role": "user",
+    "content": "Nhắn chị ấy tôi ở cột H rồi gọi lại luôn."
+    }
+    ],
+    "rewrite": "Nhắn cho chị Vân Anh với nội dung “Tôi ở cột H tại hầm B3 của Vincom Center Metropolis” rồi gọi lại cho chị Vân Anh.",
+    "rationale": "Lượt cuối vừa nhắn vừa gọi và cần lấy đúng người nhận cùng địa điểm giao chìa khóa từ lịch sử."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "navigation",
+    "intent": "navigate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lưu nhà ông bà tôi là khu đô thị Ecopark."
+    },
+    {
+    "role": "bot",
+    "content": "Đã lưu nhà ông bà của bạn tại khu đô thị Ecopark."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tới nhà ông bà tôi, tránh cầu Thanh Trì."
+    }
+    ],
+    "rewrite": "Dẫn đường tới khu đô thị Ecopark và tránh cầu Thanh Trì.",
+    "rationale": "Model phải resolve “nhà ông bà tôi” thành địa điểm đã lưu và vẫn giữ nguyên yêu cầu tránh cầu."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "climate",
+    "intent": "set_climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chiếc Kia EV6 có cách nào làm mát xe trước khi tôi ra bãi không?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể dùng Remote Climate Control để làm mát khoang xe trước khi lên xe."
+    },
+    {
+    "role": "user",
+    "content": "Bật tính năng làm mát từ xa ở 22°C."
+    }
+    ],
+    "rewrite": "Bật Remote Climate Control trên Kia EV6 ở 22°C.",
+    "rationale": "Lượt cuối mô tả tính năng bằng tiếng Việt, nên phải truy xuất và giữ nguyên tên Remote Climate Control từ lịch sử."
+    }
+    ]
+    }
+    

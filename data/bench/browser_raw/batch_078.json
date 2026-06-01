@@ -1,0 +1,136 @@
+{
+  "samples": [
+    {
+      "pattern": "correction",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Đi bệnh viện Bạch Mai"},
+        {"role": "bot", "content": "Đang dẫn đường đến bệnh viện Bạch Mai"},
+        {"role": "user", "content": "Sai rồi, chuyển sang bệnh viện Việt Đức"}
+      ],
+      "rewrite": "Dẫn đường đến bệnh viện Việt Đức",
+      "rationale": "User sửa hoàn toàn điểm đến sau khi bot xác nhận"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "music",
+      "intent": "play_music_offline",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Phát nhạc Sơn Tùng"},
+        {"role": "bot", "content": "Đang phát bài của Sơn Tùng M-TP"},
+        {"role": "user", "content": "Bài chậm thôi"},
+        {"role": "user", "content": "Volume nhỏ xuống"}
+      ],
+      "rewrite": "Phát bài chậm của Sơn Tùng volume nhỏ",
+      "rationale": "Slot ca sĩ, thể loại và volume tích lũy qua các lượt"
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "vehicle",
+      "intent": "toggle_light",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Nhiên liệu còn bao nhiêu"},
+        {"role": "bot", "content": "Xăng còn 38%, bình phụ 12 lít"},
+        {"role": "user", "content": "Bật đèn xi nhan phải"}
+      ],
+      "rewrite": "Bật đèn xi nhan phải",
+      "rationale": "Thông tin nhiên liệu nhiễu không được kéo vào hành động đèn"
+    },
+    {
+      "pattern": "code_switching",
+      "domain": "calling",
+      "intent": "call",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Gọi điện cho ai đó"},
+        {"role": "bot", "content": "Bạn muốn gọi ai?"},
+        {"role": "user", "content": "Call Mr. Khang via Bluetooth"}
+      ],
+      "rewrite": "Call Mr. Khang via Bluetooth",
+      "rationale": "Lượt cuối tự đầy đủ với code-switching tiếng Anh"
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "climate",
+      "intent": "set_climate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Nóng quá trong xe"},
+        {"role": "bot", "content": "Điều hoà đang 26 độ"},
+        {"role": "user", "content": "Giảm xuống 21 và tăng quạt"}
+      ],
+      "rewrite": "Giảm điều hoà xuống 21 độ và tăng quạt gió",
+      "rationale": "Hai lệnh climate kết hợp trong một lượt user"
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật máy lạnh phòng khách"},
+        {"role": "bot", "content": "Máy lạnh phòng khách đã chạy"},
+        {"role": "user", "content": "Tắt cái đó và mở cửa sổ"}
+      ],
+      "rewrite": "Tắt máy lạnh phòng khách và mở cửa sổ",
+      "rationale": "Đại từ 'cái đó' resolve về máy lạnh"
+    },
+    {
+      "pattern": "negation",
+      "domain": "charging",
+      "intent": "find_charging",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Tìm trạm sạc"},
+        {"role": "bot", "content": "Có trạm VinFast cách 800m"},
+        {"role": "user", "content": "Đừng đi trạm đó, tìm cái khác"}
+      ],
+      "rewrite": "Tìm trạm sạc khác đừng đi VinFast",
+      "rationale": "Phủ định trạm sạc cụ thể bot đề xuất"
+    },
+    {
+      "pattern": "implicit_reference",
+      "domain": "messaging",
+      "intent": "send_message",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Nhắn cho nhà"},
+        {"role": "bot", "content": "Đã gửi cho gia đình bạn"},
+        {"role": "user", "content": "Nhắn thêm cho trường con"}
+      ],
+      "rewrite": "Nhắn thêm cho trường con",
+      "rationale": "Implicit reference 'trường con' giữ nguyên"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "driver_assist",
+      "intent": "cruise_control",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật hỗ trợ lái"},
+        {"role": "bot", "content": "Auto pilot đã bật"},
+        {"role": "user", "content": "Giữ tốc độ 90"},
+        {"role": "user", "content": "Bật cảnh báo lệch làn"}
+      ],
+      "rewrite": "Giữ cruise control 90km/h và bật cảnh báo lệch làn",
+      "rationale": "Nhiều slot driver assist được bổ sung dần"
+    },
+    {
+      "pattern": "correction",
+      "domain": "music",
+      "intent": "play_music_online",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Mở nhạc remix"},
+        {"role": "bot", "content": "Đang phát remix"},
+        {"role": "user", "content": "Đổi sang nhạc acoustic nhẹ nhàng"}
+      ],
+      "rewrite": "Đổi sang nhạc acoustic nhẹ nhàng",
+      "rationale": "Lượt cuối tự chứa đầy đủ sau khi sửa intent"
+    }
+  ]
+}

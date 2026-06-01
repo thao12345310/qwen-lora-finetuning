@@ -1,0 +1,255 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "climate",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Điều hòa có thể thổi theo những hướng nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chọn hướng gió xuống chân, hướng gió lên kính lái hoặc hướng gió vào mặt."
+    },
+    {
+    "role": "user",
+    "content": "Chọn hướng đầu tiên, quạt nhẹ thôi."
+    }
+    ],
+    "rewrite": "Chuyển hướng gió xuống chân và đặt quạt ở mức nhẹ.",
+    "rationale": "Cụm “hướng đầu tiên” chỉ có thể được hiểu đúng bằng cách truy xuất danh sách hướng gió bot vừa nêu."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lên lịch dọn nhà khi tôi đang lái xe về."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn điều khiển thiết bị nào ở nhà?"
+    },
+    {
+    "role": "user",
+    "content": "Robot hút bụi trong căn hộ Vinhomes Grand Park."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn dọn khu vực nào và vào lúc mấy giờ?"
+    },
+    {
+    "role": "user",
+    "content": "Phòng bếp, lúc 18 giờ 30."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn dùng chế độ làm sạch nào?"
+    },
+    {
+    "role": "user",
+    "content": "Chế độ im lặng nhé."
+    }
+    ],
+    "rewrite": "Lên lịch cho robot hút bụi dọn phòng bếp trong căn hộ Vinhomes Grand Park lúc 18 giờ 30 bằng chế độ im lặng.",
+    "rationale": "Thiết bị, địa điểm, khu vực, thời gian và chế độ được phân bố qua bốn lượt user khác nhau."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "vehicle",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Kiểm tra thông số xe trước khi đi."
+    },
+    {
+    "role": "bot",
+    "content": "Áp suất lốp trước là 2,4 bar và nhiệt độ ngoài trời là 32°C."
+    },
+    {
+    "role": "user",
+    "content": "Bật gạt mưa tự động."
+    }
+    ],
+    "rewrite": "Bật gạt mưa tự động.",
+    "rationale": "Áp suất lốp và nhiệt độ là thông tin nhiễu, hoàn toàn không thuộc yêu cầu bật gạt mưa."
+    },
+    {
+    "pattern": "correction",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Mở bài “Nấu Ăn Cho Em” của Đen."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy “Nấu Ăn Cho Em” và “Trốn Tìm”, đều của Đen; bạn muốn phát bài đầu tiên chứ?"
+    },
+    {
+    "role": "user",
+    "content": "Thôi bài sau, phát bằng USB."
+    }
+    ],
+    "rewrite": "Phát bài “Trốn Tìm” của Đen bằng USB.",
+    "rationale": "Yêu cầu cuối đổi từ bài ban đầu sang “bài sau”, nên phải chọn đúng bài thứ hai trong danh sách."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "driver_assist",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi muốn nhìn tốc độ dễ hơn khi chạy tối."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật hiển thị thông tin trên kính lái."
+    },
+    {
+    "role": "user",
+    "content": "Bật Head-Up Display và cảnh báo lệch làn."
+    }
+    ],
+    "rewrite": "Bật Head-Up Display và cảnh báo lệch làn.",
+    "rationale": "Lượt cuối đã đầy đủ hai chức năng và tên tính năng tiếng Anh phải được giữ nguyên."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Nhóm dự án của tôi trên Zalo tên là AI Thiết Bị."
+    },
+    {
+    "role": "bot",
+    "content": "Đã ghi nhận nhóm dự án của bạn là nhóm Zalo AI Thiết Bị."
+    },
+    {
+    "role": "user",
+    "content": "Tôi đang tới Trung tâm Hội nghị Quốc gia."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có muốn thông báo cho ai không?"
+    },
+    {
+    "role": "user",
+    "content": "Nhắn nhóm dự án là tôi đang tới địa điểm đó."
+    }
+    ],
+    "rewrite": "Gửi Zalo vào nhóm AI Thiết Bị với nội dung “Tôi đang tới Trung tâm Hội nghị Quốc gia”.",
+    "rationale": "Model phải resolve cả “nhóm dự án” lẫn “địa điểm đó” từ hai thông tin khác nhau trong lịch sử."
+    },
+    {
+    "pattern": "negation",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chỉ đường từ Sala tới Nhà hát Thành phố Hồ Chí Minh."
+    },
+    {
+    "role": "bot",
+    "content": "Tuyến nhanh nhất đi qua hầm Thủ Thiêm; tuyến còn lại đi qua cầu Ba Son."
+    },
+    {
+    "role": "user",
+    "content": "Đi tuyến còn lại, tránh hầm đó nhé."
+    }
+    ],
+    "rewrite": "Dẫn đường từ Sala tới Nhà hát Thành phố Hồ Chí Minh qua cầu Ba Son và tránh hầm Thủ Thiêm.",
+    "rationale": "Lượt cuối vừa chọn tuyến bằng tham chiếu thứ tự vừa phủ định tuyến đi qua hầm đã được nêu trước đó."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đang cắm sạc ở trụ nào trong bãi?"
+    },
+    {
+    "role": "bot",
+    "content": "Chiếc VinFast VF e34 của bạn đang kết nối với trụ A12 tại Vincom Center Metropolis."
+    },
+    {
+    "role": "user",
+    "content": "Hiện pin được 61%, bạn muốn điều chỉnh gì?"
+    },
+    {
+    "role": "bot",
+    "content": "Tôi có thể dừng sạc hoặc đặt giới hạn pin cho phiên sạc này."
+    },
+    {
+    "role": "user",
+    "content": "Giới hạn ở 75% rồi nhắc tôi khi đạt mức đó."
+    }
+    ],
+    "rewrite": "Đặt giới hạn sạc cho VinFast VF e34 tại trụ A12 ở Vincom Center Metropolis là 75% rồi nhắc tôi khi pin đạt 75%.",
+    "rationale": "Lượt cuối có hai hành động và cần ghép đúng xe, trụ sạc, địa điểm cùng ngưỡng pin mới được yêu cầu."
+    },
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm hai số liên hệ cứu hộ ô tô gần tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy VinFast Cứu hộ và Gara Thành Tâm."
+    },
+    {
+    "role": "user",
+    "content": "Bên đầu tiên có hỗ trợ xe điện không?"
+    },
+    {
+    "role": "bot",
+    "content": "VinFast Cứu hộ có hỗ trợ xe điện."
+    },
+    {
+    "role": "user",
+    "content": "Gọi bên đó giúp tôi."
+    }
+    ],
+    "rewrite": "Gọi cho VinFast Cứu hộ.",
+    "rationale": "Cụm “bên đó” phải được liên kết với đơn vị đầu tiên đã được xác nhận hỗ trợ xe điện."
+    },
+    {
+    "pattern": "correction",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật sưởi vô lăng giúp tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã sẵn sàng bật sưởi vô lăng."
+    },
+    {
+    "role": "user",
+    "content": "Không bật sưởi vô lăng; bật sưởi ghế phụ mức 1 thôi."
+    }
+    ],
+    "rewrite": "Không bật sưởi vô lăng; chỉ bật sưởi ghế phụ ở mức 1.",
+    "rationale": "Lượt cuối tự chứa đầy đủ việc hủy yêu cầu ban đầu và chuyển sang điều khiển ghế phụ."
+    }
+    ]
+    }
+    

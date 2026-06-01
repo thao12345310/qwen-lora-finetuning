@@ -1,0 +1,239 @@
+{
+    "samples": [
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tạo chìa khóa số tạm thời cho xe VinFast VF 9."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn cấp chìa khóa số cho ai?"
+    },
+    {
+    "role": "user",
+    "content": "Mai Anh."
+    },
+    {
+    "role": "bot",
+    "content": "Chìa khóa có hiệu lực trong khoảng thời gian nào?"
+    },
+    {
+    "role": "user",
+    "content": "Từ 9 giờ đến 17 giờ ngày 3 tháng 6."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn cho phép mở cốp sau không?"
+    },
+    {
+    "role": "user",
+    "content": "Có, cho phép luôn."
+    }
+    ],
+    "rewrite": "Tạo chìa khóa số tạm thời cho Mai Anh dùng xe VinFast VF 9 từ 9 giờ đến 17 giờ ngày 3 tháng 6 và cho phép mở cốp sau.",
+    "rationale": "Người được cấp quyền, mẫu xe, thời gian hiệu lực và quyền mở cốp được cung cấp rải rác qua bốn lượt user."
+    },
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi lùi xe, có những cảnh báo an toàn nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật cảnh báo va chạm phía sau hoặc cảnh báo phương tiện cắt ngang phía sau."
+    },
+    {
+    "role": "user",
+    "content": "Bật tính năng thứ hai khi rời chỗ đỗ."
+    }
+    ],
+    "rewrite": "Bật cảnh báo phương tiện cắt ngang phía sau khi rời chỗ đỗ.",
+    "rationale": "Lượt cuối chỉ định “tính năng thứ hai”, buộc model chọn đúng tùy chọn thứ hai trong câu trả lời của bot."
+    },
+    {
+    "pattern": "correction",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Soạn tin cho anh Đức: Em đã nhận xe rồi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi nội dung “Em đã nhận xe rồi” cho anh Đức qua SMS chứ?"
+    },
+    {
+    "role": "user",
+    "content": "Đổi sang gửi qua WhatsApp, nội dung giữ nguyên."
+    }
+    ],
+    "rewrite": "Gửi WhatsApp cho anh Đức với nội dung “Em đã nhận xe rồi”.",
+    "rationale": "Lượt cuối chỉ sửa kênh gửi, còn người nhận và nội dung phải được giữ chính xác từ yêu cầu trước."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "smart_home",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi còn bao lâu nữa mới tới nhà?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn còn khoảng 24 phút di chuyển và pin xe hiện ở mức 58%."
+    },
+    {
+    "role": "user",
+    "content": "Bật tưới cây ban công lúc 19 giờ."
+    }
+    ],
+    "rewrite": "Bật tưới cây ban công lúc 19 giờ.",
+    "rationale": "Thời gian di chuyển và phần trăm pin là nhiễu, không được trộn vào lệnh điều khiển tưới cây."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm chỗ sạc gần Nguyễn Chí Thanh."
+    },
+    {
+    "role": "bot",
+    "content": "Có trạm sạc VinFast tại Vincom Center Nguyễn Chí Thanh."
+    },
+    {
+    "role": "user",
+    "content": "Trạm đó có sạc nhanh không?"
+    },
+    {
+    "role": "bot",
+    "content": "Có, trạm hỗ trợ sạc nhanh CCS2."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tới đó rồi bắt đầu sạc nhanh CCS2."
+    }
+    ],
+    "rewrite": "Dẫn đường tới trạm sạc VinFast tại Vincom Center Nguyễn Chí Thanh rồi bắt đầu sạc nhanh bằng cổng CCS2.",
+    "rationale": "Lượt cuối gồm điều hướng và sạc, đồng thời “đó” phải được khôi phục thành đúng trạm đã tìm thấy."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe có lưu nhiệt độ ưa thích của tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện tôi chưa có thiết lập nhiệt độ ưa thích nào của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Đặt điều hòa theo nhiệt độ ưa thích của tôi."
+    }
+    ],
+    "rewrite": "Đặt điều hòa theo nhiệt độ ưa thích của tôi.",
+    "rationale": "Lịch sử xác nhận chưa có giá trị cụ thể, nên model phải giữ nguyên tham chiếu ngầm thay vì tự bịa nhiệt độ."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm liên hệ Quỳnh Trang trong máy."
+    },
+    {
+    "role": "bot",
+    "content": "Có Quỳnh Trang - kế toán và Quỳnh Trang - đại lý bảo hiểm."
+    },
+    {
+    "role": "user",
+    "content": "Chọn người còn lại, gọi bằng FaceTime Audio."
+    }
+    ],
+    "rewrite": "Gọi cho Quỳnh Trang - đại lý bảo hiểm bằng FaceTime Audio.",
+    "rationale": "Model phải hiểu “người còn lại” là liên hệ thứ hai và giữ nguyên tên dịch vụ FaceTime Audio."
+    },
+    {
+    "pattern": "negation",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm đường từ Royal City tới Bệnh viện Đại học Y Hà Nội."
+    },
+    {
+    "role": "bot",
+    "content": "Tuyến nhanh nhất đi qua đường Trường Chinh; tuyến thay thế đi qua đường Tây Sơn."
+    },
+    {
+    "role": "user",
+    "content": "Đi tuyến thay thế, đừng qua Trường Chinh."
+    }
+    ],
+    "rewrite": "Dẫn đường từ Royal City tới Bệnh viện Đại học Y Hà Nội qua đường Tây Sơn và tránh đường Trường Chinh.",
+    "rationale": "Lượt cuối vừa chọn tuyến bằng tham chiếu vừa nêu ràng buộc phủ định cần được giữ rõ trong câu lệnh."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "music",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tôi muốn nghe nhạc vui khi lái xe."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể chọn một bài hát hoặc playlist cụ thể."
+    },
+    {
+    "role": "user",
+    "content": "Phát “Một Nhà” của Da LAB trên YouTube Music rồi bật shuffle."
+    }
+    ],
+    "rewrite": "Phát bài “Một Nhà” của Da LAB trên YouTube Music rồi bật shuffle.",
+    "rationale": "Lượt cuối tự chứa đầy đủ bài hát, nghệ sĩ, nền tảng và thao tác phát ngẫu nhiên, không cần lấy thêm ngữ cảnh."
+    },
+    {
+    "pattern": "correction",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Nạp hồ sơ ghế lái của Hải cho chiếc Tesla Model Y."
+    },
+    {
+    "role": "bot",
+    "content": "Hồ sơ Hải gồm vị trí ghế và gương chiếu hậu; bạn xác nhận áp dụng chứ?"
+    },
+    {
+    "role": "user",
+    "content": "Không, dùng hồ sơ của Linh cho xe đó."
+    }
+    ],
+    "rewrite": "Áp dụng hồ sơ ghế lái của Linh cho chiếc Tesla Model Y.",
+    "rationale": "Lượt cuối hủy hồ sơ ban đầu và dùng “xe đó” để tham chiếu mẫu xe đã nêu ở lượt trước."
+    }
+    ]
+    }
+    

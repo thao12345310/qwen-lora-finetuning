@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm số hotline bảo hiểm xe cho tôi"},
+          {"role":"bot","content":"Xe bạn đang dùng gói bảo hiểm Bảo Việt, hotline 1800 599 945, hỗ trợ 24h."},
+          {"role":"user","content":"Tai nạn nhỏ, cần khai báo, gọi vào đó được không?"},
+          {"role":"bot","content":"Được ạ, hotline này xử lý khai báo tai nạn trực tiếp, cần cung cấp biển số và ảnh hiện trường."},
+          {"role":"user","content":"Gọi luôn đi, bật loa ngoài cho tiện"}
+        ],
+        "rewrite": "Gọi hotline Bảo Việt 1800 599 945, bật loa ngoài.",
+        "rationale": "Số hotline từ lượt bot đầu, yêu cầu loa ngoài từ lượt cuối; rewrite gộp đủ hai slot sau chuỗi xác nhận."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Có trạm dừng nghỉ nào trên đường vào Đà Nẵng không?"},
+          {"role":"bot","content":"Có 3 trạm: Trạm dừng nghỉ Hải Vân cách 12km, Trạm Lăng Cô cách 28km và Trạm Phú Lộc cách 41km."},
+          {"role":"user","content":"Ghé cái gần nhất đổ xăng rồi đi tiếp"}
+        ],
+        "rewrite": "Ghé Trạm dừng nghỉ Hải Vân cách 12km để đổ xăng rồi tiếp tục đi Đà Nẵng.",
+        "rationale": "'Cái gần nhất' resolve về Trạm Hải Vân 12km theo thứ tự khoảng cách bot liệt kê."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bật welcome lighting sequence khi mở cửa xe đi, kèm unfold gương luôn"}
+        ],
+        "rewrite": "Bật welcome lighting sequence khi mở cửa xe và tự động unfold gương.",
+        "rationale": "Token 'welcome lighting sequence' và 'unfold' giữ nguyên tiếng Anh; lượt đơn đã đủ slot, không cần lịch sử."
+      },
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Phát nhạc theo mood buổi sáng đi"},
+          {"role":"bot","content":"Đang phát radio Acoustic Morning trên Spotify, gồm nhạc Việt, nhạc Hàn và nhạc US-UK xen kẽ."},
+          {"role":"user","content":"Hay đó nhưng skip mấy bài nhạc Hàn đi, tôi không hợp"}
+        ],
+        "rewrite": "Tiếp tục phát radio Acoustic Morning trên Spotify, bỏ qua các bài nhạc Hàn.",
+        "rationale": "Phủ định nhắm vào thể loại cụ thể trong nguồn phát đang chạy; rewrite giữ tên radio và điều kiện lọc rõ ràng."
+      },
+      {
+        "pattern": "correction",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tắt điện toàn nhà trước khi tôi ra khỏi cổng"},
+          {"role":"bot","content":"Đã tắt đèn tất cả phòng, điều hoà và quạt toàn nhà."},
+          {"role":"user","content":"Khoan, để lại đèn sân trước và đèn hành lang, tôi về muộn"},
+          {"role":"bot","content":"Đã bật lại đèn sân trước và đèn hành lang."},
+          {"role":"user","content":"Thêm đặt giờ tắt tự động lúc 11 giờ đêm luôn"}
+        ],
+        "rewrite": "Đặt hẹn giờ tắt tự động đèn sân trước và đèn hành lang lúc 11 giờ đêm.",
+        "rationale": "Bot đã xử lý xong bật lại đèn; lượt cuối chỉ bổ sung hẹn giờ tắt, rewrite không nhắc lại quá trình tắt rồi bật."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Biển báo vừa rồi giới hạn bao nhiêu?"},
+          {"role":"bot","content":"Biển báo vừa qua giới hạn 60km/h, bạn đang chạy 74km/h, vượt quá 14km/h."},
+          {"role":"user","content":"Chỉnh cruise control về đúng giới hạn luôn đi"}
+        ],
+        "rewrite": "Chỉnh cruise control xuống 60km/h.",
+        "rationale": "'Đúng giới hạn' resolve về 60km/h từ thông tin biển báo bot đọc; không lấy tốc độ hiện tại 74km/h."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Pin còn 19%, đang trên cao tốc Hà Nội – Hải Phòng"},
+          {"role":"bot","content":"Trạm sạc gần nhất là VinFast Trạm dừng nghỉ Km45, cách 6.3km, có 8 cổng DC 150kW."},
+          {"role":"user","content":"Dẫn đường đến đó và nhắn Zalo cho vợ bảo mình ghé sạc, trễ thêm 20 phút"}
+        ],
+        "rewrite": "Chỉ đường đến trạm sạc VinFast Km45 trên cao tốc Hà Nội – Hải Phòng và nhắn Zalo cho vợ: ghé sạc xe, trễ thêm 20 phút.",
+        "rationale": "Hai intent hoàn toàn khác domain trong một lượt: điều hướng và nhắn tin; địa điểm trạm và thời gian trễ phải giữ đủ."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tình trạng xe tôi đang thế nào?"},
+          {"role":"bot","content":"Pin 54%, phạm vi 213km, lốp đều 36 PSI, nhiệt độ cabin 29°C, điều hoà đang tắt."},
+          {"role":"user","content":"29 độ trong xe nóng quá, bật điều hoà 22 độ đi"}
+        ],
+        "rewrite": "Bật điều hoà, đặt nhiệt độ 22°C.",
+        "rationale": "Bot trả 5 thông số nhưng chỉ nhiệt độ cabin 29°C xác nhận lý do; 22°C mới là slot cần thiết, rewrite không kéo pin hay lốp vào."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Soạn tin nhắn Teams cho nhóm dự án"},
+          {"role":"bot","content":"Nhóm nào ạ? Bạn có nhóm 'Alpha Launch' và 'Backend Squad'."},
+          {"role":"user","content":"Alpha Launch, thông báo demo bị dời"},
+          {"role":"bot","content":"Dời sang ngày nào và lý do gì ạ?"},
+          {"role":"user","content":"Ngày 18 tháng 6, do khách hàng bận, kèm link meet mới https://meet.google.com/abc-defg-hij"}
+        ],
+        "rewrite": "Gửi tin nhắn Teams đến nhóm Alpha Launch: thông báo demo dời sang ngày 18 tháng 6 do khách hàng bận, link meet mới https://meet.google.com/abc-defg-hij.",
+        "rationale": "Nhóm, lý do dời và link rải qua 5 lượt; link Google Meet là slot kỹ thuật quan trọng ở lượt cuối cần giữ nguyên."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi có nhắc nhở nào trong hôm nay không?"},
+          {"role":"bot","content":"Có 3 nhắc: 10h họp phòng, 14h đăng kiểm xe tại 96 Trần Quý Cáp, 17h đón con trường Tiểu học Kim Liên."},
+          {"role":"user","content":"Cái quan trọng nhất mà hay quên nhất thì nhắc thêm trước 30 phút nữa"}
+        ],
+        "rewrite": "Đặt thêm nhắc nhở lúc 13h30 cho lịch đăng kiểm xe tại 96 Trần Quý Cáp.",
+        "rationale": "'Cái quan trọng nhất hay quên' là phán đoán ngầm về đăng kiểm — lịch hành chính có địa điểm cố định dễ bỏ qua; rewrite tính lùi 30 phút từ 14h và gắn địa điểm cụ thể."
+      }
+    ]
+  }

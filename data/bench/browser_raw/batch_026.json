@@ -1,0 +1,255 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "calling",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm số của hai trung tâm đăng kiểm gần khu Mỹ Đình."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy Trung tâm Đăng kiểm 29-03V tại Nam Từ Liêm và Trung tâm Đăng kiểm 29-01S tại Thanh Trì."
+    },
+    {
+    "role": "user",
+    "content": "Gọi nơi ở Nam Từ Liêm giúp tôi."
+    }
+    ],
+    "rewrite": "Gọi cho Trung tâm Đăng kiểm 29-03V tại Nam Từ Liêm.",
+    "rationale": "Lượt cuối chỉ mô tả theo khu vực, model phải chọn đúng trung tâm tương ứng trong hai kết quả đã nêu."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tạo lịch cho máy giặt ở căn hộ nhà tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn điều khiển máy giặt tại căn hộ nào?"
+    },
+    {
+    "role": "user",
+    "content": "Căn hộ ở Masteri Waterfront."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn chạy chương trình nào và bắt đầu lúc nào?"
+    },
+    {
+    "role": "user",
+    "content": "Chế độ đồ mỏng, lúc 20 giờ 15."
+    },
+    {
+    "role": "bot",
+    "content": "Có cần bật sấy sau khi giặt xong không?"
+    },
+    {
+    "role": "user",
+    "content": "Không sấy nhé."
+    }
+    ],
+    "rewrite": "Lên lịch chạy máy giặt tại căn hộ Masteri Waterfront lúc 20 giờ 15 bằng chế độ đồ mỏng và không bật sấy.",
+    "rationale": "Địa điểm, thời gian, chương trình giặt và ràng buộc không sấy nằm ở nhiều lượt user riêng biệt."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tối nay tôi để xe ở bãi đỗ sân bay Nội Bài."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn đang dùng Tesla Model Y; khi đỗ lâu, xe hỗ trợ Sentry Mode và Cabin Overheat Protection."
+    },
+    {
+    "role": "user",
+    "content": "Bật tính năng giám sát đó cho xe ở Nội Bài."
+    }
+    ],
+    "rewrite": "Bật Sentry Mode cho Tesla Model Y khi đỗ tại sân bay Nội Bài.",
+    "rationale": "Model phải hiểu “tính năng giám sát đó” là Sentry Mode và giữ nguyên tên tính năng tiếng Anh."
+    },
+    {
+    "pattern": "correction",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật sưởi gương chiếu hậu."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã sẵn sàng bật sưởi gương chiếu hậu."
+    },
+    {
+    "role": "user",
+    "content": "Thôi không sưởi gương; bật sấy kính sau."
+    }
+    ],
+    "rewrite": "Không bật sưởi gương chiếu hậu; hãy bật sấy kính sau.",
+    "rationale": "Lượt cuối tự sửa đầy đủ thiết bị cần điều khiển và phủ định rõ yêu cầu ban đầu."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Mở đoạn chat với nhóm gia đình trên Zalo."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy nhóm Zalo tên Gia đình nhà ngoại và nhóm Gia đình nhà nội."
+    },
+    {
+    "role": "user",
+    "content": "Nhóm nhà ngoại."
+    },
+    {
+    "role": "bot",
+    "content": "Đã chọn nhóm Zalo Gia đình nhà ngoại."
+    },
+    {
+    "role": "user",
+    "content": "Nhắn tôi sắp đến rồi chia sẻ hành trình hiện tại."
+    }
+    ],
+    "rewrite": "Gửi Zalo vào nhóm Gia đình nhà ngoại với nội dung “Tôi sắp đến” rồi chia sẻ hành trình hiện tại.",
+    "rationale": "Lượt cuối có hai thao tác liên tiếp, còn nhóm nhận tin phải được phân giải từ lựa chọn trước đó."
+    },
+    {
+    "pattern": "negation",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm điểm sạc trên đường tới Hải Phòng."
+    },
+    {
+    "role": "bot",
+    "content": "Có trạm sạc VinFast tại Vinhomes Ocean Park 2 và trạm tại AEON Mall Hải Phòng Lê Chân."
+    },
+    {
+    "role": "user",
+    "content": "Dừng sạc ở điểm đầu, nhưng đừng dùng sạc nhanh."
+    }
+    ],
+    "rewrite": "Dừng sạc tại trạm VinFast ở Vinhomes Ocean Park 2 nhưng đừng dùng sạc nhanh.",
+    "rationale": "Lượt cuối chọn địa điểm bằng thứ tự và thêm điều kiện phủ định về loại sạc."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "navigation",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tình hình trong xe thế nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Nhiệt độ khoang xe là 25°C và pin điện thoại đang sạc được 46%."
+    },
+    {
+    "role": "user",
+    "content": "Chỉ đường tới Bảo tàng Mỹ thuật Việt Nam."
+    }
+    ],
+    "rewrite": "Chỉ đường tới Bảo tàng Mỹ thuật Việt Nam.",
+    "rationale": "Nhiệt độ và phần trăm pin chỉ là thông tin nền, không liên quan đến điểm đến được yêu cầu."
+    },
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm album của Mỹ Tâm để nghe trên đường."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi tìm thấy album “Tâm 9” và album “Melodies of Time” của Mỹ Tâm."
+    },
+    {
+    "role": "user",
+    "content": "Phát album có tên tiếng Việt."
+    }
+    ],
+    "rewrite": "Phát album “Tâm 9” của Mỹ Tâm.",
+    "rationale": "Lượt cuối mô tả album theo đặc điểm tên gọi thay vì nhắc trực tiếp tiêu đề."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Thiết lập cảnh báo tốc độ cho hành trình sắp tới."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn sẽ đi trên tuyến nào?"
+    },
+    {
+    "role": "user",
+    "content": "Đại lộ Thăng Long."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn được cảnh báo từ mức tốc độ nào?"
+    },
+    {
+    "role": "user",
+    "content": "Từ 80 km/h."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn cảnh báo bằng âm thanh hay rung vô lăng?"
+    },
+    {
+    "role": "user",
+    "content": "Chỉ rung vô lăng."
+    }
+    ],
+    "rewrite": "Trên Đại lộ Thăng Long, cảnh báo khi xe đạt 80 km/h bằng cách chỉ rung vô lăng.",
+    "rationale": "Tuyến đường, ngưỡng tốc độ và hình thức cảnh báo được đưa ra qua ba lượt user khác nhau."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "vehicle",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đã có cấu hình ghế cho khách thường đi cùng tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có cấu hình ghế nào được lưu cho khách thường đi cùng bạn."
+    },
+    {
+    "role": "user",
+    "content": "Chuyển ghế phụ sang cấu hình của khách thường đi cùng tôi."
+    }
+    ],
+    "rewrite": "Chuyển ghế phụ sang cấu hình của khách thường đi cùng tôi.",
+    "rationale": "Do lịch sử không cung cấp cấu hình hoặc danh tính cụ thể, gold phải giữ nguyên tham chiếu ngầm."
+    }
+    ]
+    }
+    

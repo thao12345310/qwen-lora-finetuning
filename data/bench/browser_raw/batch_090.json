@@ -1,0 +1,142 @@
+{
+    "samples": [
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm chỗ rửa xe không tiếp xúc gần đây"},
+          {"role":"bot","content":"Có AutoWash Touchless Trường Chinh cách 2.3km, giá 80.000đ. ICarWash Nguyễn Xiển cách 3.1km, giá 65.000đ. CleanZone Giải Phóng cách 4.0km, giá 75.000đ."},
+          {"role":"user","content":"Chỗ nào có máy sấy khô tự động sau rửa không?"},
+          {"role":"bot","content":"AutoWash Touchless Trường Chinh có hệ thống sấy khô tự động 360° sau mỗi lần rửa."},
+          {"role":"user","content":"Tiện vậy thì đặt lịch rửa lúc 5 giờ chiều rồi dẫn đường vào"}
+        ],
+        "rewrite": "Đặt lịch rửa xe lúc 17h tại AutoWash Touchless Trường Chinh và chỉ đường đến đó.",
+        "rationale": "Tên tiệm, địa điểm, giờ hẹn rải qua 4 lượt; 'tiện vậy' xác nhận chọn AutoWash Touchless sau khi bot xác nhận tính năng sấy khô."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Điều hoà hai vùng đang chênh nhau bao nhiêu?"},
+          {"role":"bot","content":"Vùng lái đang 22°C, vùng phụ đang 26°C, chênh nhau 4 độ."},
+          {"role":"user","content":"Vùng nào lạnh hơn thì tăng lên bằng vùng kia đi"}
+        ],
+        "rewrite": "Tăng nhiệt độ điều hoà vùng lái từ 22°C lên 26°C.",
+        "rationale": "'Vùng nào lạnh hơn' resolve về vùng lái 22°C; 'bằng vùng kia' resolve về 26°C của vùng phụ — cả hai giá trị lấy từ lượt bot."
+      },
+      {
+        "pattern": "negation",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Phát radio Jazz trên TuneIn đi"},
+          {"role":"bot","content":"Đang phát Jazz24 Seattle trên TuneIn."},
+          {"role":"user","content":"Nhạc này có quảng cáo không?"},
+          {"role":"bot","content":"Jazz24 là đài phi lợi nhuận, không có quảng cáo."},
+          {"role":"user","content":"Tốt, giữ nguyên nhưng đừng để tự chuyển sang đài khác nếu mất tín hiệu, thà tắt còn hơn"}
+        ],
+        "rewrite": "Tiếp tục phát Jazz24 Seattle trên TuneIn, tắt tự động chuyển đài khi mất tín hiệu thay vì chuyển sang đài khác.",
+        "rationale": "Phủ định nhắm vào hành vi tự động fallback của hệ thống; rewrite giữ rõ điều kiện tắt thay vì chuyển, không rút gọn thành 'không chuyển đài'."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Kiểm tra xem hệ thống smarthome có firmware mới không"},
+          {"role":"bot","content":"Hub chính đang chạy firmware v3.2.1, có bản v3.3.0 mới với tính năng Matter protocol và cải thiện Zigbee stability."},
+          {"role":"user","content":"Update lên v3.3.0 đi nhưng chờ tôi về nhà mới chạy, đừng update ngay"}
+        ],
+        "rewrite": "Lên lịch cập nhật firmware hub smarthome lên v3.3.0 khi phát hiện người dùng về nhà, không cập nhật ngay lúc này.",
+        "rationale": "Token 'firmware', 'Matter protocol', 'Zigbee', version numbers giữ nguyên; phủ định 'đừng update ngay' là ràng buộc quan trọng cần giữ rõ."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Sắp đến ngã ba rồi, rẽ hướng nào?"},
+          {"role":"bot","content":"Theo lộ trình hiện tại, bạn rẽ phải vào đường Nguyễn Hữu Thọ."},
+          {"role":"user","content":"Rẽ phải xong rồi, đặt thêm điểm dừng mua xăng và tìm cây ATM Techcombank trên đường"}
+        ],
+        "rewrite": "Thêm điểm dừng đổ xăng và tìm cây ATM Techcombank gần nhất trên lộ trình hiện tại qua đường Nguyễn Hữu Thọ.",
+        "rationale": "Hai yêu cầu bổ sung lộ trình song song; tên đường từ lượt bot xác nhận vị trí hiện tại, thương hiệu ATM từ lượt cuối là slot cụ thể."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tối nay đậu xe ngoài đường, lo bị va quẹt"},
+          {"role":"bot","content":"Bạn muốn cài gì để bảo vệ xe không ạ?"},
+          {"role":"user","content":"Bật đèn cảnh báo cạnh xe và kích hoạt chế độ giám sát va chạm qua camera"}
+        ],
+        "rewrite": "Bật đèn cảnh báo cạnh xe và kích hoạt chế độ giám sát va chạm qua camera khi đỗ xe.",
+        "rationale": "Ngữ cảnh đỗ xe ngoài đường qua đêm từ lượt đầu xác nhận điều kiện áp dụng; hai tính năng bảo vệ từ lượt cuối là slot chính."
+      },
+      {
+        "pattern": "correction",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cài lịch tưới cây mỗi sáng thứ Ba và thứ Năm"},
+          {"role":"bot","content":"Đã đặt lịch tưới tự động mỗi thứ Ba và thứ Năm. Lúc mấy giờ ạ?"},
+          {"role":"user","content":"6 giờ sáng"},
+          {"role":"bot","content":"Đã cập nhật lịch tưới cây 6h sáng thứ Ba và thứ Năm hằng tuần."},
+          {"role":"user","content":"Thêm thứ Bảy vào nữa, mùa khô tưới nhiều hơn một chút"}
+        ],
+        "rewrite": "Cập nhật lịch tưới cây tự động 6h sáng các ngày thứ Ba, thứ Năm và thứ Bảy hằng tuần.",
+        "rationale": "Lịch ban đầu thứ Ba và thứ Năm đã xác nhận; lượt cuối mở rộng thêm thứ Bảy giữ nguyên giờ; rewrite gộp ba ngày không nhắc lại quá trình cài."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem thông tin cuộc họp sắp tới của tôi"},
+          {"role":"bot","content":"Cuộc họp 14h hôm nay: Review sprint 23 với team Dev, 8 người tham dự, link Zoom meeting.us/j/987654, tại phòng 401 toà Innovation, thời lượng 90 phút."},
+          {"role":"user","content":"Gọi nhắc anh Thanh Bình vào họp đúng giờ, ông hay trễ"}
+        ],
+        "rewrite": "Gọi điện nhắc anh Thanh Bình tham dự họp Review sprint 23 lúc 14h hôm nay.",
+        "rationale": "Bot trả 5 thông tin cuộc họp; chỉ tên cuộc họp và giờ là cần thiết trong rewrite; link Zoom, số người, địa phòng và thời lượng đều là nhiễu."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Soạn thông báo cho cư dân chung cư"},
+          {"role":"bot","content":"Gửi qua kênh nào và nội dung gì ạ?"},
+          {"role":"user","content":"Qua app Smile One của toà, thông báo cúp nước"},
+          {"role":"bot","content":"Cúp nước từ mấy giờ đến mấy giờ và lý do gì ạ?"},
+          {"role":"user","content":"Từ 8h đến 17h thứ Bảy ngày 14, sửa chữa hệ thống ống nước tầng 15 đến 20, ảnh hưởng toàn toà"}
+        ],
+        "rewrite": "Gửi thông báo qua app Smile One đến toàn bộ cư dân: cúp nước từ 8h đến 17h thứ Bảy ngày 14 để sửa chữa hệ thống ống nước tầng 15–20, ảnh hưởng toàn toà.",
+        "rationale": "Kênh gửi, loại thông báo, khung giờ, ngày, lý do và phạm vi ảnh hưởng rải qua 5 lượt; rewrite gộp đủ thành thông báo hoàn chỉnh có thể gửi ngay."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "cruise_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Liệt kê các profile lái xe đang lưu trong xe"},
+          {"role":"bot","content":"Có 3 profile: 'Anh Hùng' – Comfort mode 90km/h, 'Chị Lan' – Eco mode 80km/h, 'Mặc định' – Sport mode 110km/h."},
+          {"role":"user","content":"Chuyển sang profile tiết kiệm nhiên liệu nhất đi"}
+        ],
+        "rewrite": "Chuyển sang profile lái xe 'Chị Lan' – Eco mode 80km/h.",
+        "rationale": "'Profile tiết kiệm nhiên liệu nhất' phân tích ba chế độ rồi resolve về Eco mode của 'Chị Lan'; Comfort và Sport đều tiêu hao nhiều hơn Eco."
+      }
+    ]
+  }

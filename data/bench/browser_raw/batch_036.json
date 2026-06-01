@@ -1,0 +1,140 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xem chế độ gió điều hoà đang hướng về đâu"},
+          {"role":"bot","content":"Luồng gió đang phân phối: 60% hướng lên mặt, 40% xuống chân, chế độ dual zone đang tắt."},
+          {"role":"user","content":"Đảo ngược lại tỷ lệ đó đi, nóng chân quá"}
+        ],
+        "rewrite": "Chỉnh phân phối gió điều hoà thành 40% hướng lên mặt và 60% xuống chân.",
+        "rationale": "'Tỷ lệ đó' resolve về 60/40 từ lượt bot; 'đảo ngược' yêu cầu tính toán hoán đổi hai con số cụ thể."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đặt nhắc nhở cho tôi"},
+          {"role":"bot","content":"Nhắc về việc gì và lúc mấy giờ ạ?"},
+          {"role":"user","content":"Nhắc đóng tiền phí đường bộ, chiều thứ Sáu này"},
+          {"role":"bot","content":"Nhắc lúc mấy giờ chiều thứ Sáu ạ?"},
+          {"role":"user","content":"2 giờ chiều, nhắc trước thêm một tiếng nữa cho chắc"}
+        ],
+        "rewrite": "Đặt hai nhắc nhở đóng phí đường bộ: lúc 1 giờ chiều và 2 giờ chiều thứ Sáu tuần này.",
+        "rationale": "Yêu cầu nhắc trước một tiếng ngầm tạo ra hai alarm; rewrite phải tính rõ cả hai mốc giờ từ thông tin hội thoại."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở Google Maps hay dùng bản đồ xe tích hợp?"},
+          {"role":"bot","content":"Bản đồ tích hợp dùng HERE Maps, cập nhật real-time. Google Maps cần kết nối điện thoại qua CarPlay."},
+          {"role":"user","content":"Dùng CarPlay với Google Maps đi, quen hơn, tìm đường đến sân golf Long Thành"}
+        ],
+        "rewrite": "Kết nối CarPlay và dẫn đường đến sân golf Long Thành bằng Google Maps.",
+        "rationale": "Token 'CarPlay', 'Google Maps' giữ nguyên; điểm đến cụ thể từ lượt cuối, nền tảng chọn sau khi bot giải thích sự khác biệt."
+      },
+      {
+        "pattern": "negation",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho nhóm gia đình đi"},
+          {"role":"bot","content":"Nhóm gia đình có: bố Văn Thịnh, mẹ Ngọc Mai, anh Hoàng Phúc và em Bảo Châu. Gọi hết không ạ?"},
+          {"role":"user","content":"Gọi hết nhưng trừ anh Hoàng Phúc, anh đang họp"}
+        ],
+        "rewrite": "Gọi nhóm cho bố Văn Thịnh, mẹ Ngọc Mai và em Bảo Châu, không gọi anh Hoàng Phúc.",
+        "rationale": "Phủ định loại trừ một thành viên khỏi danh sách bot liệt kê; rewrite phải nêu rõ cả người bị loại lẫn danh sách còn lại."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mình đang chạy đường dài, cần nhạc cho tỉnh táo"},
+          {"role":"bot","content":"Gợi ý playlist 'Nhạc Tỉnh Táo Lái Xe' trên Spotify hoặc kênh 'Deep Focus EDM' trên YouTube Music."},
+          {"role":"user","content":"Kênh YouTube Music đó đi, volume 65% luôn"}
+        ],
+        "rewrite": "Phát kênh 'Deep Focus EDM' trên YouTube Music, âm lượng 65%.",
+        "rationale": "'Kênh YouTube Music đó' resolve về 'Deep Focus EDM' từ gợi ý bot; volume là slot bổ sung ở lượt cuối."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "cancel_action",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Dẫn đường đến Lotte Mart Tây Hồ"},
+          {"role":"bot","content":"Bắt đầu dẫn đường đến Lotte Mart Tây Hồ, khoảng 18 phút qua đường Võ Chí Công."},
+          {"role":"user","content":"Thôi đổi sang Aeon Mall Long Biên đi, gần nhà hơn"},
+          {"role":"bot","content":"Đã cập nhật lộ trình đến Aeon Mall Long Biên, khoảng 24 phút."},
+          {"role":"user","content":"Ừ được rồi nhưng tránh cầu Chương Dương nhé"}
+        ],
+        "rewrite": "Dẫn đường đến Aeon Mall Long Biên, tránh cầu Chương Dương.",
+        "rationale": "Điểm đến đã được sửa sang Aeon Mall Long Biên ở lượt trước; lượt cuối bổ sung điều kiện tránh đường, rewrite không nhắc Lotte Mart cũ."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tình trạng các thiết bị ở nhà đang thế nào?"},
+          {"role":"bot","content":"Điều hoà phòng khách bật 26°C, máy giặt còn 23 phút, tủ lạnh 4°C, robot hút bụi đang sạc 67%."},
+          {"role":"user","content":"Tắt điều hoà phòng khách đi, không có ai ở nhà"}
+        ],
+        "rewrite": "Tắt điều hoà phòng khách.",
+        "rationale": "Bot trả về 4 thông tin thiết bị nhưng chỉ điều hoà phòng khách là mục tiêu; nhiệt độ 26°C, máy giặt, tủ lạnh, robot đều là nhiễu."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Trời bắt đầu mưa và sắp vào hầm"},
+          {"role":"bot","content":"Bạn cần chuẩn bị gì ạ?"},
+          {"role":"user","content":"Bật gạt mưa tốc độ cao và bật đèn hầm luôn"}
+        ],
+        "rewrite": "Bật gạt mưa tốc độ cao và bật đèn chế độ hầm.",
+        "rationale": "Hai intent thiết bị xe song song trong một lượt; ngữ cảnh mưa và hầm từ lượt trước xác nhận tính hợp lý nhưng không thêm slot."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe tôi dùng chuẩn sạc gì?"},
+          {"role":"bot","content":"Mercedes EQS của bạn dùng chuẩn CCS2, sạc AC tối đa 22kW và DC tối đa 200kW."},
+          {"role":"user","content":"Tìm trạm có DC 200kW trong 15km"},
+          {"role":"bot","content":"Có trạm Ionity tại TTTM Estella Place, quận 2, cách 11.4km, 6 cổng DC 350kW tương thích CCS2."},
+          {"role":"user","content":"Đặt lịch sạc ở đó lúc 7 giờ tối nay"}
+        ],
+        "rewrite": "Đặt lịch sạc tại trạm Ionity, Estella Place, quận 2 lúc 7 giờ tối nay cho xe Mercedes EQS chuẩn CCS2.",
+        "rationale": "Tên trạm, địa chỉ, giờ và chuẩn sạc rải qua 5 lượt; rewrite gộp đủ để lệnh sạc có thể thực thi độc lập."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Có email nào quan trọng hôm nay không?"},
+          {"role":"bot","content":"Có 2 email chưa đọc: sếp Đình Dương gửi lúc 8:14 về ngân sách Q3 và khách hàng Thiên Phú Corp gửi lúc 10:02 về hợp đồng mới."},
+          {"role":"user","content":"Reply cái của khách hàng trước, bảo mình sẽ phản hồi chi tiết sau 3 giờ chiều"}
+        ],
+        "rewrite": "Reply email của Thiên Phú Corp: sẽ phản hồi chi tiết về hợp đồng mới sau 3 giờ chiều hôm nay.",
+        "rationale": "'Cái của khách hàng' resolve về Thiên Phú Corp; nội dung reply kết hợp cam kết thời gian từ lượt cuối với chủ đề hợp đồng từ lượt bot."
+      }
+    ]
+  }

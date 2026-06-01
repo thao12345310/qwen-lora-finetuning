@@ -1,0 +1,139 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Cho tôi biết nhà thuốc gần nhất ở quận 5."},
+          {"role":"bot","content":"Nhà thuốc Nguyễn Đình Chiểu số 22, đường Nguyễn Kiệm, cách bạn 1.4 km."},
+          {"role":"user","content":"Đi tới chỗ đó ngay."}
+        ],
+        "rewrite": "Điều hướng tới nhà thuốc Nguyễn Đình Chiểu số 22, đường Nguyễn Kiệm, Quận 5, TP.HCM",
+        "rationale": "Câu cuối dùng đại từ “chỗ đó” nên cần dựa vào địa chỉ đã cung cấp để xác định điểm đến."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn biết giá cổ phiếu VNM hôm nay không?"},
+          {"role":"bot","content":"Cổ phiếu VNM đang giao dịch ở mức 115,500 VND."},
+          {"role":"user","content":"Đặt nhiệt độ cabin 20 độ."}
+        ],
+        "rewrite": "Đặt nhiệt độ cabin 20°C",
+        "rationale": "Thông tin cổ phiếu không liên quan, câu cuối tự chứa đủ slot để điều chỉnh nhiệt độ."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho anh Tuấn: \"Bản báo cáo đã sẵn sàng\"."},
+          {"role":"bot","content":"Bạn muốn gửi ngay hay lên lịch?"},
+          {"role":"user","content":"Lên lịch cho ngày 05/08."},
+          {"role":"bot","content":"Thời gian nào?"},
+          {"role":"user","content":"09:00 sáng."},
+          {"role":"bot","content":"Đã ghi lịch."},
+          {"role":"user","content":"Thêm nội dung: \"Gửi file đính kèm\"."},
+          {"role":"user","content":"Thực hiện."}
+        ],
+        "rewrite": "Gửi tin đến anh Tuấn vào 05/08 09:00 nội dung \"Bản báo cáo đã sẵn sàng. Gửi file đính kèm\"",
+        "rationale": "Thông tin người nhận, thời gian và nội dung được phân tán qua nhiều lượt, cần tổng hợp đầy đủ."
+      },
+      {
+        "pattern": "correction",
+        "domain": "smart_home",
+        "intent": "toggle_light",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật đèn phòng khách."},
+          {"role":"bot","content":"Đèn phòng khách đã bật."},
+          {"role":"user","content":"Không, bật đèn phòng ngủ."}
+        ],
+        "rewrite": "Bật đèn phòng ngủ",
+        "rationale": "Người dùng thay đổi yêu cầu, cần phản ánh intent cuối cùng mà không nhắc lại hành động đã thực hiện."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Hey, turn on the lane assist while I'm on Highway 1."},
+          {"role":"bot","content":"Lane Assist is now active."},
+          {"role":"user","content":"Also enable auto brake."}
+        ],
+        "rewrite": "Bật Lane Assist và chế độ auto brake",
+        "rationale": "Câu cuối giữ token tiếng Anh “auto brake” và yêu cầu bật, không cần dựa vào ngữ cảnh trước."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi cần sạc nhanh gần công viên Lê Văn Sỹ."},
+          {"role":"bot","content":"Có trạm SuperCharge ở ngã 2, cách 1.0 km, công suất 150 kW."},
+          {"role":"user","content":"Đi tới đó ngay."}
+        ],
+        "rewrite": "Điều hướng tới trạm SuperCharge ở ngã 2, cách 1.0 km, công suất 150 kW",
+        "rationale": "Đại từ “đó” tham chiếu tới trạm sạc đã được đề cập, cần giải quyết để tạo câu lệnh."
+      },
+      {
+        "pattern": "negation",
+        "domain": "calling",
+        "intent": "cancel_action",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Gọi cho bác sĩ Trâm số 0905 123 456."},
+          {"role":"bot","content":"Đang gọi bác sĩ Trâm."},
+          {"role":"user","content":"Đừng gọi nữa."}
+        ],
+        "rewrite": "Hủy cuộc gọi tới bác sĩ Trâm",
+        "rationale": "Câu cuối phủ định hành động gọi, không cần thêm thông tin nào."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Phát bài \"Sóng Gió\" của Đan Trường trên Spotify và bật chế độ lặp lại."}
+        ],
+        "rewrite": "Phát bài \"Sóng Gió\" của Đan Trường trên Spotify và bật chế độ lặp lại",
+        "rationale": "Lượt cuối đồng thời yêu cầu phát nhạc và bật repeat, cần giữ cả hai intent trong một câu."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ phía sau bên trái."},
+          {"role":"bot","content":"Cửa sổ phía sau bên trái đã mở."},
+          {"role":"user","content":"Giảm gió mức 2."},
+          {"role":"bot","content":"Gió đã giảm mức 2."},
+          {"role":"user","content":"Đóng cửa sổ đó."}
+        ],
+        "rewrite": "Đóng cửa sổ phía sau bên trái và giảm gió mức 2",
+        "rationale": "Các slot vị trí cửa sổ và mức gió được đưa ra rải rác, cần tổng hợp trong một câu lệnh."
+      },
+      {
+        "pattern": "correction",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Đi tới nhà cô Lan ở số 8 Đường Lê Lai, Hà Nội."},
+          {"role":"bot","content":"Đã tính lộ trình, khoảng 5.2 km."},
+          {"role":"user","content":"Không, mình muốn tới nhà cô Hạnh số 12 Đường Hồng Hà."}
+        ],
+        "rewrite": "Điều hướng tới nhà cô Hạnh, số 12 Đường Hồng Hà, Hà Nội",
+        "rationale": "Người dùng sửa lại địa chỉ đích, cần cập nhật thông tin mới trong câu lệnh."
+      }
+    ]
+  }

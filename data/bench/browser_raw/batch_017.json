@@ -1,0 +1,136 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Xe đang chạy trên đường cao tốc, muốn dùng hỗ trợ làn đường."},
+          {"role":"bot","content":"Bạn muốn bật Lane Assist ngay bây giờ?"},
+          {"role":"user","content":"Bật nó luôn."}
+        ],
+        "rewrite": "Bật Lane Assist",
+        "rationale": "Câu cuối chỉ dùng đại từ \"nó\" để chỉ tính năng đã được đề cập trước."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Pin hiện còn 45% và sức khỏe pin là 88%."},
+          {"role":"bot","content":"Bạn còn 45% pin, sức khỏe 88%."},
+          {"role":"user","content":"Cho tôi biết trạm sạc nhanh gần nhất."}
+        ],
+        "rewrite": "Tìm trạm sạc nhanh gần nhất",
+        "rationale": "Thông tin pin không liên quan tới yêu cầu tìm trạm sạc."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở Apple Music."},
+          {"role":"bot","content":"Bạn muốn nghe bài nào?"},
+          {"role":"user","content":"Bài \"Em Gái Mưa\" của Hương Tràm."},
+          {"role":"bot","content":"Đã chuẩn bị phát."},
+          {"role":"user","content":"Đặt âm lượng 45."}
+        ],
+        "rewrite": "Phát bài \"Em Gái Mưa\" của Hương Tràm trên Apple Music với âm lượng 45",
+        "rationale": "Tên bài, nghệ sĩ và âm lượng được cung cấp qua nhiều lượt, cần gộp lại."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho anh Quang, số 0912 345 678."},
+          {"role":"bot","content":"Đang gọi anh Quang."},
+          {"role":"user","content":"Sai số, gọi số 0912 345 679 nhé."}
+        ],
+        "rewrite": "Gọi anh Quang số 0912 345 679",
+        "rationale": "Người dùng sửa lại số điện thoại, cần phản ánh số mới mà không giữ số cũ."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Navigate me to 123 Nguyễn Trãi Street, Hanoi."},
+          {"role":"bot","content":"Route calculated to 123 Nguyễn Trãi Street."},
+          {"role":"user","content":"Avoid toll roads."}
+        ],
+        "rewrite": "Điều hướng tới 123 Nguyễn Trãi Street, Hà Nội, tránh đường thu phí",
+        "rationale": "Câu cuối sử dụng tiếng Anh \"Navigate me\" nhưng yêu cầu phải giữ nguyên địa chỉ và bổ sung yêu cầu tránh phí."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ phòng khách bằng điều khiển giọng nói."},
+          {"role":"bot","content":"Cửa sổ phòng khách đã mở."},
+          {"role":"user","content":"Đóng chúng lại."}
+        ],
+        "rewrite": "Đóng cửa sổ phòng khách",
+        "rationale": "Đại từ \"chúng\" tham chiếu tới cửa sổ phòng khách đã mở trong lượt trước."
+      },
+      {
+        "pattern": "negation",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ bên trái."},
+          {"role":"bot","content":"Cửa sổ bên trái đã mở."},
+          {"role":"user","content":"Không, đừng mở nữa."}
+        ],
+        "rewrite": "Không mở cửa sổ bên trái",
+        "rationale": "Câu cuối phủ định yêu cầu mở, cần giữ lại ý không mở."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin nhắn cho chị Huyền: \"Cuộc họp 14h\"."},
+          {"role":"bot","content":"Tin nhắn đã sẵn sàng gửi."},
+          {"role":"user","content":"Và nhắc tôi 10 phút trước để chuẩn bị."}
+        ],
+        "rewrite": "Gửi tin nhắn đến chị Huyền nội dung \"Cuộc họp 14h\" và đặt nhắc 10 phút trước",
+        "rationale": "Lượt cuối có hai intent: gửi tin và đặt lời nhắc, cần hợp nhất trong một câu."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa phía sau ở 23 độ."},
+          {"role":"bot","content":"Điều hòa phía sau đã bật 23°C."},
+          {"role":"user","content":"Tắt nó đi."}
+        ],
+        "rewrite": "Tắt điều hòa phía sau",
+        "rationale": "Đại từ \"nó\" đề cập tới điều hòa phía sau vừa được bật."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Thời tiết hôm nay có mưa nhẹ, nhiệt độ 28°C."},
+          {"role":"bot","content":"Thời tiết hiện tại: mưa nhẹ, 28°C."},
+          {"role":"user","content":"Dẫn tôi tới quán cà phê Phương Nam ở Đà Nẵng."}
+        ],
+        "rewrite": "Điều hướng tới quán cà phê Phương Nam, Đà Nẵng",
+        "rationale": "Thông tin thời tiết không liên quan tới yêu cầu chỉ đường cuối cùng."
+      }
+    ]
+  }

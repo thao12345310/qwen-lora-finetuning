@@ -1,0 +1,138 @@
+{
+    "samples": [
+      {
+        "pattern": "compound_intent",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Vào cao tốc rồi, tắt lane assist đi nhưng giữ nguyên adaptive cruise control 90km/h"}
+        ],
+        "rewrite": "Tắt lane assist, giữ nguyên adaptive cruise control ở 90km/h.",
+        "rationale": "Lượt đơn chứa hai intent đối lập trên cùng hệ thống; rewrite phải giữ rõ tắt/giữ nguyên từng tính năng."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bài đang phát tên gì, ai hát vậy?"},
+          {"role":"bot","content":"Đang phát 'Chạy Ngay Đi' của Sơn Tùng M-TP, phát hành 2018, 347 triệu view trên YouTube, BPM 128."},
+          {"role":"user","content":"Cho tôi nghe thêm bài khác của ca sĩ đó đi"}
+        ],
+        "rewrite": "Phát thêm bài khác của Sơn Tùng M-TP.",
+        "rationale": "Bot trả về 4 thông tin về bài hát nhưng rewrite chỉ cần tên nghệ sĩ; năm phát hành, view và BPM đều là nhiễu."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "vehicle",
+        "intent": "set_alarm",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Nhắc tôi đến hẹn bảo dưỡng xe"},
+          {"role":"bot","content":"Lịch bảo dưỡng tiếp theo là ngày nào ạ?"},
+          {"role":"user","content":"Ngày 15 tháng 7"},
+          {"role":"bot","content":"Nhắc vào lúc mấy giờ ạ?"},
+          {"role":"user","content":"8 giờ sáng, báo trước 1 ngày luôn nhé"}
+        ],
+        "rewrite": "Đặt nhắc nhở bảo dưỡng xe vào 8 giờ sáng ngày 15 tháng 7, báo trước 1 ngày tức ngày 14 tháng 7.",
+        "rationale": "Ngày, giờ và điều kiện báo sớm rải qua 5 lượt; rewrite gộp đủ và tính rõ ngày báo trước."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Ai đang gọi đến vậy?"},
+          {"role":"bot","content":"Có cuộc gọi đến từ anh Trọng Nghĩa, số 0912 334 556."},
+          {"role":"user","content":"Từ chối cuộc gọi đó rồi nhắn lại bảo mình đang lái xe"}
+        ],
+        "rewrite": "Từ chối cuộc gọi từ anh Trọng Nghĩa và nhắn tin lại: 'Mình đang lái xe, liên hệ lại sau nhé'.",
+        "rationale": "'Cuộc gọi đó' resolve về anh Trọng Nghĩa; rewrite gộp cả hai hành động từ chối và nhắn tin."
+      },
+      {
+        "pattern": "negation",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Về đến cổng rồi, bật điện toàn nhà lên"},
+          {"role":"bot","content":"Đã bật đèn phòng khách, phòng ngủ, bếp, hành lang và sân trước."},
+          {"role":"user","content":"Tắt bớt đi, chỉ giữ phòng khách và bếp thôi, chỗ khác tắt hết"}
+        ],
+        "rewrite": "Tắt đèn phòng ngủ, hành lang và sân trước, chỉ giữ đèn phòng khách và bếp.",
+        "rationale": "Phủ định nhắm vào danh sách phòng cụ thể đã bật ở lượt bot; rewrite phải liệt kê rõ phòng nào tắt."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Hôm nay mình phải chạy từ Hà Nội vào Vinh"},
+          {"role":"bot","content":"Quãng đường khoảng 295km. Với pin hiện tại 67% bạn có thể cần sạc dọc đường."},
+          {"role":"user","content":"Lên lịch điểm dừng sạc hợp lý nhất trên hành trình đó đi"}
+        ],
+        "rewrite": "Lên lịch điểm dừng sạc tối ưu trên hành trình từ Hà Nội đến Vinh dài 295km với pin hiện tại 67%.",
+        "rationale": "'Hành trình đó' resolve về tuyến Hà Nội–Vinh; pin 67% và khoảng cách 295km từ bot là slot cần thiết để lên lịch."
+      },
+      {
+        "pattern": "correction",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hoà hàng ghế sau 25 độ đi, con tôi ngồi đó"},
+          {"role":"bot","content":"Đã bật điều hoà hàng ghế sau, nhiệt độ 25°C."},
+          {"role":"user","content":"Thôi con kêu lạnh rồi, chỉnh lên 27 độ và giảm tốc độ quạt xuống thấp nhất"}
+        ],
+        "rewrite": "Chỉnh điều hoà hàng ghế sau lên 27°C và giảm tốc độ quạt xuống mức thấp nhất.",
+        "rationale": "User sửa cả nhiệt độ lẫn tốc độ quạt; rewrite chỉ giữ giá trị cuối 27°C, bỏ 25°C cũ."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Hệ thống hỗ trợ lái đang ở chế độ gì?"},
+          {"role":"bot","content":"Đang bật Traffic Jam Assist, tốc độ giới hạn 40km/h, Highway Assist đang tắt."},
+          {"role":"user","content":"Tắt Traffic Jam Assist đi, bật Highway Assist lên thay"}
+        ],
+        "rewrite": "Tắt Traffic Jam Assist và bật Highway Assist.",
+        "rationale": "Hai tên tính năng tiếng Anh giữ nguyên; rewrite hoán đổi trạng thái đúng theo lượt bot xác nhận."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Soạn email cho sếp tôi"},
+          {"role":"bot","content":"Gửi đến địa chỉ nào ạ?"},
+          {"role":"user","content":"nguyenvanha@techcorp.vn, tiêu đề là Báo cáo tuần 24"},
+          {"role":"bot","content":"Nội dung email là gì ạ?"},
+          {"role":"user","content":"Bảo mình sẽ nộp báo cáo trước 5 giờ chiều thứ Sáu, xin lỗi vì trễ hạn"}
+        ],
+        "rewrite": "Soạn và gửi email đến nguyenvanha@techcorp.vn, tiêu đề 'Báo cáo tuần 24', nội dung: xin lỗi vì trễ hạn và cam kết nộp báo cáo trước 5 giờ chiều thứ Sáu.",
+        "rationale": "Địa chỉ, tiêu đề và nội dung rải qua 5 lượt; lượt cuối chỉ có nội dung, rewrite gộp đủ toàn bộ slot email."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tìm quán phở ngon gần đây"},
+          {"role":"bot","content":"Có Phở Thìn Lò Đúc cách 2.1km, Phở Bát Đàn cách 3.8km và Phở Gia Truyền Bờ Hồ cách 4.5km."},
+          {"role":"user","content":"Quán thứ hai đó rating cao không?"},
+          {"role":"bot","content":"Phở Bát Đàn được đánh giá 4.7 sao trên Google Maps, hơn 2.400 đánh giá."},
+          {"role":"user","content":"Ngon vậy thì dẫn đường đến đó luôn"}
+        ],
+        "rewrite": "Chỉ đường đến Phở Bát Đàn.",
+        "rationale": "'Đó' ở lượt cuối resolve về Phở Bát Đàn đã được xác nhận qua hai lượt trung gian về rating."
+      }
+    ]
+  }

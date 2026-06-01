@@ -1,0 +1,136 @@
+{
+    "samples": [
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "navigation",
+        "intent": "navigate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi muốn tới bến xe Bến Thành."},
+          {"role":"bot","content":"Bến xe Bến Thành ở số 27 Hàm Nghi, Quận 1, TP.HCM, cách bạn 2.4 km."},
+          {"role":"user","content":"Đi đến chỗ ấy nhé."}
+        ],
+        "rewrite": "Điều hướng tới bến xe Bến Thành, số 27 Hàm Nghi, Quận 1, TP.HCM",
+        "rationale": "Câu cuối dùng đại từ \"chỗ ấy\" để chỉ địa điểm đã cung cấp, cần dựa trên lịch sử."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "driver_assist",
+        "intent": "lane_assist",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Bạn có biết thời gian giao thông hiện tại là bao nhiêu không?"},
+          {"role":"bot","content":"Thời gian giao thông trung bình đang 12 phút trên đoạn này."},
+          {"role":"user","content":"Bật lane assist ngay."}
+        ],
+        "rewrite": "Bật Lane Assist",
+        "rationale": "Thông tin thời gian giao thông không liên quan tới yêu cầu bật lane assist."
+      },
+      {
+        "pattern": "multi_turn_slot",
+        "domain": "charging",
+        "intent": "find_charging",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Tôi cần một trạm sạc nhanh ở khu vực Nguyễn Văn Linh."},
+          {"role":"bot","content":"Có trạm SuperCharge ở ngã 3, cách 1.6 km, công suất 150 kW."},
+          {"role":"user","content":"Mình muốn cấp 2, không dùng phí dịch vụ."},
+          {"role":"bot","content":"Đã bật cấp 2, không thu phí dịch vụ."},
+          {"role":"user","content":"Đi tới địa điểm đó."}
+        ],
+        "rewrite": "Điều hướng tới trạm SuperCharge ở ngã 3, cách 1.6 km, công suất 150 kW, cấp 2, không thu phí dịch vụ",
+        "rationale": "Vị trí, công suất, cấp và phí được đưa ra qua nhiều lượt, cần tổng hợp đầy đủ."
+      },
+      {
+        "pattern": "correction",
+        "domain": "calling",
+        "intent": "call",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gọi cho anh Quang số 0912 345 678."},
+          {"role":"bot","content":"Đang gọi anh Quang."},
+          {"role":"user","content":"Không, gọi cho chị Phương số 0912 345 679."}
+        ],
+        "rewrite": "Gọi chị Phương số 0912 345 679",
+        "rationale": "Người dùng sửa lại người nhận và số điện thoại, cần phản ánh thông tin mới."
+      },
+      {
+        "pattern": "code_switching",
+        "domain": "music",
+        "intent": "play_music_online",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Play \"Leopard\" by Tushar on Spotify."},
+          {"role":"bot","content":"\"Leopard\" đang được phát trên Spotify."},
+          {"role":"user","content":"Set volume to 70."}
+        ],
+        "rewrite": "Đặt âm lượng 70 cho \"Leopard\" trên Spotify",
+        "rationale": "Câu cuối giữ token tiếng Anh \"Spotify\" và yêu cầu mức âm lượng, không cần thông tin lịch sử."
+      },
+      {
+        "pattern": "implicit_reference",
+        "domain": "smart_home",
+        "intent": "smart_home_control",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Mở máy lọc không khí ở phòng ngủ."},
+          {"role":"bot","content":"Máy lọc không khí phòng ngủ đã bật."},
+          {"role":"user","content":"Tắt nó ngay."}
+        ],
+        "rewrite": "Tắt máy lọc không khí phòng ngủ",
+        "rationale": "Đại từ \"nó\" tham chiếu tới máy lọc không khí đã bật ở phòng ngủ."
+      },
+      {
+        "pattern": "negation",
+        "domain": "vehicle",
+        "intent": "control_window",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Mở cửa sổ phía sau bên trái."},
+          {"role":"bot","content":"Cửa sổ phía sau bên trái đã mở."},
+          {"role":"user","content":"Đừng mở nữa."}
+        ],
+        "rewrite": "Không mở cửa sổ phía sau bên trái",
+        "rationale": "Câu cuối phủ định hành động mở, không cần dựa vào lịch sử."
+      },
+      {
+        "pattern": "compound_intent",
+        "domain": "climate",
+        "intent": "set_climate",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Bật điều hòa 23 độ, gió mức 2 và chế độ eco."},
+          {"role":"bot","content":"Điều hòa 23°C, gió mức 2, chế độ eco đã bật."},
+          {"role":"user","content":"Giờ giảm nhiệt độ còn 20 và tắt chế độ eco."}
+        ],
+        "rewrite": "Đặt nhiệt độ 20°C và tắt chế độ eco",
+        "rationale": "Lượt cuối chứa hai thay đổi (giảm nhiệt độ, tắt eco) cần được hợp nhất trong một câu."
+      },
+      {
+        "pattern": "pronoun_resolution",
+        "domain": "messaging",
+        "intent": "send_message",
+        "context_required": true,
+        "turns": [
+          {"role":"user","content":"Gửi tin cho anh Minh: \"Ngày hôm nay họp lúc 15h\"."},
+          {"role":"bot","content":"Tin nhắn đã sẵn sàng."},
+          {"role":"user","content":"Gửi tin đó ngay."}
+        ],
+        "rewrite": "Gửi tin đến anh Minh nội dung \"Ngày hôm nay họp lúc 15h\" ngay lập tức",
+        "rationale": "Đại từ \"đó\" tham chiếu tới tin nhắn đã chuẩn bị, cần giải quyết để tạo lệnh đầy đủ."
+      },
+      {
+        "pattern": "irrelevant_context",
+        "domain": "vehicle",
+        "intent": "toggle_light",
+        "context_required": false,
+        "turns": [
+          {"role":"user","content":"Xe hiện đang ở tốc độ 60km/h."},
+          {"role":"bot","content":"Tốc độ hiện tại 60km/h."},
+          {"role":"user","content":"Bật đèn hazard."}
+        ],
+        "rewrite": "Bật đèn hazard",
+        "rationale": "Tốc độ hiện tại không liên quan tới yêu cầu bật đèn hazard, câu cuối tự chứa đủ thông tin."
+      }
+    ]
+  }

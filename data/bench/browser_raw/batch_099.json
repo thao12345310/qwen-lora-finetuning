@@ -1,0 +1,255 @@
+{
+    "samples": [
+    {
+    "pattern": "pronoun_resolution",
+    "domain": "smart_home",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Ở nhà Vinhomes Riverside, tôi điều khiển được gì cho hồ cá?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể bật máy bơm tuần hoàn nước hoặc bật đèn trang trí hồ cá."
+    },
+    {
+    "role": "user",
+    "content": "Bật thiết bị giúp cá có thêm oxy."
+    }
+    ],
+    "rewrite": "Bật máy bơm tuần hoàn nước cho hồ cá tại nhà Vinhomes Riverside.",
+    "rationale": "Lượt cuối mô tả thiết bị theo công dụng thay vì tên, nên phải chọn đúng máy bơm tuần hoàn nước."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "messaging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Báo lễ tân là tôi sắp trả xe thuê."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn nhắn cho lễ tân nào?"
+    },
+    {
+    "role": "user",
+    "content": "Lễ tân khách sạn Fusion Suites Vũng Tàu."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi qua kênh nào và nội dung gì?"
+    },
+    {
+    "role": "user",
+    "content": "Qua SMS, nhắn tôi sẽ đưa xe xuống sảnh lúc 10 giờ."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn gửi tin lúc nào?"
+    },
+    {
+    "role": "user",
+    "content": "Hẹn gửi lúc 9 giờ 45."
+    }
+    ],
+    "rewrite": "Hẹn gửi SMS cho lễ tân khách sạn Fusion Suites Vũng Tàu lúc 9 giờ 45 với nội dung “Tôi sẽ đưa xe xuống sảnh lúc 10 giờ”.",
+    "rationale": "Người nhận, kênh gửi, nội dung và thời điểm gửi được cung cấp qua nhiều lượt riêng biệt."
+    },
+    {
+    "pattern": "correction",
+    "domain": "music",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Tìm bài của Chillies để nghe trên đường về."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi thấy “Mascara” và “Vùng Ký Ức” của Chillies."
+    },
+    {
+    "role": "user",
+    "content": "Phát bài đầu."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã chuẩn bị phát “Mascara” của Chillies."
+    },
+    {
+    "role": "user",
+    "content": "Thôi đổi sang bài còn lại, bật lặp lại một bài."
+    }
+    ],
+    "rewrite": "Phát bài “Vùng Ký Ức” của Chillies và bật lặp lại một bài.",
+    "rationale": "Lượt cuối đổi sang lựa chọn còn lại và bổ sung chế độ phát mới, nên phải bỏ bài đã chọn ban đầu."
+    },
+    {
+    "pattern": "irrelevant_context",
+    "domain": "calling",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Cho tôi biết xe còn đi được bao xa."
+    },
+    {
+    "role": "bot",
+    "content": "Quãng đường dự kiến còn lại là 214 km và pin điện thoại đang ở mức 37%."
+    },
+    {
+    "role": "user",
+    "content": "Gọi tổng đài VinBus giúp tôi."
+    }
+    ],
+    "rewrite": "Gọi tổng đài VinBus giúp tôi.",
+    "rationale": "Các con số về quãng đường và pin điện thoại là nhiễu, không thuộc yêu cầu gọi điện."
+    },
+    {
+    "pattern": "code_switching",
+    "domain": "driver_assist",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Chiếc Hyundai IONIQ 5 hỗ trợ đưa xe ra khỏi ô đỗ bằng cách nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể tự lái xe ra hoặc dùng Remote Smart Parking Assist để điều khiển từ bên ngoài."
+    },
+    {
+    "role": "user",
+    "content": "Bật cách điều khiển từ bên ngoài đi."
+    }
+    ],
+    "rewrite": "Bật Remote Smart Parking Assist trên Hyundai IONIQ 5 để đưa xe ra khỏi ô đỗ.",
+    "rationale": "Model phải ánh xạ mô tả tiếng Việt sang đúng tên tính năng tiếng Anh đã được nêu trong lịch sử."
+    },
+    {
+    "pattern": "implicit_reference",
+    "domain": "navigation",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Xe đã lưu văn phòng mới của tôi chưa?"
+    },
+    {
+    "role": "bot",
+    "content": "Hiện chưa có địa chỉ nào được lưu với nhãn văn phòng mới của bạn."
+    },
+    {
+    "role": "user",
+    "content": "Dẫn tôi tới bãi đỗ gần văn phòng mới của tôi."
+    }
+    ],
+    "rewrite": "Dẫn tôi tới bãi đỗ gần văn phòng mới của tôi.",
+    "rationale": "Không có địa chỉ văn phòng cụ thể trong lịch sử nên phải giữ nguyên tham chiếu ngầm, không tự bịa điểm đến."
+    },
+    {
+    "pattern": "negation",
+    "domain": "charging",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Khi về nhà ở Vinhomes Central Park, xe có thể sạc bằng cách nào?"
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có thể dùng bộ sạc treo tường trong gara hoặc ổ cắm di động dự phòng."
+    },
+    {
+    "role": "user",
+    "content": "Dùng bộ sạc trong gara, đừng dùng ổ dự phòng."
+    }
+    ],
+    "rewrite": "Sạc xe bằng bộ sạc treo tường trong gara tại nhà ở Vinhomes Central Park và đừng dùng ổ cắm di động dự phòng.",
+    "rationale": "Lượt cuối chọn một phương án sạc bằng mô tả rút gọn và phủ định rõ phương án còn lại."
+    },
+    {
+    "pattern": "compound_intent",
+    "domain": "vehicle",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Ngăn nào trong xe đang để ví của tôi?"
+    },
+    {
+    "role": "bot",
+    "content": "Ví của bạn được phát hiện trong ngăn chứa đồ trước ghế phụ."
+    },
+    {
+    "role": "user",
+    "content": "Mở ngăn đó rồi bật đèn đọc sách bên phụ."
+    }
+    ],
+    "rewrite": "Mở ngăn chứa đồ trước ghế phụ rồi bật đèn đọc sách bên ghế phụ.",
+    "rationale": "Lượt cuối gồm hai hành động và “ngăn đó” phải được phân giải thành vị trí chứa ví đã xác định."
+    },
+    {
+    "pattern": "correction",
+    "domain": "climate",
+    "context_required": false,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Bật sấy kính sau giúp tôi."
+    },
+    {
+    "role": "bot",
+    "content": "Tôi đã sẵn sàng bật sấy kính sau."
+    },
+    {
+    "role": "user",
+    "content": "Không sấy kính sau nữa; bật sấy kính trước và quạt mức 3."
+    }
+    ],
+    "rewrite": "Không bật sấy kính sau; hãy bật sấy kính trước và đặt quạt ở mức 3.",
+    "rationale": "Lượt cuối tự đầy đủ, hủy vùng kính ban đầu và thay bằng hai thiết lập mới cụ thể."
+    },
+    {
+    "pattern": "multi_turn_slot",
+    "domain": "navigation",
+    "context_required": true,
+    "turns": [
+    {
+    "role": "user",
+    "content": "Lập đường đi ngắm biển ở Đà Nẵng sáng mai."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn muốn ghé điểm nào trước?"
+    },
+    {
+    "role": "user",
+    "content": "Chùa Linh Ứng ở bán đảo Sơn Trà."
+    },
+    {
+    "role": "bot",
+    "content": "Sau đó bạn muốn tới đâu và trước thời điểm nào?"
+    },
+    {
+    "role": "user",
+    "content": "Bãi biển Mỹ Khê trước 8 giờ 30."
+    },
+    {
+    "role": "bot",
+    "content": "Bạn có yêu cầu gì về tuyến đường không?"
+    },
+    {
+    "role": "user",
+    "content": "Tránh cầu Thuận Phước."
+    }
+    ],
+    "rewrite": "Dẫn đường tới Chùa Linh Ứng ở bán đảo Sơn Trà trước, sau đó tới Bãi biển Mỹ Khê trước 8 giờ 30 và tránh cầu Thuận Phước.",
+    "rationale": "Hai điểm đến, thứ tự di chuyển, thời hạn đến và tuyến cần tránh được rải qua nhiều lượt user."
+    }
+    ]
+    }
+    

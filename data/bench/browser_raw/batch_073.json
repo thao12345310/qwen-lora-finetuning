@@ -1,0 +1,136 @@
+{
+  "samples": [
+    {
+      "pattern": "correction",
+      "domain": "smart_home",
+      "intent": "smart_home_control",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Bật đèn phòng bếp"},
+        {"role": "bot", "content": "Đèn phòng bếp đã bật"},
+        {"role": "user", "content": "Sai rồi, tắt đèn bếp và bật đèn hành lang"}
+      ],
+      "rewrite": "Tắt đèn bếp và bật đèn hành lang",
+      "rationale": "User sửa hoàn toàn hành động smart home trước đó"
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "messaging",
+      "intent": "send_message",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Nhắn cho em gái"},
+        {"role": "bot", "content": "Đang soạn tin cho Trần Thị Hương"},
+        {"role": "user", "content": "Gửi bài đó cho nó luôn"}
+      ],
+      "rewrite": "Nhắn cho em gái gửi bài 'Nơi Này Có Anh'",
+      "rationale": "Đại từ 'bài đó' cần resolve từ lịch sử ngầm định"
+    },
+    {
+      "pattern": "irrelevant_context",
+      "domain": "driver_assist",
+      "intent": "lane_assist",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Tốc độ hiện tại bao nhiêu"},
+        {"role": "bot", "content": "Đang chạy 72km/h, nhiên liệu còn 45%"},
+        {"role": "user", "content": "Bật lane keep assist"}
+      ],
+      "rewrite": "Bật lane keep assist",
+      "rationale": "Thông tin nhiễu về tốc độ và nhiên liệu không ảnh hưởng rewrite"
+    },
+    {
+      "pattern": "code_switching",
+      "domain": "music",
+      "intent": "play_music_online",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Muốn nghe nhạc mới"},
+        {"role": "bot", "content": "Bạn thích thể loại gì?"},
+        {"role": "user", "content": "Open YouTube Music Mix 'Nhạc Trẻ Hay Nhất'"}
+      ],
+      "rewrite": "Open YouTube Music Mix 'Nhạc Trẻ Hay Nhất'",
+      "rationale": "Lượt cuối tự đầy đủ với code-switching YouTube Music"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Đi sân vận động Mỹ Đình"},
+        {"role": "bot", "content": "Đang dẫn đường"},
+        {"role": "user", "content": "Tránh cầu Thăng Long"},
+        {"role": "user", "content": "Đến trước 19 giờ"}
+      ],
+      "rewrite": "Dẫn đường đến sân vận động Mỹ Đình tránh cầu Thăng Long đến trước 19 giờ",
+      "rationale": "Nhiều slot vị trí, tránh đường và thời gian tích lũy"
+    },
+    {
+      "pattern": "negation",
+      "domain": "calling",
+      "intent": "call",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Gọi cho anh Tuấn"},
+        {"role": "bot", "content": "Đang gọi anh Tuấn"},
+        {"role": "user", "content": "Đừng gọi nữa, nhắn tin thay vì"}
+      ],
+      "rewrite": "Nhắn tin cho anh Tuấn đừng gọi điện",
+      "rationale": "Phủ định mạnh hành động gọi điện"
+    },
+    {
+      "pattern": "compound_intent",
+      "domain": "climate",
+      "intent": "set_climate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Điều hoà nóng quá"},
+        {"role": "bot", "content": "Điều hoà đang 27 độ"},
+        {"role": "user", "content": "Giảm xuống 23 và bật chế độ khô"}
+      ],
+      "rewrite": "Giảm điều hoà xuống 23 độ và bật chế độ khô",
+      "rationale": "Hai lệnh climate kết hợp trong một lượt"
+    },
+    {
+      "pattern": "implicit_reference",
+      "domain": "vehicle",
+      "intent": "control_window",
+      "context_required": false,
+      "turns": [
+        {"role": "user", "content": "Kiểm tra cửa xe"},
+        {"role": "bot", "content": "Tất cả cửa đều đóng"},
+        {"role": "user", "content": "Mở cửa sổ bên ghế phụ"}
+      ],
+      "rewrite": "Mở cửa sổ bên ghế phụ",
+      "rationale": "Lượt cuối đã tự chứa đầy đủ thông tin"
+    },
+    {
+      "pattern": "multi_turn_slot",
+      "domain": "charging",
+      "intent": "find_charging",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Xe hết pin gần hết"},
+        {"role": "bot", "content": "Pin còn 12%"},
+        {"role": "user", "content": "Tìm trạm sạc"},
+        {"role": "user", "content": "Ưu tiên EVgo và nhanh nhất"}
+      ],
+      "rewrite": "Tìm trạm sạc EVgo nhanh nhất",
+      "rationale": "Slot hãng sạc và ưu tiên được bổ sung qua nhiều lượt"
+    },
+    {
+      "pattern": "pronoun_resolution",
+      "domain": "navigation",
+      "intent": "navigate",
+      "context_required": true,
+      "turns": [
+        {"role": "user", "content": "Đi công ty"},
+        {"role": "bot", "content": "Đang dẫn đến tòa nhà Keangnam"},
+        {"role": "user", "content": "Chuyển sang chỗ gần hơn đi"}
+      ],
+      "rewrite": "Dẫn đường đến chỗ gần hơn thay vì Keangnam",
+      "rationale": "Phân giải 'chỗ gần hơn' dựa trên địa điểm bot đang dẫn"
+    }
+  ]
+}
