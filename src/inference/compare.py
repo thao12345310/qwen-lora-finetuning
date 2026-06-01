@@ -13,36 +13,43 @@ import argparse
 import json
 from pathlib import Path
 
-import yaml
 from tqdm import tqdm
 
-from src.inference.predict import format_conversation, load_config, load_model
+from src.inference.predict import load_config, load_model
 import torch
 
 
-def parse_user_block(text: str) -> list[dict]:
-    """Reverse of format_conversation: 'user: ..\\nbot: ..' -> list of dicts."""
-    turns = []
-    for line in text.split("\n"):
-        if ":" not in line:
-            continue
-        role, content = line.split(":", 1)
-        turns.append({"role": role.strip(), "content": content.strip()})
-    return turns
+# Llama Factory sharegpt `from` -> chat-template role.
+_ROLE_MAP = {"system": "system", "human": "user", "gpt": "assistant"}
 
 
-def run_split(samples, cfg, adapter_path: str | None):
+def parse_sample(s: dict) -> tuple[list[dict], str]:
+    """Split a `conversations`-schema sample into (prompt_messages, gold).
+
+    The final gpt turn is the gold rewrite; everything before it is the prompt
+    context fed through the chat template (matching how the model was trained).
+    """
+    turns = [
+        {"role": _ROLE_MAP[t["from"]], "content": t["value"]}
+        for t in s["conversations"]
+    ]
+    if not turns or turns[-1]["role"] != "assistant":
+        raise ValueError(
+            "Expected each sample's last conversation turn to be 'gpt' (the gold "
+            f"rewrite); got: {turns[-1] if turns else 'empty'}"
+        )
+    return turns[:-1], turns[-1]["content"]
+
+
+def run_split(parsed, cfg, adapter_path: str | None):
     model, tokenizer = load_model(
         cfg["model_name_or_path"], adapter_path, cfg.get("load_in_4bit", False)
     )
     outputs = []
-    for s in tqdm(samples, desc="base" if adapter_path is None else "lora"):
-        user_text = s["messages"][1]["content"]
-        messages = [
-            {"role": "system", "content": cfg["system_prompt"].strip()},
-            {"role": "user", "content": user_text},
-        ]
-        prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    for prompt_messages, _gold in tqdm(
+        parsed, desc="base" if adapter_path is None else "lora"
+    ):
+        prompt = tokenizer.apply_chat_template(prompt_messages, tokenize=False, add_generation_prompt=True)
         inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
         with torch.no_grad():
             out = model.generate(
@@ -74,8 +81,9 @@ def main():
     samples = [json.loads(l) for l in args.test_file.open(encoding="utf-8")]
     if args.limit:
         samples = samples[: args.limit]
+    parsed = [parse_sample(s) for s in samples]
 
-    base_outputs = run_split(samples, cfg, adapter_path=None)
+    base_outputs = run_split(parsed, cfg, adapter_path=None)
     # Free up GPU before loading the adapter version (lru_cache holds the base
     # in memory; clearing it is safest).
     load_model.cache_clear()
@@ -88,16 +96,20 @@ def main():
             "Please run training first:\n"
             "  python src/train/train.py --config configs/qwen_lora_sft.yaml"
         )
-    lora_outputs = run_split(samples, cfg, adapter_path=adapter_path)
+    lora_outputs = run_split(parsed, cfg, adapter_path=adapter_path)
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8") as f:
-        for s, b, l in zip(samples, base_outputs, lora_outputs):
+        for s, (prompt_messages, gold), b, l in zip(
+            samples, parsed, base_outputs, lora_outputs
+        ):
             f.write(
                 json.dumps(
                     {
-                        "dialogue": s["messages"][1]["content"],
-                        "gold": s["messages"][2]["content"],
+                        "dialogue": [
+                            m for m in prompt_messages if m["role"] != "system"
+                        ],
+                        "gold": gold,
                         "base_output": b,
                         "finetuned_output": l,
                         "meta": s.get("meta", {}),
