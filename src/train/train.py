@@ -79,8 +79,26 @@ def main():
 
     data_files = {"train": cfg["train_file"], "validation": cfg["valid_file"]}
     dataset = load_dataset("json", data_files=data_files)
-    # Drop `meta` column — SFTTrainer only needs `messages`.
-    dataset = dataset.remove_columns([c for c in dataset["train"].column_names if c != "messages"])
+
+    # Processed data is Llama-Factory sharegpt format: a `conversations` column of
+    # [{"from": system|human|gpt, "value": ...}]. SFTTrainer's chat-template path
+    # expects a `messages` column of [{"role": system|user|assistant, "content":
+    # ...}], so convert here. (Legacy `messages`-format files pass through.)
+    role_map = {"system": "system", "human": "user", "gpt": "assistant"}
+
+    def to_messages(example):
+        return {
+            "messages": [
+                {"role": role_map.get(t["from"], t["from"]), "content": t["value"]}
+                for t in example["conversations"]
+            ]
+        }
+
+    cols = dataset["train"].column_names
+    if "conversations" in cols:
+        dataset = dataset.map(to_messages, remove_columns=cols)
+    else:
+        dataset = dataset.remove_columns([c for c in cols if c != "messages"])
 
     model, tokenizer = build_model_and_tokenizer(cfg)
 

@@ -115,7 +115,14 @@ def fmt_dialogue(turns: list[tuple[str, str]]) -> str:
     return "\n".join(f"{role}: {text}" for role, text in turns)
 
 
-def make_sample(turns, rewrite, intent, pattern, domain):
+def make_sample(turns, rewrite, intent, pattern, domain, *, context_required=True):
+    """Build one sample.
+
+    `context_required` (fine_tune.md rule #2): True nếu rewrite BẮT BUỘC dùng
+    ngữ cảnh các lượt trước (retrieve); False nếu câu cuối đã tự đủ và model
+    chỉ cần chuẩn hoá, BỎ QUA lịch sử (no-retrieve / giữ nguyên ý). Tỷ lệ mục
+    tiêu toàn bộ dataset: ~2/3 True : ~1/3 False.
+    """
     user_turns = sum(1 for r, _ in turns if r == "user")
     return {
         "messages": [
@@ -128,6 +135,7 @@ def make_sample(turns, rewrite, intent, pattern, domain):
             "pattern": pattern,
             "group": pattern,  # alias for compat with split_data.py (stratify key)
             "domain": domain,
+            "context_required": context_required,
             "user_turns": user_turns,
             "messages": len(turns),
         },
@@ -429,7 +437,8 @@ def gen_2t_chained_ac_music():
             ("user", f"bật điều hoà {t} độ và mở bài {song}"),
         ]
         rw = f"Tôi muốn bật điều hoà {t} độ và phát bài {song}."
-        out.append(make_sample(turns, rw, "chained_climate_music", "chained_intent", "multi"))
+        # No-retrieve: câu cuối đã tự đủ cả 2 hành động, không cần lịch sử.
+        out.append(make_sample(turns, rw, "chained_climate_music", "chained_intent", "multi", context_required=False))
     return out
 
 
@@ -445,7 +454,7 @@ def gen_2t_irrelevant_outdoor_temp():
             ("user", f"bật điều hoà {target} độ"),
         ]
         rw = f"Tôi muốn bật điều hoà {target} độ."
-        out.append(make_sample(turns, rw, "set_ac_temperature", "irrelevant_context", "climate"))
+        out.append(make_sample(turns, rw, "set_ac_temperature", "irrelevant_context", "climate", context_required=False))
     return out
 
 
@@ -621,7 +630,12 @@ def gen_3t_disambig_call():
 
 
 def gen_3t_chained_climate_window():
-    """user trên xe nóng → bot gợi ý → user yêu cầu AC + mở cửa kính."""
+    """user nóng → bot ĐÃ bật điều hoà → user thêm yêu cầu mở cửa kính.
+
+    Rule 3 (fine_tune.md): bot đã thực hiện 'bật điều hoà {t} độ' ở lượt trước,
+    nên rewrite KHÔNG được lặp lại hành động đó — chỉ retrieve hành động chưa
+    làm (mở hé cửa kính).
+    """
     out = []
     for t, w in itertools.product([20, 22, 24], WINDOWS):
         turns = [
@@ -631,8 +645,8 @@ def gen_3t_chained_climate_window():
             ("bot", f"Đã bật điều hoà {t} độ."),
             ("user", f"và hé {w} một chút"),
         ]
-        rw = f"Tôi muốn bật điều hoà {t} độ và mở hé {w}."
-        out.append(make_sample(turns, rw, "chained_climate_window", "chained_intent", "multi"))
+        rw = f"Tôi muốn mở hé {w}."
+        out.append(make_sample(turns, rw, "open_window", "no_repeat_action", "vehicle"))
     return out
 
 
@@ -844,7 +858,7 @@ def gen_4t_ignore_irrelevant_chain():
             ("user", f"bật điều hoà {target} độ chế độ tự động"),
         ]
         rw = f"Tôi muốn bật điều hoà {target} độ ở chế độ tự động."
-        out.append(make_sample(turns, rw, "set_ac_temperature_with_mode", "irrelevant_context", "climate"))
+        out.append(make_sample(turns, rw, "set_ac_temperature_with_mode", "irrelevant_context", "climate", context_required=False))
     return out
 
 
@@ -863,6 +877,129 @@ def gen_4t_defrost_full():
         ]
         rw = f"Tôi muốn bật sấy kính ở mức quạt {fan} và {t} độ."
         out.append(make_sample(turns, rw, "defrost_with_settings", "multi_slot", "climate"))
+    return out
+
+
+# ===========================================================================
+# NO-RETRIEVE GENERATORS  (fine_tune.md rule #2: ~1/3 dữ liệu không cần ngữ cảnh)
+#
+# Câu cuối của user đã TỰ ĐỦ (intent + mọi slot). Các lượt trước chỉ là chit-chat
+# hoặc thông tin nhiễu KHÔNG liên quan. Model phải học BỎ QUA lịch sử và giữ
+# nguyên ý câu cuối — không kéo theo gì từ ngữ cảnh.
+# ===========================================================================
+
+# Ngữ cảnh trung lập / nhiễu, luôn kết thúc bằng lượt bot để lượt kế là user.
+NEUTRAL_CONTEXTS: list[list[tuple[str, str]]] = [
+    [("user", "chào buổi sáng"), ("bot", "Chào bạn, chúc một ngày tốt lành!")],
+    [("user", "hôm nay thứ mấy nhỉ"), ("bot", "Hôm nay là thứ Tư.")],
+    [("user", "mệt quá"), ("bot", "Bạn nghỉ ngơi một chút nhé.")],
+    [("user", "ngoài trời có nắng không"), ("bot", "Hôm nay trời nắng nhẹ.")],
+    [("user", "kể chuyện vui đi"), ("bot", "Để lần khác nhé, giờ tôi hỗ trợ lái xe thôi.")],
+    [("user", "xe còn bao nhiêu xăng"), ("bot", "Bình xăng còn khoảng 60%.")],
+    [("user", "mai trời mưa không"), ("bot", "Dự báo ngày mai có mưa rào.")],
+    [
+        ("user", "đường có đông không"),
+        ("bot", "Đường khá thoáng."),
+        ("user", "ừ tốt"),
+        ("bot", "Bạn cần tôi hỗ trợ gì thêm không?"),
+    ],
+    [
+        ("user", "nay là ngày bao nhiêu"),
+        ("bot", "Hôm nay là ngày 12."),
+        ("user", "ok cảm ơn"),
+        ("bot", "Không có gì, tôi luôn sẵn sàng giúp bạn."),
+    ],
+]
+
+
+def _self_complete_commands() -> list[tuple[str, str, str, str]]:
+    """(utterance câu cuối tự đủ, rewrite, intent, domain)."""
+    cmds: list[tuple[str, str, str, str]] = []
+    for t in TEMP_VALUES:
+        cmds.append((f"bật điều hoà {t} độ", f"Tôi muốn bật điều hoà {t} độ.", "set_ac_temperature", "climate"))
+    cmds.append(("tắt điều hoà", "Tôi muốn tắt điều hoà.", "turn_off_ac", "climate"))
+    for song in SONGS:
+        cmds.append((f"phát bài {song}", f"Tôi muốn phát bài {song}.", "play_music", "music"))
+    for name in CONTACTS:
+        cmds.append((f"gọi cho {name}", f"Tôi muốn gọi cho {name}.", "call_contact", "calling"))
+    for place in PLACES:
+        cmds.append((f"dẫn đường đến {place}", nav_rewrite(place), "navigate_to_location", "navigation"))
+    for v in VOLUME_LEVELS:
+        cmds.append((f"để âm lượng {v}", f"Tôi muốn đặt âm lượng mức {v}.", "set_volume", "music"))
+    for w in WINDOWS:
+        cmds.append((f"mở {w}", f"Tôi muốn mở {w}.", "open_window", "vehicle"))
+    for light in LIGHTS:
+        cmds.append((f"bật {light}", f"Tôi muốn bật {light}.", "turn_on_light", "vehicle"))
+    for mode in DRIVE_MODES:
+        cmds.append((f"đổi chế độ lái sang {mode}", f"Tôi muốn đổi chế độ lái sang {mode}.", "set_drive_mode", "driver_assist"))
+    return cmds
+
+
+def gen_noretrieve_complete_after_context():
+    """Câu cuối tự đủ sau ngữ cảnh nhiễu/chit-chat → giữ nguyên ý, bỏ qua lịch sử."""
+    out = []
+    for utt, rw, intent, domain in _self_complete_commands():
+        for ctx in NEUTRAL_CONTEXTS:
+            turns = list(ctx) + [("user", utt)]
+            out.append(make_sample(turns, rw, intent, "no_context_needed", domain, context_required=False))
+    return out
+
+
+# ===========================================================================
+# NO-REPEAT-ACTION GENERATORS  (fine_tune.md rule #3)
+#
+# Bot ĐÃ thực hiện hành động A ở lượt trước. User thêm yêu cầu B. Rewrite chỉ
+# được chứa B — tuyệt đối không nhắc lại A (tránh hệ thống gọi tool A hai lần).
+# context_required=True: phải đọc lịch sử để biết A đã làm rồi mà loại bỏ.
+# ===========================================================================
+
+
+def gen_norepeat_after_ac():
+    """bot đã bật điều hoà → user thêm hành động khác → rewrite KHÔNG nhắc điều hoà."""
+    out = []
+    for t in [20, 22, 24, 26]:
+        for song in SONGS[:4]:
+            turns = [
+                ("user", f"bật điều hoà {t} độ"),
+                ("bot", f"Đã bật điều hoà {t} độ."),
+                ("user", f"mở thêm bài {song}"),
+            ]
+            out.append(make_sample(turns, f"Tôi muốn phát bài {song}.", "play_music", "no_repeat_action", "music"))
+        for name in CONTACTS[:3]:
+            turns = [
+                ("user", f"bật điều hoà {t} độ"),
+                ("bot", f"Đã bật điều hoà {t} độ."),
+                ("user", f"gọi cho {name} nữa"),
+            ]
+            out.append(make_sample(turns, f"Tôi muốn gọi cho {name}.", "call_contact", "no_repeat_action", "calling"))
+    return out
+
+
+def gen_norepeat_after_music():
+    """bot đã phát nhạc → user thêm hành động → rewrite KHÔNG nhắc phát nhạc."""
+    out = []
+    for song in SONGS[:5]:
+        for v in [20, 40, 60]:
+            turns = [
+                ("user", f"phát bài {song}"),
+                ("bot", f"Đang phát {song}."),
+                ("user", f"để âm lượng {v}"),
+            ]
+            out.append(make_sample(turns, f"Tôi muốn đặt âm lượng mức {v}.", "set_volume", "no_repeat_action", "music"))
+    return out
+
+
+def gen_norepeat_after_nav():
+    """bot đã đặt điểm đến → user thêm hành động → rewrite KHÔNG nhắc điều hướng."""
+    out = []
+    for place in PLACES[:6]:
+        for pl in PLAYLISTS[:3]:
+            turns = [
+                ("user", f"dẫn đường đến {place}"),
+                ("bot", f"Đã bắt đầu dẫn đường đến {place}."),
+                ("user", f"mở playlist {pl} lên"),
+            ]
+            out.append(make_sample(turns, f"Tôi muốn phát playlist {pl}.", "play_playlist", "no_repeat_action", "music"))
     return out
 
 
@@ -918,6 +1055,12 @@ GENERATORS: list[Callable[[], list[dict]]] = [
     gen_4t_drive_mode_full,
     gen_4t_ignore_irrelevant_chain,
     gen_4t_defrost_full,
+    # no-retrieve (rule #2: câu cuối tự đủ, bỏ qua lịch sử)
+    gen_noretrieve_complete_after_context,
+    # no-repeat-action (rule #3: không lặp hành động bot đã thực hiện)
+    gen_norepeat_after_ac,
+    gen_norepeat_after_music,
+    gen_norepeat_after_nav,
 ]
 
 
@@ -939,22 +1082,21 @@ def generate(target: int, seed: int) -> list[dict]:
 
     random.shuffle(unique)
 
-    if target and len(unique) > target:
-        # Stratified downsample theo (pattern, user_turns) để cân bằng.
-        buckets: dict[tuple, list[dict]] = {}
-        for s in unique:
-            k = (s["meta"]["pattern"], s["meta"]["user_turns"])
-            buckets.setdefault(k, []).append(s)
-        per_bucket = max(1, target // len(buckets))
-        sampled = []
-        for items in buckets.values():
-            sampled.extend(items[:per_bucket])
-        if len(sampled) < target:
-            extras = [s for s in unique if s not in sampled]
-            sampled.extend(extras[: target - len(sampled)])
-        random.shuffle(sampled)
-        return sampled[:target]
-    return unique
+    # ---- Ép tỷ lệ 2/3 retrieve : 1/3 no-retrieve (fine_tune.md rule #2) --------
+    retrieve = [s for s in unique if s["meta"]["context_required"]]
+    no_retrieve = [s for s in unique if not s["meta"]["context_required"]]
+
+    if target and target > 0:
+        n_no = min(len(no_retrieve), target // 3)
+        n_re = min(len(retrieve), target - n_no)
+    else:
+        # target = 0 → giữ tối đa data mà vẫn đúng tỷ lệ 2:1.
+        n_no = min(len(no_retrieve), len(retrieve) // 2)
+        n_re = n_no * 2
+
+    selected = retrieve[:n_re] + no_retrieve[:n_no]
+    random.shuffle(selected)
+    return selected
 
 
 def main():
@@ -971,6 +1113,19 @@ def main():
             f.write(json.dumps(s, ensure_ascii=False) + "\n")
 
     print(f"Wrote {len(samples)} samples → {args.output}")
+
+    # Tỷ lệ retrieve vs no-retrieve (rule #2)
+    n_re = sum(1 for s in samples if s["meta"]["context_required"])
+    n_no = len(samples) - n_re
+    total = max(1, len(samples))
+    print(f"\ncontext_required=True  (retrieve):    {n_re} ({n_re / total:.1%})")
+    print(f"context_required=False (no-retrieve): {n_no} ({n_no / total:.1%})")
+
+    # Phân phối số lượt user (rule #1)
+    ut_dist: dict[int, int] = {}
+    for s in samples:
+        ut_dist[s["meta"]["user_turns"]] = ut_dist.get(s["meta"]["user_turns"], 0) + 1
+    print("user_turns distribution:", {k: ut_dist[k] for k in sorted(ut_dist)})
 
     # Phân phối theo pattern × user_turns
     dist: dict[tuple, int] = {}
