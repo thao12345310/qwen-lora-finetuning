@@ -23,6 +23,9 @@ dataset: train
 eval_dataset: valid
 template: qwen
 cutoff_len: 1024
+mask_history: true           # CHỈ tính loss trên lượt gpt CUỐI (câu rewrite). Các lượt bot
+                             # context là role=assistant — nếu không mask, model học sinh lại
+                             # câu bot (sai task). Tương đương fix prompt-completion trong train.py.
 overwrite_cache: true
 preprocessing_num_workers: 8
 dataloader_num_workers: 2
