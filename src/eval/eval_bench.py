@@ -1,16 +1,19 @@
-"""Evaluate the current vLLM-served model on the 300-sample benchmark.
+"""Evaluate the current vLLM-served model on the benchmark.
 
-The bench uses the NEW Llama Factory format (<REWRITE> tag, JSON output). The
-existing LoRA adapter was trained on the OLD plain-text format. So this script
-RE-FORMATS each bench sample to match what the adapter expects, and judges the
-plain-text prediction semantically against the gold rewrite via GPT-4o.
+The bench AND the current adapter both use the Llama-Factory format (system =
+SYSTEM_PROMPT_FOR_TRAINING, multi-turn messages, final user turn tagged <REWRITE>,
+assistant answer = JSON {"rewrite_message": ...}). So each bench record is sent to
+the model AS-IS (its own conversations[:-1] become the chat messages) — identical
+to what the model saw at training — and the JSON prediction is judged semantically
+against the gold rewrite.
 
-Usage:
-    export OPENAI_API_KEY=sk-...
+Usage (judge can be MiMo via --judge-base-url, or GPT-4o by default):
+    export JUDGE_API_KEY=...        # or OPENAI_API_KEY for the GPT-4o judge
     python -m src.eval.eval_bench \
         --vllm-url https://overtime-freely-glider.ngrok-free.dev \
         --models vi-rewriter Qwen/Qwen2.5-1.5B-Instruct \
-        --judge-model gpt-4o
+        --judge-model mimo-v2.5-pro \
+        --judge-base-url https://token-plan-sgp.xiaomimimo.com/v1
 """
 from __future__ import annotations
 
@@ -30,11 +33,7 @@ from tqdm import tqdm
 
 load_dotenv()
 
-OLD_SYSTEM_PROMPT = (
-    "Bạn là model rewrite hội thoại. Nhiệm vụ của bạn là biến câu nói cuối của user "
-    "thành một yêu cầu độc lập, rõ ràng, giữ nguyên ý định, không thêm thông tin "
-    "không chắc chắn. Chỉ trả về câu rewrite."
-)
+ROLE_MAP = {"system": "system", "human": "user", "gpt": "assistant"}
 
 JUDGE_SYSTEM = """Bạn là giám khảo đánh giá câu rewrite tiếng Việt cho task hội thoại trợ lý xe.
 
@@ -91,6 +90,20 @@ def lf_to_old_turns(record: dict) -> tuple[list[dict], str]:
             content = content[len("<REWRITE>\n"):]
         turns.append({"role": role, "content": content})
     return turns, gold
+
+
+def lf_to_messages(record: dict) -> tuple[list[dict], str]:
+    """Convert an LF record → (chat messages to send the model, gold rewrite).
+
+    messages = conversations[:-1] (system + the multi-turn history, final user turn
+    already carries the <REWRITE> tag) mapped to role/content — EXACTLY the training
+    input. The dropped last `gpt` turn is the gold answer.
+    """
+    convs = record["conversations"]
+    assert convs[-1]["from"] == "gpt"
+    gold = json.loads(convs[-1]["value"])["rewrite_message"]
+    messages = [{"role": ROLE_MAP[c["from"]], "content": c["value"]} for c in convs[:-1]]
+    return messages, gold
 
 
 def format_old_user_msg(turns: list[dict]) -> str:
@@ -179,10 +192,9 @@ def deterministic_metrics(raw_pred: str, gold: str, last_user: str) -> dict:
 async def predict(
     client: AsyncOpenAI,
     model: str,
-    system: str,
-    user: str,
+    messages: list[dict],
     sem: asyncio.Semaphore,
-    max_tokens: int = 96,
+    max_tokens: int = 160,
     temperature: float = 0.1,
     max_retries: int = 3,
 ) -> str:
@@ -191,10 +203,7 @@ async def predict(
             try:
                 resp = await client.chat.completions.create(
                     model=model,
-                    messages=[
-                        {"role": "system", "content": system},
-                        {"role": "user", "content": user},
-                    ],
+                    messages=messages,
                     max_tokens=max_tokens,
                     temperature=temperature,
                     top_p=0.9,
@@ -284,16 +293,17 @@ async def run(args):
         tasks = []
         contexts = []
         for r in records:
-            turns, gold = lf_to_old_turns(r)
-            user_msg = format_old_user_msg(turns)
-            contexts.append({"turns": turns, "user_msg": user_msg, "gold": gold, "meta": r["meta"]})
-            tasks.append(predict(vllm_client, model, OLD_SYSTEM_PROMPT, user_msg, pred_sem))
+            messages, gold = lf_to_messages(r)          # NEW-format input (matches training)
+            turns, _ = lf_to_old_turns(r)               # readable turns for judge + metrics
+            dialogue = format_old_user_msg(turns)
+            contexts.append({"turns": turns, "dialogue": dialogue, "gold": gold, "meta": r["meta"]})
+            tasks.append(predict(vllm_client, model, messages, pred_sem))
 
         preds = await _gather_with_progress(tasks, desc=f"predict {model}")
 
         print(f"  Judging {len(preds)} predictions with {args.judge_model}…")
         judge_tasks = [
-            judge(judge_client, args.judge_model, ctx["user_msg"], ctx["gold"], pred, judge_sem)
+            judge(judge_client, args.judge_model, ctx["dialogue"], ctx["gold"], pred, judge_sem)
             for ctx, pred in zip(contexts, preds)
         ]
         scores = await _gather_with_progress(judge_tasks, desc=f"judge {model}")
