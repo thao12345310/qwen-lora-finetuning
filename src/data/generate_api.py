@@ -21,6 +21,7 @@ from generate_vllm import (  # noqa: E402
     GEN_SYSTEM, DOMAINS, DOMAIN_WEIGHTS, build_quota, select_capped,
     load_seed_pool, make_validator, parse_samples, to_lf, find_first,
 )
+from entity_pools import build_entity_hint  # noqa: E402
 from openai import OpenAI  # noqa: E402
 
 # --- domain drift → enum -----------------------------------------------------
@@ -65,6 +66,8 @@ def parse_args():
     p.add_argument("--oversample", type=float, default=1.6)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--cap-total", type=int, default=0)
+    p.add_argument("--no-generate", action="store_true",
+                   help="skip API generation; finalize from --cache only (no API calls)")
     p.add_argument("--bench", default=None)
     p.add_argument("--seed-pool", default=None)
     p.add_argument("--out", default="data/train/dialogues_train_api.jsonl")
@@ -152,6 +155,7 @@ def main():
 
     def call_one(ctx, ut, doms):
         user = (fewshot_block(ctx, ut) + schema_instructions(ut, ctx)
+                + build_entity_hint(doms)
                 + f"\n\nƯu tiên các domain: {', '.join(doms)}. seed={random.randint(1, 10**7)}")
         for attempt in range(args.max_retries):
             with rr_lock:
@@ -174,11 +178,14 @@ def main():
                     time.sleep(1 + random.random())
         return None
 
+    if args.no_generate:
+        print(f"\n--no-generate: finalizing from {len(accepted)} cached samples (no API calls)")
+
     cache_fh = open(cache_path, "a", encoding="utf-8")
     write_lock = threading.Lock()
     t0 = time.time()
 
-    for wave in range(1, args.max_waves + 1):
+    for wave in range(1, args.max_waves + 1 if not args.no_generate else 1):
         have = have_counts()
         deficits = {b: quota[b] - have.get(b, 0) for b in quota if quota[b] - have.get(b, 0) > 0}
         if not deficits:

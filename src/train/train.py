@@ -104,24 +104,38 @@ def main():
     dataset = load_dataset("json", data_files=data_files)
 
     # Processed data is Llama-Factory sharegpt format: a `conversations` column of
-    # [{"from": system|human|gpt, "value": ...}]. SFTTrainer's chat-template path
-    # expects a `messages` column of [{"role": system|user|assistant, "content":
-    # ...}], so convert here. (Legacy `messages`-format files pass through.)
+    # [{"from": system|human|gpt, "value": ...}].
+    #
+    # LOSS MASKING — the task is rewrite: given the full dialogue + the final
+    # `<REWRITE>` user turn, emit ONLY the final {"rewrite_message": ...} JSON. The
+    # intermediate bot turns are CONTEXT (role=assistant) that the model must read,
+    # not reproduce. Training on the whole sequence (or even on all-assistant turns)
+    # would teach it to generate the bot's context lines too — wrong and wasteful.
+    #
+    # So convert to the conversational PROMPT-COMPLETION format: everything except
+    # the last turn goes in `prompt` (masked), and the final assistant rewrite is the
+    # `completion` (the only tokens that get loss). TRL applies the chat template and
+    # computes loss only on the completion for prompt-completion datasets — this is
+    # the version-robust way to get last-turn-only masking (no reliance on a specific
+    # SFTConfig kwarg or the removed DataCollatorForCompletionOnlyLM).
     role_map = {"system": "system", "human": "user", "gpt": "assistant"}
 
-    def to_messages(example):
-        return {
-            "messages": [
-                {"role": role_map.get(t["from"], t["from"]), "content": t["value"]}
-                for t in example["conversations"]
-            ]
-        }
+    def to_prompt_completion(example):
+        msgs = [
+            {"role": role_map.get(t["from"], t["from"]), "content": t["value"]}
+            for t in example["conversations"]
+        ]
+        return {"prompt": msgs[:-1], "completion": [msgs[-1]]}
 
     cols = dataset["train"].column_names
     if "conversations" in cols:
-        dataset = dataset.map(to_messages, remove_columns=cols)
-    else:
-        dataset = dataset.remove_columns([c for c in cols if c != "messages"])
+        dataset = dataset.map(to_prompt_completion, remove_columns=cols)
+    elif "messages" in cols:
+        # legacy role/content files: split the same way (last turn = completion)
+        dataset = dataset.map(
+            lambda ex: {"prompt": ex["messages"][:-1], "completion": [ex["messages"][-1]]},
+            remove_columns=cols,
+        )
 
     model, tokenizer = build_model_and_tokenizer(cfg)
 
