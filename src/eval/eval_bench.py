@@ -31,6 +31,8 @@ from dotenv import load_dotenv
 from openai import AsyncOpenAI
 from tqdm import tqdm
 
+from src.data.prompts import BASELINE_SYSTEM_PROMPT
+
 load_dotenv()
 
 ROLE_MAP = {"system": "system", "human": "user", "gpt": "assistant"}
@@ -104,6 +106,63 @@ def lf_to_messages(record: dict) -> tuple[list[dict], str]:
     gold = json.loads(convs[-1]["value"])["rewrite_message"]
     messages = [{"role": ROLE_MAP[c["from"]], "content": c["value"]} for c in convs[:-1]]
     return messages, gold
+
+
+# ---- Baseline (untrained) prompting: detailed system + few-shot --------------
+# The trained adapter is sent the record AS-IS (lf_to_messages). An untrained base
+# model instead gets BASELINE_SYSTEM_PROMPT plus few-shot demos drawn from the
+# frontier-generated train data, so the comparison reflects capability, not a
+# prompt handicap.
+
+def lf_to_baseline_query(record: dict) -> tuple[str, str]:
+    """Render an LF record as (query_text, gold_json_str) for baseline prompting.
+
+    query_text = the dialogue history + final <REWRITE> turn as labeled lines.
+    gold_json_str = the assistant's JSON answer (used as the few-shot target).
+    """
+    convs = [c for c in record["conversations"] if c["from"] != "system"]
+    answer = convs[-1]["value"]
+    lines = []
+    for c in convs[:-1]:
+        label = "Người dùng" if c["from"] == "human" else "Trợ lý"
+        lines.append(f"{label}: {c['value']}")
+    return "\n".join(lines), answer
+
+
+def _final_user_text(record: dict) -> str:
+    """Final human turn of an LF record, tag-stripped + normalized (for dedup)."""
+    for c in reversed(record["conversations"]):
+        if c["from"] == "human":
+            txt = c["value"]
+            if txt.startswith("<REWRITE>\n"):
+                txt = txt[len("<REWRITE>\n"):]
+            return normalize_text(txt)
+    return ""
+
+
+def load_fewshot(path: Path, n: int, bench_records: list[dict], seed: int = 13) -> list[dict]:
+    """Sample n few-shot LF records from `path`, excluding any whose final user turn
+    matches a bench sample (leakage guard). Deterministic given seed."""
+    if n <= 0:
+        return []
+    pool = [json.loads(l) for l in path.open(encoding="utf-8")]
+    bench_finals = {_final_user_text(r) for r in bench_records}
+    pool = [r for r in pool if _final_user_text(r) not in bench_finals]
+    rng = random.Random(seed)
+    rng.shuffle(pool)
+    return pool[:n]
+
+
+def build_baseline_messages(record: dict, fewshot: list[dict]) -> list[dict]:
+    """system (detailed) + few-shot (user query → assistant JSON) + the real query."""
+    messages = [{"role": "system", "content": BASELINE_SYSTEM_PROMPT}]
+    for fr in fewshot:
+        q, a = lf_to_baseline_query(fr)
+        messages.append({"role": "user", "content": q})
+        messages.append({"role": "assistant", "content": a})
+    q, _ = lf_to_baseline_query(record)
+    messages.append({"role": "user", "content": q})
+    return messages
 
 
 def format_old_user_msg(turns: list[dict]) -> str:
@@ -279,6 +338,22 @@ async def run(args):
         records = records[: args.limit]
     print(f"Loaded {len(records)} bench samples from {args.bench}")
 
+    baseline_set = set(args.baseline_models or [])
+    fewshot = []
+    if baseline_set:
+        sampled = load_fewshot(args.baseline_fewshot_file, args.baseline_fewshot_n, records)
+        hard = []
+        if args.baseline_fewshot_hard_file and args.baseline_fewshot_hard_file.exists():
+            # All curated hard cases (no sampling cap); placed AFTER the random ones so
+            # the trickiest patterns sit closest to the query (recency).
+            hard = load_fewshot(args.baseline_fewshot_hard_file, 10**9, records)
+        fewshot = sampled + hard
+        print(
+            f"Baseline models {sorted(baseline_set)} → detailed prompt + "
+            f"{len(sampled)} sampled ({args.baseline_fewshot_file}) + "
+            f"{len(hard)} hard ({args.baseline_fewshot_hard_file}) = {len(fewshot)} few-shot"
+        )
+
     vllm_client = AsyncOpenAI(base_url=args.vllm_url.rstrip("/") + "/v1", api_key="EMPTY")
     judge_client = AsyncOpenAI(api_key=api_key, base_url=args.judge_base_url)
     pred_sem = asyncio.Semaphore(args.vllm_concurrency)
@@ -289,11 +364,17 @@ async def run(args):
     all_results: dict[str, list[dict]] = {}
 
     for model in args.models:
-        print(f"\n=== Predicting with {model} ===")
+        is_baseline = model in baseline_set
+        tag = "  (baseline: detailed prompt + few-shot)" if is_baseline else ""
+        print(f"\n=== Predicting with {model} ==={tag}")
         tasks = []
         contexts = []
         for r in records:
-            messages, gold = lf_to_messages(r)          # NEW-format input (matches training)
+            _, gold = lf_to_messages(r)                  # gold is format-independent
+            if is_baseline:
+                messages = build_baseline_messages(r, fewshot)
+            else:
+                messages, _ = lf_to_messages(r)          # NEW-format input (matches training)
             turns, _ = lf_to_old_turns(r)               # readable turns for judge + metrics
             dialogue = format_old_user_msg(turns)
             contexts.append({"turns": turns, "dialogue": dialogue, "gold": gold, "meta": r["meta"]})
@@ -424,7 +505,7 @@ def print_report(model: str, rows: list[dict]) -> dict:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--bench", type=Path, default=Path("data/bench/dialogues_bench.jsonl"))
+    parser.add_argument("--bench", type=Path, default=Path("data/bench/dialogues_bench_browser.jsonl"))
     parser.add_argument("--vllm-url", required=True)
     parser.add_argument("--models", nargs="+", default=["vi-rewriter", "Qwen/Qwen2.5-1.5B-Instruct"])
     parser.add_argument("--judge-model", default="gpt-4o")
@@ -438,6 +519,31 @@ def main():
     parser.add_argument("--vllm-concurrency", type=int, default=8)
     parser.add_argument("--judge-concurrency", type=int, default=8)
     parser.add_argument("--limit", type=int, default=None, help="Chỉ chấm N mẫu đầu (smoke test).")
+    parser.add_argument(
+        "--baseline-models",
+        nargs="*",
+        default=[],
+        help="Các model (trong --models) là baseline CHƯA train → nhận prompt chi tiết "
+        "BASELINE_SYSTEM_PROMPT + few-shot, thay vì prompt train ngắn. "
+        "VD: --baseline-models Qwen/Qwen2.5-1.5B-Instruct",
+    )
+    parser.add_argument(
+        "--baseline-fewshot-file",
+        type=Path,
+        default=Path("data/processed/train.jsonl"),
+        help="File LF (frontier-gen) để lấy few-shot cho baseline.",
+    )
+    parser.add_argument(
+        "--baseline-fewshot-n", type=int, default=20, help="Số ví dụ few-shot cho baseline."
+    )
+    parser.add_argument(
+        "--baseline-fewshot-hard-file",
+        type=Path,
+        default=Path("data/seed/fewshot_hard.jsonl"),
+        help="File LF chứa few-shot tuyển chọn cho case khó/hay sai (negation, "
+        "tham chiếu ngầm, slot bắc cầu, chống hallucinate…). Luôn nạp TOÀN BỘ, "
+        "đặt sau các ví dụ random.",
+    )
     args = parser.parse_args()
     asyncio.run(run(args))
 
