@@ -37,21 +37,53 @@ load_dotenv()
 
 ROLE_MAP = {"system": "system", "human": "user", "gpt": "assistant"}
 
-JUDGE_SYSTEM = """Bạn là giám khảo đánh giá câu rewrite tiếng Việt cho task hội thoại trợ lý xe.
+JUDGE_SYSTEM = """Bạn là giám khảo NGHIÊM KHẮC nhưng CÔNG BẰNG, đánh giá câu rewrite tiếng Việt cho trợ lý ảo trong xe (điều hoà, nhạc, gọi điện, nhắn tin, dẫn đường, sạc xe, nhà thông minh, điều khiển xe, hỗ trợ lái).
 
-Bạn nhận: dialogue (lịch sử hội thoại), gold (câu rewrite chuẩn), prediction (câu model dự đoán).
-Prediction có thể khác gold về cách diễn đạt, opener, dấu câu — điều đó KHÔNG sao. Chỉ đánh giá Ý NGHĨA.
+ĐẦU VÀO:
+- dialogue: lịch sử hội thoại nhiều lượt. Đây là NGUỒN SỰ THẬT để biết thông tin nào được phép đưa vào câu lệnh.
+- gold: câu rewrite chuẩn (mốc tham chiếu cho intent + các slot BẮT BUỘC).
+- prediction: câu model dự đoán, cần chấm.
 
-Chấm 4 cờ, mỗi cờ 0 hoặc 1:
-- "intent_ok": cùng hành động với gold (bật/tắt/đổi/hủy/thêm/gọi/gửi/dẫn đường…). 1 nếu đúng intent.
-- "slots_complete": KHÔNG bỏ sót slot quan trọng có trong gold (tên người, địa điểm, số, nhiệt độ, bài hát, hãng, chế độ, kênh, tần số…). 1 nếu đủ.
-- "no_hallucination": KHÔNG thêm slot/thông tin sai hoặc không được xác nhận (vd kéo nhầm số bot mention, tự thêm ràng buộc). 1 nếu sạch.
-- "negation_ok": giữ đúng phủ định/khẳng định của gold (đừng đảo "không bật" thành "bật"). 1 nếu đúng; nếu gold không có phủ định thì để 1.
+NGUYÊN TẮC CỐT LÕI:
+1. Chỉ chấm Ý NGHĨA và tính THỰC THI ĐƯỢC của câu lệnh, KHÔNG chấm câu chữ. Khác cách diễn đạt, từ đồng nghĩa, thứ tự từ, dấu câu, opener/đuôi lịch sự ("giúp tôi", "nhé", "ạ", "ơi") — đều KHÔNG tính lỗi.
+2. gold định nghĩa intent + slot bắt buộc. dialogue quyết định một chi tiết là "khôi phục hợp lệ" hay "bịa".
+3. Khi phân vân giữa hai cờ, hãy gán lỗi vào cờ ĐÚNG BẢN CHẤT nhất (xem mô tả dưới), nhưng cùng một lỗi không nhân đôi sang cờ không liên quan.
 
-"score" = 1 chỉ khi CẢ 4 cờ đều = 1; ngược lại 0.
+CHẤM 4 CỜ, mỗi cờ 0 hoặc 1:
 
-Trả về DUY NHẤT JSON:
-{"intent_ok":0|1,"slots_complete":0|1,"no_hallucination":0|1,"negation_ok":0|1,"score":0|1,"reason":"1 câu ngắn"}"""
+• "intent_ok" — câu lệnh có cùng (các) HÀNH ĐỘNG với gold không?
+  = 1 nếu khớp hành động: bật/tắt, tăng/giảm, đổi/đặt, hủy, thêm/bớt, gọi, gửi, phát, dẫn đường, đặt chỗ, khóa/mở…
+  Từ đồng nghĩa giữ nguyên intent ("dẫn đường tới" ≈ "chỉ đường đến", "hạ" ≈ "giảm", "ngẫu nhiên" ≈ "shuffle").
+  = 0 nếu sai/đảo hành động (bật↔tắt, tăng↔giảm, gọi↔nhắn), hoặc COMPOUND mà BỎ HẲN một hành động (gold "gửi tin RỒI gọi" mà pred chỉ "gửi tin" → 0).
+
+• "slots_complete" — pred có giữ ĐỦ slot bắt buộc của gold không? (tên người, địa điểm/địa chỉ, con số, nhiệt độ, đơn vị, tên bài/playlist, hãng/đài/kênh/tần số, chế độ, ràng buộc tuyến đường, NỘI DUNG tin nhắn…)
+  = 1 nếu đủ các slot then chốt.
+  = 0 nếu THIẾU slot làm câu lệnh mơ hồ hoặc lệch (vd bỏ địa điểm "ở nhà tôi" khi đó là slot phân định, bỏ ràng buộc "offline từ bộ nhớ xe", bỏ một vế của compound, bỏ tên người nhận).
+  Quy ước cho ca khó:
+  - CORRECTION ("từ X xuống Y"): giá trị MỚI (Y) là slot BẮT BUỘC; giá trị CŨ (X) chỉ là ngữ cảnh — thiếu X KHÔNG trừ slot nếu hành động + giá trị mới đã rõ.
+  - NỘI DUNG TIN NHẮN: phần text gửi đi phải giữ ĐÚNG nghĩa. Đổi ngôi/thêm chủ ngữ làm sai nội dung (gold gửi "Họp dời sang 3h" → pred "Anh ấy họp dời sang 3h") = sai slot.
+  - Dịch thuật/code-switch hợp lý KHÔNG trừ; nhưng TÊN RIÊNG, tên playlist, brand phải giữ.
+
+• "no_hallucination" — pred có thêm slot/ràng buộc/thông tin KHÔNG có hoặc CHƯA được xác nhận trong dialogue/gold không?
+  = 1 nếu sạch (mọi chi tiết đều truy ngược được về dialogue hoặc gold).
+  = 0 nếu bịa: kéo nhầm con số trợ lý chỉ vô tình nhắc, tự thêm ràng buộc tuyến/thời gian, đổi địa chỉ, chế shuffle/đài/giá trị không ai nói, hoặc lấy nhiễu (irrelevant_context) vào câu lệnh.
+  Lưu ý: diễn giải lại cho rõ ("chỉnh TỐC ĐỘ auto pilot" khi gold "chỉnh auto pilot ...km/h") KHÔNG phải bịa.
+
+• "negation_ok" — pred giữ ĐÚNG phủ định/khẳng định của gold?
+  = 1 nếu khớp; nếu gold không có phủ định thì để 1.
+  = 0 nếu đảo nghĩa ("đừng bật"→"bật", "không đi qua X"→bỏ/đảo), hoặc BỎ HẲN một vế phủ định của gold ("...nhưng KHÔNG bật auto pilot" bị lược → 0). Khi vế phủ định bị rớt, thường trừ CẢ slots_complete lẫn negation_ok.
+
+ĐƯỢC PHÉP (KHÔNG trừ điểm): từ đồng nghĩa; đảo trật tự; chuẩn hoá đơn vị/số ("100km/h"="100 km/h", "24 độ C"="24°C"); opener & đuôi lịch sự; câu pred dùng đại từ trỏ tới thực thể MÀ CHÍNH pred đã nêu rõ trước đó ("...cho Thu Hà rồi gọi cho CÔ ẤY" — "cô ấy"=Thu Hà, hợp lệ); rút gọn tự nhiên không mất slot.
+
+TRƯỜNG HỢP ĐẶC BIỆT:
+- pred rỗng, vô nghĩa, lặp lại câu hỏi của user thay vì viết lệnh, hoặc chỉ copy nguyên si câu cuối mà KHÔNG giải quyết tham chiếu → các cờ liên quan = 0.
+- pred đúng intent nhưng chỉ làm MỘT phần của compound → intent_ok=0 (thiếu hành động) và/hoặc slots_complete=0.
+- Nếu prediction trống/không đọc được, đặt tất cả cờ = 0.
+
+"score" = 1 CHỈ KHI cả 4 cờ đều = 1; ngược lại = 0.
+
+Trả về DUY NHẤT một JSON hợp lệ, không markdown, không giải thích thừa:
+{"intent_ok":0|1,"slots_complete":0|1,"no_hallucination":0|1,"negation_ok":0|1,"score":0|1,"reason":"1 câu ngắn nêu lỗi chính hoặc 'đạt'"}"""
 
 JUDGE_FLAGS = ("intent_ok", "slots_complete", "no_hallucination", "negation_ok")
 
@@ -68,6 +100,20 @@ def _normalize_judge(d: dict) -> dict:
 
 def _judge_error(msg: str) -> dict:
     return {k: 0 for k in JUDGE_FLAGS} | {"score": 0, "reason": msg}
+
+
+def _extract_json(text: str) -> dict:
+    """Parse a judge reply into a dict, tolerating markdown fences / prose around the
+    JSON. Claude's OpenAI-compat layer ignores response_format, so the model may wrap
+    the object even when told not to; grab the first {...} block as a fallback."""
+    text = text.strip()
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        m = re.search(r"\{.*\}", text, re.DOTALL)
+        if not m:
+            raise
+        return json.loads(m.group(0))
 
 
 def lf_to_old_turns(record: dict) -> tuple[list[dict], str]:
@@ -290,6 +336,24 @@ async def judge(
         f"prediction:\n{pred}\n\n"
         f"Đánh giá theo schema."
     )
+    # Reasoning judges burn the output budget on thinking and truncate the rubric JSON.
+    # Gemini 2.5 can switch reasoning fully off; gpt-oss only goes as low as "low" and
+    # still needs extra room or the JSON comes back unterminated.
+    # Claude (via Anthropic's OpenAI-compat layer): thinking is off by default and the
+    # layer does NOT accept response_format=json_object, so we drop it and rely on the
+    # prompt + _extract_json. Give it a bit more room for the JSON.
+    model_l = model.lower()
+    is_claude = "claude" in model_l or "haiku" in model_l or "sonnet" in model_l or "opus" in model_l
+    if "gemini" in model_l:
+        extra, max_toks, use_json_format = {"reasoning_effort": "none"}, 256, True
+    elif "gpt-oss" in model_l:
+        extra, max_toks, use_json_format = {"reasoning_effort": "low"}, 512, True
+    elif is_claude:
+        extra, max_toks, use_json_format = {}, 512, False
+    else:
+        extra, max_toks, use_json_format = {}, 256, True
+    if use_json_format:
+        extra = {**extra, "response_format": {"type": "json_object"}}
     async with sem:
         for attempt in range(max_retries):
             try:
@@ -299,11 +363,11 @@ async def judge(
                         {"role": "system", "content": JUDGE_SYSTEM},
                         {"role": "user", "content": user},
                     ],
-                    response_format={"type": "json_object"},
                     temperature=0.0,
-                    max_tokens=200,
+                    max_tokens=max_toks,
+                    **extra,
                 )
-                return _normalize_judge(json.loads(resp.choices[0].message.content))
+                return _normalize_judge(_extract_json(resp.choices[0].message.content))
             except Exception as e:
                 if attempt == max_retries - 1:
                     return _judge_error(f"__JUDGE_ERROR__ {e}")
@@ -330,8 +394,8 @@ async def run(args):
     # Judge can run on any OpenAI-compatible endpoint (OpenAI, MiMo, …).
     # JUDGE_API_KEY takes priority; fall back to OPENAI_API_KEY for the default OpenAI judge.
     api_key = os.environ.get("JUDGE_API_KEY") or os.environ.get("OPENAI_API_KEY")
-    if not api_key:
-        raise SystemExit("Set JUDGE_API_KEY (or OPENAI_API_KEY) for the judge")
+    if not api_key and not args.no_judge:
+        raise SystemExit("Set JUDGE_API_KEY (or OPENAI_API_KEY) for the judge (or pass --no-judge)")
 
     records = [json.loads(l) for l in args.bench.open(encoding="utf-8")]
     if args.limit:
@@ -354,8 +418,13 @@ async def run(args):
             f"{len(hard)} hard ({args.baseline_fewshot_hard_file}) = {len(fewshot)} few-shot"
         )
 
-    vllm_client = AsyncOpenAI(base_url=args.vllm_url.rstrip("/") + "/v1", api_key="EMPTY")
-    judge_client = AsyncOpenAI(api_key=api_key, base_url=args.judge_base_url)
+    # Predict and judge are independent stages: a judge-only --resume pass needs no
+    # vLLM, and a --no-judge predict pass needs no judge key. Build each client only
+    # when its stage will actually run.
+    vllm_client = (AsyncOpenAI(base_url=args.vllm_url.rstrip("/") + "/v1", api_key="EMPTY")
+                   if args.vllm_url else None)
+    judge_client = (None if args.no_judge
+                    else AsyncOpenAI(api_key=api_key, base_url=args.judge_base_url))
     pred_sem = asyncio.Semaphore(args.vllm_concurrency)
     judge_sem = asyncio.Semaphore(args.judge_concurrency)
 
@@ -366,8 +435,11 @@ async def run(args):
     for model in args.models:
         is_baseline = model in baseline_set
         tag = "  (baseline: detailed prompt + few-shot)" if is_baseline else ""
-        print(f"\n=== Predicting with {model} ==={tag}")
-        tasks = []
+        slug = model.replace("/", "_")
+        out_path = args.output_dir / f"preds_{slug}.jsonl"
+
+        # Build a context (incl. the model input messages) for every record — needed
+        # for (re)prediction, judging and metrics regardless of resume.
         contexts = []
         for r in records:
             _, gold = lf_to_messages(r)                  # gold is format-independent
@@ -376,31 +448,103 @@ async def run(args):
             else:
                 messages, _ = lf_to_messages(r)          # NEW-format input (matches training)
             turns, _ = lf_to_old_turns(r)               # readable turns for judge + metrics
-            dialogue = format_old_user_msg(turns)
-            contexts.append({"turns": turns, "dialogue": dialogue, "gold": gold, "meta": r["meta"]})
-            tasks.append(predict(vllm_client, model, messages, pred_sem))
+            contexts.append({
+                "messages": messages,
+                "turns": turns,
+                "dialogue": format_old_user_msg(turns),
+                "gold": gold,
+                "meta": r["meta"],
+            })
 
-        preds = await _gather_with_progress(tasks, desc=f"predict {model}")
+        # --resume: reuse a prior preds file (aligned by line index — rows are written
+        # in record order), redoing ONLY failed predictions and failed/missing judgings.
+        # A free-tier quota wall no longer wastes the work that already succeeded.
+        prev = None
+        if args.resume and out_path.exists():
+            prev = [json.loads(l) for l in out_path.open(encoding="utf-8")]
+            if len(prev) != len(contexts):
+                raise SystemExit(
+                    f"--resume: {out_path} has {len(prev)} rows but the bench (with the "
+                    f"current --bench/--limit) has {len(contexts)}. Use the same --bench/--limit."
+                )
 
-        print(f"  Judging {len(preds)} predictions with {args.judge_model}…")
-        judge_tasks = [
-            judge(judge_client, args.judge_model, ctx["dialogue"], ctx["gold"], pred, judge_sem)
-            for ctx, pred in zip(contexts, preds)
-        ]
-        scores = await _gather_with_progress(judge_tasks, desc=f"judge {model}")
+        # Which indices need a fresh prediction (errored or empty)?
+        pred_redo = (set(range(len(contexts))) if prev is None
+                     else {i for i, row in enumerate(prev) if _pred_failed(row)})
 
-        # Build rows: deterministic (Tier-0) + judge (Tier-1) metrics per sample.
-        rows = []
-        for ctx, pred, sc in zip(contexts, preds, scores):
-            det = deterministic_metrics(pred, ctx["gold"], last_user_utterance(ctx["turns"]))
-            rows.append({"meta": ctx["meta"], "gold": ctx["gold"], "pred": pred, **det, **sc})
+        print(f"\n=== Predicting with {model} ==={tag}")
+        if prev is not None:
+            print(f"  resume: redo {len(pred_redo)}/{len(contexts)} predictions "
+                  f"(reuse {len(contexts) - len(pred_redo)})")
 
-        # Persist raw
-        slug = model.replace("/", "_")
-        out_path = args.output_dir / f"preds_{slug}.jsonl"
-        with out_path.open("w", encoding="utf-8") as f:
-            for row in rows:
-                f.write(json.dumps(row, ensure_ascii=False) + "\n")
+        pidx = sorted(pred_redo)
+        if pidx and vllm_client is None:
+            raise SystemExit(
+                f"{len(pidx)} predictions needed for {model} but --vllm-url is not set. "
+                f"Provide it, or --resume a preds file that already has valid predictions."
+            )
+        fresh = await _gather_with_progress(
+            [predict(vllm_client, model, contexts[i]["messages"], pred_sem) for i in pidx],
+            desc=f"predict {model}",
+        ) if pidx else []
+        preds = [None] * len(contexts)
+        for i, p in zip(pidx, fresh):
+            preds[i] = p
+        if prev is not None:
+            for i in range(len(contexts)):
+                if preds[i] is None:
+                    preds[i] = prev[i]["pred"]
+
+        # Judge a row when its prediction is fresh OR its prior judging failed/was missing.
+        judge_redo = (set(range(len(contexts))) if prev is None
+                      else pred_redo | {i for i, row in enumerate(prev) if _is_judge_error(row)})
+
+        # --no-judge: capture predictions only (e.g. while vLLM is up) and defer judging.
+        # Rows that would be judged get a pending placeholder so a later --resume run —
+        # with the frozen judge of your choice — fills them in without redoing predictions.
+        jidx = sorted(judge_redo)
+
+        # Seed every row's score: reuse prior judge flags where we have them, else a
+        # pending placeholder. Rows in jidx are overwritten as judging completes.
+        scores = [None] * len(contexts)
+        if prev is not None:
+            for i in range(len(contexts)):
+                scores[i] = {k: prev[i].get(k) for k in (*JUDGE_FLAGS, "score", "reason")}
+        pending_reason = "__JUDGE_ERROR__ pending (--no-judge)" if args.no_judge else "__JUDGE_ERROR__ pending"
+        for i in jidx:
+            scores[i] = _judge_error(pending_reason)
+
+        def write_rows() -> list[dict]:
+            # Deterministic (Tier-0) recomputed from pred + judge (Tier-1) metrics.
+            rows = []
+            for ctx, pred, sc in zip(contexts, preds, scores):
+                det = deterministic_metrics(pred, ctx["gold"], last_user_utterance(ctx["turns"]))
+                rows.append({"meta": ctx["meta"], "gold": ctx["gold"], "pred": pred, **det, **sc})
+            with out_path.open("w", encoding="utf-8") as f:
+                for row in rows:
+                    f.write(json.dumps(row, ensure_ascii=False) + "\n")
+            return rows
+
+        if args.no_judge:
+            print(f"  --no-judge: skip judging, mark {len(jidx)} rows pending")
+        elif jidx:
+            print(f"  Judging {len(judge_redo)} predictions with {args.judge_model}…")
+            # Checkpoint by chunk: flush after each chunk so a quota wall / disconnect
+            # mid-run never discards judgments already paid for. A later --resume then
+            # only redoes the rows still pending/errored.
+            CHUNK = 50
+            for start in range(0, len(jidx), CHUNK):
+                chunk = jidx[start:start + CHUNK]
+                chunk_scores = await _gather_with_progress(
+                    [judge(judge_client, args.judge_model, contexts[i]["dialogue"],
+                           contexts[i]["gold"], preds[i], judge_sem) for i in chunk],
+                    desc=f"judge {model} [{start + len(chunk)}/{len(jidx)}]",
+                )
+                for i, sc in zip(chunk, chunk_scores):
+                    scores[i] = sc
+                write_rows()  # checkpoint
+
+        rows = write_rows()
         print(f"  Saved {out_path}")
 
         all_results[model] = rows
@@ -425,6 +569,12 @@ def _mean(xs: list) -> float:
 
 def _is_judge_error(row: dict) -> bool:
     return str(row.get("reason", "")).startswith("__JUDGE_ERROR__")
+
+
+def _pred_failed(row: dict) -> bool:
+    """A stored prediction that needs redoing on --resume (model/transport error or empty)."""
+    p = str(row.get("pred", ""))
+    return (not p.strip()) or p.startswith("__ERROR__")
 
 
 def aggregate(rows: list[dict]) -> dict:
@@ -506,7 +656,12 @@ def print_report(model: str, rows: list[dict]) -> dict:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bench", type=Path, default=Path("data/bench/dialogues_bench_browser.jsonl"))
-    parser.add_argument("--vllm-url", required=True)
+    parser.add_argument(
+        "--vllm-url",
+        default=None,
+        help="vLLM base URL. Bắt buộc khi cần predict; có thể bỏ ở bước judge-only "
+        "(--resume một preds file đã có prediction hợp lệ).",
+    )
     parser.add_argument("--models", nargs="+", default=["vi-rewriter", "Qwen/Qwen2.5-1.5B-Instruct"])
     parser.add_argument("--judge-model", default="gpt-4o")
     parser.add_argument(
@@ -519,6 +674,20 @@ def main():
     parser.add_argument("--vllm-concurrency", type=int, default=8)
     parser.add_argument("--judge-concurrency", type=int, default=8)
     parser.add_argument("--limit", type=int, default=None, help="Chỉ chấm N mẫu đầu (smoke test).")
+    parser.add_argument(
+        "--no-judge",
+        action="store_true",
+        help="Chỉ predict (khi vLLM còn sống), KHÔNG judge — lưu placeholder "
+        "'__JUDGE_ERROR__ pending'. Sau đó chạy lại với --resume + judge bạn chọn "
+        "để chấm mà không phải predict lại.",
+    )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Nếu đã có preds_<model>.jsonl trong --output-dir: chỉ predict lại dòng "
+        "__ERROR__ và judge lại dòng __JUDGE_ERROR__ (giữ nguyên cái đã thành công). "
+        "Phải dùng đúng --bench/--limit như lần chạy trước (khớp theo thứ tự dòng).",
+    )
     parser.add_argument(
         "--baseline-models",
         nargs="*",
