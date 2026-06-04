@@ -1,0 +1,23 @@
+{
+  "Qwen/Qwen2.5-1.5B-Instruct": {
+    "overall": {
+      "n": 500,
+      "judge_error_rate": 1.0,
+      "output_validity": 1.0,
+      "copy_rate": 0.028,
+      "degenerate_rate": 0.022,
+      "command_acc": NaN,
+      "intent_acc": NaN,
+      "slot_completeness": NaN,
+      "halluc_rate": NaN,
+      "negation_preservation": NaN,
+      "restoration_f1": 0.40830218961799014,
+      "restoration_f2": 0.4054933017022506
+    },
+    "slices": {
+      "context_required": {},
+      "pattern": {},
+      "domain": {}
+    }
+  }
+}

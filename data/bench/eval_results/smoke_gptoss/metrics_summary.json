@@ -1,0 +1,230 @@
+{
+  "vi-rewriter": {
+    "overall": {
+      "n": 10,
+      "judge_error_rate": 0.0,
+      "output_validity": 1.0,
+      "copy_rate": 0.0,
+      "degenerate_rate": 0.0,
+      "command_acc": 0.8,
+      "intent_acc": 1.0,
+      "slot_completeness": 0.8,
+      "halluc_rate": 0.0,
+      "negation_preservation": 1.0,
+      "restoration_f1": 0.6181112637362638,
+      "restoration_f2": 0.6047949890163005
+    },
+    "slices": {
+      "context_required": {
+        "True": {
+          "n": 7,
+          "command_acc": 0.8571428571428571,
+          "halluc_rate": 0.0
+        },
+        "False": {
+          "n": 3,
+          "command_acc": 0.6666666666666666,
+          "halluc_rate": 0.0
+        }
+      },
+      "pattern": {
+        "pronoun_resolution": {
+          "n": 2,
+          "command_acc": 0.5,
+          "halluc_rate": 0.0
+        },
+        "irrelevant_context": {
+          "n": 2,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "multi_turn_slot": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "correction": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "code_switching": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "implicit_reference": {
+          "n": 1,
+          "command_acc": 0.0,
+          "halluc_rate": 0.0
+        },
+        "negation": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "compound_intent": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        }
+      },
+      "domain": {
+        "navigation": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "vehicle": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "charging": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "climate": {
+          "n": 2,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "music": {
+          "n": 2,
+          "command_acc": 0.5,
+          "halluc_rate": 0.0
+        },
+        "smart_home": {
+          "n": 1,
+          "command_acc": 0.0,
+          "halluc_rate": 0.0
+        },
+        "driver_assist": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "messaging": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        }
+      }
+    }
+  },
+  "Qwen/Qwen2.5-1.5B-Instruct": {
+    "overall": {
+      "n": 10,
+      "judge_error_rate": 0.0,
+      "output_validity": 1.0,
+      "copy_rate": 0.0,
+      "degenerate_rate": 0.1,
+      "command_acc": 0.5,
+      "intent_acc": 0.8,
+      "slot_completeness": 0.6,
+      "halluc_rate": 0.2,
+      "negation_preservation": 1.0,
+      "restoration_f1": 0.4759170653907496,
+      "restoration_f2": 0.4735787360787361
+    },
+    "slices": {
+      "context_required": {
+        "True": {
+          "n": 7,
+          "command_acc": 0.5714285714285714,
+          "halluc_rate": 0.0
+        },
+        "False": {
+          "n": 3,
+          "command_acc": 0.3333333333333333,
+          "halluc_rate": 0.6666666666666666
+        }
+      },
+      "pattern": {
+        "pronoun_resolution": {
+          "n": 2,
+          "command_acc": 0.5,
+          "halluc_rate": 0.0
+        },
+        "irrelevant_context": {
+          "n": 2,
+          "command_acc": 0.5,
+          "halluc_rate": 0.5
+        },
+        "multi_turn_slot": {
+          "n": 1,
+          "command_acc": 0.0,
+          "halluc_rate": 0.0
+        },
+        "correction": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "code_switching": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "implicit_reference": {
+          "n": 1,
+          "command_acc": 0.0,
+          "halluc_rate": 1.0
+        },
+        "negation": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "compound_intent": {
+          "n": 1,
+          "command_acc": 0.0,
+          "halluc_rate": 0.0
+        }
+      },
+      "domain": {
+        "navigation": {
+          "n": 1,
+          "command_acc": 0.0,
+          "halluc_rate": 0.0
+        },
+        "vehicle": {
+          "n": 1,
+          "command_acc": 0.0,
+          "halluc_rate": 1.0
+        },
+        "charging": {
+          "n": 1,
+          "command_acc": 0.0,
+          "halluc_rate": 0.0
+        },
+        "climate": {
+          "n": 2,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "music": {
+          "n": 2,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "smart_home": {
+          "n": 1,
+          "command_acc": 0.0,
+          "halluc_rate": 1.0
+        },
+        "driver_assist": {
+          "n": 1,
+          "command_acc": 1.0,
+          "halluc_rate": 0.0
+        },
+        "messaging": {
+          "n": 1,
+          "command_acc": 0.0,
+          "halluc_rate": 0.0
+        }
+      }
+    }
+  }
+}

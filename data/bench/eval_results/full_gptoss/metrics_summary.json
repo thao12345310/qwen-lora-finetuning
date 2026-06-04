@@ -1,0 +1,121 @@
+{
+  "Qwen/Qwen2.5-1.5B-Instruct": {
+    "overall": {
+      "n": 1044,
+      "judge_error_rate": 0.0,
+      "output_validity": 1.0,
+      "copy_rate": 0.06896551724137931,
+      "degenerate_rate": 0.02681992337164751,
+      "command_acc": 0.5277777777777778,
+      "intent_acc": 0.8103448275862069,
+      "slot_completeness": 0.5871647509578544,
+      "halluc_rate": 0.11781609195402298,
+      "negation_preservation": 0.8487394957983193,
+      "restoration_f1": 0.40437073260828454,
+      "restoration_f2": 0.4039315503186294
+    },
+    "slices": {
+      "context_required": {
+        "True": {
+          "n": 718,
+          "command_acc": 0.43036211699164345,
+          "halluc_rate": 0.11559888579387187
+        },
+        "False": {
+          "n": 326,
+          "command_acc": 0.7423312883435583,
+          "halluc_rate": 0.12269938650306748
+        }
+      },
+      "pattern": {
+        "pronoun_resolution": {
+          "n": 137,
+          "command_acc": 0.40875912408759124,
+          "halluc_rate": 0.18248175182481752
+        },
+        "irrelevant_context": {
+          "n": 108,
+          "command_acc": 0.7685185185185185,
+          "halluc_rate": 0.12962962962962962
+        },
+        "multi_turn_slot": {
+          "n": 163,
+          "command_acc": 0.25153374233128833,
+          "halluc_rate": 0.09815950920245399
+        },
+        "correction": {
+          "n": 135,
+          "command_acc": 0.5703703703703704,
+          "halluc_rate": 0.07407407407407407
+        },
+        "code_switching": {
+          "n": 131,
+          "command_acc": 0.6030534351145038,
+          "halluc_rate": 0.09923664122137404
+        },
+        "implicit_reference": {
+          "n": 126,
+          "command_acc": 0.4365079365079365,
+          "halluc_rate": 0.20634920634920634
+        },
+        "negation": {
+          "n": 119,
+          "command_acc": 0.6386554621848739,
+          "halluc_rate": 0.11764705882352941
+        },
+        "compound_intent": {
+          "n": 125,
+          "command_acc": 0.672,
+          "halluc_rate": 0.04
+        }
+      },
+      "domain": {
+        "navigation": {
+          "n": 145,
+          "command_acc": 0.38620689655172413,
+          "halluc_rate": 0.1724137931034483
+        },
+        "vehicle": {
+          "n": 126,
+          "command_acc": 0.6825396825396826,
+          "halluc_rate": 0.09523809523809523
+        },
+        "charging": {
+          "n": 113,
+          "command_acc": 0.45132743362831856,
+          "halluc_rate": 0.11504424778761062
+        },
+        "climate": {
+          "n": 100,
+          "command_acc": 0.77,
+          "halluc_rate": 0.08
+        },
+        "music": {
+          "n": 125,
+          "command_acc": 0.544,
+          "halluc_rate": 0.112
+        },
+        "smart_home": {
+          "n": 125,
+          "command_acc": 0.488,
+          "halluc_rate": 0.136
+        },
+        "driver_assist": {
+          "n": 103,
+          "command_acc": 0.6407766990291263,
+          "halluc_rate": 0.06796116504854369
+        },
+        "messaging": {
+          "n": 112,
+          "command_acc": 0.39285714285714285,
+          "halluc_rate": 0.13392857142857142
+        },
+        "calling": {
+          "n": 95,
+          "command_acc": 0.4421052631578947,
+          "halluc_rate": 0.12631578947368421
+        }
+      }
+    }
+  }
+}

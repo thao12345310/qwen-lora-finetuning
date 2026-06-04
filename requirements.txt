@@ -13,6 +13,9 @@ fastapi>=0.110.0
 uvicorn[standard]>=0.27.0
 pydantic>=2.6.0
 
+# Demo UI (demo/app.py — test model đã train qua vLLM endpoint)
+gradio>=4.0.0
+
 # Utilities
 PyYAML>=6.0
 tqdm>=4.66.0
