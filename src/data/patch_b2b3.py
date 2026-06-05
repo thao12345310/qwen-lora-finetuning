@@ -275,6 +275,10 @@ def main():
     ap.add_argument("--per", type=int, default=200, help="samples per generator")
     ap.add_argument("--seed", type=int, default=13)
     ap.add_argument("--merge", action="store_true", help="also write train_v2 = train + patch")
+    ap.add_argument("--inplace", action="store_true",
+                    help="append patch into data/processed/train.jsonl (for the Kaggle "
+                         "pipeline: run AFTER split_data.py; idempotent since split "
+                         "regenerates train.jsonl each run)")
     args = ap.parse_args()
     random.seed(args.seed)
 
@@ -313,6 +317,14 @@ def main():
         TRAIN_V2.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in merged) + "\n",
                             encoding="utf-8")
         print(f"merged: {len(base)} + {len(rows)} = {len(merged)} → {TRAIN_V2}")
+
+    if args.inplace:
+        base = [json.loads(l) for l in TRAIN.open(encoding="utf-8")]
+        merged = base + rows
+        random.shuffle(merged)
+        TRAIN.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in merged) + "\n",
+                         encoding="utf-8")
+        print(f"inplace: {len(base)} + {len(rows)} = {len(merged)} → {TRAIN} (overwritten)")
 
 
 if __name__ == "__main__":
