@@ -1,0 +1,815 @@
+# multi_turn_slot — 77 ca LoRA sai (score=0)
+
+[1] idx=10 domain=navigation  cờ sai: slots_complete,negation_ok
+   U: Tôi muốn đi ăn bún bò
+   A: Khu vực nào bạn muốn tìm ạ?
+   U: Gần Hồ Tây, tránh đường Võ Chí Công
+   A: Có 3 quán bún bò gần Hồ Tây. Quán gần nhất là Bún Bò Huế Bà Tuyết ở Xuân Diệu, cách 1.2km.
+   U: Được, chỉ đường đến đó đi
+   GOLD: Chỉ đường đến quán Bún Bò Huế Bà Tuyết ở Xuân Diệu, gần Hồ Tây, tránh đường Võ Chí Công.
+   PRED: Chỉ đường đến Bún Bò Huế Bà Tuyết ở Xuân Diệu.
+   JUDGE: thiếu thông tin 'gần Hồ Tây' và 'tránh đường Võ Chí Công', mất slot và phủ định
+
+[2] idx=16 domain=charging  cờ sai: slots_complete
+   U: Pin xe còn 18%, tìm trạm sạc gần đây đi
+   A: Có trạm sạc VinFast tại Vincom Phạm Ngọc Thạch cách 3.1km và trạm EVgo tại AEON Mall Hà Đông cách 7.8km.
+   U: Trạm nào hỗ trợ sạc nhanh DC?
+   A: Trạm VinFast tại Vincom Phạm Ngọc Thạch có cổng sạc nhanh DC 150kW.
+   U: Chỉ đường đến đó luôn đi, nhanh lên
+   GOLD: Chỉ đường đến trạm sạc nhanh DC VinFast tại Vincom Phạm Ngọc Thạch.
+   PRED: Chỉ đường đến trạm sạc VinFast tại Vincom Phạm Ngọc Thạch.
+   JUDGE: thiếu slot loại sạc nhanh DC
+
+[3] idx=26 domain=messaging  cờ sai: slots_complete
+   U: Soạn tin nhắn cho Tuấn Kiệt
+   A: Nội dung tin nhắn là gì ạ?
+   U: Bảo anh ấy họp dời sang 3 giờ chiều
+   A: Tin nhắn: 'Tuấn Kiệt ơi, họp dời sang 3 giờ chiều nhé'. Gửi chưa?
+   U: Thêm vào 'tại phòng họp B' rồi gửi đi
+   GOLD: Gửi tin nhắn cho Tuấn Kiệt: 'Họp dời sang 3 giờ chiều, tại phòng họp B nhé'.
+   PRED: Gửi tin nhắn cho Tuấn Kiệt với nội dung: 'Anh ấy họp dời sang 3 giờ chiều tại phòng họp B'.
+   JUDGE: Nội dung tin nhắn không đúng (sử dụng 'Anh ấy' thay vì đưa thông tin họp, thiếu chính xác slot nội dung)
+
+[4] idx=57 domain=vehicle  cờ sai: slots_complete
+   U: Cài nhắc bảo dưỡng cho chiếc VinFast VF 8 của tôi.
+   A: Bạn muốn nhắc về hạng mục nào?
+   U: Đảo lốp và kiểm tra phanh.
+   A: Bạn muốn được nhắc vào thời điểm nào?
+   U: Ngày 15 tháng 6 lúc 8 giờ sáng.
+   A: Bạn có muốn thêm địa điểm dịch vụ không?
+   U: Ghi thêm VinFast Times City.
+   GOLD: Đặt nhắc bảo dưỡng VinFast VF 8 vào 8 giờ sáng ngày 15 tháng 6 tại VinFast Times City để đảo lốp và kiểm tra phanh.
+   PRED: Cài nhắc bảo dưỡng cho VinFast VF 8 vào ngày 15 tháng 6 lúc 8 giờ sáng tại VinFast Times City.
+   JUDGE: thiếu các công việc bảo dưỡng (đảo lốp, kiểm tra phanh)
+
+[5] idx=61 domain=smart_home  cờ sai: slots_complete,no_hallucination
+   U: Tôi sắp về, bật điện phòng ngủ lên
+   A: Đã bật đèn phòng ngủ.
+   U: Đặt máy lọc không khí Xiaomi chạy mức turbo
+   A: Đã bật máy lọc không khí Xiaomi chế độ turbo trong phòng ngủ.
+   U: Và kéo rèm cửa sổ xuống hết luôn nhé
+   GOLD: Kéo rèm cửa sổ phòng ngủ xuống hoàn toàn.
+   PRED: Giữ nguyên trạng thái đã bật máy lọc không khí và kéo rèm cửa sổ xuống hết.
+   JUDGE: thiếu slot vị trí phòng ngủ và thêm thông tin không yêu cầu
+
+[6] idx=78 domain=charging  cờ sai: slots_complete
+   U: Xe báo sắp hết pin rồi à?
+   A: Vâng, dung lượng pin hiện tại chỉ còn 18%. Bạn có muốn tôi tìm trạm sạc quanh đây không?
+   U: Tìm trạm sạc nhanh của Eboost nhé.
+   A: Tôi tìm thấy 2 trạm Eboost gần nhất: tại chung cư Masteri Thảo Điền và Estella Heights.
+   U: Dẫn đường ra chỗ Estella đi.
+   GOLD: Hãy dẫn đường ra trạm sạc nhanh Eboost ở chung cư Estella Heights.
+   PRED: Chỉ đường tới trạm sạc Eboost tại Estella Heights.
+   JUDGE: thiếu chỉ định trạm sạc nhanh
+
+[7] idx=96 domain=charging  cờ sai: slots_complete
+   U: Xe VF 9 của tôi hỗ trợ sạc tối đa bao nhiêu kW?
+   A: VF 9 hỗ trợ sạc DC tối đa 150kW và AC tối đa 11kW.
+   U: Tìm trạm nào có cổng DC 150kW trong bán kính 10km
+   A: Có 2 trạm: VinFast Plaza Mỹ Đình cách 4.2km và VinFast Lotte Hà Nội cách 8.7km, cả hai đều có DC 150kW.
+   U: Chỉ đường đến trạm gần hơn đi
+   GOLD: Chỉ đường đến trạm sạc VinFast Plaza Mỹ Đình cách 4.2km, có cổng DC 150kW.
+   PRED: Chỉ đường đến trạm sạc VinFast Plaza Mỹ Đình.
+   JUDGE: thiếu slot 'cổng DC 150kW'
+
+[8] idx=99 domain=calling  cờ sai: slots_complete
+   U: Tôi cần gọi cho nhân viên hỗ trợ giao xe.
+   A: Trong danh bạ có anh Tuấn Kiệt và chị Phương Linh thuộc bộ phận giao xe.
+   U: Chị Phương Linh nhé.
+   A: Bạn muốn gọi số cá nhân hay số công việc của chị Phương Linh?
+   U: Số công việc, qua Bluetooth.
+   A: Tôi đã chuẩn bị cuộc gọi qua hệ thống xe.
+   U: Gọi luôn đi.
+   GOLD: Gọi cho chị Phương Linh thuộc bộ phận giao xe bằng số công việc qua Bluetooth.
+   PRED: Gọi điện qua Bluetooth đến số công việc của chị Phương Linh.
+   JUDGE: thiếu thông tin bộ phận giao xe
+
+[9] idx=110 domain=music  cờ sai: slots_complete
+   U: Mở Spotify.
+   A: Bạn muốn nghe playlist nào?
+   U: Playlist "Vũ Trụ Tình Yêu" nhé.
+   A: Đã chọn playlist.
+   U: Bật ở volume 35.
+   GOLD: Phát playlist "Vũ Trụ Tình Yêu" trên Spotify với âm lượng 35
+   PRED: Phát playlist 'Vũ Trụ Tình Yêu' với âm lượng 35%.
+   JUDGE: thiếu thông tin nền tảng Spotify
+
+[10] idx=119 domain=smart_home  cờ sai: slots_complete
+   U: Lên lịch dọn nhà khi tôi đang lái xe về.
+   A: Bạn muốn điều khiển thiết bị nào ở nhà?
+   U: Robot hút bụi trong căn hộ Vinhomes Grand Park.
+   A: Bạn muốn dọn khu vực nào và vào lúc mấy giờ?
+   U: Phòng bếp, lúc 18 giờ 30.
+   A: Bạn muốn dùng chế độ làm sạch nào?
+   U: Chế độ im lặng nhé.
+   GOLD: Lên lịch cho robot hút bụi dọn phòng bếp trong căn hộ Vinhomes Grand Park lúc 18 giờ 30 bằng chế độ im lặng.
+   PRED: Lên lịch dọn phòng bếp tại Vinhomes Grand Park lúc 18 giờ 30 với chế độ im lặng.
+   JUDGE: thiếu slot thiết bị robot hút bụi
+
+[11] idx=152 domain=messaging  cờ sai: intent_ok,slots_complete
+   U: Soạn email cho sếp tôi
+   A: Gửi đến địa chỉ nào ạ?
+   U: nguyenvanha@techcorp.vn, tiêu đề là Báo cáo tuần 24
+   A: Nội dung email là gì ạ?
+   U: Bảo mình sẽ nộp báo cáo trước 5 giờ chiều thứ Sáu, xin lỗi vì trễ hạn
+   GOLD: Soạn và gửi email đến nguyenvanha@techcorp.vn, tiêu đề 'Báo cáo tuần 24', nội dung: xin lỗi vì trễ hạn và cam kết nộp báo cáo trước 5 giờ chiều thứ Sáu.
+   PRED: Nhắn tin cho sếp nguyenvanha@techcorp.vn với nội dung: 'Mình sẽ nộp báo cáo trước 5 giờ chiều thứ Sáu, xin lỗi vì trễ hạn'.
+   JUDGE: sai intent (gửi email thành nhắn tin) và thiếu slot tiêu đề
+
+[12] idx=156 domain=music  cờ sai: slots_complete
+   U: Mở Apple Music.
+   A: Bạn muốn nghe bài nào?
+   U: Bài "Em Gái Mưa" của Hương Tràm.
+   A: Đã chuẩn bị phát.
+   U: Đặt âm lượng 45.
+   GOLD: Phát bài "Em Gái Mưa" của Hương Tràm trên Apple Music với âm lượng 45
+   PRED: Phát bài 'Em Gái Mưa' của Hương Tràm với âm lượng 45.
+   JUDGE: thiếu thông tin dịch vụ Apple Music (slot bắt buộc)
+
+[13] idx=184 domain=calling  cờ sai: slots_complete
+   U: Tìm số điện thoại garage ô tô gần đây
+   A: Có Garage Hoàng Long số 0243 789 1234 cách 1.8km và Auto Care Việt số 0912 456 789 cách 3.2km.
+   U: Chỗ nào mở cửa sớm hơn?
+   A: Garage Hoàng Long mở lúc 7h, Auto Care Việt mở lúc 8h30.
+   U: Gọi cho chỗ mở sớm hơn đi
+   GOLD: Gọi cho Garage Hoàng Long số 0243 789 1234.
+   PRED: Gọi điện đến Garage Hoàng Long.
+   JUDGE: thiếu số điện thoại
+
+[14] idx=203 domain=vehicle  cờ sai: intent_ok,slots_complete,no_hallucination
+   U: Chỉnh lại ghế lái cho anh.
+   A: Ghế lái đang ở vị trí nhớ số 1. Bạn muốn chỉnh đệm lưng hay khoảng để chân?
+   U: Chỉnh khoảng để chân rộng ra chút.
+   A: Đang lùi đệm ghế lái ra sau. Bạn thấy vừa chưa?
+   U: Vẫn hơi chật, lùi đệm ghế thêm tí nữa đi.
+   GOLD: Lùi đệm khoảng để chân của ghế lái ra sau thêm một tí nữa đi.
+   PRED: Lùi đệm ghế lái thêm vào trong.
+   JUDGE: sai hành động, thiếu/nhầm hướng và thông tin khoảng, thêm thông tin không có trong hội thoại
+
+[15] idx=211 domain=vehicle  cờ sai: slots_complete
+   U: Tạo chìa khóa số tạm thời cho xe VinFast VF 9.
+   A: Bạn muốn cấp chìa khóa số cho ai?
+   U: Mai Anh.
+   A: Chìa khóa có hiệu lực trong khoảng thời gian nào?
+   U: Từ 9 giờ đến 17 giờ ngày 3 tháng 6.
+   A: Bạn muốn cho phép mở cốp sau không?
+   U: Có, cho phép luôn.
+   GOLD: Tạo chìa khóa số tạm thời cho Mai Anh dùng xe VinFast VF 9 từ 9 giờ đến 17 giờ ngày 3 tháng 6 và cho phép mở cốp sau.
+   PRED: Tạo chìa khóa số tạm thời cho Mai Anh với phạm vi từ 9 giờ đến 17 giờ ngày 3 tháng 6 và mở cốp sau.
+   JUDGE: thiếu thông tin xe VinFast VF 9
+
+[16] idx=229 domain=driver_assist  cờ sai: intent_ok,no_hallucination
+   U: Khoảng cách an toàn với xe trước đang ở mức mấy?
+   A: Khoảng cách đang ở mức 2 trên thang 4, tương đương khoảng 1.5 giây.
+   U: Tăng lên mức cao nhất đi, đường đang trơn
+   A: Đã tăng khoảng cách an toàn lên mức 4, tương đương khoảng 3 giây.
+   U: Và giảm tốc độ cruise xuống còn 80 luôn
+   GOLD: Giảm tốc độ cruise control xuống 80km/h.
+   PRED: Tăng khoảng cách an toàn lên mức cao nhất và giảm tốc độ cruise xuống còn 80 km/h.
+   JUDGE: thêm hành động tăng khoảng cách an toàn không có trong gold
+
+[17] idx=233 domain=smart_home  cờ sai: intent_ok,slots_complete
+   U: Mở TV trong xe.
+   A: TV đã bật.
+   U: Âm lượng 30.
+   A: Âm lượng đã đặt 30.
+   U: Chuyển nguồn sang HDMI2.
+   A: Đã chuyển sang HDMI2.
+   U: Bật phụ đề.
+   GOLD: Bật TV, đặt âm lượng 30, chuyển nguồn sang HDMI2 và bật phụ đề
+   PRED: Bật phụ đề trên màn hình TV đang hiển thị qua HDMI2.
+   JUDGE: chỉ thực hiện một phần hành động (bật phụ đề) còn các hành động khác bị thiếu
+
+[18] idx=275 domain=smart_home  cờ sai: slots_complete
+   U: Cài lịch tưới cây tự động cho tôi
+   A: Tưới lúc mấy giờ và mấy ngày một lần ạ?
+   U: 6 giờ sáng, cách ngày tưới một lần
+   A: Tưới bao lâu mỗi lần ạ?
+   U: 15 phút, chỉ áp dụng cho khu vườn trước nhà thôi
+   GOLD: Cài lịch tưới tự động khu vườn trước nhà lúc 6 giờ sáng, cách ngày một lần, mỗi lần 15 phút.
+   PRED: Cài lịch tưới cây tự động vào 6 giờ sáng, mỗi 1 ngày, chỉ tưới khu vườn trước nhà.
+   JUDGE: thiếu thông tin thời gian tưới mỗi lần (15 phút)
+
+[19] idx=280 domain=messaging  cờ sai: slots_complete
+   U: Gửi tin cho chị Tuyết: "Hẹn 8h sáng ngày mai."
+   A: Bạn muốn gửi ngay hay lên lịch?
+   U: Thay giờ thành 9h.
+   A: Giờ đã cập nhật thành 9h.
+   U: Thêm nội dung: "Mang hồ sơ."
+   GOLD: Gửi tin đến chị Tuyết vào 9h nội dung "Hẹn 9h sáng ngày mai. Mang hồ sơ."
+   PRED: Gửi tin nhắn cho chị Tuyết với nội dung 'Hẹn 9h sáng ngày mai, mang hồ sơ.'
+   JUDGE: thiếu slot thời gian riêng, nội dung chỉ gộp thời gian vào tin
+
+[20] idx=305 domain=smart_home  cờ sai: slots_complete
+   U: Chuẩn bị nước nóng trước khi tôi về căn nhà ở Gamuda Gardens.
+   A: Bạn muốn bật thiết bị nào trong nhà?
+   U: Bình nóng lạnh phòng tắm tầng hai.
+   A: Bạn muốn thiết bị bắt đầu hoạt động lúc nào?
+   U: 19 giờ 10.
+   A: Có cần tự động tắt sau một khoảng thời gian không?
+   U: Sau 25 phút, lưu lịch này.
+   GOLD: Lưu lịch bật bình nóng lạnh phòng tắm tầng hai tại căn nhà ở Gamuda Gardens lúc 19 giờ 10 và tự động tắt sau 25 phút.
+   PRED: Bật bình nóng lạnh phòng tắm tầng hai lúc 19 giờ 10 và tự động tắt sau 25 phút.
+   JUDGE: thiếu thông tin địa điểm Gamuda Gardens
+
+[21] idx=317 domain=driver_assist  cờ sai: intent_ok,slots_complete
+   U: Bật cruise control.
+   A: Cruise control đã bật ở 100km/h.
+   U: Thay tốc độ xuống 80km/h.
+   A: Đã cập nhật tốc độ cruise control 80km/h.
+   U: Giờ bật lane assist.
+   GOLD: Bật Lane Assist và đặt cruise control tốc độ 80km/h
+   PRED: Bật tính năng hỗ trợ giữ đường (lane assist).
+   JUDGE: thiếu hành động đặt tốc độ cruise control và slot tốc độ
+
+[22] idx=341 domain=charging  cờ sai: slots_complete
+   U: Xe tôi dùng chuẩn sạc gì?
+   A: Mercedes EQS của bạn dùng chuẩn CCS2, sạc AC tối đa 22kW và DC tối đa 200kW.
+   U: Tìm trạm có DC 200kW trong 15km
+   A: Có trạm Ionity tại TTTM Estella Place, quận 2, cách 11.4km, 6 cổng DC 350kW tương thích CCS2.
+   U: Đặt lịch sạc ở đó lúc 7 giờ tối nay
+   GOLD: Đặt lịch sạc tại trạm Ionity, Estella Place, quận 2 lúc 7 giờ tối nay cho xe Mercedes EQS chuẩn CCS2.
+   PRED: Đặt lịch sạc Mercedes EQS tại trạm Ionity ở TTTM Estella Place, quận 2 lúc 7 giờ tối nay.
+   JUDGE: thiếu slot chuẩn CCS2
+
+[23] idx=354 domain=navigation  cờ sai: slots_complete
+   U: Đi tới Trung tâm Thương mại Vincom Đồng Khởi.
+   A: Vincom Đồng Khởi cách 5.1 km, dự kiến 12 phút.
+   U: Tránh đường cao tốc.
+   A: Đã bật tránh cao tốc.
+   U: Mình muốn nhanh nhất.
+   GOLD: Điều hướng tới Vincom Đồng Khởi, tránh cao tốc, ưu tiên tốc độ nhanh nhất
+   PRED: Chỉ đường nhanh nhất tới Vincom Đồng Khởi.
+   JUDGE: thiếu thông tin tránh cao tốc
+
+[24] idx=363 domain=music  cờ sai: slots_complete,negation_ok
+   U: Tạo hàng chờ nhạc Việt cho chuyến đi tối nay.
+   A: Bạn muốn bắt đầu bằng bài nào?
+   U: “Chúng Ta Của Hiện Tại” của Sơn Tùng M-TP.
+   A: Bạn muốn nghe tiếp bài nào và phát trên nền tảng nào?
+   U: Tiếp theo là “Gác Lại Âu Lo” của Da LAB, trên NhacCuaTui.
+   A: Có bật phát lặp lại hàng chờ không?
+   U: Không lặp, tạo đi.
+   GOLD: Tạo hàng chờ trên NhacCuaTui gồm “Chúng Ta Của Hiện Tại” của Sơn Tùng M-TP rồi “Gác Lại Âu Lo” của Da LAB và không bật phát lặp lại.
+   PRED: Phát hàng chờ gồm 'Chúng Ta Của Hiện Tại' của Sơn Tùng M-TP và 'Gác Lại Âu Lo' của Da LAB trên NhacCuaTui.
+   JUDGE: thiếu thông tin không bật lặp lại, mất slot phủ định
+
+[25] idx=381 domain=navigation  cờ sai: slots_complete
+   U: Tôi muốn đi ăn lẩu tối nay
+   A: Khu vực nào và mấy người ăn ạ?
+   U: Gần Hồ Hoàn Kiếm, 6 người
+   A: Có Lẩu Bò Sài Gòn Đinh Tiên Hoàng sức chứa 8 người, Lẩu Nấm Nhật Linh Hàng Bài sức chứa 20 người và Lẩu Thái Sông Hương Lý Thái Tổ sức chứa 15 người.
+   U: Đặt bàn ở chỗ nhỏ nhất rồi dẫn đường vào
+   GOLD: Đặt bàn tại Lẩu Bò Sài Gòn Đinh Tiên Hoàng cho 6 người và chỉ đường đến đó.
+   PRED: Đặt bàn tại Lẩu Nấm Nhật Linh Hàng Bài và dẫn đường đến đó.
+   JUDGE: thiếu số người (6) trong câu lệnh
+
+[26] idx=392 domain=charging  cờ sai: slots_complete
+   U: Tôi cần sạc nhanh ngay.
+   A: Có trạm SuperCharge ở ngã 5, cách 2.0 km, công suất 150 kW. Bạn muốn dùng?
+   U: Đúng, cấp 3 nhé.
+   A: Đã bật cấp 3.
+   U: Đi tới đó đi.
+   GOLD: Điều hướng tới trạm SuperCharge ở ngã 5, cách 2.0 km, với công suất 150 kW, cấp 3
+   PRED: Dẫn đường đến trạm SuperCharge ở ngã 5 và sạc pin với cấp 3.
+   JUDGE: thiếu các slot bắt buộc như khoảng cách và công suất
+
+[27] idx=397 domain=navigation  cờ sai: slots_complete
+   U: Tôi muốn đến trung tâm Expo.
+   A: Expo gần nhất cách 6.5 km, thời gian 15 phút qua đường cao tốc.
+   U: Tránh cao tốc.
+   A: Đã bật tránh cao tốc.
+   U: Đưa tôi tới nhanh nhất.
+   GOLD: Điều hướng tới trung tâm Expo, tránh cao tốc, ưu tiên tốc độ nhanh nhất
+   PRED: Chỉ đường đến trung tâm Expo bằng lộ trình nhanh nhất.
+   JUDGE: thiếu thông tin tránh cao tốc
+
+[28] idx=400 domain=smart_home  cờ sai: slots_complete
+   U: Lên lịch cho mèo ăn khi tôi đang lái về.
+   A: Bạn muốn điều khiển máy cho ăn ở căn nhà nào?
+   U: Căn hộ ở Lumi Hanoi.
+   A: Bạn muốn cho ăn lúc nào và lượng bao nhiêu?
+   U: 18 giờ 40, khẩu phần 60 gram.
+   A: Bạn muốn dùng ngăn thức ăn nào?
+   U: Ngăn số 2, lưu lịch đi.
+   GOLD: Lưu lịch cho máy cho mèo ăn tại căn hộ Lumi Hanoi lúc 18 giờ 40 với khẩu phần 60 gram từ ngăn số 2.
+   PRED: Lên lịch cho mèo ăn 18 giờ 40 tại căn hộ Lumi Hanoi ở ngăn thức ăn số 2.
+   JUDGE: thiếu khẩu phần 60 gram
+
+[29] idx=417 domain=calling  cờ sai: intent_ok,slots_complete
+   U: Tìm số hotline bảo hiểm xe cho tôi
+   A: Xe bạn đang dùng gói bảo hiểm Bảo Việt, hotline 1800 599 945, hỗ trợ 24h.
+   U: Tai nạn nhỏ, cần khai báo, gọi vào đó được không?
+   A: Được ạ, hotline này xử lý khai báo tai nạn trực tiếp, cần cung cấp biển số và ảnh hiện trường.
+   U: Gọi luôn đi, bật loa ngoài cho tiện
+   GOLD: Gọi hotline Bảo Việt 1800 599 945, bật loa ngoài.
+   PRED: Gọi điện đến hotline 1800 599 945 của Bảo Việt để khai báo tai nạn xe.
+   JUDGE: thiếu hành động bật loa ngoài
+
+[30] idx=438 domain=charging  cờ sai: slots_complete,negation_ok
+   U: Tôi cần một trạm sạc nhanh ở khu vực Nguyễn Văn Linh.
+   A: Có trạm SuperCharge ở ngã 3, cách 1.6 km, công suất 150 kW.
+   U: Mình muốn cấp 2, không dùng phí dịch vụ.
+   A: Đã bật cấp 2, không thu phí dịch vụ.
+   U: Đi tới địa điểm đó.
+   GOLD: Điều hướng tới trạm SuperCharge ở ngã 3, cách 1.6 km, công suất 150 kW, cấp 2, không thu phí dịch vụ
+   PRED: Dẫn đường đến trạm SuperCharge ở ngã 3, gần Nguyễn Văn Linh.
+   JUDGE: thiếu các slot bắt buộc như cấp 2, công suất 150 kW và không thu phí dịch vụ; không giữ đúng phủ định 'không thu phí'
+
+[31] idx=464 domain=music  cờ sai: intent_ok,slots_complete
+   U: Tạo danh sách nhạc acoustic cho chuyến đi.
+   A: Bạn muốn bài nào phát đầu tiên?
+   U: “Nàng Thơ” của Hoàng Dũng.
+   A: Bạn muốn thêm bài nào tiếp theo và nghe trên nền tảng nào?
+   U: “Có Em” của Madihu, nghe trên Spotify.
+   A: Bạn muốn sử dụng danh sách này thế nào khi đang di chuyển?
+   U: Tải offline và không bật shuffle.
+   GOLD: Tạo danh sách trên Spotify gồm “Nàng Thơ” của Hoàng Dũng rồi “Có Em” của Madihu, tải offline và không bật shuffle.
+   PRED: Phát bài 'Nàng Thơ' của Hoàng Dũng, sau đó 'Có Em' của Madihu trên Spotify, tải offline và không bật chế độ ngẫu nhiên.
+   JUDGE: sai intent: dự đoán là phát nhạc thay vì tạo danh sách
+
+[32] idx=465 domain=driver_assist  cờ sai: no_hallucination
+   U: Bật cruise control.
+   A: Cruise control đã bật, tốc độ mặc định 90km/h.
+   U: Thay tốc độ thành 70km/h.
+   A: Đã đặt tốc độ 70km/h.
+   U: Giờ bật giữ khoảng cách an toàn 30m.
+   GOLD: Đặt khoảng cách an toàn 30m cho cruise control
+   PRED: Bật cruise control với tốc độ 70km/h và giữ khoảng cách an toàn 30m.
+   JUDGE: câu dự đoán thêm hành động bật cruise và đặt tốc độ không có trong gold, tạo hallucination
+
+[33] idx=473 domain=navigation  cờ sai: slots_complete
+   U: Tìm khách sạn gần biển ở Đà Nẵng cho tôi
+   A: Có Fusion Maia Resort mặt tiền biển Mỹ Khê, Hyatt Regency cách biển 200m và Pullman Đà Nẵng cách biển 400m.
+   U: Cái sát biển nhất còn phòng ngày mai không?
+   A: Fusion Maia còn 2 phòng Deluxe Ocean View, giá 4.200.000đ/đêm.
+   U: Đặt 1 phòng rồi dẫn đường vào đó luôn
+   GOLD: Đặt 1 phòng Deluxe Ocean View tại Fusion Maia Resort Đà Nẵng cho ngày mai và chỉ đường đến đó.
+   PRED: Đặt phòng tại Fusion Maia Resort và dẫn đường đến đó.
+   JUDGE: thiếu thông tin phòng, ngày
+
+[34] idx=483 domain=charging  cờ sai: intent_ok,slots_complete,negation_ok
+   U: Tôi cần một trạm sạc nhanh gần đây.
+   A: Có trạm FastCharge ở ngã 8, cách 1.7 km, công suất 120 kW.
+   U: Muốn dùng mức 3, không muốn trả phụ phí.
+   A: Đã bật mức 3, không thu phụ phí.
+   U: Đi tới đó thôi.
+   GOLD: Điều hướng tới trạm FastCharge ở ngã 8, cách 1.7 km, công suất 120 kW, mức 3, không thu phụ phí
+   PRED: Dẫn đường đến trạm FastCharge ở ngã 8.
+   JUDGE: thiếu mức 3 và không thu phụ phí
+
+[35] idx=487 domain=messaging  cờ sai: slots_complete
+   U: Gửi tin cho anh Khoa: "Báo cáo đã hoàn thành".
+   A: Bạn muốn gửi ngay hay lên lịch?
+   U: Lên lịch cho ngày 15/08.
+   A: Ngày nào?
+   U: 15/08, 09:30 sáng.
+   A: Đã ghi lịch.
+   U: Thêm: "Gửi file đính kèm".
+   GOLD: Gửi tin đến anh Khoa vào 15/08 09:30 nội dung "Báo cáo đã hoàn thành. Gửi file đính kèm"
+   PRED: Lên lịch gửi tin cho anh Khoa lúc 09:30 sáng ngày 15/08 với nội dung 'Báo cáo đã hoàn thành' và đính kèm file.
+   JUDGE: thiếu nội dung "Gửi file đính kèm" trong phần tin
+
+[36] idx=489 domain=messaging  cờ sai: slots_complete
+   U: Soạn email báo cáo sự cố cho IT
+   A: Gửi đến địa chỉ nào và tiêu đề là gì ạ?
+   U: itsupport@vingroup.net, tiêu đề Sự cố màn hình HUD tắt đột ngột
+   A: Mô tả sự cố thế nào ạ?
+   U: HUD tắt lúc 14:32 trên cao tốc Pháp Vân, khởi động lại xe mới lên, kèm ảnh đính kèm screen001.jpg
+   GOLD: Soạn và gửi email đến itsupport@vingroup.net, tiêu đề 'Sự cố màn hình HUD tắt đột ngột', nội dung: HUD tắt lúc 14:32 trên cao tốc Pháp Vân, khởi động lại xe mới lên, đính kèm ảnh screen001.jpg.
+   PRED: Nhắn tin qua email toitsupport@vingroup.net với tiêu đề 'Sự cố màn hình HUD tắt đột ngột' và nội dung mô tả đã soạn.
+   JUDGE: thiếu địa chỉ email, nội dung chi tiết và file đính kèm
+
+[37] idx=496 domain=charging  cờ sai: no_hallucination
+   U: Tôi cần sạc xe trước khi đến cuộc họp 3 giờ chiều
+   A: Hiện tại 13:42, bạn có khoảng 78 phút. Trạm nào bạn muốn dùng?
+   U: Trạm nào sạc nhanh nhất trong 2km
+   A: Trạm Eboost Láng Hạ cách 1.4km có DC 180kW, ước tính sạc từ 23% lên 60% mất khoảng 22 phút.
+   U: Được rồi, đặt cổng rồi dẫn đường, sạc đến 60% thôi
+   GOLD: Đặt cổng sạc tại Eboost Láng Hạ, chỉ đường đến đó, sạc đến 60% pin.
+   PRED: Đặt cổng sạc tại trạm Eboost Láng Hạ và dẫn đường để sạc pin BMW iX3 đến mức 60%.
+   JUDGE: thêm thông tin xe BMW iX3 không có trong dialogue
+
+[38] idx=510 domain=charging  cờ sai: slots_complete,negation_ok
+   U: Cần sạc xe ngay tại khu vực phố Điện Biên.
+   A: Có trạm FastCharge ở ngã 4, cách 1.3 km, công suất 120 kW.
+   U: Tôi muốn sạc cấp 2, không muốn trả phí phụ.
+   A: Đã bật cấp 2, không thu phụ phí.
+   U: Đi tới đó ngay.
+   GOLD: Điều hướng tới trạm FastCharge ở ngã 4, cách 1.3 km, công suất 120 kW, cấp 2, không thu phụ phí
+   PRED: Dẫn đường đến trạm FastCharge ở ngã 4, phố Điện Biên Phủ để sạc xe ở cấp 2.
+   JUDGE: thiếu các slot bắt buộc như khoảng cách, công suất và không đề cập tới việc không thu phụ phí
+
+[39] idx=515 domain=driver_assist  cờ sai: intent_ok,slots_complete
+   U: Tôi muốn bật hỗ trợ làn đường.
+   A: Bạn có muốn bật Lane Assist ngay?
+   U: Có, bật luôn.
+   A: Lane Assist đã bật.
+   U: Bật chế độ auto brake nữa.
+   GOLD: Bật Lane Assist và chế độ auto brake
+   PRED: Bật chế độ auto brake.
+   JUDGE: thiếu hành động bật Lane Assist
+
+[40] idx=535 domain=smart_home  cờ sai: slots_complete
+   U: Chuẩn bị phòng khách trước khi tôi về căn hộ Lumière Riverside.
+   A: Bạn muốn điều khiển thiết bị nào?
+   U: Máy khuếch tán tinh dầu phòng khách.
+   A: Bạn muốn bật lúc nào và dùng chế độ nào?
+   U: Lúc 18 giờ 25, chế độ nhẹ.
+   A: Thiết bị sẽ chạy trong bao lâu?
+   U: Trong 30 phút, lưu lịch nhé.
+   GOLD: Lưu lịch bật máy khuếch tán tinh dầu phòng khách tại căn hộ Lumière Riverside lúc 18 giờ 25 ở chế độ nhẹ trong 30 phút.
+   PRED: Bật máy khuếch tán tinh dầu phòng khách lúc 18 giờ 25 với chế độ nhẹ, hoạt động trong 30 phút và lưu lịch.
+   JUDGE: thiếu slot địa điểm (căn hộ Lumière Riverside)
+
+[41] idx=538 domain=messaging  cờ sai: slots_complete
+   U: Gửi tin cho anh Dũng: "Dự án đã hoàn thành".
+   A: Bạn muốn gửi ngay hay lên lịch?
+   U: Lên lịch cho ngày 20/09.
+   A: Giờ nào?
+   U: 08:30 sáng.
+   A: Đã ghi lịch.
+   U: Thêm nội dung: "Vui lòng kiểm tra".
+   U: Thực hiện.
+   GOLD: Gửi tin đến anh Dũng vào 20/09 08:30 nội dung "Dự án đã hoàn thành. Vui lòng kiểm tra"
+   PRED: Lên lịch gửi tin cho anh Dũng lúc 08:30 sáng ngày 20/09 với nội dung 'Vui lòng kiểm tra'.
+   JUDGE: thiếu nội dung tin đầy đủ
+
+[42] idx=544 domain=navigation  cờ sai: slots_complete
+   U: Tôi muốn tới nhà bố tại số 5 Đường Trần Hưng Đạo, Quận 1, TP.HCM.
+   A: Đã lưu địa chỉ.
+   U: Tránh cầu.
+   A: Đang tính lộ trình tránh cầu.
+   U: Đi nhanh nhất.
+   GOLD: Điều hướng tới nhà bố, số 5 Đường Trần Hưng Đạo, Quận 1, TP.HCM, tránh cầu, ưu tiên tốc độ nhanh nhất
+   PRED: Chỉ đường đến nhà bố tại 5 Đường Trần Hưng Đạo, Quận 1, TP.HCM theo lộ trình nhanh nhất.
+   JUDGE: thiếu thông tin tránh cầu
+
+[43] idx=546 domain=navigation  cờ sai: slots_complete
+   U: Tôi muốn ghé mua thuốc trước khi về
+   A: Loại thuốc gì và cần nhà thuốc mở cửa muộn không?
+   U: Thuốc hạ sốt cho trẻ em, cần chỗ mở đến 22h
+   A: Nhà thuốc Long Châu Nguyễn Trãi mở đến 22h30, cách 2.1km. Pharmacity Lê Văn Lương mở đến 22h, cách 3.4km.
+   U: Chỗ mở muộn hơn và gần hơn thì dẫn vào đó
+   GOLD: Chỉ đường đến nhà thuốc Long Châu Nguyễn Trãi mở đến 22h30, cách 2.1km.
+   PRED: Dẫn đường tới nhà thuốc Long Châu Nguyễn Trãi.
+   JUDGE: thiếu thời gian mở và khoảng cách so với gold
+
+[44] idx=554 domain=messaging  cờ sai: no_hallucination
+   U: Nhắn tin cho trường mầm non của con
+   A: Liên hệ nào trong danh bạ ạ? Có cô Hiệu trưởng Lan Anh và nhóm Zalo lớp Hoa Hồng.
+   U: Nhóm Zalo lớp Hoa Hồng, báo con nghỉ ốm
+   A: Nghỉ mấy ngày và lý do cụ thể ạ?
+   U: Nghỉ 2 ngày thứ Năm và thứ Sáu này, bị sốt cao 39 độ, có giấy bác sĩ
+   GOLD: Nhắn vào nhóm Zalo lớp Hoa Hồng: xin phép cho con nghỉ học thứ Năm và thứ Sáu tuần này do sốt cao 39°C, có giấy xác nhận của bác sĩ.
+   PRED: Gửi tin nhắn qua nhóm Zalo lớp Hoa Hồng cho cô Hiệu trưởng Lan Anh báo con nghỉ ốm 2 ngày Thứ Năm và Thứ Sáu này vì sốt cao 39 độ, kèm giấy bác sĩ.
+   JUDGE: thêm người nhận không được xác nhận
+
+[45] idx=557 domain=calling  cờ sai: slots_complete
+   U: Đặt cuộc gọi nhắc lịch khám cho mẹ tôi.
+   A: Bạn muốn gọi cho ai để xác nhận lịch khám?
+   U: Phòng khám Vinmec Royal City.
+   A: Bạn muốn gọi vào thời điểm nào và dùng thiết bị âm thanh nào?
+   U: 8 giờ 15 sáng mai, qua loa xe.
+   A: Bạn muốn ghi chú nội dung gì cho cuộc gọi?
+   U: Hỏi xác nhận lịch khám của mẹ tôi.
+   GOLD: Đặt cuộc gọi tới Phòng khám Vinmec Royal City qua loa xe lúc 8 giờ 15 sáng mai để xác nhận lịch khám của mẹ tôi.
+   PRED: Gọi cho mẹ tôi lúc 8 giờ 15 sáng mai qua loa xe, hỏi xác nhận lịch khám tại phòng khám Vinmec Royal City.
+   JUDGE: thiếu slot địa điểm gọi (phòng khám)
+
+[46] idx=568 domain=messaging  cờ sai: slots_complete
+   U: Gửi tin cho anh Tuấn: "Bản báo cáo đã sẵn sàng".
+   A: Bạn muốn gửi ngay hay lên lịch?
+   U: Lên lịch cho ngày 05/08.
+   A: Thời gian nào?
+   U: 09:00 sáng.
+   A: Đã ghi lịch.
+   U: Thêm nội dung: "Gửi file đính kèm".
+   U: Thực hiện.
+   GOLD: Gửi tin đến anh Tuấn vào 05/08 09:00 nội dung "Bản báo cáo đã sẵn sàng. Gửi file đính kèm"
+   PRED: Lên lịch gửi tin cho anh Tuấn lúc 09:00 sáng ngày 05/08 với nội dung 'Gửi file đính kèm'.
+   JUDGE: thiếu nội dung "Bản báo cáo đã sẵn sàng"
+
+[47] idx=572 domain=vehicle  cờ sai: intent_ok,slots_complete
+   U: Mở cửa sổ phía sau bên trái.
+   A: Cửa sổ phía sau bên trái đã mở.
+   U: Giảm gió mức 2.
+   A: Gió đã giảm mức 2.
+   U: Đóng cửa sổ đó.
+   GOLD: Đóng cửa sổ phía sau bên trái và giảm gió mức 2
+   PRED: Đóng cửa sổ phía sau bên trái.
+   JUDGE: thiếu hành động giảm gió mức 2
+
+[48] idx=582 domain=smart_home  cờ sai: intent_ok,slots_complete
+   U: Mở cửa gara
+   A: Cửa gara đã mở
+   U: Bật đèn ngoài nhà
+   U: Tắt hết đi
+   GOLD: Tắt hết đèn ngoài nhà và cửa gara
+   PRED: Tắt đèn ngoài nhà.
+   JUDGE: thiếu hành động tắt cửa gara
+
+[49] idx=584 domain=vehicle  cờ sai: slots_complete
+   U: Tạo mã mở xe tạm thời cho chiếc Tesla Model X.
+   A: Bạn muốn cấp quyền cho ai?
+   U: Anh Duy Khánh.
+   A: Mã có hiệu lực vào thời gian nào và cho phép mở cửa nào?
+   U: Từ 14 giờ đến 16 giờ ngày 4 tháng 6, chỉ cửa ghế phụ trước.
+   A: Có cho phép khởi động xe không?
+   U: Không cho khởi động, tạo mã đi.
+   GOLD: Tạo mã mở xe tạm thời cho anh Duy Khánh trên Tesla Model X từ 14 giờ đến 16 giờ ngày 4 tháng 6, chỉ cho phép mở cửa ghế phụ trước và không cho khởi động xe.
+   PRED: Tạo mã mở xe tạm thời cho anh Duy Khánh từ 14 giờ đến 16 giờ ngày 4 tháng 6, chỉ cửa ghế phụ trước, không cho khởi động.
+   JUDGE: thiếu thông tin mẫu xe (Tesla Model X)
+
+[50] idx=599 domain=music  cờ sai: slots_complete
+   U: Tìm bài hát phù hợp tập gym lúc lái xe
+   A: Thể loại nào bạn thích: EDM, Hip-hop Việt, Rock hay BPM cao chung?
+   U: Hip-hop Việt đi, toàn bài của RPT MCK
+   A: Playlist RPT MCK có 'Ngày Mai', 'Không Thể Say', 'NGÁO NGƠ' và 'Bùi Tiệm Phơi'. Phát hết không?
+   U: Phát hết theo thứ tự mới nhất, repeat playlist
+   GOLD: Phát toàn bộ playlist RPT MCK theo thứ tự mới nhất, bật repeat playlist.
+   PRED: Phát playlist RPT MCK gồm các bài 'Ngày Mai', 'Không Thể Say', 'NGÁO NGƠ' và 'Bùi Tiệm Phơi' với chế độ lặp lại.
+   JUDGE: thiếu thông tin thứ tự mới nhất
+
+[51] idx=626 domain=calling  cờ sai: slots_complete,no_hallucination
+   U: Tìm số điện thoại dịch vụ kéo xe cứu hộ
+   A: Gần bạn có ATA Rescue 1800 646 848 và Vietnam Road Rescue 0243 556 7890, cả hai trực 24h.
+   U: Chỗ nào của nhà nước hay uy tín hơn?
+   A: ATA Rescue là đơn vị thuộc Hiệp hội Vận tải, có hợp đồng với nhiều hãng bảo hiểm lớn, uy tín hơn.
+   U: Gọi vào đó đi, báo xe chết máy trên đường Vành Đai 3
+   GOLD: Gọi ATA Rescue số 1800 646 848, báo xe chết máy trên đường Vành Đai 3.
+   PRED: Gọi ATA Rescue để báo xe Mercedes EQS bị chết máy trên đường Vành Đai 3.
+   JUDGE: thiếu số điện thoại và thêm thông tin xe không có trong hội thoại
+
+[52] idx=634 domain=charging  cờ sai: slots_complete,negation_ok
+   U: Cần tìm trạm sạc nhanh gần khu vực phố Lê Duẩn.
+   A: Có trạm SuperCharge ở ngã 3, cách 1.5 km, công suất 120 kW.
+   U: Muốn dùng cấp 3, không trả phí phụ.
+   A: Đã bật cấp 3, không thu phí phụ.
+   U: Đi tới đó đi.
+   GOLD: Điều hướng tới trạm SuperCharge ở ngã 3, cách 1.5 km, công suất 120 kW, cấp 3, không thu phí phụ
+   PRED: Dẫn đường đến trạm SuperCharge ở ngã 3 gần phố Lê Duẩn.
+   JUDGE: thiếu slot cấp 3 và không thu phí phụ, mất phủ định
+
+[53] idx=659 domain=smart_home  cờ sai: slots_complete,negation_ok
+   U: Chuẩn bị cà phê trước khi tôi về căn hộ The Matrix One.
+   A: Bạn muốn điều khiển thiết bị nào?
+   U: Máy pha cà phê trong bếp.
+   A: Bạn muốn pha loại gì và vào thời điểm nào?
+   U: Americano lúc 7 giờ 10 sáng mai.
+   A: Bạn có muốn thêm sữa tự động không?
+   U: Không thêm sữa, lưu lịch đi.
+   GOLD: Lưu lịch pha Americano bằng máy pha cà phê trong bếp tại căn hộ The Matrix One lúc 7 giờ 10 sáng mai và không thêm sữa.
+   PRED: Lưu lịch chế độ pha cà phê Americano lúc 7 giờ 10 sáng mai tại máy pha cà phê trong bếp.
+   JUDGE: thiếu thông tin không thêm sữa
+
+[54] idx=667 domain=vehicle  cờ sai: slots_complete
+   U: Mở cửa sổ
+   A: Cửa sổ trước đã mở
+   U: Mở thêm cửa sau
+   U: Chỉ mở 50% thôi
+   GOLD: Mở cửa sổ sau 50% cùng cửa trước
+   PRED: Mở cửa sổ sau với mức 50%.
+   JUDGE: thiếu slot 'cùng cửa trước'
+
+[55] idx=675 domain=charging  cờ sai: intent_ok,slots_complete,no_hallucination,negation_ok
+   U: Tôi muốn sạc 80% nhanh ở khu vực Hồ Tây.
+   A: Có trạm FastCharge ở ngã 9, cách 2.0 km, công suất 150 kW.
+   U: Muốn cấp 3, không thu phí.
+   A: Đã bật cấp 3, không tính phí.
+   U: Đi tới đó.
+   GOLD: Điều hướng tới trạm FastCharge ở ngã 9, cách 2.0 km, công suất 150 kW, cấp 3, không thu phí
+   PRED: Dẫn đường đến trạm FastCharge ở ngã 9 gần Hồ Tây để sạc 30%.
+   JUDGE: Sai intent, thiếu thông tin, thêm dữ liệu không có
+
+[56] idx=677 domain=navigation  cờ sai: slots_complete
+   U: Tôi cần đi công chứng gấp hôm nay
+   A: Loại giấy tờ nào và cần phòng công chứng nhà nước hay tư nhân ạ?
+   U: Công chứng hợp đồng mua bán nhà, phòng nhà nước được
+   A: Phòng Công chứng số 1 Hà Nội tại 40 Đinh Lễ, Hoàn Kiếm mở đến 17h, cách 3.8km. Phòng số 4 tại 46 Tràng Thi mở đến 16h30, cách 2.1km.
+   U: Giờ 15h45 rồi, chỗ nào còn kịp thì dẫn vào
+   GOLD: Chỉ đường đến Phòng Công chứng số 1 Hà Nội tại 40 Đinh Lễ, còn mở đến 17h.
+   PRED: Dẫn đường tới phòng công chứng nhà nước tại 40 Đinh Lễ để công chứng hợp đồng mua bán nhà lúc 15h45.
+   JUDGE: thiếu thông tin mở đến 17h so với gold
+
+[57] idx=683 domain=charging  cờ sai: slots_complete
+   U: Tôi muốn sạc xe qua đêm ở đâu đó tiện
+   A: Bạn cần sạc AC chậm qua đêm hay DC nhanh? Và khu vực nào ạ?
+   U: AC được, quanh khu Tây Hồ
+   A: Có bãi đỗ kết hợp sạc AC tại Lotte Mall Tây Hồ, 8 cổng 7.4kW, phí 25.000đ/giờ, mở đến 23h.
+   U: Đặt chỗ từ 20h đến 7h sáng mai, cần 2 cổng
+   GOLD: Đặt 2 cổng sạc AC 7.4kW tại Lotte Mall Tây Hồ từ 20h tối nay đến 7h sáng mai.
+   PRED: Đặt chỗ sạc AC tại Lotte Mall Tây Hồ từ 20h đến 7h sáng mai với 2 cổng.
+   JUDGE: thiếu slot công suất 7.4kW
+
+[58] idx=686 domain=music  cờ sai: intent_ok,slots_complete
+   U: Phát nhạc Sơn Tùng
+   A: Đang phát bài của Sơn Tùng M-TP
+   U: Bài chậm thôi
+   U: Volume nhỏ xuống
+   GOLD: Phát bài chậm của Sơn Tùng volume nhỏ
+   PRED: Giảm âm lượng nhạc đang phát.
+   JUDGE: thiếu hành động phát nhạc và tốc độ chậm, không đầy đủ slot
+
+[59] idx=691 domain=driver_assist  cờ sai: intent_ok,slots_complete
+   U: Bật hỗ trợ lái
+   A: Auto pilot đã bật
+   U: Giữ tốc độ 90
+   U: Bật cảnh báo lệch làn
+   GOLD: Giữ cruise control 90km/h và bật cảnh báo lệch làn
+   PRED: Bật cảnh báo lệch làn.
+   JUDGE: thiếu hành động giữ tốc độ 90km/h
+
+[60] idx=708 domain=vehicle  cờ sai: intent_ok,slots_complete
+   U: Mở cửa sổ phía trước bên trái.
+   A: Cửa sổ phía trước bên trái đã mở.
+   U: Giảm gió mức 2.
+   A: Gió đã giảm mức 2.
+   U: Đóng cửa sổ đó.
+   GOLD: Đóng cửa sổ phía trước bên trái và giảm gió mức 2
+   PRED: Đóng cửa sổ phía trước bên trái.
+   JUDGE: thiếu hành động giảm gió mức 2
+
+[61] idx=713 domain=smart_home  cờ sai: intent_ok,slots_complete
+   U: Bật đèn ngoài sân
+   A: Đèn sân đã bật
+   U: Bật thêm camera
+   U: Tắt sau 30 phút
+   GOLD: Bật đèn sân và camera tắt sau 30 phút
+   PRED: Bật đèn ngoài sân và hẹn tắt sau 30 phút.
+   JUDGE: thiếu hành động bật camera
+
+[62] idx=717 domain=driver_assist  cờ sai: slots_complete
+   U: Bật hỗ trợ đỗ xe
+   A: Hỗ trợ đỗ xe sẵn sàng
+   U: Bật cảnh báo va chạm
+   U: Giữ khoảng cách 50m
+   GOLD: Bật cảnh báo va chạm giữ khoảng cách 50m với hỗ trợ đỗ xe
+   PRED: Bật cảnh báo va chạm và giữ khoảng cách 50m.
+   JUDGE: thiếu thông tin hỗ trợ đỗ xe
+
+[63] idx=729 domain=messaging  cờ sai: slots_complete
+   U: Nhắn cho chị Hoa
+   A: Nội dung gì ạ?
+   U: Mai đi picnic
+   U: Nhắc mang theo kem chống nắng
+   GOLD: Nhắn cho chị Hoa mai đi picnic nhớ mang kem chống nắng
+   PRED: Gửi tin nhắn cho chị Hoa nhắc mang theo kem chống nắng.
+   JUDGE: thiếu nội dung tin nhắn 'mai đi picnic'
+
+[64] idx=746 domain=navigation  cờ sai: intent_ok,slots_complete
+   U: Lập lộ trình đi nhận giấy tờ rồi về nhà giúp tôi.
+   A: Bạn muốn nhận giấy tờ ở đâu?
+   U: Phòng Công chứng số 1 thành phố Hà Nội.
+   A: Sau đó bạn muốn về địa điểm nào?
+   U: Khu đô thị Times City.
+   A: Bạn có yêu cầu gì về thời gian hoặc tuyến đường không?
+   U: Tới phòng công chứng trước 16 giờ, tránh phố Huế.
+   GOLD: Dẫn đường tới Phòng Công chứng số 1 thành phố Hà Nội trước 16 giờ, sau đó tới Khu đô thị Times City và tránh phố Huế.
+   PRED: Chỉ đường tới Phòng Công chứng số 1 thành phố Hà Nội trước 16 giờ, tránh phố Huế.
+   JUDGE: thiếu địa điểm thứ hai và hành động đi tới nơi đó
+
+[65] idx=749 domain=charging  cờ sai: no_hallucination
+   U: Tôi cần sạc tới 80% trong khu vực quận 2.
+   A: Có trạm FastCharge ở ngã 6, cách 2.3 km, công suất 150 kW.
+   U: Mình muốn cấp 2, không muốn trả phí phụ.
+   A: Đã bật cấp 2, không thu phụ phí.
+   U: Đi tới trạm đó.
+   GOLD: Điều hướng tới trạm FastCharge ở ngã 6, cách 2.3 km, công suất 150 kW, cấp 2, không thu phụ phí
+   PRED: Dẫn đường đến trạm FastCharge ở ngã 6 để sạc xe Tesla Model Y lên 80%, không trả phí phụ.
+   JUDGE: bị hallucination: thêm thông tin 'Tesla Model Y' không có trong dialogue
+
+[66] idx=763 domain=charging  cờ sai: slots_complete
+   U: Tôi muốn sạc xe rồi đi ăn trưa, tiết kiệm thời gian
+   A: Bạn muốn ăn gì và sạc bao nhiêu % ạ?
+   U: Ăn bún riêu, sạc thêm 40%
+   A: Có Eboost Vincom Bà Triệu kết hợp ẩm thực, cách 1.9km. Bún Riêu Cua Bà Liên ngay tầng B1, sạc DC 120kW ước tính 40% mất 18 phút.
+   U: Hoàn hảo, dẫn vào đó cắm sạc rồi xuống ăn luôn
+   GOLD: Chỉ đường đến Eboost Vincom Bà Triệu, cắm sạc DC 120kW thêm 40% pin và ăn trưa tại Bún Riêu Cua Bà Liên tầng B1.
+   PRED: Dẫn đường đến Bún Riêu Cua Bà Liên tầng B1, cắm sạc xe tại Eboost Vincom Bà Triệu và bắt đầu ăn trưa.
+   JUDGE: thiếu thông tin % sạc
+
+[67] idx=766 domain=calling  cờ sai: slots_complete
+   U: Gọi cho thầy giáo
+   A: Đang gọi thầy giáo con
+   U: Thầy Hùng dạy Toán
+   U: Hỏi về lịch thi giữa kỳ
+   GOLD: Gọi cho thầy Hùng dạy Toán hỏi lịch thi giữa kỳ
+   PRED: Gọi cho thầy Hùng để hỏi lịch thi giữa kỳ.
+   JUDGE: thiếu slot môn học (dạy Toán)
+
+[68] idx=782 domain=climate  cờ sai: intent_ok,slots_complete
+   U: Chuẩn bị khoang xe mát trước khi đón ông bà.
+   A: Bạn muốn chỉnh khu vực nào?
+   U: Hai ghế sau của chiếc VinFast VF 8.
+   A: Bạn muốn nhiệt độ và tốc độ quạt bao nhiêu?
+   U: 24°C, quạt mức 1.
+   A: Có bật cửa gió trần cho hàng ghế sau không?
+   U: Không bật cửa gió trần, lưu thiết lập.
+   GOLD: Lưu thiết lập làm mát hai ghế sau của VinFast VF 8 ở 24°C với quạt mức 1 và không bật cửa gió trần cho hàng ghế sau.
+   PRED: Bật điều hòa hai ghế sau của VinFast VF 8 ở 24°C với quạt mức 1, không bật cửa gió trần.
+   JUDGE: Sai intent (lưu thiết lập vs bật điều hòa) và thiếu ý lưu thiết lập
+
+[69] idx=784 domain=charging  cờ sai: slots_complete,negation_ok
+   U: Tôi cần sạc nhanh ở khu vực Định Công.
+   A: Có trạm FastCharge ở ngã 4, cách 1.9 km, công suất 120 kW.
+   U: Muốn cấp 3, không thu phí phụ.
+   A: Đã bật cấp 3, không tính phí phụ.
+   U: Đi tới trạm đó.
+   GOLD: Điều hướng tới trạm FastCharge ở ngã 4, cách 1.9 km, công suất 120 kW, cấp 3, không thu phí phụ
+   PRED: Dẫn đường đến trạm FastCharge ở ngã 4, Định Công.
+   JUDGE: thiếu các slot bắt buộc (cấp 3, công suất 120 kW, không thu phí phụ) và không giữ phủ định
+
+[70] idx=809 domain=messaging  cờ sai: slots_complete
+   U: Gửi tin cho anh Dũng: "Hôm nay họp 10h".
+   A: Bạn muốn gửi ngay hay lên lịch?
+   U: Lên lịch vào 15/09.
+   A: Bạn muốn gửi vào giờ nào?
+   U: 09:30 sáng.
+   A: Đã ghi lịch.
+   U: Thêm nội dung: "Mang tài liệu".
+   U: Thực hiện gửi.
+   GOLD: Gửi tin đến anh Dũng vào 15/09 09:30 nội dung "Hôm nay họp 10h. Mang tài liệu"
+   PRED: Lên lịch gửi tin cho anh Dũng lúc 09:30 sáng ngày 15/09 với nội dung 'Mang tài liệu'.
+   JUDGE: thiếu nội dung tin đầy đủ
+
+[71] idx=814 domain=driver_assist  cờ sai: intent_ok,slots_complete,no_hallucination
+   U: Bật cruise control.
+   A: Cruise control đã bật, tốc độ mặc định 100km/h.
+   U: Thay tốc độ thành 80km/h.
+   A: Tốc độ đã đổi 80km/h.
+   U: Giữ khoảng cách an toàn 30m.
+   GOLD: Đặt khoảng cách an toàn 30m cho cruise control
+   PRED: Đặt khoảng cách an toàn với tốc độ 80km/h và giữ constant.
+   JUDGE: Sai intent, thiếu slot khoảng cách và bổ sung thông tin không có
+
+[72] idx=824 domain=smart_home  cờ sai: slots_complete
+   U: Chuẩn bị cơm tối trước khi tôi về căn hộ Masteri An Phú.
+   A: Bạn muốn điều khiển thiết bị nào trong bếp?
+   U: Nồi cơm điện thông minh.
+   A: Bạn muốn nấu loại gạo nào và bắt đầu lúc mấy giờ?
+   U: Gạo lứt, bắt đầu lúc 17 giờ 55.
+   A: Sau khi nấu xong, bạn muốn giữ ấm trong bao lâu?
+   U: Giữ ấm 30 phút, lưu lịch đi.
+   GOLD: Lưu lịch nấu gạo lứt bằng nồi cơm điện thông minh tại căn hộ Masteri An Phú lúc 17 giờ 55 và giữ ấm trong 30 phút.
+   PRED: Lưu lịch chế độ nồi cơm điện thông minh nấu gạo lứt bắt đầu lúc 17 giờ 55, giữ ấm 30 phút.
+   JUDGE: thiếu địa điểm Masteri An Phú
+
+[73] idx=825 domain=calling  cờ sai: slots_complete
+   U: Tìm số liên hệ khẩn cấp của trường con tôi
+   A: Trong danh bạ có THCS Nguyễn Du số 024 3942 6789 và Tiểu học Đoàn Thị Điểm số 024 3773 5678. Con bạn học trường nào ạ?
+   U: THCS Nguyễn Du, gọi vào phòng bảo vệ
+   A: Số phòng bảo vệ THCS Nguyễn Du là máy nhánh 103.
+   U: Gọi vào đó ngay, con chưa về mà đã 5 giờ rưỡi rồi
+   GOLD: Gọi khẩn đến THCS Nguyễn Du số 024 3942 6789, máy nhánh 103 phòng bảo vệ.
+   PRED: Gọi đến phòng bảo vệ máy nhánh 103 tại THCS Nguyễn Du.
+   JUDGE: thiếu số điện thoại trong slot
+
+[74] idx=836 domain=charging  cờ sai: slots_complete,no_hallucination,negation_ok
+   U: Tôi muốn sạc tới 90% ở khu vực Trung Văn.
+   A: Có trạm SuperCharge tại ngã 5, cách 1.8 km, công suất 100 kW.
+   U: Hãy dùng cấp 3, không trả phí.
+   A: Đã bật cấp 3, không thu phí phụ.
+   U: Đi tới đó.
+   GOLD: Điều hướng tới trạm SuperCharge ở ngã 5, cách 1.8 km, công suất 100 kW, cấp 3, không thu phí phụ
+   PRED: Dẫn đường đến trạm SuperCharge tại ngã 5 để sạc xe Tesla Model Y.
+   JUDGE: thiếu các slot bắt buộc (cấp 3, không thu phí, công suất, khoảng cách) và thêm thông tin không có trong dialogue
+
+[75] idx=844 domain=messaging  cờ sai: slots_complete
+   U: Gửi tin cho chị Vân: "Hẹn 9h sáng hôm nay".
+   A: Bạn muốn gửi ngay hay lên lịch?
+   U: Lên lịch vào ngày 03/10.
+   A: Bạn muốn gửi vào giờ nào?
+   U: 09:00 sáng.
+   A: Đã ghi lịch.
+   U: Thêm nội dung: "Mang báo cáo tài chính".
+   U: Gửi đi.
+   GOLD: Gửi tin đến chị Vân vào 03/10 09:00 nội dung "Hẹn 9h sáng hôm nay. Mang báo cáo tài chính"
+   PRED: Lên lịch gửi tin cho chị Vân lúc 09:00 sáng ngày 03/10 với nội dung 'Mang báo cáo tài chính'.
+   JUDGE: thiếu nội dung 'Hẹn 9h sáng hôm nay'
+
+[76] idx=848 domain=climate  cờ sai: intent_ok,slots_complete
+   U: Bật điều hòa chế độ làm mát.
+   A: Điều hòa đã bật chế độ làm mát.
+   U: Đặt nhiệt độ 22 độ.
+   A: Nhiệt độ đã đặt 22°C.
+   U: Giảm gió mức 1.
+   A: Gió đã giảm mức 1.
+   U: Bật chế độ eco.
+   U: Xong.
+   GOLD: Bật điều hòa chế độ làm mát, đặt nhiệt độ 22°C, giảm gió mức 1 và bật chế độ eco
+   PRED: Bật chế độ eco cho điều hòa đang ở nhiệt độ 22°C.
+   JUDGE: thiếu các hành động đặt nhiệt độ, giảm gió và bật chế độ làm mát
+
+[77] idx=860 domain=messaging  cờ sai: intent_ok,slots_complete
+   U: Báo lễ tân là tôi sắp trả xe thuê.
+   A: Bạn muốn nhắn cho lễ tân nào?
+   U: Lễ tân khách sạn Fusion Suites Vũng Tàu.
+   A: Bạn muốn gửi qua kênh nào và nội dung gì?
+   U: Qua SMS, nhắn tôi sẽ đưa xe xuống sảnh lúc 10 giờ.
+   A: Bạn muốn gửi tin lúc nào?
+   U: Hẹn gửi lúc 9 giờ 45.
+   GOLD: Hẹn gửi SMS cho lễ tân khách sạn Fusion Suites Vũng Tàu lúc 9 giờ 45 với nội dung “Tôi sẽ đưa xe xuống sảnh lúc 10 giờ”.
+   PRED: Gửi SMS cho lễ tân khách sạn Fusion Suites Vũng Tàu với nội dung tôi sẽ đưa xe xuống sảnh lúc 10 giờ.
+   JUDGE: thiếu thời gian gửi, slot thời gian chưa có
+

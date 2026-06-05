@@ -1,0 +1,29 @@
+{
+  "forgiveness": "strict clean-drop only; judge frozen gpt-oss",
+  "models": {
+    "LoRA (vi-rewriter)": {
+      "negation_pattern_negation_ok": {
+        "original": 0.7478991596638656,
+        "no_op_forgiven_strict": 0.8151260504201681,
+        "no_op_forgiven_blanket": 0.8319327731092437
+      },
+      "command_acc_all": {
+        "original": 0.6590038314176245,
+        "no_op_forgiven_strict": 0.6590038314176245
+      },
+      "forgiven_clean_drops": 8
+    },
+    "Baseline (Qwen2.5-1.5B)": {
+      "negation_pattern_negation_ok": {
+        "original": 0.8487394957983193,
+        "no_op_forgiven_strict": 0.8823529411764706,
+        "no_op_forgiven_blanket": 0.8907563025210085
+      },
+      "command_acc_all": {
+        "original": 0.5277777777777778,
+        "no_op_forgiven_strict": 0.5277777777777778
+      },
+      "forgiven_clean_drops": 4
+    }
+  }
+}
