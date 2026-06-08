@@ -1,7 +1,7 @@
 """Generate Vietnamese dialogue rewrite dataset from templates + paraphrases.
 
-Output: data/raw/dialogues.jsonl — one JSON per line, each with `messages` field
-suitable for instruction tuning (system / user / assistant).
+Output: data/raw/dialogues.jsonl — one JSON per line in Llama-Factory
+`conversations` format.
 """
 from __future__ import annotations
 
@@ -9,14 +9,17 @@ import argparse
 import itertools
 import json
 import random
+import sys
 from pathlib import Path
 from typing import Callable
 
-SYSTEM_PROMPT = (
-    "Bạn là model rewrite hội thoại. Nhiệm vụ của bạn là biến câu nói cuối "
-    "của user thành một yêu cầu độc lập, rõ ràng, giữ nguyên ý định, không "
-    "thêm thông tin không chắc chắn. Chỉ trả về câu rewrite."
-)
+try:
+    from src.data.prompts import REWRITE_TAG, SYSTEM_PROMPT_FOR_TRAINING
+except ModuleNotFoundError:  # support `python src/data/generate_dataset.py`
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from prompts import REWRITE_TAG, SYSTEM_PROMPT_FOR_TRAINING
+
+SYSTEM_PROMPT = SYSTEM_PROMPT_FOR_TRAINING
 
 # ---------------------------------------------------------------------------
 # Paraphrase pools
@@ -91,12 +94,20 @@ def fmt_dialogue(turns: list[tuple[str, str]]) -> str:
 
 
 def make_sample(turns, rewrite, intent, group, domain):
+    conversations = [{"from": "system", "value": SYSTEM_PROMPT}]
+    for role, text in turns[:-1]:
+        from_ = "human" if role == "user" else "gpt"
+        conversations.append({"from": from_, "value": text})
+    final_role, final_text = turns[-1]
+    if final_role != "user":
+        raise ValueError("final turn must be user")
+    conversations.append({"from": "human", "value": f"{REWRITE_TAG}\n{final_text}"})
+    conversations.append({
+        "from": "gpt",
+        "value": json.dumps({"rewrite_message": rewrite}, ensure_ascii=False),
+    })
     return {
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": fmt_dialogue(turns)},
-            {"role": "assistant", "content": rewrite},
-        ],
+        "conversations": conversations,
         "meta": {"intent": intent, "group": group, "domain": domain},
     }
 

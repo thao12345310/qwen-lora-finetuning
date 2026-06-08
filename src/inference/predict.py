@@ -18,6 +18,8 @@ import torch
 import yaml
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+from src.data.prompts import REWRITE_TAG, SYSTEM_PROMPT_FOR_TRAINING
+
 
 def load_config(path: Path) -> dict:
     with path.open() as f:
@@ -25,9 +27,46 @@ def load_config(path: Path) -> dict:
 
 
 def format_conversation(turns: list[dict]) -> str:
-    """Render a [{'role':..,'content':..}] list into the 'user: ...\\nbot: ...' format
-    that the model was trained on."""
+    """Render turns into the legacy labeled text format."""
     return "\n".join(f"{t['role']}: {t['content']}" for t in turns)
+
+
+def build_trained_messages(conversation: list[dict]) -> list[dict]:
+    """Render API turns into the same multi-message prompt used for SFT/eval.
+
+    All previous turns are passed as chat history. The final user turn is tagged
+    with <REWRITE> so the model knows exactly which utterance to rewrite.
+    """
+    if not conversation:
+        raise ValueError("conversation must contain at least one turn")
+    if conversation[-1].get("role") != "user":
+        raise ValueError("the final turn must have role='user'")
+
+    messages = [{"role": "system", "content": SYSTEM_PROMPT_FOR_TRAINING}]
+    for i, turn in enumerate(conversation):
+        role = turn.get("role")
+        if role not in {"user", "bot"}:
+            raise ValueError(f"unsupported role: {role!r}")
+        content = str(turn.get("content", ""))
+        if i == len(conversation) - 1:
+            content = f"{REWRITE_TAG}\n{content}"
+        messages.append({
+            "role": "user" if role == "user" else "assistant",
+            "content": content,
+        })
+    return messages
+
+
+def parse_rewrite(raw: str) -> str:
+    """Extract rewrite_message from model JSON, falling back to raw text."""
+    txt = (raw or "").strip()
+    try:
+        obj = json.loads(txt)
+        if isinstance(obj, dict) and "rewrite_message" in obj:
+            return str(obj["rewrite_message"]).strip()
+    except (json.JSONDecodeError, ValueError):
+        pass
+    return txt
 
 
 def _pick_device() -> str:
@@ -96,10 +135,7 @@ def rewrite(
         cfg.get("load_in_4bit", False),
     )
 
-    messages = [
-        {"role": "system", "content": cfg["system_prompt"].strip()},
-        {"role": "user", "content": format_conversation(conversation)},
-    ]
+    messages = build_trained_messages(conversation)
     prompt = tokenizer.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     )

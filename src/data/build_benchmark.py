@@ -1,6 +1,6 @@
 """Build a hard, high-quality benchmark for the Vietnamese dialogue rewrite task.
 
-Calls GPT-4o (frontier) to generate dialogues across 8 hard patterns:
+Calls GPT-4o (frontier) to generate dialogues across hard patterns:
     1. pronoun_resolution    — anaphora ("đó", "người ấy", "cái thứ hai")
     2. irrelevant_context    — bot mentions a number user must NOT pull into rewrite
     3. multi_turn_slot       — slots scattered across 3-4 user turns, rewrite consolidates
@@ -9,6 +9,7 @@ Calls GPT-4o (frontier) to generate dialogues across 8 hard patterns:
     6. implicit_reference    — "nhà tôi", "công ty", "trường con" — slot resolved via world knowledge
     7. negation              — exclude / forbid a slot ("đừng đi qua cầu X", "trừ Y ra")
     8. compound_intent       — 2 intents in a single final turn ("đổi bài rồi giảm volume")
+    9. confirmation          — assistant proposes an action, user only says "ừ"/"ok"/...
 
 Pipeline:
     GPT-4o generate → heuristic validate (hallucination + leak checks)
@@ -148,6 +149,19 @@ Rewrite PHẢI giữ CẢ 2 intent với CẢ 2 slot. Tốt nhất nối bằng 
 Có thể có pronoun trong intent thứ 2 ("phát Despacito, tăng âm lượng cho nó lên 80") — model phải resolve "nó" = bài Despacito.
 
 2 intent KHÔNG cần cùng domain (vd 1 calling + 1 climate). Đảm bảo cả 2 đều actionable.
+""",
+
+    "confirmation": """Pattern: CONFIRMATION / ACCEPT PROPOSED ACTION (xác nhận đề xuất).
+
+Assistant ở lượt ngay trước ĐỀ XUẤT một hành động cụ thể có slot rõ, thường ở dạng
+"Em ... nhé?", "Em ... được không?", "Anh/chị có muốn em ... không?". Lượt user cuối
+chỉ là đồng ý tối giản: "ờ", "ừ", "ừm", "uhm", "ok", "oki", "vâng", "dạ", "được",
+"đúng", "chuẩn", "ừ ok"...
+
+Rewrite PHẢI bind lời đồng ý vào đúng hành động assistant vừa đề xuất, giữ đủ slot trong
+đề xuất, KHÔNG bịa thêm địa danh/person/brand/intent ngoài hội thoại.
+
+Không sinh true-abstain: nếu trước đó không có đề xuất hành động rõ thì KHÔNG thuộc pattern này.
 """,
 }
 

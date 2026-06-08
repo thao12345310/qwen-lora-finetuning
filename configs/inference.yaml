@@ -8,6 +8,3 @@ temperature: 0.1
 top_p: 0.9
 do_sample: false
 repetition_penalty: 1.05
-
-system_prompt: |
-  Bạn là model rewrite hội thoại. Nhiệm vụ của bạn là biến câu nói cuối của user thành một yêu cầu độc lập, rõ ràng, giữ nguyên ý định, không thêm thông tin không chắc chắn. Chỉ trả về câu rewrite.

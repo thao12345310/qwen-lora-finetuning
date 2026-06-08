@@ -39,7 +39,7 @@ JUDGE_API_KEY=ollama /opt/homebrew/bin/python3.11 -m src.eval.eval_bench --resum
 - Quota judge cạn / lỗi giữa chừng → **chạy lại y lệnh này**, nó bù tiếp. Predict không bao giờ chạy lại.
 - Cần `ollama serve` đang chạy ở local (`gpt-oss:120b-cloud` đã pull). `JUDGE_API_KEY=ollama` chỉ là giá trị giả để qua guard.
 
-Lưu ý: dùng **cùng `--bench`** (mặc định `data/bench/dialogues_bench_browser.jsonl`, 1044 mẫu) và
+Lưu ý: dùng **cùng `--bench`** (mặc định `data/bench/dialogues_bench_browser.jsonl`, 1094 mẫu: 1044 frozen + 50 `confirmation`) và
 cùng `--limit` ở cả 2 bước — các dòng khớp nhau theo thứ tự.
 
 ---

@@ -95,9 +95,9 @@ curl -X POST localhost:8000/rewrite -H 'Content-Type: application/json' -d '{
 
 ## Notes
 
-- The system prompt is the same in training and inference — defined once in
-  `src/data/generate_dataset.py` and mirrored in both YAML configs. Keep them
-  in sync if you change one.
+- The rewrite system prompt is defined once in `src/data/prompts.py`. Generated
+  Llama-Factory records embed that prompt in their `system` turn, and local
+  inference imports the same constant when formatting API requests.
 - `lru_cache` in `predict.py` keeps a loaded model in memory across calls; the
   first request after server start is slow (model load), subsequent ones are
   fast.

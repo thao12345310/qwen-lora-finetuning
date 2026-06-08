@@ -20,11 +20,16 @@ These are plain SFT positives: more correct examples of the exact tricky structu
 can be concatenated and re-split. A self-check asserts each gold omits the forbidden
 tokens (pronoun-in-body / carried device) before writing.
 
+v2.2 uses severity-weighted per-generator counts (790 samples total); --per is a
+fallback for any generator not listed in WEIGHTS.
+
 Run: /opt/homebrew/bin/python3.11 -m src.data.patch_b2b3 --per 200
 """
 from __future__ import annotations
 import argparse, json, random, re
 from pathlib import Path
+
+from src.data.prompts import SYSTEM_PROMPT_FOR_TRAINING
 
 OUT = Path("data/processed/patch_b2b3.jsonl")
 TRAIN = Path("data/processed/train.jsonl")
@@ -46,14 +51,7 @@ def bench_golds():
                     pass
     return out
 
-SYSTEM_PROMPT = (
-    "Bạn là một module xử lý NGÔN NGỮ cho hệ thống trợ lý trong xe.\n\n"
-    "Khi người dùng gửi yêu cầu có tag <REWRITE>, bạn PHẢI:\n"
-    "1. Viết lại câu ở phía sau tag này thành MỘT câu hoàn chỉnh, đầy đủ ý nghĩa.\n"
-    "2. Ngắn gọn, rõ nghĩa.\n"
-    "3. Chỉ sử dụng thông tin có trong hội thoại trước đó nếu cần — KHÔNG thêm thông tin mới.\n"
-    '4. Chỉ trả về JSON hợp lệ dạng: {"rewrite_message": "..."}'
-)
+SYSTEM_PROMPT = SYSTEM_PROMPT_FOR_TRAINING
 
 # --------------------------------------------------------------------------- pools
 RECIPIENTS = ["anh Nam", "chị Lan", "anh Tuấn Kiệt", "chị Hương", "sếp Cường",
@@ -269,6 +267,17 @@ GENERATORS = {
     "g5_no_carry_prev_action": g5_no_carry_prev_action,
 }
 
+# Per-generator sample counts (severity-weighted; reports/v2.2). multi_turn_slot
+# improved at v2.0 (+4.3) so messaging gens (g1–g3) are trimmed; smart_home
+# location/carry gens (g4/g5) kept. `--per` is only a fallback for names not here.
+WEIGHTS = {
+    "g1_no_pronoun_content": 150,
+    "g2_separate_time": 120,
+    "g3_email_intent": 120,
+    "g4_keep_location_device": 200,
+    "g5_no_carry_prev_action": 200,
+}
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -285,9 +294,10 @@ def main():
     bench = bench_golds()
     rows, counts, seen, leak = [], {}, set(), 0
     for name, fn in GENERATORS.items():
+        target = WEIGHTS.get(name, args.per)
         n = 0
         tries = 0
-        while n < args.per and tries < args.per * 40:
+        while n < target and tries < target * 40:
             tries += 1
             r = fn()
             gold = json.loads(r["conversations"][-1]["value"])["rewrite_message"]

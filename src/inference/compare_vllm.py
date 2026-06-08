@@ -25,16 +25,13 @@ from pathlib import Path
 
 import yaml
 
-from src.inference.predict import format_conversation
+from src.inference.predict import build_trained_messages
 
 
-def chat(url: str, model: str, system: str, user: str, cfg: dict) -> str:
+def chat(url: str, model: str, messages: list[dict], cfg: dict) -> str:
     body = {
         "model": model,
-        "messages": [
-            {"role": "system", "content": system},
-            {"role": "user", "content": user},
-        ],
+        "messages": messages,
         "max_tokens": cfg["max_new_tokens"],
         "temperature": cfg["temperature"],
         "top_p": cfg["top_p"],
@@ -64,11 +61,10 @@ def main():
 
     cfg = yaml.safe_load(args.config.open())
     turns = json.loads(args.conversation)
-    user_text = format_conversation(turns)
-    system = cfg["system_prompt"].strip()
+    messages = build_trained_messages(turns)
 
-    base = chat(args.url, args.base_model, system, user_text, cfg)
-    lora = chat(args.url, args.lora_name, system, user_text, cfg)
+    base = chat(args.url, args.base_model, messages, cfg)
+    lora = chat(args.url, args.lora_name, messages, cfg)
 
     print(json.dumps(
         {"base_model_output": base, "fine_tuned_output": lora},

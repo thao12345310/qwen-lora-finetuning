@@ -41,7 +41,7 @@ kẽ, KẾT THÚC ở lượt user) + câu "rewrite" chuẩn cho lượt user cu
 - KHÔNG LẶP HÀNH ĐỘNG: nếu bot đã làm xong hành động A, lượt cuối user yêu cầu B mới thì
   rewrite CHỈ chứa B, không nhắc lại A.
 
-# 8 PATTERN KHÓ (mỗi đợt trộn ≥5 pattern)
+# 9 PATTERN KHÓ (mỗi đợt trộn ≥5 pattern)
 1. pronoun_resolution — đại từ "cái đó/bài đó/người thứ hai/chỗ gần hơn" → resolve về slot bot nêu.
 2. irrelevant_context — bot nêu số nhiễu (nhiệt độ ngoài, % pin, giá xăng), user xin slot KHÁC;
    rewrite KHÔNG kéo nhầm số của bot.
@@ -53,6 +53,8 @@ kẽ, KẾT THÚC ở lượt user) + câu "rewrite" chuẩn cho lượt user cu
    GIỮ NGUYÊN cụm ngầm (KHÔNG bịa địa chỉ/SĐT).
 7. negation           — "đừng đi cầu X/trừ bài Y/không bật điều hoà"; rewrite giữ rõ phủ định.
 8. compound_intent    — lượt cuối 2 intent liền ("đổi bài rồi giảm volume"); rewrite giữ CẢ 2.
+9. confirmation       — bot đề xuất hành động cụ thể, user chỉ đồng ý tối giản ("ờ"/"ừm"/"ok");
+   rewrite bind đúng hành động đề xuất, không bịa thêm slot.
 
 # INTENT & DOMAIN (gán đúng, ưu tiên đa dạng — ĐỪNG dồn navigation)
 domain: navigation, climate, music, calling, messaging, charging, smart_home, driver_assist, vehicle
@@ -73,7 +75,7 @@ intent: ví dụ play_music_online, play_music_offline, navigate, find_charging,
 {
   "samples": [
     {
-      "pattern": "<1 trong 8>",
+      "pattern": "<1 trong 9>",
       "domain": "<1 trong 9>",
       "intent": "<intent sát nhất>",
       "context_required": true,

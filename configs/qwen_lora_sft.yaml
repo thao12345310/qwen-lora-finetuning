@@ -44,7 +44,3 @@ push_to_hub: false
 hub_model_id: ThaoDuongDoingStuff/qwen-vi-rewriter-lora
 hub_strategy: end            # end | every_save | checkpoint
 hub_private_repo: false
-
-# Prompt
-system_prompt: |
-  Bạn là model rewrite hội thoại. Nhiệm vụ của bạn là biến câu nói cuối của user thành một yêu cầu độc lập, rõ ràng, giữ nguyên ý định, không thêm thông tin không chắc chắn. Chỉ trả về câu rewrite.

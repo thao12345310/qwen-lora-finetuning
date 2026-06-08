@@ -7,7 +7,7 @@ Mục tiêu: bài rewrite chuẩn phải gói GỌN mọi tham số quan trọng
 các turn trước (slot, ràng buộc, thay đổi, hủy bỏ, lựa chọn...), không bỏ sót
 và không kéo theo thông tin nhiễu.
 
-Output: data/raw/dialogues_multi_turn.jsonl
+Output: data/raw/dialogues_multi_turn.jsonl in Llama-Factory `conversations` format.
 """
 from __future__ import annotations
 
@@ -15,15 +15,17 @@ import argparse
 import itertools
 import json
 import random
+import sys
 from pathlib import Path
 from typing import Callable
 
-SYSTEM_PROMPT = (
-    "Bạn là model rewrite hội thoại trên xe ô tô. Nhiệm vụ: biến lượt nói "
-    "cuối của user thành một yêu cầu độc lập, đầy đủ ý — gộp mọi tham số và "
-    "ràng buộc đã xuất hiện ở các lượt trước, bỏ qua thông tin nhiễu. Chỉ "
-    "trả về câu rewrite, không giải thích."
-)
+try:
+    from src.data.prompts import REWRITE_TAG, SYSTEM_PROMPT_FOR_TRAINING
+except ModuleNotFoundError:  # support `python src/data/generate_multi_turn.py`
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from prompts import REWRITE_TAG, SYSTEM_PROMPT_FOR_TRAINING
+
+SYSTEM_PROMPT = SYSTEM_PROMPT_FOR_TRAINING
 
 # ===========================================================================
 # VOCAB POOLS
@@ -124,12 +126,20 @@ def make_sample(turns, rewrite, intent, pattern, domain, *, context_required=Tru
     tiêu toàn bộ dataset: ~2/3 True : ~1/3 False.
     """
     user_turns = sum(1 for r, _ in turns if r == "user")
+    conversations = [{"from": "system", "value": SYSTEM_PROMPT}]
+    for role, text in turns[:-1]:
+        from_ = "human" if role == "user" else "gpt"
+        conversations.append({"from": from_, "value": text})
+    final_role, final_text = turns[-1]
+    if final_role != "user":
+        raise ValueError("final turn must be user")
+    conversations.append({"from": "human", "value": f"{REWRITE_TAG}\n{final_text}"})
+    conversations.append({
+        "from": "gpt",
+        "value": json.dumps({"rewrite_message": rewrite}, ensure_ascii=False),
+    })
     return {
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": fmt_dialogue(turns)},
-            {"role": "assistant", "content": rewrite},
-        ],
+        "conversations": conversations,
         "meta": {
             "intent": intent,
             "pattern": pattern,

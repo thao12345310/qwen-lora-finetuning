@@ -21,6 +21,10 @@ confirmation (bind lời đồng ý vào hành động đề xuất — lỗ h�
                             /"ok") → gold = chính hành động đề xuất, resolve đủ slot;
                             cấm bịa địa danh/intent ngoài hội thoại. [idx demo "ờ"]
 
+v2.2 adds p1 pronoun_resolution and c1 language_control, then uses severity-weighted
+per-generator counts (1700 samples total); --per is a fallback for any generator not
+listed in WEIGHTS.
+
 Run: /opt/homebrew/bin/python3.11 -m src.data.patch_b4 --per 200
 Kaggle: chạy SAU split_data.py (cell 5b), song song patch_b2b3 --inplace.
 """
@@ -287,7 +291,8 @@ N4_PROPOSALS = [
     ("Ngồi lâu mỏi lưng quá.", "bật massage ghế lái", "Bật massage ghế lái.", "massage ghế lái", "vehicle"),
     ("Tôi muốn đi Đà Lạt.", "dẫn đường tới Đà Lạt theo đường đèo", "Dẫn đường tới Đà Lạt theo đường đèo.", "Đà Lạt", "navigation"),
 ]
-AFFIRM = ["ờ", "ừ", "ok", "vâng", "được", "đúng rồi", "ừ nhỉ", "ờ được", "okê", "ừm đúng"]
+AFFIRM = ["ờ", "ừ", "ừm", "uhm", "ok", "oki", "okê", "vâng", "dạ", "được",
+          "đúng", "chuẩn", "đúng rồi", "ừ nhỉ", "ờ được", "ừ ok", "ừm đúng"]
 
 
 def n4_confirm_proposed():
@@ -304,6 +309,144 @@ def n4_confirm_proposed():
     return s
 
 
+# ============================================================ p1 pronoun_resolution
+# lượt cuối dùng đại từ/chỉ định → gold dùng referent đã resolve từ ngữ cảnh, KHÔNG
+# để lại đại từ. pattern tệ nhất bench (52.6%) và 0 coverage trước v2.2.
+P1_SONGS = [("Hào Quang", "Đức Phúc"), ("Chúng Ta Của Hiện Tại", "Sơn Tùng M-TP"),
+            ("Nơi Này Có Anh", "Sơn Tùng M-TP"), ("Lạc Trôi", "Sơn Tùng M-TP"),
+            ("Ngày Đầu Tiên", "Đức Phúc"), ("Đưa Em Về Nhà", "Grey D"),
+            ("Có Chàng Trai Viết Lên Cây", "Phan Mạnh Quỳnh"), ("Trốn Tìm", "Đen"),
+            ("Bài Này Chill Phết", "Đen"), ("Sài Gòn Đau Lòng Quá", "Hứa Kim Tuyền"),
+            ("Đi Đu Đưa Đi", "Bích Phương"), ("Vợ Người Ta", "Phan Mạnh Quỳnh"),
+            ("Thằng Điên", "JustaTee"), ("Ghen", "Erik")]
+P1_PLACES = ["Bảo tàng Mỹ thuật", "công viên Yên Sở", "phố sách Đinh Lễ", "hồ Tây",
+             "làng gốm Bát Tràng", "chùa Trấn Quốc", "Hoàng thành Thăng Long",
+             "công viên Thống Nhất", "phố cổ Hà Nội", "Văn Miếu Quốc Tử Giám",
+             "đảo Tuần Châu", "thác Bản Giốc", "vịnh Lan Hạ", "núi Hàm Lợn"]
+P1_PERSONS = ["anh Tuấn", "chị Mai", "bố", "mẹ", "anh Hùng kế toán", "chị Lan hàng xóm",
+              "em Trang", "chú Ba", "anh Dũng sửa xe", "cô giáo Hằng", "bác sĩ Nam",
+              "anh Phong trưởng phòng", "chị Yến", "ông Tư"]
+P1_STATIONS = ["VinFast Long Biên", "EVN Mỹ Đình", "VinFast Times City",
+               "VinFast Royal City", "EVN Cầu Giấy", "VinFast Ocean Park",
+               "VinFast Smart City", "EVN Hà Đông", "VinFast Aeon Hà Đông",
+               "EVN Thanh Xuân", "VinFast Gardenia", "VinFast Sunshine"]
+P1_COMPARE = [("Highlands Coffee", "The Coffee House"), ("Circle K", "GS25"),
+              ("BigC", "Aeon Mall"), ("Phúc Long", "Katinat"),
+              ("Trung Nguyên Legend", "Cộng Cà Phê"), ("Lotteria", "Jollibee"),
+              ("KFC", "McDonald's"), ("Vincom", "Lotte Mart"),
+              ("Bách Hóa Xanh", "WinMart"), ("Pharmacity", "Long Châu")]
+P1_MUSIC_FIN = ["Phát lại bài đó đi", "Mở lại bài vừa nãy", "Bật bài đó lên",
+                "Cho nghe lại bài đó", "Phát bài vừa nãy nữa đi", "Mở bài đó nghe lại"]
+P1_NAV_FIN = ["Dẫn đường tới chỗ đó đi", "Chỉ đường đến nơi đó", "Đưa tôi tới chỗ đó",
+              "Dẫn tôi đến nơi đó", "Chỉ đường tới chỗ đó", "Đi tới nơi đó đi"]
+P1_CALL_FIN = ["Gọi cho người đó đi", "Gọi người đó giúp tôi", "Quay số người đó",
+               "Gọi điện cho người đó", "Liên lạc người đó giúp tôi", "Gọi người đó luôn"]
+P1_CHG_FIN = ["Dẫn tới trạm đó đi", "Tới trạm đó", "Chỉ đường trạm đó",
+              "Đưa tôi tới trạm đó", "Dẫn đường trạm đó luôn", "Đi tới trạm đó"]
+P1_CMP_FIN = ["Chỗ gần hơn đi", "Cho tôi chỗ gần hơn", "Chọn chỗ gần hơn", "Đến chỗ gần hơn"]
+
+DEICTIC_FORBID = ["cái đó", "chỗ đó", "chỗ kia", "cái kia", "bài đó", "bài vừa nãy",
+                  "bài vừa", "số đó", "người đó", "chỗ gần hơn", "chỗ gần", "cái thứ",
+                  "nơi đó", "trạm đó"]
+
+
+def p1_pronoun_resolution():
+    kind = pick(["music", "navigation", "calling", "charging", "compare"])
+    extra_forbid = None
+    if kind == "music":
+        song, artist = pick(P1_SONGS)
+        turns = [("human", "Phát nhạc cho tôi nghe"),
+                 ("gpt", "Anh muốn nghe bài nào ạ?"),
+                 ("human", f"Bài {song} của {artist}"),
+                 ("gpt", "Vâng, em chuẩn bị ạ."),
+                 ("human", pick(P1_MUSIC_FIN))]
+        gold = f"Phát lại bài {song} của {artist}."
+        refs, dom = [song, artist], "music"
+    elif kind == "navigation":
+        place = pick(P1_PLACES)
+        turns = [("human", "Cuối tuần tôi muốn đi chơi"),
+                 ("gpt", "Anh định đi đâu ạ?"),
+                 ("human", place),
+                 ("gpt", "Vâng ạ."),
+                 ("human", pick(P1_NAV_FIN))]
+        gold = f"Dẫn đường tới {place}."
+        refs, dom = [place], "navigation"
+    elif kind == "calling":
+        person = pick(P1_PERSONS)
+        turns = [("human", "Tôi cần gọi điện"),
+                 ("gpt", "Anh muốn gọi cho ai ạ?"),
+                 ("human", cap(person)),
+                 ("gpt", "Vâng ạ."),
+                 ("human", pick(P1_CALL_FIN))]
+        gold = f"Gọi cho {person}."
+        refs, dom = [person], "calling"
+    elif kind == "charging":
+        station = pick(P1_STATIONS)
+        turns = [("human", "Pin xe sắp hết rồi"),
+                 ("gpt", f"Gần đây có trạm {station}, anh muốn tới đó chứ?"),
+                 ("human", "Ừ"),
+                 ("gpt", "Anh xác nhận tới trạm nào ạ?"),
+                 ("human", pick(P1_CHG_FIN))]
+        gold = f"Dẫn đường đến trạm {station}."
+        refs, dom = [station], "charging"
+    else:  # compare — chọn nơi GẦN HƠN trong hai lựa chọn
+        a, b = pick(P1_COMPARE)
+        da, db = pick([(1.2, 3.5), (0.8, 2.4), (1.5, 4.0)])
+        turns = [("human", "Tìm quán cà phê gần đây"),
+                 ("gpt", f"Có {a} cách {da}km và {b} cách {db}km, anh chọn nơi nào?"),
+                 ("human", pick(P1_CMP_FIN))]
+        gold = f"Dẫn đường đến {a}."
+        refs, dom, extra_forbid = [a], "navigation", b
+    s = sample(turns, gold, dom, src="patch_b4")
+    low = gold.lower()
+    for r in refs:
+        assert r in gold, (r, gold)            # referent resolve được
+    for d in DEICTIC_FORBID:
+        assert d not in low, (d, gold)         # không để lại đại từ/chỉ định
+    assert not word_in("nó", low), gold
+    if extra_forbid:
+        assert extra_forbid not in gold, (extra_forbid, gold)  # chọn đúng 1 trong 2
+    return s
+
+
+# ============================================================ c1 language_control
+# input trộn Anh-Việt → gold tiếng Việt, GIỮ brand/proper-noun Anh, KHÔNG CJK, không
+# dịch tên riêng. Chống regress code_switching (−4.6) + rò CJK (室外门廊…) ở v2.1.
+C1_GENRES = ["chill", "lo-fi", "acoustic", "EDM", "ballad", "indie", "R&B", "jazz"]
+C1_APPS = ["Spotify", "Apple Music", "YouTube Music", "SoundCloud", "Zing MP3"]
+C1_PLACES = ["Lotte Mall", "Aeon Mall", "Landmark 81", "Vincom Center", "Crescent Mall",
+             "Times City", "Royal City", "Diamond Plaza", "Saigon Centre", "Bitexco Tower"]
+C1_MAPS = ["Google Maps", "Apple Maps"]
+C1_PLAYLISTS = ["Discover Weekly", "Top Hits", "Daily Mix", "Chill Vibes",
+                "Workout Energy", "Focus Flow", "Road Trip", "Morning Coffee"]
+C1_VI_VERBS = ["Phát", "Dẫn đường", "Mở", "Đặt", "Gọi", "Bật", "Tìm"]
+_CJK = re.compile(r"[一-鿿가-힯]")
+
+
+def c1_language_control():
+    kind = pick(["music", "navigate", "playlist"])
+    if kind == "music":
+        g, app = pick(C1_GENRES), pick(C1_APPS)
+        inp = pick([f"play nhạc {g} trên {app}", f"mở {app} phát nhạc {g}",
+                    f"bật nhạc {g} bằng {app}"])
+        gold, brands, dom = f"Phát nhạc {g} trên {app}.", [app], "music"
+    elif kind == "navigate":
+        place, m = pick(C1_PLACES), pick(C1_MAPS)
+        inp = pick([f"navigate to {place} bằng {m}", f"chỉ đường to {place} bằng {m}",
+                    f"direction tới {place} qua {m}"])
+        gold, brands, dom = f"Dẫn đường đến {place} bằng {m}.", [place, m], "navigation"
+    else:  # playlist
+        pl, app = pick(C1_PLAYLISTS), pick(C1_APPS)
+        inp = pick([f"phát playlist {pl} trên {app}", f"mở {app} bật playlist {pl}"])
+        gold, brands, dom = f"Phát playlist {pl} trên {app}.", [pl, app], "music"
+    s = sample([("human", inp)], gold, dom, ctx=False, src="patch_b4")
+    for b in brands:
+        assert b in gold, (b, gold)            # brand/proper-noun giữ nguyên
+    assert not _CJK.search(gold), gold          # tuyệt đối không rò CJK
+    assert any(v in gold for v in C1_VI_VERBS), gold  # phần còn lại là tiếng Việt
+    return s
+
+
 GENERATORS = {
     "n1_keep_negative_clause": n1_keep_negative_clause,
     "n2_anti_inversion": n2_anti_inversion,
@@ -311,6 +454,22 @@ GENERATORS = {
     "s1_keep_qualifier": s1_keep_qualifier,
     "s2_compound_two_actions": s2_compound_two_actions,
     "n4_confirm_proposed": n4_confirm_proposed,
+    "p1_pronoun_resolution": p1_pronoun_resolution,
+    "c1_language_control": c1_language_control,
+}
+
+# Per-generator sample counts (severity-weighted; reports/v2.2). Dồn budget vào
+# pronoun (tệ nhất, mới) + code_switching (regress, mới) + correction/negation/slot;
+# trim compound/confirm. `--per` chỉ là fallback. Tổng B4 = 1700 (+ B2/B3 790 = 2490).
+WEIGHTS = {
+    "n1_keep_negative_clause": 250,
+    "n2_anti_inversion": 150,
+    "n3_exclusion_in_list": 250,
+    "s1_keep_qualifier": 250,
+    "s2_compound_two_actions": 150,
+    "n4_confirm_proposed": 150,
+    "p1_pronoun_resolution": 300,
+    "c1_language_control": 200,
 }
 
 
@@ -329,9 +488,10 @@ def main():
     bench = bench_golds()
     rows, counts, seen, leak = [], {}, set(), 0
     for name, fn in GENERATORS.items():
+        target = WEIGHTS.get(name, args.per)
         n = 0
         tries = 0
-        while n < args.per and tries < args.per * 60:
+        while n < target and tries < target * 60:
             tries += 1
             r = fn()
             gold = json.loads(r["conversations"][-1]["value"])["rewrite_message"]

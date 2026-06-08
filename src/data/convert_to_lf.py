@@ -79,6 +79,12 @@ def to_lf_record(record: dict, system_prompt: str) -> dict | None:
         conversations.append({"from": from_, "value": t["content"]})
     final_user = turns[-1]["content"]
     conversations.append({"from": "human", "value": f"{REWRITE_TAG}\n{final_user}"})
+    try:
+        assistant_obj = json.loads(assistant)
+        if isinstance(assistant_obj, dict) and "rewrite_message" in assistant_obj:
+            assistant = str(assistant_obj["rewrite_message"])
+    except (json.JSONDecodeError, TypeError, ValueError):
+        pass
     answer = json.dumps({"rewrite_message": assistant.strip()}, ensure_ascii=False)
     conversations.append({"from": "gpt", "value": answer})
 
