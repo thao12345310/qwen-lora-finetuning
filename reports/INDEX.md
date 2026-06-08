@@ -15,6 +15,8 @@ Mỗi lần cải tiến model/eval → **1 file riêng** `reports/vMAJOR.MINOR_
 | [v1.1](v1.1_diagnostic_train_distribution.md) | 2026-06-05 | diagnostic | Chẩn đoán phân phối train.jsonl (C) | Data SẠCH; weakness không do thiếu/hỏng data |
 | [v1.2](v1.2_negation_measurement_fix.md) | 2026-06-05 | eval-fix | Sửa thước đo negation, tha no_op (A4) | Hồi quy negation THẬT −6.7đ (LoRA 81.5 / base 88.2) |
 | [v1.3](v1.3_data_patch_b2b3.md) | 2026-06-05 | data | Vá data hẹp B2/B3 cho multi_turn_slot | +1000 mẫu nhắm 5 cấu trúc lỗi, 0 leak → train_v2 (17001) |
+| [v2.0](v2.0_retrain_patch_b2b3_bench.md) | 2026-06-06 | model | Re-train data vá B2/B3 + re-bench (n=1044) | multi_turn_slot 52.8→57.1 (+4.3), implicit_reference +3.1; command-acc tổng phẳng (65.9→65.6); negation LoRA A4-corrected 81.5 (= v1.0, chưa giải quyết) |
+| [v2.1](v2.1_error_analysis_next.md) | 2026-06-06 | diagnostic | Error-analysis bench v2.0 + thiết kế patch B4/slot-retention/confirm | Lỗi chính: slot-incomplete 302/84% + clause-drop/negation 81 (xuyên pattern: correction 27); gốc = SFT over-compression. Demo phát hiện lỗ hổng xác-nhận-đề-xuất (user "ờ"/"ok" đồng ý → LoRA bịa tool-call) mà bench mù → thêm gen n4_confirm_proposed + mở rộng bench |
 
 ---
 

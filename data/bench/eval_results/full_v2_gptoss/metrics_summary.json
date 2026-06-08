@@ -1,0 +1,240 @@
+{
+  "vi-rewriter": {
+    "overall": {
+      "n": 1044,
+      "judge_error_rate": 0.0,
+      "output_validity": 1.0,
+      "copy_rate": 0.05842911877394636,
+      "degenerate_rate": 0.004789272030651341,
+      "command_acc": 0.6561302681992337,
+      "intent_acc": 0.8869731800766284,
+      "slot_completeness": 0.710727969348659,
+      "halluc_rate": 0.07950191570881227,
+      "negation_preservation": 0.7478991596638656,
+      "restoration_f1": 0.5594798935946684,
+      "restoration_f2": 0.5655180492131237
+    },
+    "slices": {
+      "context_required": {
+        "True": {
+          "n": 718,
+          "command_acc": 0.6030640668523677,
+          "halluc_rate": 0.08913649025069638
+        },
+        "False": {
+          "n": 326,
+          "command_acc": 0.7730061349693251,
+          "halluc_rate": 0.05828220858895705
+        }
+      },
+      "pattern": {
+        "pronoun_resolution": {
+          "n": 137,
+          "command_acc": 0.5255474452554745,
+          "halluc_rate": 0.145985401459854
+        },
+        "irrelevant_context": {
+          "n": 108,
+          "command_acc": 0.8888888888888888,
+          "halluc_rate": 0.06481481481481481
+        },
+        "multi_turn_slot": {
+          "n": 163,
+          "command_acc": 0.5705521472392638,
+          "halluc_rate": 0.06748466257668712
+        },
+        "correction": {
+          "n": 135,
+          "command_acc": 0.5777777777777777,
+          "halluc_rate": 0.1111111111111111
+        },
+        "code_switching": {
+          "n": 131,
+          "command_acc": 0.7022900763358778,
+          "halluc_rate": 0.09923664122137404
+        },
+        "implicit_reference": {
+          "n": 126,
+          "command_acc": 0.6904761904761905,
+          "halluc_rate": 0.07142857142857142
+        },
+        "negation": {
+          "n": 119,
+          "command_acc": 0.6218487394957983,
+          "halluc_rate": 0.03361344537815126
+        },
+        "compound_intent": {
+          "n": 125,
+          "command_acc": 0.744,
+          "halluc_rate": 0.032
+        }
+      },
+      "domain": {
+        "navigation": {
+          "n": 145,
+          "command_acc": 0.5862068965517241,
+          "halluc_rate": 0.05517241379310345
+        },
+        "vehicle": {
+          "n": 126,
+          "command_acc": 0.6825396825396826,
+          "halluc_rate": 0.0873015873015873
+        },
+        "charging": {
+          "n": 113,
+          "command_acc": 0.5575221238938053,
+          "halluc_rate": 0.08849557522123894
+        },
+        "climate": {
+          "n": 100,
+          "command_acc": 0.75,
+          "halluc_rate": 0.08
+        },
+        "music": {
+          "n": 125,
+          "command_acc": 0.664,
+          "halluc_rate": 0.032
+        },
+        "smart_home": {
+          "n": 125,
+          "command_acc": 0.656,
+          "halluc_rate": 0.096
+        },
+        "driver_assist": {
+          "n": 103,
+          "command_acc": 0.7378640776699029,
+          "halluc_rate": 0.07766990291262135
+        },
+        "messaging": {
+          "n": 112,
+          "command_acc": 0.6785714285714286,
+          "halluc_rate": 0.07142857142857142
+        },
+        "calling": {
+          "n": 95,
+          "command_acc": 0.6210526315789474,
+          "halluc_rate": 0.14736842105263157
+        }
+      }
+    }
+  },
+  "Qwen/Qwen2.5-1.5B-Instruct": {
+    "overall": {
+      "n": 1044,
+      "judge_error_rate": 0.0,
+      "output_validity": 1.0,
+      "copy_rate": 0.08237547892720307,
+      "degenerate_rate": 0.045019157088122604,
+      "command_acc": 0.5363984674329502,
+      "intent_acc": 0.8113026819923371,
+      "slot_completeness": 0.5775862068965517,
+      "halluc_rate": 0.10153256704980843,
+      "negation_preservation": 0.7815126050420168,
+      "restoration_f1": 0.39273235954398866,
+      "restoration_f2": 0.3752758680314496
+    },
+    "slices": {
+      "context_required": {
+        "True": {
+          "n": 718,
+          "command_acc": 0.4387186629526462,
+          "halluc_rate": 0.10306406685236769
+        },
+        "False": {
+          "n": 326,
+          "command_acc": 0.7515337423312883,
+          "halluc_rate": 0.09815950920245399
+        }
+      },
+      "pattern": {
+        "pronoun_resolution": {
+          "n": 137,
+          "command_acc": 0.5109489051094891,
+          "halluc_rate": 0.145985401459854
+        },
+        "irrelevant_context": {
+          "n": 108,
+          "command_acc": 0.8703703703703703,
+          "halluc_rate": 0.09259259259259259
+        },
+        "multi_turn_slot": {
+          "n": 163,
+          "command_acc": 0.13496932515337423,
+          "halluc_rate": 0.0736196319018405
+        },
+        "correction": {
+          "n": 135,
+          "command_acc": 0.5185185185185185,
+          "halluc_rate": 0.0962962962962963
+        },
+        "code_switching": {
+          "n": 131,
+          "command_acc": 0.6870229007633588,
+          "halluc_rate": 0.09923664122137404
+        },
+        "implicit_reference": {
+          "n": 126,
+          "command_acc": 0.5317460317460317,
+          "halluc_rate": 0.15079365079365079
+        },
+        "negation": {
+          "n": 119,
+          "command_acc": 0.5798319327731093,
+          "halluc_rate": 0.06722689075630252
+        },
+        "compound_intent": {
+          "n": 125,
+          "command_acc": 0.624,
+          "halluc_rate": 0.088
+        }
+      },
+      "domain": {
+        "navigation": {
+          "n": 145,
+          "command_acc": 0.42758620689655175,
+          "halluc_rate": 0.1310344827586207
+        },
+        "vehicle": {
+          "n": 126,
+          "command_acc": 0.6031746031746031,
+          "halluc_rate": 0.1111111111111111
+        },
+        "charging": {
+          "n": 113,
+          "command_acc": 0.5132743362831859,
+          "halluc_rate": 0.05309734513274336
+        },
+        "climate": {
+          "n": 100,
+          "command_acc": 0.67,
+          "halluc_rate": 0.08
+        },
+        "music": {
+          "n": 125,
+          "command_acc": 0.544,
+          "halluc_rate": 0.072
+        },
+        "smart_home": {
+          "n": 125,
+          "command_acc": 0.576,
+          "halluc_rate": 0.096
+        },
+        "driver_assist": {
+          "n": 103,
+          "command_acc": 0.6601941747572816,
+          "halluc_rate": 0.08737864077669903
+        },
+        "messaging": {
+          "n": 112,
+          "command_acc": 0.375,
+          "halluc_rate": 0.125
+        },
+        "calling": {
+          "n": 95,
+          "command_acc": 0.49473684210526314,
+          "halluc_rate": 0.15789473684210525
+        }
+      }
+    }
+  }
+}

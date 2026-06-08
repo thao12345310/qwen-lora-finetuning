@@ -119,6 +119,24 @@ def recompute(rows, no_op_idx, forgive_slot=False, strict=True):
 
 
 def main():
+    import argparse
+    global DIR, PREDS, NEG_TYPES
+    ap = argparse.ArgumentParser(description="A4 no_op-forgiven recompute (reusable per bench dir).")
+    ap.add_argument("--dir", type=Path, default=DIR,
+                    help="Preds dir (preds_*.jsonl). Default: full_gptoss (v1.0).")
+    args = ap.parse_args()
+    DIR = args.dir
+    PREDS = {
+        "LoRA (vi-rewriter)": DIR / "preds_vi-rewriter.jsonl",
+        "Baseline (Qwen2.5-1.5B)": DIR / "preds_Qwen_Qwen2.5-1.5B-Instruct.jsonl",
+    }
+    # negation_types is derived from bench gold (version-independent) → reuse the
+    # canonical full_gptoss copy if this dir doesn't have its own.
+    NEG_TYPES = DIR / "negation_types.jsonl"
+    if not NEG_TYPES.exists():
+        NEG_TYPES = Path("data/bench/eval_results/full_gptoss") / "negation_types.jsonl"
+        print(f"(dùng negation_types canonical: {NEG_TYPES})")
+
     neg_types = {json.loads(l)["idx"]: json.loads(l)["type"]
                  for l in NEG_TYPES.open(encoding="utf-8")}
     no_op_idx = {i for i, t in neg_types.items() if t == "no_op"}

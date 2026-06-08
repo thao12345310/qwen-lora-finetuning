@@ -16,6 +16,9 @@ Chạy:
 
 Prefill sẵn:
     VLLM_URL=https://xxx.ngrok-free.dev python demo/app.py
+
+Tạo LINK PUBLIC cho người khác test (Gradio tự cấp *.gradio.live, sống ~72h):
+    SHARE=1 VLLM_URL=https://xxx.ngrok-free.dev python demo/app.py
 """
 from __future__ import annotations
 
@@ -98,11 +101,6 @@ def load_samples() -> list[dict]:
 
 
 SAMPLES = load_samples()
-# Mỗi dòng bảng: [pattern, lĩnh vực, câu cuối của người dùng]
-SAMPLE_ROWS = [
-    [s["pattern"], s["domain"], s["turns"][-1]["content"]]
-    for s in SAMPLES
-]
 
 
 # ---- Helpers -----------------------------------------------------------------
@@ -206,47 +204,90 @@ def run_rewrite(turns, vllm_url, lora_id, base_id, temperature, max_tokens, do_c
     )
 
 
-def pick_sample(idx, vllm_url, lora_id, base_id, temperature, max_tokens, do_compare):
-    """Bấm 1 dòng trong bảng → nạp hội thoại + gold, rồi tự chạy (nếu đã có URL).
+# ---- Tự nhập: dán cả hội thoại dạng text -------------------------------------
 
-    `idx` đến từ chính gr.Dataset nằm đầu danh sách inputs — tuỳ phiên bản Gradio có
-    thể là int (type="index") hoặc cả hàng [pattern, domain, câu cuối]; xử lý cả hai."""
+# Nhãn đầu dòng → vai. Chấp nhận có/không dấu, viết tắt; dễ cho người test.
+_USER_LABELS = {"user", "u", "người dùng", "nguoi dung", "khách", "khach", "me", "tôi", "toi"}
+_BOT_LABELS = {"assistant", "a", "bot", "trợ lý", "tro ly", "ai", "model", "máy", "may"}
+
+
+def parse_history_text(history_text: str) -> list[dict]:
+    """Mỗi dòng 'user: ...' / 'assistant: ...' → turns. Dòng không nhãn nối vào lượt trước.
+
+    Bỏ qua dòng trống. Khoan dung: nhãn không dấu/viết tắt vẫn nhận (xem _*_LABELS)."""
+    turns: list[dict] = []
+    for raw_line in (history_text or "").splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        role = None
+        content = line
+        if ":" in line:
+            label, rest = line.split(":", 1)
+            key = label.strip().lower()
+            if key in _USER_LABELS:
+                role, content = "user", rest.strip()
+            elif key in _BOT_LABELS:
+                role, content = "bot", rest.strip()
+        if role is None:  # dòng không có nhãn hợp lệ → nối vào lượt trước nếu có
+            if turns:
+                turns[-1]["content"] = f"{turns[-1]['content']} {content}".strip()
+                continue
+            role = "user"  # dòng đầu mà thiếu nhãn → coi là người dùng
+        turns.append({"role": role, "content": content})
+    return turns
+
+
+def run_custom(history_text, final_user, vllm_url, lora_id, base_id, temperature, max_tokens, do_compare):
+    """Tab tự nhập: ghép lịch sử + câu cần viết lại → turns rồi chạy như mẫu có sẵn."""
+    turns = parse_history_text(history_text)
+    final_user = (final_user or "").strip()
+    if final_user:
+        turns = turns + [{"role": "user", "content": final_user}]
+    if not turns:
+        raise gr.Error("Hãy nhập 'Câu cần viết lại' (và lịch sử phía trên nếu muốn có ngữ cảnh).")
+    if turns[-1]["role"] != "user":
+        raise gr.Error(
+            "Lượt CUỐI phải là của người dùng. Điền ô 'Câu cần viết lại', "
+            "hoặc để dòng cuối của lịch sử là 'user: ...'."
+        )
+    chat = _to_chatbot(turns)
+    lora_rewrite, lora_raw, base_u, base_raw_u = run_rewrite(
+        turns, vllm_url, lora_id, base_id, temperature, max_tokens, do_compare
+    )
+    return turns, chat, lora_rewrite, lora_raw, base_u, base_raw_u
+
+
+def clear_custom():
+    return "", "", [], []
+
+
+# ---- Case mẫu để bấm-điền-nhanh ----------------------------------------------
+
+def _turns_to_history_and_final(turns: list[dict]) -> tuple[str, str]:
+    """turns → (text lịch sử dạng 'user:/assistant:' cho các lượt trước, câu user cuối)."""
+    final = turns[-1]["content"]
+    lines = [
+        f"{'user' if t['role'] == 'user' else 'assistant'}: {t['content']}"
+        for t in turns[:-1]
+    ]
+    return "\n".join(lines), final
+
+
+# Vài case đa dạng để người test bấm là điền sẵn vào 2 ô (rồi tự sửa/Chạy).
+N_EXAMPLES = 10
+EXAMPLES = SAMPLES[:N_EXAMPLES]
+# Mỗi dòng bảng case: chỉ hiện câu cuối + lĩnh vực cho gọn.
+EXAMPLE_ROWS = [[s["turns"][-1]["content"], s["domain"]] for s in EXAMPLES]
+
+
+def fill_example(idx):
+    """Bấm 1 case → trả (câu cần viết lại, text lịch sử) để điền vào ô cho người dùng sửa."""
     if isinstance(idx, (list, tuple)):
         row = list(idx)
-        idx = SAMPLE_ROWS.index(row) if row in SAMPLE_ROWS else 0
-    s = SAMPLES[int(idx)]
-    turns = s["turns"]
-    chat = _to_chatbot(turns)
-    gold = s["gold"]
-    if (vllm_url or "").strip():
-        lora_rewrite, lora_raw, base_u, base_raw_u = run_rewrite(
-            turns, vllm_url, lora_id, base_id, temperature, max_tokens, do_compare
-        )
-    else:
-        lora_rewrite = "⬆️ Dán vLLM URL ở ô trên cùng rồi bấm lại mẫu này để chạy."
-        lora_raw = ""
-        base_u = gr.update(value="", visible=bool(do_compare))
-        base_raw_u = gr.update(value="", visible=bool(do_compare))
-    return turns, chat, gold, lora_rewrite, lora_raw, base_u, base_raw_u
-
-
-# ---- Tự nhập thủ công (mục phụ) ----------------------------------------------
-
-def add_turn(turns, role, content):
-    content = (content or "").strip()
-    if not content:
-        return turns, _to_chatbot(turns), ""
-    turns = turns + [{"role": role, "content": content}]
-    return turns, _to_chatbot(turns), ""
-
-
-def undo_turn(turns):
-    turns = turns[:-1] if turns else turns
-    return turns, _to_chatbot(turns)
-
-
-def clear_turns():
-    return [], [], ""
+        idx = EXAMPLE_ROWS.index(row) if row in EXAMPLE_ROWS else 0
+    hist, final = _turns_to_history_and_final(EXAMPLES[int(idx)]["turns"])
+    return final, hist
 
 
 # ---- UI ----------------------------------------------------------------------
@@ -255,19 +296,49 @@ def build_ui():
     with gr.Blocks(title="Vietnamese Dialogue Rewriter — Demo", fill_width=True) as demo:
         gr.Markdown(
             "# 🚗 Vietnamese Dialogue Rewriter — Demo\n"
-            "**Cách dùng:** ① dán vLLM URL → ② bấm một dòng trong bảng mẫu. "
-            "Model đã train sẽ viết lại **câu cuối của người dùng** và hiện cạnh đáp án chuẩn."
+            "Model viết lại **câu cuối của người dùng** cho rõ nghĩa dựa trên ngữ cảnh hội thoại "
+            "(giải quyết 'ở đó', 'cái đó', 'lúc nãy'…) và **so sánh với base model chưa train**.\n\n"
+            "**Cách dùng:** bấm một **case mẫu** bên dưới để điền sẵn (rồi sửa tuỳ ý), "
+            "hoặc tự gõ — xong bấm **▶️ Chạy**."
         )
 
-        with gr.Row():
-            vllm_url = gr.Textbox(
-                label="① vLLM URL (ngrok từ kaggle_serve.ipynb)",
-                value=DEFAULT_VLLM_URL, placeholder="https://xxxx.ngrok-free.dev", scale=4,
-            )
-            health_btn = gr.Button("Kiểm tra kết nối", scale=1)
-        health_out = gr.Markdown("")
+        turns_state = gr.State([])
 
-        with gr.Accordion("⚙️ Tuỳ chọn (model id, so sánh, sampling)", open=False):
+        gr.Markdown(f"#### 👇 Bấm một case mẫu để điền nhanh ({len(EXAMPLES)} case)")
+        examples_tbl = gr.Dataset(
+            components=[gr.Textbox(visible=False), gr.Textbox(visible=False)],
+            headers=["Câu cần viết lại", "Lĩnh vực"],
+            samples=EXAMPLE_ROWS,
+            samples_per_page=len(EXAMPLE_ROWS),
+            type="index",
+            label=None,
+        )
+
+        custom_final = gr.Textbox(
+            label="① Câu cần viết lại (lượt người dùng cuối)",
+            placeholder="VD: Đặt phòng tại đó vào lúc 7 giờ sáng đi",
+            lines=2,
+        )
+        custom_history = gr.Textbox(
+            label="② Lịch sử hội thoại trước đó (tuỳ chọn) — mỗi dòng 'user:' hoặc 'assistant:'",
+            placeholder=(
+                "user: Khách sạn Thắng Thắng còn mở cửa không?\n"
+                "assistant: Dạ, Khách sạn Thắng Thắng còn mở cửa ạ"
+            ),
+            lines=5,
+        )
+        with gr.Row():
+            custom_run = gr.Button("▶️ Chạy", variant="primary", scale=3)
+            custom_clear = gr.Button("🗑️ Xoá", scale=1)
+
+        with gr.Accordion("⚙️ Tuỳ chọn (vLLM URL, model id, sampling)", open=False):
+            with gr.Row():
+                vllm_url = gr.Textbox(
+                    label="vLLM URL (ngrok từ kaggle_serve.ipynb)",
+                    value=DEFAULT_VLLM_URL, placeholder="https://xxxx.ngrok-free.dev", scale=4,
+                )
+                health_btn = gr.Button("Kiểm tra kết nối", scale=1)
+            health_out = gr.Markdown("")
             with gr.Row():
                 lora_id = gr.Textbox(label="LoRA model id", value=DEFAULT_LORA_ID)
                 base_id = gr.Textbox(label="Base model id (để so sánh)", value=DEFAULT_BASE_ID)
@@ -276,56 +347,25 @@ def build_ui():
                 temperature = gr.Slider(0.0, 1.0, value=0.1, step=0.05, label="Temperature")
                 max_tokens = gr.Slider(32, 512, value=160, step=16, label="Max tokens")
 
-        turns_state = gr.State([])
-
-        gr.Markdown(f"### ② Chọn một mẫu test — bấm vào dòng bất kỳ ({len(SAMPLES)} mẫu)")
-        samples_tbl = gr.Dataset(
-            components=[gr.Textbox(visible=False), gr.Textbox(visible=False), gr.Textbox(visible=False)],
-            headers=["Pattern", "Lĩnh vực", "Câu cuối của người dùng"],
-            samples=SAMPLE_ROWS,
-            samples_per_page=12,
-            type="index",
-            label=None,
-        )
-
         gr.Markdown("### Kết quả")
         with gr.Row():
             with gr.Column(scale=1):
                 chat = gr.Chatbot(height=340, label="Hội thoại (lượt cuối = câu được rewrite)")
-                gold_box = gr.Textbox(label="✅ Đáp án chuẩn (gold)", lines=2)
             with gr.Column(scale=1):
                 lora_out = gr.Textbox(label="🤖 Model đã train → câu rewrite", lines=3)
                 base_out = gr.Textbox(label="📦 Base model (chưa train) → câu rewrite", lines=3, visible=True)
                 with gr.Accordion("Output thô của model (debug)", open=False):
                     lora_raw = gr.Textbox(label="LoRA raw", lines=2)
                     base_raw = gr.Textbox(label="Base raw", lines=2, visible=True)
-                rerun_btn = gr.Button("🔄 Chạy lại mẫu hiện tại", variant="primary")
 
-        with gr.Accordion("✍️ Tự nhập hội thoại (nâng cao)", open=False):
-            gr.Markdown("Thêm từng lượt; lượt **cuối phải là user**. Xong bấm *Chạy lại*.")
-            with gr.Row():
-                role = gr.Radio(["user", "bot"], value="user", label="Vai", scale=1)
-                content = gr.Textbox(label="Nội dung lượt", scale=3, placeholder="Nhập rồi Enter / bấm Thêm…")
-            with gr.Row():
-                add_btn = gr.Button("➕ Thêm lượt")
-                undo_btn = gr.Button("↩️ Bỏ lượt cuối")
-                clear_btn = gr.Button("🗑️ Xoá hết")
-
-        run_io = [turns_state, vllm_url, lora_id, base_id, temperature, max_tokens, do_compare]
         result_out = [lora_out, lora_raw, base_out, base_raw]
+        custom_io = [custom_history, custom_final, vllm_url, lora_id, base_id, temperature, max_tokens, do_compare]
 
         # --- wiring ---
         health_btn.click(check_health, [vllm_url], [health_out])
-        samples_tbl.click(
-            pick_sample,
-            [samples_tbl, vllm_url, lora_id, base_id, temperature, max_tokens, do_compare],
-            [turns_state, chat, gold_box, *result_out],
-        )
-        rerun_btn.click(run_rewrite, run_io, result_out)
-        add_btn.click(add_turn, [turns_state, role, content], [turns_state, chat, content])
-        content.submit(add_turn, [turns_state, role, content], [turns_state, chat, content])
-        undo_btn.click(undo_turn, [turns_state], [turns_state, chat])
-        clear_btn.click(clear_turns, None, [turns_state, chat, gold_box])
+        examples_tbl.click(fill_example, [examples_tbl], [custom_final, custom_history])
+        custom_run.click(run_custom, custom_io, [turns_state, chat, *result_out])
+        custom_clear.click(clear_custom, None, [custom_history, custom_final, turns_state, chat])
 
     return demo
 
@@ -346,9 +386,17 @@ def _free_port(preferred: int = 7860) -> int:
 
 if __name__ == "__main__":
     port = _free_port(int(os.environ.get("PORT", 7860)))
-    print(f"\n>> Mở UI tại http://127.0.0.1:{port}\n")
+    # SHARE=1 → Gradio cấp link public *.gradio.live cho người khác vào test.
+    share = os.environ.get("SHARE", "").strip().lower() in {"1", "true", "yes"}
+    print(f"\n>> Mở UI tại http://127.0.0.1:{port}")
+    if share:
+        print(">> SHARE bật: chờ Gradio in dòng 'Running on public URL: https://....gradio.live'\n")
+    else:
+        print(">> (Muốn link public cho người khác test: chạy lại với SHARE=1)\n")
     # ssr_mode=False: Gradio 5/6 bật SSR (cần Node) mặc định → hay rớt websocket
     # "Connection to the server was lost". Tắt đi cho ổn định trên máy local.
+    # Khi share=True phải lắng nghe 0.0.0.0 thì tunnel của Gradio mới vào được.
     build_ui().queue().launch(
-        server_name="127.0.0.1", server_port=port, ssr_mode=False, show_error=True,
+        server_name="0.0.0.0" if share else "127.0.0.1",
+        server_port=port, ssr_mode=False, show_error=True, share=share,
     )
