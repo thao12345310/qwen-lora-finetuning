@@ -37,7 +37,7 @@ from src.data.patch_b2b3 import (
     SYSTEM_PROMPT, sample, bench_golds, pick, word_in, cap, TRAIN,
 )
 
-OUT = Path("data/processed/patch_b4.jsonl")
+OUT = Path("data/patches/patch_b4.jsonl")
 TRAIN_V3 = Path("data/processed/train_v3.jsonl")
 NEG_WORDS = ("không", "đừng", "tránh")
 
@@ -477,6 +477,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--per", type=int, default=200, help="samples per generator")
     ap.add_argument("--seed", type=int, default=17)
+    ap.add_argument("--out", type=Path, default=OUT)
     ap.add_argument("--merge", action="store_true",
                     help="also write train_v3 = train + patch")
     ap.add_argument("--inplace", action="store_true",
@@ -494,6 +495,7 @@ def main():
         while n < target and tries < target * 60:
             tries += 1
             r = fn()
+            r.setdefault("meta", {})["pattern"] = name
             gold = json.loads(r["conversations"][-1]["value"])["rewrite_message"]
             if gold in bench:          # never train on an eval-bench gold
                 leak += 1
@@ -508,9 +510,10 @@ def main():
     print(f"(skipped {leak} samples colliding with bench golds)")
     random.shuffle(rows)
 
-    OUT.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in rows) + "\n",
-                   encoding="utf-8")
-    print(f"patch: {len(rows)} samples → {OUT}")
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in rows) + "\n",
+                        encoding="utf-8")
+    print(f"patch: {len(rows)} samples → {args.out}")
     for k, v in counts.items():
         print(f"  {k:26s} {v}")
 

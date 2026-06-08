@@ -42,14 +42,26 @@ pip install -r requirements.txt
 ### 2. Generate the dataset
 
 ```bash
-python src/data/generate_dataset.py --target 500
-python src/data/split_data.py
+python3 src/data/generate_dataset.py --target 500
+python3 src/data/split_data.py
 ```
 
 Produces `data/processed/{train,valid,test}.jsonl`. The generator covers all
 seven scenario groups from the blueprint (complete utterance, missing intent,
 pronoun resolution, confirmation, cancellation, parameter adjustment,
 irrelevant context) across four domains (AC, music, navigation, calling).
+
+For the current recipe-managed train mix:
+
+```bash
+python3 -m src.data.patch_b2b3
+python3 -m src.data.patch_b4
+python3 -m src.data.build_train_mix --recipe data/recipes/v3.yaml
+```
+
+The recipe writes `train.jsonl`, `valid.jsonl`, `test.jsonl`,
+`dataset_info.json`, `dataset_manifest.json`, and `dataset_report.md` under its
+`output_dir` (`data/processed` by default).
 
 ### 3. Fine-tune on T4 16GB (Kaggle / Colab)
 

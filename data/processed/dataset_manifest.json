@@ -1,0 +1,196 @@
+{
+  "version": "v4",
+  "recipe_path": "data/recipes/v4.yaml",
+  "recipe_sha256": "b3757e01c8b64d9992cf23a27f4aca23d2271dbcd2fef408f765076cc1df17f1",
+  "output_dir": "data/processed",
+  "seed": 42,
+  "split": {
+    "train_ratio": 0.8,
+    "valid_ratio": 0.1,
+    "seed": 42,
+    "stratify_by": [
+      "meta.domain",
+      "meta.context_required"
+    ]
+  },
+  "guards": {
+    "dedupe_by": "conversations",
+    "bench_leak_check": "data/bench/dialogues_bench_browser.jsonl",
+    "bench_leak_policy": "drop"
+  },
+  "sources": [
+    {
+      "name": "base_mimo",
+      "path": "data/train/dialogues_train_api.jsonl",
+      "placement": "split",
+      "requested_take": "all",
+      "loaded": 20000,
+      "selected_before_guards": 20000,
+      "shortfall": 0,
+      "dropped_duplicate": 0,
+      "dropped_bench_leak": 5,
+      "accepted": 19995
+    },
+    {
+      "name": "patch_b2b3",
+      "path": "data/patches/patch_b2b3.jsonl",
+      "placement": "train_only",
+      "requested_take": 790,
+      "loaded": 790,
+      "selected_before_guards": 790,
+      "shortfall": 0,
+      "dropped_duplicate": 0,
+      "dropped_bench_leak": 0,
+      "accepted": 790
+    },
+    {
+      "name": "patch_b4",
+      "path": "data/patches/patch_b4.jsonl",
+      "placement": "train_only",
+      "requested_take": 1700,
+      "loaded": 1700,
+      "selected_before_guards": 1700,
+      "shortfall": 0,
+      "dropped_duplicate": 0,
+      "dropped_bench_leak": 0,
+      "accepted": 1700
+    },
+    {
+      "name": "patch_short_contextual",
+      "path": "data/patches/patch_short_contextual.jsonl",
+      "placement": "train_only",
+      "requested_take": "all",
+      "loaded": 2020,
+      "selected_before_guards": 2020,
+      "shortfall": 0,
+      "dropped_duplicate": 0,
+      "dropped_bench_leak": 0,
+      "accepted": 2020
+    }
+  ],
+  "counts": {
+    "train": {
+      "total": 20508,
+      "by_source": {
+        "base_mimo": 15998,
+        "patch_b2b3": 790,
+        "patch_b4": 1700,
+        "patch_short_contextual": 2020
+      },
+      "by_domain": {
+        "calling": 2279,
+        "charging": 2870,
+        "climate": 1797,
+        "driver_assist": 2004,
+        "messaging": 2495,
+        "music": 2471,
+        "navigation": 2424,
+        "smart_home": 1623,
+        "vehicle": 2545
+      },
+      "by_context_required": {
+        "false": 5680,
+        "true": 14828
+      },
+      "by_pattern": {
+        "ack_after_done": 220,
+        "ack_bind_proposal": 240,
+        "ack_no_action": 300,
+        "c1_language_control": 200,
+        "confirm_with_modifier": 160,
+        "g1_no_pronoun_content": 150,
+        "g2_separate_time": 120,
+        "g3_email_intent": 120,
+        "g4_keep_location_device": 200,
+        "g5_no_carry_prev_action": 200,
+        "list_choice": 140,
+        "n1_keep_negative_clause": 250,
+        "n2_anti_inversion": 150,
+        "n3_exclusion_in_list": 250,
+        "n4_confirm_proposed": 150,
+        "p1_pronoun_resolution": 300,
+        "pronoun_recent_entity": 140,
+        "reject_subproposal": 220,
+        "s1_keep_qualifier": 250,
+        "s2_compound_two_actions": 150,
+        "short_correction": 200,
+        "unknown": 15998,
+        "vague_execute": 160,
+        "vague_execute_no_proposal": 240
+      }
+    },
+    "valid": {
+      "total": 2000,
+      "by_source": {
+        "base_mimo": 2000
+      },
+      "by_domain": {
+        "calling": 207,
+        "charging": 290,
+        "climate": 187,
+        "driver_assist": 230,
+        "messaging": 231,
+        "music": 235,
+        "navigation": 210,
+        "smart_home": 133,
+        "vehicle": 277
+      },
+      "by_context_required": {
+        "false": 617,
+        "true": 1383
+      },
+      "by_pattern": {
+        "unknown": 2000
+      }
+    },
+    "test": {
+      "total": 1997,
+      "by_source": {
+        "base_mimo": 1997
+      },
+      "by_domain": {
+        "calling": 207,
+        "charging": 291,
+        "climate": 186,
+        "driver_assist": 232,
+        "messaging": 231,
+        "music": 233,
+        "navigation": 208,
+        "smart_home": 132,
+        "vehicle": 277
+      },
+      "by_context_required": {
+        "false": 614,
+        "true": 1383
+      },
+      "by_pattern": {
+        "unknown": 1997
+      }
+    }
+  },
+  "outputs": {
+    "train": {
+      "file_name": "train.jsonl",
+      "count": 20508,
+      "sha256": "27c050f96b6e8fa445794c01470ea61f0f79b72172497462dc258106db25eafb"
+    },
+    "valid": {
+      "file_name": "valid.jsonl",
+      "count": 2000,
+      "sha256": "31d691ae0ff724d62f961caf07b7821b85623ae5f46c06e435999ccdef8aaaf2"
+    },
+    "test": {
+      "file_name": "test.jsonl",
+      "count": 1997,
+      "sha256": "d3750490ed6730e7312860a049a694a88298958d3182e4e58c45c8f697b55324"
+    },
+    "dataset_info": {
+      "file_name": "dataset_info.json",
+      "sha256": "4594d0177a6721bed59f1bf38ccbdae5b8bc3698b130f71e04f30cdaa0b4a4a0"
+    },
+    "dataset_report": {
+      "file_name": "dataset_report.md",
+      "sha256": "8f73af31d58c4d4b45537cee90b1ead89b08b32bbe1592b9b7c6aa9538a523b6"
+    }
+  }
+}

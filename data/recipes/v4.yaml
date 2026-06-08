@@ -1,0 +1,41 @@
+version: v4
+output_dir: data/processed
+seed: 42
+
+split:
+  train_ratio: 0.8
+  valid_ratio: 0.1
+  seed: 42
+  stratify_by:
+    - meta.domain
+    - meta.context_required
+
+sources:
+  - name: base_mimo
+    path: data/train/dialogues_train_api.jsonl
+    placement: split
+    take: all
+
+  - name: patch_b2b3
+    path: data/patches/patch_b2b3.jsonl
+    placement: train_only
+    take: 790
+
+  - name: patch_b4
+    path: data/patches/patch_b4.jsonl
+    placement: train_only
+    take: 1700
+
+  # short-contextual everyday utterances: when NOT to rewrite into a tool command.
+  # train_only; the held-out eval lives in data/bench/bench_short_contextual.jsonl and
+  # is deliberately NOT referenced by guards.bench_leak_check below — its no-op golds
+  # ("Ừ.", "Ok.", "Không.") would otherwise mass-drop this patch's training signal.
+  - name: patch_short_contextual
+    path: data/patches/patch_short_contextual.jsonl
+    placement: train_only
+    take: all
+
+guards:
+  dedupe_by: conversations
+  bench_leak_check: data/bench/dialogues_bench_browser.jsonl
+  bench_leak_policy: drop

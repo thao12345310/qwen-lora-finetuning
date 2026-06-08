@@ -87,6 +87,13 @@ Trả về DUY NHẤT một JSON hợp lệ, không markdown, không giải thí
 
 JUDGE_FLAGS = ("intent_ok", "slots_complete", "no_hallucination", "negation_ok")
 
+# Patterns whose gold is a no-op echo ("Ừ.", "Ok.", "Thôi.") — the model must NOT expand
+# them into a fabricated tool command. The judge is unreliable on such trivial golds, so
+# no_op_preserved is measured deterministically instead (see deterministic_metrics).
+NO_OP_PATTERNS = (
+    "ack_no_action", "ack_after_done", "reject_subproposal", "vague_execute_no_proposal",
+)
+
 
 def _normalize_judge(d: dict) -> dict:
     """Coerce raw judge JSON into the canonical flag schema, filling gaps safely."""
@@ -278,17 +285,27 @@ def restoration_scores(pred_text: str, gold: str, last_user: str):
     return _fbeta(precision, recall, 1.0), _fbeta(precision, recall, 2.0)
 
 
-def deterministic_metrics(raw_pred: str, gold: str, last_user: str) -> dict:
+def deterministic_metrics(raw_pred: str, gold: str, last_user: str,
+                          pattern: str | None = None) -> dict:
     pred_text, valid = extract_pred_text(raw_pred)
     is_copy = bool(pred_text) and normalize_text(pred_text) == normalize_text(last_user)
     ratio = len(pred_text) / max(len(gold), 1)
     is_degenerate = (not pred_text) or ratio < 0.3 or ratio > 3.0
     f1, f2 = restoration_scores(pred_text, gold, last_user)
+    # no_op_preserved: only defined for no-op patterns. The model preserved the no-op iff
+    # it stayed a short echo rather than expanding into a tool command. Gold no-ops are
+    # ≤3 tokens; any fabricated command is longer, so "no longer than gold + 1 token" cleanly
+    # separates the two. None elsewhere so it aggregates over the no-op slice only.
+    no_op_preserved = None
+    if pattern in NO_OP_PATTERNS:
+        no_op_preserved = int(bool(pred_text)
+                              and len(tokenize(pred_text)) <= len(tokenize(gold)) + 1)
     return {
         "pred_text": pred_text,
         "output_valid": int(valid),
         "is_copy": int(is_copy),
         "is_degenerate": int(is_degenerate),
+        "no_op_preserved": no_op_preserved,
         "restoration_f1": f1,
         "restoration_f2": f2,
     }
@@ -518,7 +535,8 @@ async def run(args):
             # Deterministic (Tier-0) recomputed from pred + judge (Tier-1) metrics.
             rows = []
             for ctx, pred, sc in zip(contexts, preds, scores):
-                det = deterministic_metrics(pred, ctx["gold"], last_user_utterance(ctx["turns"]))
+                det = deterministic_metrics(pred, ctx["gold"], last_user_utterance(ctx["turns"]),
+                                            ctx["meta"].get("pattern"))
                 rows.append({"meta": ctx["meta"], "gold": ctx["gold"], "pred": pred, **det, **sc})
             with out_path.open("w", encoding="utf-8") as f:
                 for row in rows:
@@ -589,6 +607,8 @@ def aggregate(rows: list[dict]) -> dict:
         "output_validity": _mean([r["output_valid"] for r in rows]),
         "copy_rate": _mean([r["is_copy"] for r in rows]),
         "degenerate_rate": _mean([r["is_degenerate"] for r in rows]),
+        # deterministic over the no-op slice only (None elsewhere → filtered by _mean)
+        "no_op_preserved": _mean([r.get("no_op_preserved") for r in rows]),
         # Tier-1 (judge)
         "command_acc": _mean([r["score"] for r in judged]),
         "intent_acc": _mean([r["intent_ok"] for r in judged]),
@@ -622,14 +642,32 @@ def _slice(rows: list[dict], key: str) -> dict[str, dict]:
     }
 
 
+def _noop_by_pattern(rows: list[dict]) -> dict[str, dict]:
+    """no_op_preserved per no-op pattern. Deterministic — NOT gated on judge status — so
+    it is reported even on a predict-only (--no-judge) run."""
+    groups: dict[str, list[dict]] = defaultdict(list)
+    for r in rows:
+        if r.get("no_op_preserved") is None:
+            continue
+        groups[str(r["meta"].get("pattern"))].append(r)
+    return {
+        p: {"n": len(g), "no_op_preserved": _mean([r["no_op_preserved"] for r in g])}
+        for p, g in groups.items()
+    }
+
+
 def print_report(model: str, rows: list[dict]) -> dict:
     agg = aggregate(rows)
     slices = {k: _slice(rows, k) for k in ("context_required", "pattern", "domain")}
+    noop = _noop_by_pattern(rows)
 
     print(f"\n{model}   (n={agg['n']})")
     print(f"  Output Validity    : {agg['output_validity']*100:5.1f}%")
     print(f"  Copy Rate          : {agg['copy_rate']*100:5.1f}%   (cao ở context_required=true là xấu)")
     print(f"  Degenerate Rate    : {agg['degenerate_rate']*100:5.1f}%")
+    if agg["no_op_preserved"] == agg["no_op_preserved"]:  # not NaN → no-op rows present
+        print(f"  No-op Preserved    : {agg['no_op_preserved']*100:5.1f}%   ← 'đừng over-help' "
+              f"(deterministic, nhóm no-op)")
     print(f"  Command Accuracy   : {agg['command_acc']*100:5.1f}%   ← headline")
     print(f"  Intent Accuracy    : {agg['intent_acc']*100:5.1f}%")
     print(f"  Slot Completeness  : {agg['slot_completeness']*100:5.1f}%")
@@ -650,7 +688,13 @@ def print_report(model: str, rows: list[dict]) -> dict:
             s = sl[v]
             print(f"     {v:22s} {s['command_acc']*100:5.1f}%  (n={s['n']}, halluc {s['halluc_rate']*100:.1f}%)")
 
-    return {"overall": agg, "slices": slices}
+    if noop:
+        print("  ── No-op Preserved theo pattern (deterministic):")
+        for p in sorted(noop):
+            s = noop[p]
+            print(f"     {p:26s} {s['no_op_preserved']*100:5.1f}%  (n={s['n']})")
+
+    return {"overall": agg, "slices": slices, "no_op_by_pattern": noop}
 
 
 def main():

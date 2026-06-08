@@ -1,0 +1,38 @@
+version: v3
+output_dir: data/processed
+seed: 42
+
+split:
+  train_ratio: 0.8
+  valid_ratio: 0.1
+  seed: 42
+  stratify_by:
+    - meta.domain
+    - meta.context_required
+
+sources:
+  - name: base_mimo
+    path: data/train/dialogues_train_api.jsonl
+    placement: split
+    take: all
+
+  - name: patch_b2b3
+    path: data/patches/patch_b2b3.jsonl
+    placement: train_only
+    take: 790
+
+  - name: patch_b4
+    path: data/patches/patch_b4.jsonl
+    placement: train_only
+    take: 1700
+
+  # Add hand-written fixes here later, then uncomment:
+  # - name: manual_fixes
+  #   path: data/patches/manual_fixes.jsonl
+  #   placement: train_only
+  #   take: all
+
+guards:
+  dedupe_by: conversations
+  bench_leak_check: data/bench/dialogues_bench_browser.jsonl
+  bench_leak_policy: drop
