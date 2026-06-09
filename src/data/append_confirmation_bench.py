@@ -351,7 +351,7 @@ def main() -> None:
 
     by_domain = Counter(r["meta"]["domain"] for r in accepted)
     by_affirm = Counter(
-        r["conversations"][-2]["value"].replace("<REWRITE>\n", "").strip().lower()
+        r["conversations"][-2]["value"].replace("<REWRITE_AND_CLASSIFY>\n", "").strip().lower()
         for r in accepted
     )
     print("domains:", dict(sorted(by_domain.items())))

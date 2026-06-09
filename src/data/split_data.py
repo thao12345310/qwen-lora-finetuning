@@ -8,7 +8,7 @@ from collections import defaultdict
 from pathlib import Path
 
 
-DEFAULT_STRATIFY_BY = ["meta.domain", "meta.context_required"]
+DEFAULT_STRATIFY_BY = ["meta.domain", "meta.online_offline", "meta.context_required"]
 
 
 def read_jsonl(path: Path) -> list[dict]:

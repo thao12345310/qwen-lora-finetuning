@@ -117,13 +117,19 @@ def fmt_dialogue(turns: list[tuple[str, str]]) -> str:
     return "\n".join(f"{role}: {text}" for role, text in turns)
 
 
-def make_sample(turns, rewrite, intent, pattern, domain, *, context_required=True):
+def make_sample(turns, rewrite, intent, pattern, domain, *, context_required=True,
+                online_offline="offline"):
     """Build one sample.
 
     `context_required` (fine_tune.md rule #2): True nếu rewrite BẮT BUỘC dùng
     ngữ cảnh các lượt trước (retrieve); False nếu câu cuối đã tự đủ và model
     chỉ cần chuẩn hoá, BỎ QUA lịch sử (no-retrieve / giữ nguyên ý). Tỷ lệ mục
     tiêu toàn bộ dataset: ~2/3 True : ~1/3 False.
+
+    `online_offline` là nhãn phân loại domain XUẤT RA trong output JSON
+    ({"rewrite_message", "domain"}). Mặc định "offline" vì mọi generator điều
+    khiển/nav/media trong file này đều là tác vụ offline. `domain` (tham số) vẫn
+    là nhãn chức năng nội bộ (navigation/climate/...) lưu ở meta để stratify.
     """
     user_turns = sum(1 for r, _ in turns if r == "user")
     conversations = [{"from": "system", "value": SYSTEM_PROMPT}]
@@ -136,7 +142,8 @@ def make_sample(turns, rewrite, intent, pattern, domain, *, context_required=Tru
     conversations.append({"from": "human", "value": f"{REWRITE_TAG}\n{final_text}"})
     conversations.append({
         "from": "gpt",
-        "value": json.dumps({"rewrite_message": rewrite}, ensure_ascii=False),
+        "value": json.dumps(
+            {"rewrite_message": rewrite, "domain": online_offline}, ensure_ascii=False),
     })
     return {
         "conversations": conversations,
@@ -145,6 +152,7 @@ def make_sample(turns, rewrite, intent, pattern, domain, *, context_required=Tru
             "pattern": pattern,
             "group": pattern,  # alias for compat with split_data.py (stratify key)
             "domain": domain,
+            "online_offline": online_offline,
             "context_required": context_required,
             "user_turns": user_turns,
             "messages": len(turns),

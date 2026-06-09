@@ -155,7 +155,7 @@ def assert_echo(gold, form):
 def assert_action(gold, form):
     assert gold != echo(form), gold          # it DID expand past the bare ack
     assert gold[-1] in ".'\"", gold          # ends on a period or a quoted body
-    assert "<REWRITE>" not in gold, gold
+    assert "<REWRITE_AND_CLASSIFY>" not in gold, gold
 
 
 # =================================================================== ack_bind_proposal

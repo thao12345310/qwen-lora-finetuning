@@ -303,10 +303,12 @@ def counter_dict(counter: Counter) -> dict[str, int]:
 
 def count_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
     by_source, by_domain, by_context, by_pattern = Counter(), Counter(), Counter(), Counter()
+    by_online_offline = Counter()
     for item in rows:
         meta = item["record"].get("meta", {})
         by_source[item["source"]] += 1
         by_domain[meta.get("domain", "unknown")] += 1
+        by_online_offline[meta.get("online_offline", "unknown")] += 1
         ctx = meta.get("context_required")
         by_context["unknown" if ctx is None else str(ctx).lower()] += 1
         by_pattern[meta.get("pattern") or meta.get("generator") or "unknown"] += 1
@@ -314,6 +316,7 @@ def count_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "total": len(rows),
         "by_source": counter_dict(by_source),
         "by_domain": counter_dict(by_domain),
+        "by_online_offline": counter_dict(by_online_offline),
         "by_context_required": counter_dict(by_context),
         "by_pattern": counter_dict(by_pattern),
     }
@@ -343,7 +346,7 @@ def render_report(recipe: dict[str, Any], counts: dict[str, Any], sources: list[
         lines.append(f"- {split}: {bits or 'none'}")
 
     lines.extend(["", "## Train distribution"])
-    for key in ["by_domain", "by_context_required", "by_pattern"]:
+    for key in ["by_domain", "by_online_offline", "by_context_required", "by_pattern"]:
         bits = ", ".join(f"{k}={v}" for k, v in counts["train"][key].items())
         lines.append(f"- {key}: {bits or 'none'}")
 

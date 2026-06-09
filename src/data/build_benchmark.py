@@ -163,7 +163,40 @@ Rewrite PHẢI bind lời đồng ý vào đúng hành động assistant vừa �
 
 Không sinh true-abstain: nếu trước đó không có đề xuất hành động rõ thì KHÔNG thuộc pattern này.
 """,
+
+    # ----- ONLINE patterns (domain = "online") --------------------------------
+    "online_general_qa": """Pattern: ONLINE GENERAL Q&A / CHIT-CHAT (domain = ONLINE).
+
+Đây là hội thoại KHÔNG phải lệnh điều khiển xe: hỏi đáp kiến thức chung (thủ đô,
+đổi đơn vị, định nghĩa khái niệm, người nổi tiếng sinh năm nào...), tìm kiếm thông
+tin chung, hoặc trò chuyện phiếm/chung (sở thích, tâm trạng).
+
+Phải có ÍT NHẤT 3 turn, lượt cuối THƯỜNG lược tham chiếu: user hỏi về A → bot trả lời
+→ user hỏi lược "thế còn B?" / "còn B thì sao?" / "cái đó thì sao?". Rewrite PHẢI
+resolve thành câu hỏi ĐẦY ĐỦ, độc lập (vd "Thủ đô của Đức là gì?"), KHÔNG để lại đại từ.
+
+QUAN TRỌNG: domain = "online". TUYỆT ĐỐI KHÔNG dùng tác vụ "tìm kiếm địa điểm/quán ăn"
+(đó là offline) hay "nghe kể truyện cười" (offline). Chỉ kiến thức chung / trò chuyện.
+""",
+
+    "online_vehicle_howto": """Pattern: ONLINE VEHICLE HOW-TO / TROUBLESHOOTING (domain = ONLINE).
+
+User HỎI-ĐÁP về xe: cách sử dụng một tính năng ("cách bật chế độ off-road thế nào?"),
+ý nghĩa đèn cảnh báo ("đèn áp suất lốp sáng là sao?"), hoặc cách khắc phục lỗi
+("xe không vào sạc được thì phải làm sao?"), kiến thức về sạc pin.
+
+Đây KHÁC hẳn LỆNH điều khiển (vd "bật chế độ off-road" = offline). Phân biệt theo BẢN
+CHẤT: câu HỎI ("... là sao?", "cách ... thế nào?", "vì sao ...?", "... phải làm sao?")
+= online; câu LỆNH ("bật/mở/đặt/tắt ...") = offline.
+
+Phải có ÍT NHẤT 3 turn; lượt cuối có thể lược tham chiếu ("thế còn X?"/"cái đó thì sao?")
+và rewrite PHẢI resolve thành câu hỏi đầy đủ. domain = "online".
+""",
 }
+
+
+# Các pattern thuộc domain ONLINE (output JSON "domain":"online"); còn lại offline.
+ONLINE_PATTERNS = {"online_general_qa", "online_vehicle_howto"}
 
 
 DOMAIN_WEIGHTS = {
@@ -216,6 +249,7 @@ class BenchSample:
     rewrite: str
     domain: str
     rationale: str
+    online_offline: str = "offline"  # nhãn phân loại XUẤT RA (output JSON); mọi pattern điều khiển hiện có = offline
 
 
 reject_counter: dict[str, int] = {}
@@ -302,6 +336,7 @@ def validate_sample(
     return BenchSample(
         pattern=pattern, turns=cleaned, rewrite=rewrite,
         domain=domain, rationale=rationale,
+        online_offline="online" if pattern in ONLINE_PATTERNS else "offline",
     ), "ok"
 
 
@@ -315,15 +350,17 @@ def to_lf_record(sample: BenchSample, system_prompt: str) -> dict:
     last_user = sample.turns[-1]
     conversations.append({
         "from": "human",
-        "value": f"<REWRITE>\n{last_user['content']}",
+        "value": f"<REWRITE_AND_CLASSIFY>\n{last_user['content']}",
     })
-    answer = json.dumps({"rewrite_message": sample.rewrite}, ensure_ascii=False)
+    answer = json.dumps(
+        {"rewrite_message": sample.rewrite, "domain": sample.online_offline}, ensure_ascii=False)
     conversations.append({"from": "gpt", "value": answer})
     return {
         "conversations": conversations,
         "meta": {
             "pattern": sample.pattern,
             "domain": sample.domain,
+            "online_offline": sample.online_offline,
             "rationale": sample.rationale,
             "user_turns": sum(1 for t in sample.turns if t["role"] == "user"),
             "total_turns": len(sample.turns),
@@ -353,6 +390,12 @@ SAI (score=0): thiếu slot, sai intent, thêm thông tin bịa, mất polarity 
 Trả về JSON: {"score": 0 hoặc 1, "reason": "1 câu ngắn"}."""
 
 
+def _extra_for(model: str) -> dict:
+    """gpt-oss reasoning models (qua Ollama) cần reasoning_effort thấp, nếu không sẽ
+    đốt hết token budget vào 'thinking' và cắt mất JSON. OpenAI models: không thêm gì."""
+    return {"reasoning_effort": "low"} if "gpt-oss" in (model or "").lower() else {}
+
+
 async def weak_predict(
     client: AsyncOpenAI,
     model: str,
@@ -372,6 +415,7 @@ async def weak_predict(
                     max_tokens=120,
                     temperature=0.1,
                     top_p=0.9,
+                    **_extra_for(model),
                 )
                 return resp.choices[0].message.content.strip()
             except Exception:
@@ -408,6 +452,7 @@ async def judge_match(
                     response_format={"type": "json_object"},
                     temperature=0.0,
                     max_tokens=120,
+                    **_extra_for(model),
                 )
                 return int(json.loads(resp.choices[0].message.content).get("score", 0))
             except Exception:
@@ -492,6 +537,7 @@ async def generate_batch(
                     response_format={"type": "json_object"},
                     temperature=1.0,
                     max_tokens=4000,
+                    **_extra_for(model),
                 )
                 payload = json.loads(resp.choices[0].message.content)
                 samples = payload.get("samples", [])
@@ -582,13 +628,14 @@ async def run_pattern(
 
 
 async def run(args):
-    api_key = os.environ.get("OPENAI_API_KEY")
+    # base_url đặt (vd Ollama http://localhost:11434/v1) → không cần OPENAI_API_KEY thật.
+    api_key = os.environ.get("OPENAI_API_KEY") or ("ollama" if args.base_url else None)
     if not api_key:
-        raise SystemExit("OPENAI_API_KEY not set in environment")
+        raise SystemExit("OPENAI_API_KEY not set in environment (hoặc dùng --base-url cho Ollama)")
 
     random.seed(args.seed)
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    client = AsyncOpenAI(api_key=api_key)
+    client = AsyncOpenAI(api_key=api_key, base_url=args.base_url or None)
     sem = asyncio.Semaphore(args.concurrency)
 
     target = args.samples_per_pattern
@@ -654,6 +701,9 @@ def main():
     parser.add_argument("--output", type=Path, default=Path("data/bench/dialogues_bench.jsonl"))
     parser.add_argument("--output-dir", type=Path, default=Path("data/bench"))
     parser.add_argument("--model", default="gpt-4o")
+    parser.add_argument("--base-url", default=None,
+                        help="OpenAI-compatible endpoint (vd Ollama: http://localhost:11434/v1). "
+                             "Khi đặt, API key mặc định 'ollama' nếu không có OPENAI_API_KEY.")
     parser.add_argument("--samples-per-pattern", type=int, default=125,
                         help="125 × 8 patterns = 1000 samples target")
     parser.add_argument("--batch-size", type=int, default=5)

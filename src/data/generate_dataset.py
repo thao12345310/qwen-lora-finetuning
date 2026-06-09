@@ -93,7 +93,7 @@ def fmt_dialogue(turns: list[tuple[str, str]]) -> str:
     return "\n".join(f"{role}: {text}" for role, text in turns)
 
 
-def make_sample(turns, rewrite, intent, group, domain):
+def make_sample(turns, rewrite, intent, group, domain, online_offline="offline"):
     conversations = [{"from": "system", "value": SYSTEM_PROMPT}]
     for role, text in turns[:-1]:
         from_ = "human" if role == "user" else "gpt"
@@ -104,11 +104,13 @@ def make_sample(turns, rewrite, intent, group, domain):
     conversations.append({"from": "human", "value": f"{REWRITE_TAG}\n{final_text}"})
     conversations.append({
         "from": "gpt",
-        "value": json.dumps({"rewrite_message": rewrite}, ensure_ascii=False),
+        "value": json.dumps(
+            {"rewrite_message": rewrite, "domain": online_offline}, ensure_ascii=False),
     })
     return {
         "conversations": conversations,
-        "meta": {"intent": intent, "group": group, "domain": domain},
+        "meta": {"intent": intent, "group": group, "domain": domain,
+                 "online_offline": online_offline},
     }
 
 

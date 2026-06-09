@@ -79,16 +79,23 @@ def to_lf_record(record: dict, system_prompt: str) -> dict | None:
         conversations.append({"from": from_, "value": t["content"]})
     final_user = turns[-1]["content"]
     conversations.append({"from": "human", "value": f"{REWRITE_TAG}\n{final_user}"})
+    online_offline = "offline"
     try:
         assistant_obj = json.loads(assistant)
         if isinstance(assistant_obj, dict) and "rewrite_message" in assistant_obj:
             assistant = str(assistant_obj["rewrite_message"])
+            online_offline = str(assistant_obj.get("domain", online_offline))
     except (json.JSONDecodeError, TypeError, ValueError):
         pass
-    answer = json.dumps({"rewrite_message": assistant.strip()}, ensure_ascii=False)
+    if online_offline not in ("online", "offline"):
+        online_offline = "offline"
+    answer = json.dumps(
+        {"rewrite_message": assistant.strip(), "domain": online_offline}, ensure_ascii=False)
     conversations.append({"from": "gpt", "value": answer})
 
-    return {"conversations": conversations, "meta": record.get("meta", {})}
+    meta = dict(record.get("meta", {}))
+    meta.setdefault("online_offline", online_offline)
+    return {"conversations": conversations, "meta": meta}
 
 
 def main():

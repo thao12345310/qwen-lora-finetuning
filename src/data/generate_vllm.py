@@ -234,8 +234,8 @@ def bench_to_compact(rec):
     for c in convs[:-1]:
         role = "user" if c["from"] == "human" else "bot"
         v = c["value"]
-        if v.startswith("<REWRITE>\n"):
-            v = v[len("<REWRITE>\n"):]
+        if v.startswith(REWRITE_TAG + "\n"):
+            v = v[len(REWRITE_TAG) + 1:]
         turns.append({"role": role, "content": v})
     n_user = sum(1 for t in turns if t["role"] == "user")
     return {"turns": turns, "rewrite": gold, "user_turns": n_user,
@@ -338,9 +338,12 @@ def to_lf(s):
     for t in s["turns"][:-1]:
         convs.append({"from": "human" if t["role"] == "user" else "gpt", "value": t["content"]})
     convs.append({"from": "human", "value": f"{REWRITE_TAG}\n{s['turns'][-1]['content']}"})
-    convs.append({"from": "gpt", "value": json.dumps({"rewrite_message": s["rewrite"]}, ensure_ascii=False)})
+    online_offline = s.get("online_offline", "offline")
+    convs.append({"from": "gpt", "value": json.dumps(
+        {"rewrite_message": s["rewrite"], "domain": online_offline}, ensure_ascii=False)})
     return {"conversations": convs,
-            "meta": {"domain": s["domain"], "context_required": s["context_required"],
+            "meta": {"domain": s["domain"], "online_offline": online_offline,
+                     "context_required": s["context_required"],
                      "user_turns": s["user_turns"], "total_turns": len(s["turns"]),
                      "source": "qwen2.5-14b-awq"}}
 
