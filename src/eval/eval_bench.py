@@ -141,8 +141,8 @@ def lf_to_old_turns(record: dict) -> tuple[list[dict], str]:
     for c in dialogue:
         role = "user" if c["from"] == "human" else "bot"
         content = c["value"]
-        if content.startswith("<REWRITE_AND_CLASSIFY>\n"):
-            content = content[len("<REWRITE_AND_CLASSIFY>\n"):]
+        if content.startswith("<REWRITE>\n"):
+            content = content[len("<REWRITE>\n"):]
         turns.append({"role": role, "content": content})
     return turns, gold
 
@@ -187,8 +187,8 @@ def _final_user_text(record: dict) -> str:
     for c in reversed(record["conversations"]):
         if c["from"] == "human":
             txt = c["value"]
-            if txt.startswith("<REWRITE_AND_CLASSIFY>\n"):
-                txt = txt[len("<REWRITE_AND_CLASSIFY>\n"):]
+            if txt.startswith("<REWRITE>\n"):
+                txt = txt[len("<REWRITE>\n"):]
             return normalize_text(txt)
     return ""
 
@@ -285,34 +285,9 @@ def restoration_scores(pred_text: str, gold: str, last_user: str):
     return _fbeta(precision, recall, 1.0), _fbeta(precision, recall, 2.0)
 
 
-def extract_pred_domain(raw: str) -> str | None:
-    """Parse the predicted online/offline domain from a model JSON output.
-
-    Returns "online"/"offline" if present & valid, else None (missing/invalid →
-    counts as a wrong/invalid domain prediction downstream)."""
-    if not raw or raw.startswith("__ERROR__"):
-        return None
-    try:
-        obj = json.loads(raw.strip())
-    except (json.JSONDecodeError, ValueError):
-        return None
-    if isinstance(obj, dict):
-        d = str(obj.get("domain", "")).strip().lower()
-        if d in ("online", "offline"):
-            return d
-    return None
-
-
 def deterministic_metrics(raw_pred: str, gold: str, last_user: str,
-                          pattern: str | None = None,
-                          gold_domain: str | None = None) -> dict:
+                          pattern: str | None = None) -> dict:
     pred_text, valid = extract_pred_text(raw_pred)
-    pred_domain = extract_pred_domain(raw_pred)
-    # domain_valid: model emitted a well-formed online/offline label at all.
-    # domain_correct: that label matches the gold (None when bench has no gold domain,
-    # so it aggregates only over labelled rows).
-    domain_valid = int(pred_domain is not None)
-    domain_correct = None if gold_domain is None else int(pred_domain == gold_domain)
     is_copy = bool(pred_text) and normalize_text(pred_text) == normalize_text(last_user)
     ratio = len(pred_text) / max(len(gold), 1)
     is_degenerate = (not pred_text) or ratio < 0.3 or ratio > 3.0
@@ -333,10 +308,6 @@ def deterministic_metrics(raw_pred: str, gold: str, last_user: str,
         "no_op_preserved": no_op_preserved,
         "restoration_f1": f1,
         "restoration_f2": f2,
-        "pred_domain": pred_domain,
-        "gold_domain": gold_domain,
-        "domain_valid": domain_valid,
-        "domain_correct": domain_correct,
     }
 
 
@@ -565,8 +536,7 @@ async def run(args):
             rows = []
             for ctx, pred, sc in zip(contexts, preds, scores):
                 det = deterministic_metrics(pred, ctx["gold"], last_user_utterance(ctx["turns"]),
-                                            ctx["meta"].get("pattern"),
-                                            gold_domain=ctx["meta"].get("online_offline"))
+                                            ctx["meta"].get("pattern"))
                 rows.append({"meta": ctx["meta"], "gold": ctx["gold"], "pred": pred, **det, **sc})
             with out_path.open("w", encoding="utf-8") as f:
                 for row in rows:
@@ -648,34 +618,7 @@ def aggregate(rows: list[dict]) -> dict:
         # Tier-2 (reference-overlap, auto)
         "restoration_f1": _mean([r["restoration_f1"] for r in rows]),
         "restoration_f2": _mean([r["restoration_f2"] for r in rows]),
-        # Domain classification (deterministic; uses ALL rows, not gated on judge).
-        # domain_validity = % rows emitting a valid online/offline label.
-        # domain_accuracy = % CORRECT over rows that carry a gold domain
-        #   (domain_correct is None on unlabelled rows → filtered by _mean).
-        "domain_validity": _mean([r.get("domain_valid") for r in rows]),
-        "domain_accuracy": _mean([r.get("domain_correct") for r in rows]),
     }
-
-
-def _domain_breakdown(rows: list[dict]) -> dict[str, dict]:
-    """Per gold-class (online/offline) domain accuracy + a pred confusion count.
-    Deterministic — reported even on a --no-judge run."""
-    groups: dict[str, list[dict]] = defaultdict(list)
-    for r in rows:
-        if r.get("gold_domain") is None:
-            continue
-        groups[str(r["gold_domain"])].append(r)
-    out = {}
-    for cls, g in groups.items():
-        pred_counts: dict[str, int] = defaultdict(int)
-        for r in g:
-            pred_counts[str(r.get("pred_domain"))] += 1
-        out[cls] = {
-            "n": len(g),
-            "accuracy": _mean([r.get("domain_correct") for r in g]),
-            "pred_counts": dict(pred_counts),
-        }
-    return out
 
 
 def _slice(rows: list[dict], key: str) -> dict[str, dict]:
@@ -717,7 +660,6 @@ def print_report(model: str, rows: list[dict]) -> dict:
     agg = aggregate(rows)
     slices = {k: _slice(rows, k) for k in ("context_required", "pattern", "domain")}
     noop = _noop_by_pattern(rows)
-    domain_breakdown = _domain_breakdown(rows)
 
     print(f"\n{model}   (n={agg['n']})")
     print(f"  Output Validity    : {agg['output_validity']*100:5.1f}%")
@@ -726,10 +668,7 @@ def print_report(model: str, rows: list[dict]) -> dict:
     if agg["no_op_preserved"] == agg["no_op_preserved"]:  # not NaN → no-op rows present
         print(f"  No-op Preserved    : {agg['no_op_preserved']*100:5.1f}%   ← 'đừng over-help' "
               f"(deterministic, nhóm no-op)")
-    print(f"  Command Accuracy   : {agg['command_acc']*100:5.1f}%   ← headline (rewrite)")
-    if agg["domain_accuracy"] == agg["domain_accuracy"]:  # not NaN → bench has gold domains
-        print(f"  Domain Accuracy    : {agg['domain_accuracy']*100:5.1f}%   ← headline (online/offline)")
-        print(f"  Domain Validity    : {agg['domain_validity']*100:5.1f}%   (model có xuất nhãn hợp lệ)")
+    print(f"  Command Accuracy   : {agg['command_acc']*100:5.1f}%   ← headline")
     print(f"  Intent Accuracy    : {agg['intent_acc']*100:5.1f}%")
     print(f"  Slot Completeness  : {agg['slot_completeness']*100:5.1f}%")
     print(f"  Halluc. Slot Rate  : {agg['halluc_rate']*100:5.1f}%   ← càng thấp càng tốt")
@@ -755,14 +694,7 @@ def print_report(model: str, rows: list[dict]) -> dict:
             s = noop[p]
             print(f"     {p:26s} {s['no_op_preserved']*100:5.1f}%  (n={s['n']})")
 
-    if domain_breakdown:
-        print("  ── Domain Accuracy theo lớp gold (deterministic):")
-        for cls in sorted(domain_breakdown):
-            s = domain_breakdown[cls]
-            print(f"     {cls:8s} {s['accuracy']*100:5.1f}%  (n={s['n']}, pred={s['pred_counts']})")
-
-    return {"overall": agg, "slices": slices, "no_op_by_pattern": noop,
-            "domain_breakdown": domain_breakdown}
+    return {"overall": agg, "slices": slices, "no_op_by_pattern": noop}
 
 
 def main():

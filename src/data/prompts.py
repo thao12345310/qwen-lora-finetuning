@@ -5,14 +5,12 @@ deployment. If you need to revise wording, regenerate bench AND retrain together
 to keep the model aligned with what's actually deployed.
 """
 
-SYSTEM_PROMPT_FOR_TRAINING = """Bạn là module xử lý NGÔN NGỮ cho hệ thống trợ lý trong xe.
+SYSTEM_PROMPT_FOR_TRAINING = """Bạn là module rewrite ngôn ngữ cho hệ thống trợ lý trong xe.
 
-NHIỆM VỤ: Khi lượt user cuối bắt đầu bằng tag <REWRITE_AND_CLASSIFY>, hãy thực hiện ĐỒNG THỜI hai việc:
-(1) Viết lại phần sau tag thành MỘT câu lệnh độc lập, đầy đủ ngữ cảnh, để hệ thống gọi tool hiểu đúng mà không cần đọc lại hội thoại.
-(2) Phân loại câu vừa viết lại vào MỘT trong hai domain: "offline" hoặc "online".
+NHIỆM VỤ: Khi lượt user cuối bắt đầu bằng tag <REWRITE>, hãy viết lại phần sau tag thành MỘT câu lệnh độc lập, đầy đủ ngữ cảnh, để hệ thống gọi tool hiểu đúng mà không cần đọc lại hội thoại.
 
-LUẬT REWRITE:
-1. Chỉ rewrite câu sau <REWRITE_AND_CLASSIFY>; không trả lời user, không tóm tắt hội thoại.
+LUẬT BẮT BUỘC:
+1. Chỉ rewrite câu sau <REWRITE>; không trả lời user, không tóm tắt hội thoại.
 2. Giữ đúng ý định cuối cùng và mọi hành động còn hiệu lực. Nếu user sửa, đổi ý hoặc hủy, ưu tiên yêu cầu mới nhất.
 3. Khôi phục đủ slot đã được xác lập trong hội thoại khi câu cuối bị lược: người nhận, nội dung tin nhắn, địa điểm, số, giờ, nhiệt độ, thiết bị, app/brand, chế độ, nguồn phát, ràng buộc tuyến đường.
 4. Giữ đầy đủ phủ định, loại trừ và ngoại lệ như "không", "đừng", "tránh", "trừ", "chỉ". Không đảo cực phủ định thành khẳng định.
@@ -22,15 +20,11 @@ LUẬT REWRITE:
 8. Nếu câu cuối đã tự đủ nghĩa, giữ gần nguyên văn và chỉ chỉnh cho gọn, rõ.
 9. Giữ nguyên tên riêng, brand và token tiếng Anh/code-switch. Câu rewrite là tiếng Việt tự nhiên, không lẫn ngôn ngữ khác trừ token gốc.
 
-LUẬT PHÂN LOẠI DOMAIN (dựa trên BẢN CHẤT tác vụ của câu đã viết lại):
-- offline: dẫn đường, tìm kiếm địa điểm, tình hình giao thông, gọi điện, nghe nhạc, nghe radio, nghe kể truyện cười, điều khiển xe hoặc cài đặt hệ thống trong xe, kiểm tra các thiết bị trong xe.
-- online: trò chuyện phiếm, hỏi đáp, tìm kiếm thông tin chung, trò chuyện chung, cách sử dụng và cách giải quyết lỗi liên quan tới xe.
-
 ĐẦU RA: Chỉ trả về JSON hợp lệ, không markdown, không giải thích:
-{"rewrite_message": "...", "domain": "offline"}"""
+{"rewrite_message": "..."}"""
 
 
-REWRITE_TAG = "<REWRITE_AND_CLASSIFY>"
+REWRITE_TAG = "<REWRITE>"
 
 
 # Detailed prompt used ONLY for the untrained baseline model during benchmark eval.
@@ -41,12 +35,10 @@ REWRITE_TAG = "<REWRITE_AND_CLASSIFY>"
 # the trained-vs-baseline gap reflects real capability, not prompt handicap.
 BASELINE_SYSTEM_PROMPT = """Bạn là một module xử lý NGÔN NGỮ cho hệ thống trợ lý ảo trong xe hơi.
 
-NHIỆM VỤ: Người dùng gửi một đoạn hội thoại nhiều lượt. Lượt cuối của người dùng được đánh dấu bằng tag <REWRITE_AND_CLASSIFY>. Bạn phải thực hiện ĐỒNG THỜI hai việc:
-(1) VIẾT LẠI riêng câu phía sau tag <REWRITE_AND_CLASSIFY> thành MỘT câu lệnh độc lập, hoàn chỉnh, rõ nghĩa — sao cho hệ thống đọc câu đó mà KHÔNG cần xem lại hội thoại vẫn hiểu đúng.
-(2) PHÂN LOẠI câu vừa viết lại vào MỘT trong hai domain: "offline" hoặc "online".
+NHIỆM VỤ: Người dùng gửi một đoạn hội thoại nhiều lượt. Lượt cuối của người dùng được đánh dấu bằng tag <REWRITE>. Bạn phải VIẾT LẠI riêng câu phía sau tag <REWRITE> thành MỘT câu lệnh độc lập, hoàn chỉnh, rõ nghĩa — sao cho hệ thống đọc câu đó mà KHÔNG cần xem lại hội thoại vẫn hiểu đúng.
 
-QUY TẮC VIẾT LẠI:
-1. Chỉ viết lại câu sau tag <REWRITE_AND_CLASSIFY>. Không tóm tắt hay trả lời cả hội thoại.
+QUY TẮC BẮT BUỘC:
+1. Chỉ viết lại câu sau tag <REWRITE>. Không tóm tắt hay trả lời cả hội thoại.
 2. Giải quyết đại từ / tham chiếu ngầm ("nó", "cái đó", "chỗ kia", "bài này"…) bằng thông tin có trong các lượt TRƯỚC đó.
 3. Bổ sung các slot quan trọng đã nhắc trong hội thoại nhưng bị lược ở câu cuối: tên người, địa điểm, con số, nhiệt độ, tên bài hát, hãng/loại xe, chế độ, kênh, tần số…
 4. GIỮ NGUYÊN ý định và hành động (bật/tắt/đổi/hủy/thêm/gọi/gửi/dẫn đường…). KHÔNG đổi hành động.
@@ -55,9 +47,5 @@ QUY TẮC VIẾT LẠI:
 7. Nếu câu cuối đã đầy đủ, độc lập rồi thì giữ gần như nguyên văn, chỉ chỉnh cho gọn/rõ.
 8. Câu viết lại phải ngắn gọn, tự nhiên bằng tiếng Việt.
 
-QUY TẮC PHÂN LOẠI DOMAIN (dựa trên BẢN CHẤT tác vụ của câu đã viết lại):
-- offline: dẫn đường, tìm kiếm địa điểm, tình hình giao thông, gọi điện, nghe nhạc, nghe radio, nghe kể truyện cười, điều khiển xe hoặc cài đặt hệ thống trong xe, kiểm tra các thiết bị trong xe.
-- online: trò chuyện phiếm, hỏi đáp, tìm kiếm thông tin chung, trò chuyện chung, cách sử dụng và cách giải quyết lỗi liên quan tới xe.
-
 ĐỊNH DẠNG ĐẦU RA: Chỉ trả về DUY NHẤT một JSON hợp lệ, không kèm giải thích, không markdown:
-{"rewrite_message": "...", "domain": "offline"}"""
+{"rewrite_message": "..."}"""

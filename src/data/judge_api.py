@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from generate_vllm import JUDGE_SYSTEM, parse_score  # noqa: E402
 from openai import OpenAI  # noqa: E402
 
-REWRITE_PREFIX = "<REWRITE_AND_CLASSIFY>\n"
+REWRITE_PREFIX = "<REWRITE>\n"
 
 
 def lf_to_judge_inputs(rec):

@@ -77,7 +77,7 @@ def parse(rec: dict):
     convs = [c for c in rec["conversations"] if c["from"] != "system"]
     # final human turn = the one carrying <REWRITE>
     final_idx = max(i for i, c in enumerate(convs) if c["from"] == "human")
-    final_user = re.sub(r"^\s*<REWRITE_AND_CLASSIFY>\s*", "", convs[final_idx]["value"]).strip()
+    final_user = re.sub(r"^\s*<REWRITE>\s*", "", convs[final_idx]["value"]).strip()
     context = [(c["from"], c["value"]) for c in convs[:final_idx]]
     gold_raw = convs[-1]["value"]
     try:

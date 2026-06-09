@@ -34,14 +34,14 @@ load_dotenv()
 META_SYSTEM = """Bạn là chuyên gia paraphrase tiếng Việt cho dữ liệu huấn luyện task rewrite hội thoại xe ô tô.
 
 Bạn nhận một mẫu LF gồm:
-- "dialogue": list các turn xen kẽ "human"/"gpt", kết thúc bằng "human" (chứa <REWRITE_AND_CLASSIFY>).
+- "dialogue": list các turn xen kẽ "human"/"gpt", kết thúc bằng "human" (chứa <REWRITE>).
 - "rewrite": câu rewrite chuẩn gói toàn bộ slot.
 
 Sinh 1 BIẾN THỂ paraphrase mới — cùng số turn, cùng vai trò, cùng slot, nhưng diễn đạt khác hẳn.
 
 YÊU CẦU TUYỆT ĐỐI:
 1. Giữ NGUYÊN VẸN slot: số (digit, kể cả "27 độ" → vẫn "27 độ"), tên riêng (Bún Đậu Ngon, anh Nam, EBOOST, Em Của Ngày Hôm Qua), đơn vị (km/h, độ, %). KHÔNG thay slot.
-2. Giữ NGUYÊN số lượng turn và vai trò (human/gpt). Turn cuối vẫn là "human" và VẪN bắt đầu bằng "<REWRITE_AND_CLASSIFY>\\n".
+2. Giữ NGUYÊN số lượng turn và vai trò (human/gpt). Turn cuối vẫn là "human" và VẪN bắt đầu bằng "<REWRITE>\\n".
 3. Đa dạng surface form:
    - Đổi opener của rewrite — không dùng cùng cấu trúc với gốc. Ví dụ gốc "Tôi muốn ..." → biến thể có thể "Hãy ...", "Làm ơn ...", "Bạn ... giúp tôi", "Cho tôi ...", "Mình cần ...".
    - Đổi từ vựng đồng nghĩa cho động từ, liên từ.

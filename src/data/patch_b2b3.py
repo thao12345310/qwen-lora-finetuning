@@ -133,18 +133,16 @@ def cap(s):
     return s[0].upper() + s[1:] if s else s
 
 
-def sample(turns, gold, domain, *, ctx=True, src="patch_b2b3", online_offline="offline"):
+def sample(turns, gold, domain, *, ctx=True, src="patch_b2b3"):
     """turns: list of (role, text) with role in {human,gpt}; final must be human."""
     conv = [{"from": "system", "value": SYSTEM_PROMPT}]
     for i, (role, text) in enumerate(turns):
-        val = ("<REWRITE_AND_CLASSIFY>\n" + text) if (role == "human" and i == len(turns) - 1) else text
+        val = ("<REWRITE>\n" + text) if (role == "human" and i == len(turns) - 1) else text
         conv.append({"from": role, "value": val})
-    conv.append({"from": "gpt", "value": json.dumps(
-        {"rewrite_message": gold, "domain": online_offline}, ensure_ascii=False)})
+    conv.append({"from": "gpt", "value": json.dumps({"rewrite_message": gold}, ensure_ascii=False)})
     user_turns = sum(1 for r, _ in turns if r == "human")
     return {"conversations": conv,
-            "meta": {"domain": domain, "online_offline": online_offline,
-                     "context_required": ctx,
+            "meta": {"domain": domain, "context_required": ctx,
                      "user_turns": user_turns, "total_turns": len(turns), "source": src}}
 
 
